@@ -43,9 +43,7 @@ Comments
 - #### Admissibility of a heuristic:
 
   The heuristic of a node is admissible iff
-  $$
-  h(A)\le MinPathFrom(A)
-  $$
+  $ h(A) \le MinPathFrom(A) $
   Where the right member is the minimum path to get to the goal state from A
 
 - #### Consistency of a heuristic:
@@ -55,9 +53,7 @@ Comments
 
   ​                                                                                 1 --> 2
   Their heuristics are consistence iff
-  $$
-  c_{12}\ge h(1)-h(2)
-  $$
+  $ c_{12}\ge h(1)-h(2) $
 
 
 ## Constraint Satisfaction Problems
