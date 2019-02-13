@@ -1,7 +1,12 @@
 # AI Fundamentals
 
 # Search Algorithms
-
+To define a Search Problem you must define:
+1. Initial State
+2. Actions(s) (All actions possible from state s)
+3. Result(s,a) (Return the state obtained applying a when in s)
+4. Goal test
+5. Step Cost (Usually unitary)
 Legenda:
 
 - b=  Branching factor: what is the maximum number of children a node can have, the maximum cardinality of the set returned
