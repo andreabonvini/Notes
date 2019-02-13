@@ -1,12 +1,6 @@
 # AI Fundamentals
 
 # Search Algorithms
-To define a Search Problem you must define:
-1. Initial State
-2. Actions(s) (All actions possible from state s)
-3. Result(s,a) (Return the state obtained applying a when in s)
-4. Goal test
-5. Step Cost (Usually unitary)
 
 Legenda:
 
@@ -49,7 +43,9 @@ Comments
 - #### Admissibility of a heuristic:
 
   The heuristic of a node is admissible iff
-  $ h(A) $ $\le$ $ MinPathFrom(A) $
+  $$
+  h(A)\le MinPathFrom(A)
+  $$
   Where the right member is the minimum path to get to the goal state from A
 
 - #### Consistency of a heuristic:
@@ -59,7 +55,9 @@ Comments
 
   ​                                                                                 1 --> 2
   Their heuristics are consistence iff
-  $ c_{12}$ $\ge$ $ h(1)-h(2) $
+  $$
+  c_{12}\ge h(1)-h(2)
+  $$
 
 
 ## Constraint Satisfaction Problems
@@ -185,19 +183,64 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
   - If the utility function v is bounded --> as soon as we find find a winning path for max we end the search there
   - if the utility function v is not bounded --> if alpha > beta we prune
 
-## Inference
+# Inference
+
+
+
+
+
+3 modi risoluzione
+
+support set:
+Creo support set come dicono loro e ogni volta devo utilizzare almeno una clausola che c'è nel mio support set
+Non garantisce completezza
+
+input set:
+in ogni derivazione che faccio devo mettere almeno una clausola di input e in input c'è anche il goal negato 
+Non garantisce completezza
+
+output set:
+
+devo utilizzare semplicemente le clausolee che becco in output considerando il goal come output.
+Non esiste lol
+
+unit resolution con tutti:
+dai la precedenza alle clausole con un solo terminale, che sia negato o non.
+
+
 
 #### Backward Chaining
 
-1. Draw the root of the tree
+1. Draw the root, which is the end literal to be derived
 2. derive the AND children.
 3. Analyze the children from the left to the right:
-   1. 
-      if the AND child is formed of at least a literal that is not a clause in the KB we drop the AND child  and go back to 3.
-   2. 
-      1. if a literal of the AND child is a clause of the KB we are happy with it and leave the terminal alone.
-         if a literal of and AND child is a right member of a clause of the KB go back to 2.
-      2. if all the terminals of the AND child are clauses of the KB we are happy with them, leave them alone and go back to 3.
+   1. if the literal of the AND child is a clause of the KB we are happy with it and leave the terminal alone.
+   2. if the literal of the AND child is a right member of a clause of the KB go back to 2.
+   3. otherwise suck it up, you can't derive the root from your KB
+
+
+
+
+
+### Forward Chaining
+
+**Algorithm**
+
+1. probably it's easier to consider rules in the "implication form"
+2. start from your knowledge base and consider the one literals which means:
+   if you have a rule that says: 'a' it means that in your knowledge base there is 'a' , since it is telling you that 'a' must be true.
+3. Consider the rules in order and try to apply Modus Ponens:
+
+**Example**
+
+1. A -> B
+2. A (which means that A got to be true)
+3. B MP(2,1)
+   
+
+**Quali sono tutte le conseguenze logiche della KB? Perché?** 
+
+- Le formule b, c, a trovate al punto precedente sono tutte e sole le conseguenze logiche della KB perché la procedura di inferenza della concatenazione in avanti è una sound and complete inference procedure 
 
 
 
@@ -205,6 +248,7 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 
 
+![1550071308124](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1550071308124.png)
 
 
 
@@ -212,6 +256,7 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 
 
+![1550071331537](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1550071331537.png)
 
 
 
@@ -581,10 +626,6 @@ $$
 - STRIPS WAS CREATED TO SIMPLIFY ALL THIS MESS.
   but:
   SITUATION CALCULUS --> TOO COMPLEX --> MOVE TO STRIPS --> SOMETIMES DIFFUCULT --> MOVE TO SITUATION CALCLULUS BUT USE PROPOSITIONAL LOGIC INSTEAD OF FIRST ORDER LOGIC.
-
-
-
-
 
 
 
