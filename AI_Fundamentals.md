@@ -7,19 +7,33 @@ Legenda:
 - b=  Branching factor: what is the maximum number of children a node can have, the maximum cardinality of the set returned
 - Epsilon is the smallest path cost you have.
 
-| Strategy                   | Complete?                                                    | Optimal?                                                     |                             T C                             | S                                                           |
-| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | :---------------------------------------------------------: | ----------------------------------------------------------- |
-| Breadth First Search       | Yes (but not when the branch factor (b) is infinite)         | No<br />Unless<br/>the cost for each node at a level b is greater of all the costs at level b-1
-and lower than all the costs at level b+1 (unless the cost function is
-increasing with depth) |                           O(b^d)                            | O(b^d)                                                      |
-| Uniform Cost               | Yes (but it's not guaranteed when some costs are zero)       | Yes                                                          | O(b^c*/epsilon)<br />con esponente approssimato per eccesso | O(b^c*/epsilon)<br />con esponente approssimato per eccesso |
-| Depth First                | not complete if tree search because I can end in a loop<br />complete if I use a graph search (closed list) | No                                                           |     O(b^m)<br />Graph: O(...)<br />Order of the states      | O(bm)                                                       |
-| Depth Limited Search       | No                                                           | No                                                           |                          O(\|b^\|)                          | O(bl)                                                       |
-| Iterative Deepening Search | Yes ( but not when it's infinite)                            | No (but if all costs are 1 it finds the optimal solution)    |                           O(b^d)                            | O(bd)                                                       |
+
+
+| Strategy | Complete? | Optimal? | T C  | S    |
+| -------- | --------- | -------- | ---- | ---- |
+|          |           |          |      |      |
+| Breadth First Search | Yes (no when the branch factor (b) is infinite) | No (yes if the cost function increases with depth) | O(b^d) | O(b^d) |
+| -------------------- | ----------------------------------------------- | -------------------------------------------------- | ------ | ------ |
+|                      |                                                 |                                                    |        |        |
+
+| Uniform Cost | Yes (not guaranteed if some costs=0) | Yes  | O(b^c*/epsilon) | O(b^c*/epsilon) |
+| ------------ | ------------------------------------ | ---- | --------------- | --------------- |
+|              |                                      |      |                 |                 |
+| Depth First | tree search: no (loop)<br />graph search: yes | No   |      |      |
+| ----------- | --------------------------------------------- | ---- | ---- | ---- |
+|             |                                               |      |      |      |
+| Depth Limited Search | No   | No   | O(b^l) | O(bl) |
+| -------------------- | ---- | ---- | ------ | ----- |
+|                      |      |      |        |       |
+| Iterative Deepening Search | Yes(but not when it's infinite) | No (but if all costs are 1 it finds the optimal solution) | O(b^d) | O(bd) |
+| -------------------------- | ------------------------------- | --------------------------------------------------------- | ------ | ----- |
+|                            |                                 |                                                           |        |       |
 
 
 
-Comments
+
+
+**Comments**
 
 - Breadth First Search
   - if we check if a node corresponds to a state that is a goal-state when we generate the node, and not when we pick up the node. This improves the worst case to  O(b^(d+1)).
@@ -36,9 +50,11 @@ Comments
     "l". i check if the node I'm trying to expand is greater than
     "l", if it is i will not expand.
 - Iterative Deepening Search
-  - The idea is, size of L is a problem, if it's too little i cannot find any solution.<br />Here we start from l=0, if i find a solution then => good  <br />Every time i keep in memory just one path, just one path at a time.<br />Time complexity: How many nodes I have to generate? (d+1) +bd+b^2x(d-1)+…+b^d
+  - The idea is, size of L is a problem, if it's too little i cannot find any solution.<br />Here we start from l=0, if i find a solution then => good  <br />Every time I keep in memory just one path, just one path at a time.<br />Time complexity: How many nodes I have to generate? (d+1) +bd+b^2x(d-1)+…+b^d
 
-## Admissibility and Consistency
+
+
+### Admissibility and Consistency
 
 - #### Admissibility of a heuristic:
 
@@ -60,9 +76,38 @@ Comments
   $$
 
 
-## Constraint Satisfaction Problems
 
-##### ARC CONSISTENCY
+### A* Star Algorithm Optimality
+
+- Optimal if h() is admissible, with tree search (no elimination repeated nodes)
+- Optimal if h() is consistent, with graph search (elimination repeated nodes)
+
+
+
+
+# Constraint Satisfaction Problems
+
+#### Backtracking
+
+Choose variables with the specified method (in lexical graphical order if not specified), don't update domains
+
+#### Backtracking with forward checking
+
+Choose variables with the specified method (in lexical graphical order if not specified), update domains
+
+#### Degree Heuristic
+
+Assign a value to the variable that is involved in the largest number of constraints on other unassigned variables
+
+#### Minimum Remaining Values (MRV)
+
+Choose the variable with the fewest possible values in the domain
+
+#### Least-constraining value heuristic:
+
+Choose a value that rules out the smallest number of values in variables connected to current variable by constraints
+
+#### Arc Consistency
 
 1. build the constraint directed graph
 
@@ -78,6 +123,7 @@ Comments
          1. if after removing the element of the domain that makes the arc consistent I obtain an empty domain there is no solution and I stop
          2. otherwise I'll push in the queue some other arcs: 
             since I modified the domain of X, I will have to push in the queue all the arcs in the form of Z -> X, where Z is any node of the graph, excluding Y and excluding the arcs I already evaluated consistent.
+         3. if the queue is empty I stop
 
    2. 
       if it is consistent 
@@ -89,9 +135,7 @@ Comments
 
 
 
-## Inference in propositional logic
-
-
+# Inference in propositional logic
 
 #### Definitions
 
@@ -128,12 +172,18 @@ $$
 
 ##### Strategies for selecting clauses:
 
-- Unit-preference strategy: 
-  Give preference to resolutions involving the clauses with the smallest number of literals.
-- Set-of-support strategy: 
-  Try to resolve with the negated theorem or a clause generated by resolution from that clause.
+- Unit-preference preference strategy: 
+  Give preference (or consider only, don't remember) to resolutions involving the clauses with the smallest number of literals.
+- Set-of-support resolution: 
+  Solve the problem by using always at least one element of the set of support or its derivations.
+  Does not guarantee completeness
+- Input resolution:
+  Solve the problem by using always at least one of the input propositions, not alpha included.
+  Does not guarantee completeness
 - Subsumption: 
   Eliminates all sentences that are subsumed (i.e., more specific than) an existing sentence in the KB.
+
+
 
 #### DPLL Algorithm
 
@@ -158,11 +208,38 @@ $$
 
 
 
-# Zero Sum Game
+#### Backward Chaining
 
-A zero sum game is (confusingly) defined as one where the total payoff to all players is the same for every instance of the game.
-Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
-"constant-sum" would have been a better term,.
+1. Draw the root, which is the end literal to be derived
+2. derive the AND children.
+3. Analyze the children from the left to the right:
+   1. if the literal of the AND child is a clause of the KB we are happy with it and leave the terminal alone.
+   2. if the literal of the AND child is a right member of a clause of the KB go back to 2.
+   3. otherwise suck it up, you can't derive the root from your KB
+
+
+
+#### Forward Chaining
+
+- **Algorithm**
+
+1. let's consider rules in the "implication form", do not put them in CNF
+2. start from your knowledge base and consider the one literals which means:
+   if you have a rule that says: 'a' it means that in your knowledge base there is 'a' , since it is telling you that 'a' must be true.
+3. Consider the rules and try to apply Modus Ponens:
+
+- **Example**
+
+1. A -> B
+2. A (which means that A got to be true)
+3. B MP(2,1)
+
+write the monus ponens in the form MP(preconditions, effects) (pre= left side of implication, eff = right side)
+
+- **Quali sono tutte le conseguenze logiche della KB? Perché?** 
+  - Le formule b, c, a trovate al punto precedente sono tutte e sole le conseguenze logiche della KB perché la procedura di inferenza della concatenazione in avanti è una sound and complete inference procedure 
+
+
 
 
 
@@ -180,128 +257,20 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 - the first v is computed on the left leaf (depth first search)
 - Pruning condition
-  - If the utility function v is bounded --> as soon as we find find a winning path for max we end the search there
+  - If the utility function v is bounded --> as soon as we find find a winning path (starting from the root!) for max we end the search there
   - if the utility function v is not bounded --> if alpha > beta we prune
 
-# Inference
 
 
+#### Zero Sum Game
 
+A zero sum game is (confusingly) defined as one where the total payoff to all players is the same for every instance of the game.
+Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
+"constant-sum" would have been a better term,.
 
 
-3 modi risoluzione
 
-support set:
-Creo support set come dicono loro e ogni volta devo utilizzare almeno una clausola che c'è nel mio support set
-Non garantisce completezza
 
-input set:
-in ogni derivazione che faccio devo mettere almeno una clausola di input e in input c'è anche il goal negato 
-Non garantisce completezza
-
-output set:
-
-devo utilizzare semplicemente le clausolee che becco in output considerando il goal come output.
-Non esiste lol
-
-unit resolution con tutti:
-dai la precedenza alle clausole con un solo terminale, che sia negato o non.
-
-
-
-#### Backward Chaining
-
-1. Draw the root, which is the end literal to be derived
-2. derive the AND children.
-3. Analyze the children from the left to the right:
-   1. if the literal of the AND child is a clause of the KB we are happy with it and leave the terminal alone.
-   2. if the literal of the AND child is a right member of a clause of the KB go back to 2.
-   3. otherwise suck it up, you can't derive the root from your KB
-
-
-
-
-
-### Forward Chaining
-
-**Algorithm**
-
-1. probably it's easier to consider rules in the "implication form"
-2. start from your knowledge base and consider the one literals which means:
-   if you have a rule that says: 'a' it means that in your knowledge base there is 'a' , since it is telling you that 'a' must be true.
-3. Consider the rules in order and try to apply Modus Ponens:
-
-**Example**
-
-1. A -> B
-2. A (which means that A got to be true)
-3. B MP(2,1)
-   
-
-**Quali sono tutte le conseguenze logiche della KB? Perché?** 
-
-- Le formule b, c, a trovate al punto precedente sono tutte e sole le conseguenze logiche della KB perché la procedura di inferenza della concatenazione in avanti è una sound and complete inference procedure 
-
-
-
-
-
-
-
-![1550071308124](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1550071308124.png)
-
-
-
-
-
-
-
-![1550071331537](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1550071331537.png)
-
-
-
-# A Star algorithm - Optimality:
-
-If the heuristic function *h* is [admissible](https://en.wikipedia.org/wiki/Admissible_heuristic), meaning that it never overestimates the actual minimal cost of reaching the goal, then A* is itself admissible (or *optimal*) if we do not use a closed set. If a closed set is used, then *h* must also be *monotonic* (or [consistent](https://en.wikipedia.org/wiki/Consistent_heuristic)) for A* to be optimal.
-In other words:
-Optimal if h() is admissible, with tree search (no elimination repeated nodes)
-Optimal if h() is consistent, with graph search (elimination repeated nodes)
-
-
-
-
-
-
-
-Factoring:
-A v A = A
-
-
-
-
-
-
-
-Is [a] logically entailed by the KB? Explain why. 
-Formula [a] is logically entailed by the KB because resolution is a sound inference procedure
-
-
-
-
-
-
-
-tree policy: method used to choose the most urgent node to visit
-
-default policy: policy of choosing the nodes inside a simulation
-
-
-
-
-
-
-
-(4) Arc consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
 
 
 
@@ -316,8 +285,6 @@ What tries to do montecarlo? tries to find some approximate solutions to the pro
 Let's try to solve the game of chess. it is very large and so far there is no solution to it right now, because it is too large.
 The problem of cess is that the payoff are avaialbe only at the end fo the game so you need to finish the martch in order tounderstand what is the outcome, but you have to compute a big number of matches and there is not enough time. wht is the typucal way of reducing the complexity? limiting the depth. let's fix 10 as height limit, but in the case of chess, 10 moves ahead are not enough surely. You have an agent and it needs to make a move, what he can try to do?, in this tree, where the payoffs are atvilable only at the end i stop the swarch at some level and i put some fictitious payoffs at that level.
 At the beginning you have the initial situation, you start building the tree and after a while you stop. when you stop you have to put the payoff, but obviously you don't have it.so you ask yourself is it a good state or a bad state? 
-
-
 
 the e valuation of the such state will be obtained by simulating the game starting from that state and than for instance playing randomly. you reach a final state and you take the value of this Montecarlo simulation with two random players and you put it to that bad/good state we were talking about.
 The possible outcomes of this path are a lot obviously, are a distribution. if you repeat multiple times the simulation you will get different results. you will take the average of these results as an indicator of "how good is this state?"
@@ -394,12 +361,12 @@ this algorithm is Any Time: we can repeat these steps as long as we want and the
 
 # PLANNING
 
-### Closed World Assumption
+#### Closed World Assumption
 
 The Closed World Assumption amounts to consider as false all the sentences that are not known to be true. 
 In STRIPS, this means that all the predicates not listed in the representation of a state are considered false. 
 
-### Terminology
+#### Terminology
 
 - *<u>Predicate</u>*
 
@@ -421,7 +388,7 @@ In STRIPS, this means that all the predicates not listed in the representation o
 
   Clear(A) is derivable because a block is clear if there is not a block upon it.
 
-### State
+#### State
 
 A state is represented by a set of literals that are:
 
@@ -433,7 +400,7 @@ A state is represented by a set of literals that are:
 
 
 
-### Goal
+#### Goal
 
 - PDLL
 
@@ -461,7 +428,7 @@ A state is represented by a set of literals that are:
 
     
 
-### Action Schemas & Actions
+#### Action Schemas & Actions
 
 Valid for both STRIPS and PDLL:
 
@@ -494,38 +461,34 @@ Example? disney cartoons LoL. fixed background, mickey mouse moves just moves hi
 
 
 
-### Forward Planning / Progressive Planning
+#### Forward Planning / Progressive Planning
 
 the initial state 
 
 
 
-### Backward Planning / Regression Planning
+#### Backward Planning / Regression Planning
 
-let's differentiate between two possible actions types:
+- let's differentiate between two possible actions types:
+  - relevant and consistent actions: 
+    actions that achieve a subgoal
+  - relevant but not consistent actions: 
+    actions that achieve a subgoal but negate another subgoal
 
-- relevant and consistent actions: 
-  actions that achieve a subgoal
-- relevant but not consistent actions: 
-  actions that achieve a subgoal but negate another subgoal
+- given an action A and a goal G, such that A is relevant and consistent for the goal G, the regression of the goal G through the action A is the goal G'
+  R[G,A] = G'
 
-given an action A and a goal G, such that A is relevant and consistent for the goal G, the regression of the goal G through the action A is the goal G'
-R[G,A] = G'
+- if we have a state S that satisfies G' it means that we can apply the action A that reaches a state A that satisfies G.
 
-if we have a state S that satisfies G' it means that we can apply the action A that reaches a state A that satisfies G.
+- Backward Planning search in the space of goals
 
-Backward Planning searchc in the space of goals
+- In Practice:
+  g' is found by copying g, deleting positive effects of the action, adding all the preconditions of A
 
-In Practice:
+- some goals g' will not be consistent , I would  need a consistency check but usually it's not done. 
+  Depth first search would suck! limited depth search would be ok, other searches as well.
 
-g' is found by copying g, delete positive effects of the action, adding all the preconditions of A
-
-
-
-some goals g' will not be consistent , I would  need a consistency check but usually it's not done. 
-Depth first search would suck! limited depth search would be ok, other searchs as well.
-
-*implementation:*
+- *implementation:*
 
 1. the initial state is the goal
 2. build all the g' from g
@@ -533,14 +496,14 @@ Depth first search would suck! limited depth search would be ok, other searchs a
 
 
 
-### Hierarchical Task Network
+#### Hierarchical Task Network
 
 - Search in the space of plans, which means: let's start from an empty plan (just initial state + goal state) as the root. its children will be all the plans with only one action going from the initial state to the goal state. Their children will have two actions and so on until we find a plan that actually is feasible for reaching the goal state.
 - An optimization consists in the Partial Ordering Planning which constraints the actions of the plan to respect a certain order
 
 
 
-### Situation Calculus
+#### Situation Calculus
 
 - Start from a planning problem and transform it into a satisfiability problem, which means in a very big propositional logic formula.
 
@@ -633,3 +596,31 @@ $$
 
 
 
+
+
+
+
+
+
+
+
+# Parate di culo
+
+- Is [a] logically entailed by the KB? Explain why. 
+  Formula [a] is logically entailed by the KB because resolution is a sound inference procedure
+
+  
+
+- tree policy: method used to choose the most urgent node to visit
+  default policy: policy of choosing the nodes inside a simulation
+
+  
+
+- Arc consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
+
+- Factoring:
+  A v A = A
+
+-  Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
+   Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
+  (trivial, but still...)
