@@ -77,7 +77,9 @@ Legenda:
 
 
 
-### A* Star Algorithm Optimality
+### A* Star Algorithm Completeness & Optimality
+
+- Like breadth-first search,  A* is *complete* and will always find a solution if one exists provided c(node_1,node_2) > epsilon > 0 for fixed epsilon
 
 - Optimal if h() is admissible, with tree search (no elimination repeated nodes)
 - Optimal if h() is consistent, with graph search (elimination repeated nodes)
@@ -141,12 +143,22 @@ Choose a value that rules out the smallest number of values in variables connect
 
 - *model*
   In Propositional Logic, a model is an assignment of truth values to all propositional symbols. 
-
 - *satisfiability*
   a sentence is satisfiable if and only if there is a model that satisfies it. 
   A model satisfies a sentence if the sentence is true under the assignment. 
 - *entailment*
-  Sentence alpha entails sentence beta if and only if every model of alpha is also a model of beta. 
+  A set of sentences (called premises) *logically entails* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
+
+
+
+#### Put a proposition in Conjunctive Normal Form
+
+1. Eliminate implications
+2. Move not inwards
+3. Standardize variables
+4. Skolemize
+5. Drop universal  quantifiers
+6. Distribute OR over AND
 
 
 
@@ -166,14 +178,24 @@ $$
 
 2. put both \phi_1 and not\phi_2 in Conjunctive Normal Form (all subformulas divided by a logical AND)
 3. Enumerate all clauses
-4. compare them together, if a literal appears in both clauses and in only one of them it is negated we get rid of it and write a new clause (A; not A,B -> B)
+4. compare them together, if a literal appears in both clauses and in only one of them it is negated we get rid of it and write a new clause 
+   Examples:
+   - 1. A
+     2. notA or B
+     3. B   R (1,2) 
+   - 1. notA or notB
+     2. A or B
+     3. notB or B   R(1,2)
+     4. notA or A   R(1,2)
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
 ##### Strategies for selecting clauses:
 
 - Unit-preference preference strategy: 
-  Give preference (or consider only, don't remember) to resolutions involving the clauses with the smallest number of literals.
+  Give preference to resolutions involving the clauses with the smallest number of literals.
+  In depth: Considera la prima clausola della tua KB con il minimo numero di terminali e confrontala con tutte le altre clausole a partire dalla prima e andando in ordine fino alla fine (paragonala anche con le derivazioni generate in itinere!)
+  Una volta che hai finito di confrontare tale clausola con tutte le altre, ripeti il procedimento con una nuova clausola col numero minimo di letterali.
 - Set-of-support resolution: 
   Solve the problem by using always at least one element of the set of support or its derivations.
   Does not guarantee completeness
@@ -258,7 +280,7 @@ write the monus ponens in the form MP(preconditions, effects) (pre= left side of
 - the first v is computed on the left leaf (depth first search)
 - Pruning condition
   - If the utility function v is bounded --> as soon as we find find a winning path (starting from the root!) for max we end the search there
-  - if the utility function v is not bounded --> if alpha > beta we prune
+  - if the utility function v is not bounded --> if alpha >= beta we prune
 
 
 
@@ -267,12 +289,6 @@ write the monus ponens in the form MP(preconditions, effects) (pre= left side of
 A zero sum game is (confusingly) defined as one where the total payoff to all players is the same for every instance of the game.
 Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 "constant-sum" would have been a better term,.
-
-
-
-
-
-
 
 
 
@@ -398,9 +414,11 @@ A state is represented by a set of literals that are:
 - *function free*
   there are no functions
 
-
-
 #### Goal
+
+- Goals are a set of states 
+  [ C over A over B ]  or [ (A over B) and  C ]     --> both satisfy on(A,B)
+- A state S satisfies a goal G when the state S contains all the positive literals of G and does not contain any of the negative literals of G
 
 - PDLL
 
@@ -411,15 +429,9 @@ A state is represented by a set of literals that are:
     can be negative and can contain variables!
 
   - PDLL -> extends STRIPS
-    
+
   - if you have a variable in a goal than this variable has an existence quantifier
     On(x,A) means Exists x |on(x,A) is true?
-
-  - Goals are a set of states 
-    [ C/A/B ]  or [ A/B   C ]     --> both satisfy on(A,B)
-
-  - A state S satisfies a goal G when the state S contains all the positive literals of G and does not contain any of the negative literals of G
-    
 
 - STRIPS 
 
@@ -455,45 +467,42 @@ Valid for both STRIPS and PDLL:
 
     do not mention atemporal predicates in the actions please.
 
-***frame problem***
-transitioning from a state to the other most of the things don't change. (I wrote it just because he could ask it at the exam).
-Example? disney cartoons LoL. fixed background, mickey mouse moves just moves his legs and arms e.e
+- ***frame problem***
+  transitioning from a state to the other most of the things don't change. (I wrote it just because he could ask it at the exam).
+  Example? Disney Cartoons LOL. fixed background, mickey mouse moves just moves his legs and arms e.e
+
+- Action types (concept needed for backward planning)
+  - *relevant actions:*  
+    An action is relevant to a goal if it achieves at least one of the conjuncts of the goal.
+  - *consistent actions:* 
+    An action that does not undo any conjunct of the goal.
 
 
 
 #### Forward Planning / Progressive Planning
 
-the initial state 
+*definition:* Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem.
+
+- Forward Planning searches in the space of states because the states of the search problem formulated by forward planning are states of the planning problem
 
 
 
 #### Backward Planning / Regression Planning
 
-- let's differentiate between two possible actions types:
-  - relevant and consistent actions: 
-    actions that achieve a subgoal
-  - relevant but not consistent actions: 
-    actions that achieve a subgoal but negate another subgoal
+*definition*: Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state (he means goal state probably) that is satisfied by the initial state of the planning problem. 
 
 - given an action A and a goal G, such that A is relevant and consistent for the goal G, the regression of the goal G through the action A is the goal G'
   R[G,A] = G'
 
-- if we have a state S that satisfies G' it means that we can apply the action A that reaches a state A that satisfies G.
-
-- Backward Planning search in the space of goals
+- Backward Planning searches in the space of goals because the states of the search problem formulated by backward planning are goals of the planning problem
 
 - In Practice:
   g' is found by copying g, deleting positive effects of the action, adding all the preconditions of A
 
-- some goals g' will not be consistent , I would  need a consistency check but usually it's not done. 
+- Some goals g' will not be consistent , I would  need a consistency check but usually it's not done. 
   Depth first search would suck! limited depth search would be ok, other searches as well.
 
-- *implementation:*
-
-1. the initial state is the goal
-2. build all the g' from g
-3. find a goal that is satisfied by the initial state
-
+  
 
 
 #### Hierarchical Task Network
