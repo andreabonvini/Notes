@@ -299,42 +299,40 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 Problem: the tree is deep in the search space: the time in order to find a solution would be exponential.
 What tries to do montecarlo? tries to find some approximate solutions to the problem.
 Let's try to solve the game of chess. it is very large and so far there is no solution to it right now, because it is too large.
-The problem of cess is that the payoff are avaialbe only at the end fo the game so you need to finish the martch in order tounderstand what is the outcome, but you have to compute a big number of matches and there is not enough time. wht is the typucal way of reducing the complexity? limiting the depth. let's fix 10 as height limit, but in the case of chess, 10 moves ahead are not enough surely. You have an agent and it needs to make a move, what he can try to do?, in this tree, where the payoffs are atvilable only at the end i stop the swarch at some level and i put some fictitious payoffs at that level.
+The problem of chess is that the payoff are available only at the end of the game so you need to finish the match in order to understand what is the outcome, but you have to compute a big number of matches and there is not enough time. what is the typical way of reducing the complexity? limiting the depth. let's fix 10 as height limit, but in the case of chess, 10 moves ahead are not enough surely. You have an agent and it needs to make a move, what he can try to do?, in this tree, where the payoffs are available only at the end I stop the search at some level and I put some fictitious payoffs at that level.
 At the beginning you have the initial situation, you start building the tree and after a while you stop. when you stop you have to put the payoff, but obviously you don't have it.so you ask yourself is it a good state or a bad state? 
 
-the e valuation of the such state will be obtained by simulating the game starting from that state and than for instance playing randomly. you reach a final state and you take the value of this Montecarlo simulation with two random players and you put it to that bad/good state we were talking about.
+the evaluation of such state will be obtained by simulating the game starting from that state and than for instance playing randomly. you reach a final state and you take the value of this Montecarlo simulation with two random players and you put it to that bad/good state we were talking about.
 The possible outcomes of this path are a lot obviously, are a distribution. if you repeat multiple times the simulation you will get different results. you will take the average of these results as an indicator of "how good is this state?"
 
 The assumption is that we can simulate this part of the game very quickly, otherwise it's not efficient.
 
 What is the problem of the average of the result computed?
-the result of this random evaluation should be computed 
-avoiding to build the tree when i see there are some states where i will lose with very high possiblity.
+the result of this random evaluation should be computed avoiding to build the tree when I see there are some states where I will lose with very high possibility.
 -->we need a kind of heuristic!
 I want to stay toward the states that are better for me
-Exploaration: try alternatives
+Exploration: try alternatives
 Exploitation: go toward the explorations that are more promising.
 We need to balance exploration and exploitation
 The key factor to balance is what is called Optimist F. Uncertainty (OFU):
-If you are very uncertain about something this uncertainty needs optimisim. you you are very uncertain about the performance of a state give him a bonus, when you get more and more confident you reduce the bonus.
+If you are very uncertain about something this uncertainty needs optimism. if you are very uncertain about the performance of a state give him a bonus, when you get more and more confident you reduce the bonus.
 
-So here we are, we have two values for each node.
+So here we are, we have three info for each node.
 
-- the result of the montecarlo simulation: mu hat.
-  the average of the outcomes of the montecarlo simulations.
-  (if you use just this criteria you are exploiting, not exploring)
-- An upperbound that is a value that tells how much this estimate is uncertain
-
+- Q
+- N
+- An upperbound that is a value computed through a function dependent from Q and N that tells how much this estimate is uncertain
 
 
-Algorithm:
+
+**Algorithm:**
 First, what are we looking for?
 We just want to solve a planning problem. Giving a state we want to understand which action to take.
 Ergo, consider any state of the tree, for that state we want to answer what action to perform.
 
 Node information:
 N = number of Montecarlo simulation starting from this node.
-Q = average of the results of the simulations starting from such node.
+Q = sum of the results of the simulations starting from such node
 
 4 steps:
 
@@ -348,7 +346,7 @@ Q = average of the results of the simulations starting from such node.
      Consider the node with the maximum value of U.
      if such node is not fully expanded select it
      otherwise: 
-     compute the upperbound for its children and select the one children with  the highest upperbound. If there is a tie then select the left-most one, or the right-most if you are weird (it's up to you, do whatever you want as long as it is not specified).
+     compute the upperbound for its children and select the one children with the highest upperbound. If there is a tie then select the left-most one, or the right-most if you are weird (it's up to you, do whatever you want as long as it is not specified).
 
      
 
