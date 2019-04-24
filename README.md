@@ -1,4 +1,4 @@
 # Notes
 
-A collection of notes from some courses at Politecnico di Milano. Feel free to share / modify etc ...
+In order to correctly visualize/modify the .md files present in this repo, download them on your local machine and open them in Typora (https://typora.io/)
 
