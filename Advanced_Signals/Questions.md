@@ -165,6 +165,8 @@
 
 - **Talk me about the Mallat's algorithm for FWT.** 
 
+  Sources:
+
   https://it.mathworks.com/help/wavelet/ref/wavedec.html
 
   <https://www.andreadd.it/appunti/polimi/ingegneria/corsi/ing_biomedica/Magistrale/SPEC/Signals_data_processing/viewer.html?file=altro/Algoritmo_mallat.pdf>
@@ -225,11 +227,17 @@
 
   ![](images/mallat3.PNG)
 
-  
+- **Example of application of DWT in biomedical signals:**
+
+  Source: *Course's Slides*
+
+  ![](images/DWT1.PNG)
+
+  Four-Level DWT of the EEG trace at the top of the figure using the matched Mayer spindle wavelet. The four detail functions on the right correspond to the frequency bands associated with the *beta* (16-32 Hz), *alpha* (8-16 Hz), *theta* (4-8 Hz) and *high delta* (2-4 Hz) regimes. The A4 low resolution signals on the left corresponds to the frequency band associated with the *low delta* regime (0-2 Hz). Each of the remaining three low resolution signals on the left illustrate the effect of successively adding each detail function into the next lower low resolution signal to reconstruct the ERP at the top left of the figure. Good frequency selectivity by the matched Meyer spindle wavelet in the *alpha* band is evident in the figure.
 
 - **Talk me about parametric methods and AR models**
 
-- ***What is and what are the applications of  STFT*?**
+- ***What is the  STFT*?**
 
   Source: *Cerutti*'s book.
 
@@ -237,7 +245,7 @@
   $$
   FT_{x}(f) = \int_{-\infty}^{\infty}x(t)e^{-j2\pi ft}dt
   $$
-  The amplitude of the complex value $FT_x(f)$ represents the strength of the oscillatory component at frequency $f$ contained in the signal $x(t)$; however, no information is given on the time localization of such component. The *Short Time Fourier Transform* (STFT) introduces a temporal dependence, applying the *FT* not to all of the signal but to the portion of it contained in an interval moving in the time.
+  The amplitude of the complex value $FT_x(f)$ represents the strength of the oscillatory component at frequency $f$ contained in the signal $x(t)$; however, no information is given on the time localization of such component. Since a non-stationary signal can not be analyzed using the traditional Fourier Analysis we hypothesize that the signal is stationary in short windows and we introduce the *Short Time Fourier Transform* (STFT), which introduces a temporal dependence, applying the *FT* not to all of the signal but to the portion of it contained in an interval moving in the time.
   $$
   STFT_{x,w}(t,f) = \int_{-\infty}^{\infty}x(\tau)w^{*}(\tau-t)e^{-j2\pi f\tau}d\tau
   $$
@@ -247,9 +255,67 @@
 
   The *STFT* is, therefore, made up of those spectral components relative to a portion of the signal around the time instant $t$.
 
-  In order to preserve energy and to get the energy distribution in the time-frequency plane, the window $w^{*}(\tau-t)$ should be normalized to unitary energy
+  In order to preserve energy and to get the energy distribution in the time-frequency plane, the window $w^{*}(\tau-t)​$ should be normalized to unitary energy.
 
-- ***How do you read a bivariate analysis plot? (alpha , slope)***
+  The *STFT* is a linear operator with properties similar to those of the *FT* :
+
+   - *Invariance for time shifting apart from the phase factor:*
+
+     $ \tilde{x}(t) = x(t-t_0) \implies STFT_{\tilde{x},w}(t,f) = STFT_{x,w}(t-t_{0},f)e^{-j2\pi t_0f} ​$
+
+   - *Invariance for frequency shifting:*
+
+     $\tilde{x}(t) = x(t)e^{j2\pi f_{0}t} \implies STFT_{\tilde{x},w}(t,f) = STFT_{x,w}(t,f-f_0) $
+
+  The *STFT* can be expressed as a convolution and then as the output of a filter. In particular we consider the *STFT* as frequency shifting the signal $x(t)$ by $-f$, followed by a low-pass filter given by convolution with the function $w(-t)$:
+  $$
+  STFT_{x,w}(t,f) = \int_{-\infty}^{\infty}\left[ x(\tau)e^{-j2\pi ft}\right]w(\tau-t)d\tau
+  $$
+  Otherwise, the *STFT* can be considered as a band-pass filter. filtering the signal $x(t)$ around the frequency $f$, obtained by convolution with the function $w(-t)e^{j2\pi ft}$, followed by a shift in frequency by $-f$ .
+  $$
+  STFT_{x,w}(t,f) = e^{-j2\pi tf}\int_{-\infty}^{\infty} x(\tau)\left[w(\tau-t)e^{-j2\pi f(\tau-t)}\right]d\tau
+  $$
+  It should be noted that the filter impulse response is merely given by the window function modulated at the frequency $f​$.
+
+  In addition, the convolution between $x(t)​$ and $w(-t)e^{j2\pi ft} ​$ can be written as an inverse transform of the product $X(v)W^{*}(v-f)​$, where $W(f)​$ is the transform of the window function $w(t)​$:
+  $$
+  STFT_{x,w}(t,f) = e^{-j2\pi tf}\int_{-\infty}^{\infty} X(v)W^{*}(v-f)e^{j2\pi tv}dv
+  $$
+  (*Remember that convolution in time domain corresponds to multiplication in frequency domain*)
+
+  This expression reinforces the interpretation of the *STFT* as a *filter bank*. Indeed, the product $X(v)W^{*}(v-f)$ represents the transform of the output of a filter with a frequency response given by $W^{*}(v-f)$, which is a band-pass filter centered at frequency $f$ , obtained by shifting the frequency of the response of the low-pass filter $W(v)$.
+
+  ![](images/STFT2.PNG)
+
+  The continuous *STFT* is extremely redundant. The discrete version of STFT can be obtained by discretizing the time-frequency plane with a grid of equally spaced points $(nT,k/NT)$ where $1/T$ is the sampling frequency, $N$ is the number of samples, and $n$ and $k$  are integers.
+
+  What about Time-Frequency resolution?
+
+  The *STFT* is the local spectrum of the signal around the analysis time $t$ . To get a good resolution in time, analysis windows of short duration should be use, that is, the function $w(t)$ should be concentrated in time. However, to get a good resolution in frequency, it is necessary to have a filter with a narrow band, that is, $W(f)​$ must be concentrated in frequency. it can be proved that the product of the time and of the frequency resolutions is lower bounded:
+  $$
+  \Delta t\Delta f \ge \frac{1}{4\pi}
+  $$
+   The lower limit is reached only by $w(t)$ functions of Gaussian type. This inequality is often referred as the *Heisenberg uncertainty principle* and it highlights that the frequency resolution $\Delta f$ can be improved only at the expense of time resolution $\Delta t$ and vice versa.
+
+- **Applications of STFT:**
+
+  SLKDS
+
+  DLK
+
+- **Difference between STFT and WT.**
+
+  Source: https://www.quora.com/What-is-the-difference-between-wavelet-transform-and-STFT
+
+  Traditionally, the techniques used for signal processing are realized in either the time or frequency domain. For instance, the Fourier Transform (TF) decomposes a signal into it’s frequency components; However, *information in time is lost.*
+
+  One solution is to adopt Short-Time-Fourier-Transform (STFT) that get frequency components of local time intervals of *fixed duration*. But if you want to analyze signals that contain *non-periodic and fast transients features* (i.e. high frequency content for short duration), you have to use *Wavelet Transform* (WT).
+
+  Unlike the TF or the STFT, the WT analyzes a signal at *different frequencies with different resolutions*. It can provide good time resolution and relatively poor frequency resolution at high frequencies while good frequency resolution and relatively poor time resolution at low frequencies. Wavelet transform shows excellent advantages for the analysis of *transient signals*.
+
+  ![](images/STFT3.PNG)
+
+-  ***How do you read a bivariate analysis plot? (alpha , slope)***
 
 - ***What is the Hurst exponent?***
 
