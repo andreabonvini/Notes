@@ -6,7 +6,7 @@
 
 Legenda:
 
-- b=  Branching factor: what is the maximum number of children a node can have, the maximum cardinality of the set returned
+- b =  Branching factor: what is the maximum number of children a node can have, the maximum cardinality of the set returned
 - Epsilon is the smallest path cost you have.
 
 
@@ -14,21 +14,21 @@ Legenda:
 | Strategy | Complete? | Optimal? | T C  | S    |
 | -------- | --------- | -------- | ---- | ---- |
 |          |           |          |      |      |
-| Breadth First Search | Yes (no when the branch factor (b) is infinite) | No (yes if the cost function increases with depth) | O(b^d) | O(b^d) |
-| -------------------- | ----------------------------------------------- | -------------------------------------------------- | ------ | ------ |
+| Breadth First Search | Yes (no when the branch factor (b) is infinite) | No (yes if the cost function increases with depth) | $O(b^d)$ | $O(b^d)$ |
+|  |  |  |  |  |
 |                      |                                                 |                                                    |        |        |
 
-| Uniform Cost | Yes (not guaranteed if some costs=0) | Yes  | O(b^c*/epsilon) | O(b^c*/epsilon) |
+| Uniform Cost | Yes (not guaranteed if some costs = 0) | Yes  | $O(b^c\cdot \epsilon)$ | $O(b^c\cdot  \epsilon)$ |
 | ------------ | ------------------------------------ | ---- | --------------- | --------------- |
 |              |                                      |      |                 |                 |
-| Depth First | tree search: no (loop)<br />graph search: yes | No   |      |      |
-| ----------- | --------------------------------------------- | ---- | ---- | ---- |
+| Depth First | tree search: no (loop) graph search: yes | No   |      |      |
+|  |  |  |  |  |
 |             |                                               |      |      |      |
-| Depth Limited Search | No   | No   | O(b^l) | O(bl) |
-| -------------------- | ---- | ---- | ------ | ----- |
+| Depth Limited Search | No   | No   | $O(b^l)$ | $O(bl)$ |
+|  |  |  |  |  |
 |                      |      |      |        |       |
-| Iterative Deepening Search | Yes(but not when it's infinite) | No (but if all costs are 1 it finds the optimal solution) | O(b^d) | O(bd) |
-| -------------------------- | ------------------------------- | --------------------------------------------------------- | ------ | ----- |
+| Iterative Deepening Search | Yes(but not when it's infinite) | No (but if all costs are 1 it finds the optimal solution) | $O(b^d)$ | $O(bd)$ |
+|  |  |  |  |  |
 |                            |                                 |                                                           |        |       |
 
 
@@ -71,7 +71,7 @@ Legenda:
   1 and 2 are two nodes of the graph, h(1) is the heuristic of 1 and h(2) is the heuristic of 2.
   If such nodes are connected in the following way
 
-  ​                                                                                 1 --> 2
+  ​                                                                                 $1 \to 2$ 
   Their heuristics are consistence iff
   $$
   c_{12}\ge h(1)-h(2)

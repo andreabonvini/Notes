@@ -16,7 +16,7 @@
   We define measure of the distance $D_{0}$ as follows:
   $D_{0} = |x_{0} - y_{0}|$
   and we keep track of it over the time :
-  $D(t) = | x_{t} - y_{t}|$
+  $D(t) = | x_{t} - y_{t}|​$
 
   For many systems this is an exponential function of time:
   $D(t) =D_{0}e^{\lambda t} $
@@ -25,7 +25,9 @@
 
   We can see that when $\lambda > 0$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 $ we don't have SDIC.	
 
-- ***What is the Adaptive filter?*** <http://isl-www.stanford.edu/~widrow/papers/b1971adaptivefilters.pdf>
+- ***What is the Adaptive filter?***
+
+  Source: <http://isl-www.stanford.edu/~widrow/papers/b1971adaptivefilters.pdf>
 
   Here we present an approach to signal filtering using an *adaptive filter* that is in some sense self-designing (really self-optimizing). The adaptive filter described here bases its own "design" (its internal adjustment settings) upon *estimated* (measured) statistical characteristics of input and output signals. The statistics are not measured explicitly and then used to design the filter; rather, the filter design is accomplished in a single process by  a recursive algorithm that automatically updates the system adjustments with the arrival of each new data sample. How do we build such system?
 
@@ -112,7 +114,9 @@
 
 - ***Talk me about the Mane-Takens theorem***.
 
-- ***What are Wavelets?*** https://www.cs.unm.edu/~williams/cs530/arfgtw.pdf
+- ***What are Wavelets?***
+
+  Source: https://www.cs.unm.edu/~williams/cs530/arfgtw.pdf
 
   It is well known from Fourier theory that a signal can be expressed as the sum of a, possibly infinite, series of sines and cosines. This sum is also referred to as a Fourier expansion. The big disadvantage of a Fourier expansion however is that it has only frequency resolution and no time resolution. This means that although we might be able to determine all the frequencies present in a signal, we do not know when they are present. To overcome this problem in the past decades several solutions have been developed which are more or less able to represent a signal in the time and frequency domain at the same time.
 
@@ -299,9 +303,13 @@
 
 - **Applications of STFT:**
 
-  SLKDS
+  An example of application of the methods of time-frequency representation is shown in the figure below. The series of time intervals between two successive heartbeats (RR), represented on the bottom of the figure, is relative to a tilt test and consists of two periods. In the first, the subject is in clinostatism (A near-extinct term for *lying down*); the RR duration is about one second and shows an oscillatory component of respiratory origin. In the second, the subject is under orthostatism (*erect standing* position of the body); the RR interval is much shorter and the respiratory component is absent.          The panel in the figure below has been achieved with STFT, using a Von Hann window with resolution in time $\Delta t  = 36 s​$ . Although this choice allows a discrete frequency resolution in the low-frequency band, it provides an inadequate temporal localization of the changes in power in the high-frequency band related to the tilt maneuver.  
 
-  DLK
+  ![](images/STFT5.PNG)
+
+  The example in the next figure shows the time-frequency representation relative to a series of RR intervals with high variability of respiratory component. The three-dimensional view allows us to grasp the small details of nonstationary oscillatory phenomena. The series in this case has been analyzed with the STFT using a relatively narrow window. The good temporal resolution obtained allows us to assess the power of the respiratory component of origin (0.3-0.4 Hz) and its evolution over time. 
+
+  ![](images/STFT6.PNG)
 
 - **Difference between STFT and WT.**
 
@@ -313,7 +321,28 @@
 
   Unlike the TF or the STFT, the WT analyzes a signal at *different frequencies with different resolutions*. It can provide good time resolution and relatively poor frequency resolution at high frequencies while good frequency resolution and relatively poor time resolution at low frequencies. Wavelet transform shows excellent advantages for the analysis of *transient signals*.
 
-  ![](images/STFT3.PNG)
+  ![](images/STFT4.PNG)
+
+- **Quadratic TF representation & Wigner-Ville distribution**
+
+  Source: *Cerutti*'s book.
+
+  In the previous questions/answers, we learned how to decompose a signal using elementary blocks of different shapes and dimensions: sinusoids, mother functions, or time-frequency distributions. These blocks are efficient tools for describing, in a synthetic way, morphological features of signals, such as waves, trends, or spikes. In a dual way, the same signal can be investigated in the frequency domain by using the Fourier transforms of these elementary functions. However, time and frequency domains are treated as separate worlds, often in competition because the need to locate a feature in time is usually paid for in terms of frequency resolution. A conceptually different approach aims to jointly look at the two domains and to derive a joint representation of a signal x(t) in the combined time and frequency domain. A quadratic time-frequency distribution is designed to represent the signal energy simultaneously in the time and frequency domains and, thus, it provides temporal information and spectral information simultaneously.
+
+  A link between time and frequency domains may be obtained through the signal energy $E_x$ The following relation holds:
+  $$
+  E_x = \int{|x(t)|^{2}dt = \int|X(\omega)|^{2}d\omega}
+  $$
+  where $X(\omega)$ is the Fourier transform of the signal and $|X(\omega)|^2$ is its power spectrum. It is therefore intuitive to derive a *joint* time-frequency representation, $TFR(t,\omega)$, able to describe the energy distribution in the $t-f$ plane and to combine the concept of instantaneous power $|x(t)|^2$ with that of the power spectrum $|X_t(\omega)|^2$. Such a distribution, to be eligible as an *energetic* distribution, should satisfy the marginals
+  $$
+  \int{TFR_x(t,\omega)d\omega = |x(t)|^2} \\
+  \int{TFR_x(t,\omega)dt = |X(\omega)|^2}
+  $$
+  Thus, for every instant $t$ , the integral of the distribution over all the frequency should be equal to the instantaneous power, whereas, for every angular frequency ω, the integral over time should equal the power spectral density of the signal. As a consequence of the marginals, the total energy is obtained by integration of the $TFR$ over the whole $t-f$ plane: 
+  $$
+  E_x = \int\int TFR_x(t,\omega)d\omega dt
+  $$
+  
 
 -  ***How do you read a bivariate analysis plot? (alpha , slope)***
 
