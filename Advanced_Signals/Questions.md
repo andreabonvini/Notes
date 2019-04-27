@@ -4,7 +4,7 @@
 
 # Advanced Signals and Data Processing in Medicine
 
-
+*A series of notes on the "Advanced SIgnals and Data Processing in Medicine" course as taught by Sergio Cerutti and Riccardo Barbieri during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
 ## Exam Questions *Cerutti*
 
@@ -12,14 +12,14 @@
 
   It's a number that tells us how sensitive a system is to its initial conditions.
 
-  Let's suppose we have two initial conditions $x_{0}$ and $y_{0}$.
-  We define measure of the distance $D_{0}$ as follows:
-  $D_{0} = |x_{0} - y_{0}|$
+  Let's suppose we have two initial conditions $x_{0}​$ and $y_{0}​$.
+  We define measure of the distance $D_{0}​$ as follows:
+  $D_{0} = |x_{0} - y_{0}|​$
   and we keep track of it over the time :
   $D(t) = | x_{t} - y_{t}|​$
 
   For many systems this is an exponential function of time:
-  $D(t) =D_{0}e^{\lambda t} $
+  $D(t) =D_{0}e^{\lambda t} ​$
 
   $\lambda ​$ is the Lyapunov Exponent
 
@@ -111,6 +111,8 @@
   where $\lambda_{max}$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)$.
 
 - ***Talk me about the Wiener filter (in both frequency and time domains) and its applications.***
+
+  
 
 - ***Talk me about the Mane-Takens theorem***.
 
@@ -303,11 +305,13 @@
 
 - **Applications of STFT:**
 
+  Source: *Cerutti*'s book.
+
   An example of application of the methods of time-frequency representation is shown in the figure below. The series of time intervals between two successive heartbeats (RR), represented on the bottom of the figure, is relative to a tilt test and consists of two periods. In the first, the subject is in clinostatism (A near-extinct term for *lying down*); the RR duration is about one second and shows an oscillatory component of respiratory origin. In the second, the subject is under orthostatism (*erect standing* position of the body); the RR interval is much shorter and the respiratory component is absent.          The panel in the figure below has been achieved with STFT, using a Von Hann window with resolution in time $\Delta t  = 36 s​$ . Although this choice allows a discrete frequency resolution in the low-frequency band, it provides an inadequate temporal localization of the changes in power in the high-frequency band related to the tilt maneuver.  
 
   ![](images/STFT5.PNG)
 
-  The example in the next figure shows the time-frequency representation relative to a series of RR intervals with high variability of respiratory component. The three-dimensional view allows us to grasp the small details of nonstationary oscillatory phenomena. The series in this case has been analyzed with the STFT using a relatively narrow window. The good temporal resolution obtained allows us to assess the power of the respiratory component of origin (0.3-0.4 Hz) and its evolution over time. 
+  The example in the next figure shows the time-frequency representation relative to a series of RR intervals with high variability of respiratory component. The three-dimensional view allows us to grasp the small details of nonstationary oscillatory phenomena. The series in this case has been analyzed with the STFT using a relatively narrow window. The good temporal resolution obtained allows us to assess the power of the respiratory component of origin ($0.3-0.4 \;Hz​$) and its evolution over time. 
 
   ![](images/STFT6.PNG)
 
@@ -327,7 +331,7 @@
 
   Source: *Cerutti*'s book.
 
-  In the previous questions/answers, we learned how to decompose a signal using elementary blocks of different shapes and dimensions: sinusoids, mother functions, or time-frequency distributions. These blocks are efficient tools for describing, in a synthetic way, morphological features of signals, such as waves, trends, or spikes. In a dual way, the same signal can be investigated in the frequency domain by using the Fourier transforms of these elementary functions. However, time and frequency domains are treated as separate worlds, often in competition because the need to locate a feature in time is usually paid for in terms of frequency resolution. A conceptually different approach aims to jointly look at the two domains and to derive a joint representation of a signal x(t) in the combined time and frequency domain. A quadratic time-frequency distribution is designed to represent the signal energy simultaneously in the time and frequency domains and, thus, it provides temporal information and spectral information simultaneously.
+  In the previous questions/answers, we learned how to decompose a signal using elementary blocks of different shapes and dimensions: sinusoids, mother functions, or time-frequency distributions. These blocks are efficient tools for describing, in a synthetic way, morphological features of signals, such as waves, trends, or spikes. In a dual way, the same signal can be investigated in the frequency domain by using the Fourier transforms of these elementary functions. However, time and frequency domains are treated as separate worlds, often in competition because the need to locate a feature in time is usually paid for in terms of frequency resolution. A conceptually different approach aims to jointly look at the two domains and to derive a joint representation of a signal $x(t)$ in the combined time and frequency domain. A quadratic time-frequency distribution is designed to represent the signal energy simultaneously in the time and frequency domains and, thus, it provides temporal information and spectral information simultaneously.
 
   A link between time and frequency domains may be obtained through the signal energy $E_x$ The following relation holds:
   $$
@@ -338,13 +342,159 @@
   \int{TFR_x(t,\omega)d\omega = |x(t)|^2} \\
   \int{TFR_x(t,\omega)dt = |X(\omega)|^2}
   $$
-  Thus, for every instant $t$ , the integral of the distribution over all the frequency should be equal to the instantaneous power, whereas, for every angular frequency ω, the integral over time should equal the power spectral density of the signal. As a consequence of the marginals, the total energy is obtained by integration of the $TFR$ over the whole $t-f$ plane: 
+  Thus, for every instant $t$ , the integral of the distribution over all the frequency should be equal to the instantaneous power, whereas, for every angular frequency ω, the integral over time should equal the power spectral density of the signal. As a consequence of the marginals, the total energy is obtained by integration of the $TFR$ over the whole $t-f​$ plane: 
   $$
   E_x = \int\int TFR_x(t,\omega)d\omega dt
   $$
+  As the energy is a quadratic function of the signal, the $TFR(t,\omega)​$ is expected to be quadratic.   An interesting way to define energetic $TFR​$ starts from the definition of a time-varying spectrum (Page, 1952). Using the relationship that links power spectral density and TFR imposed by marginals, we derive a simple definition of a TFR:
+  $$
+  TFR(t,\omega) = \frac{\partial}{\partial t}|X_t(\omega)|^2
+  $$
+  The subscript $t​$ indicates that the quantity is a function of time and, thus, $|X_t(\omega)|^2​$is a time-varying spectrum. The latter can be derived by generalization of the relationship between the power spectrum of a signal and its autocorrelation function $R_t(\tau)​$:
+  $$
+  |X_t(\omega)|^2 = \frac{1}{2\pi}\int R_t(\tau)e^{-j\omega \tau}d\tau
+  $$
+  where
+  $$
+  R_t(\tau) = \int x(t)x^*(t-\tau)dt = \int x\left(t + \frac{\tau}{2}\right)x^*\left(t - \frac{\tau}{2}\right)dt
+  $$
+  is a function of time. By substitution, a new definition of TFR is obtained:
+  $$
+  TFR(t,\omega) = \frac{1}{2\pi}\int \frac{\partial}{\partial t}R_t(\tau)e^{-j\omega \tau}d\tau = \frac{1}{2\pi}\int K_t(\tau)e^{-j\omega \tau}d\tau
+  $$
+  where $K_t(\tau)​$  is known as a *local autocorrelation function*. The above relation shows that a $TFR​$ can be obtained as the Fourier transform of a time-dependent autocorrelation function. We may observe that due to the derivative operation, the integral that characterizes the $R_t(\tau)​$ disappears in $K_t(\tau)​$ which de facto describes local properties of the signal. Among all the possible choices of $K_t(\tau)​$ the most simple (Mark, 1970) is to select
+  $$
+  K_t(\tau) = x\left(t + \frac{\tau}{2}\right)x^*\left(t - \frac{\tau}{2}\right) \\
+  $$
+  The derived time-frequency distribution
+  $$
+  TFR(t,\omega) = = \frac{1}{2\pi}\int K_t(\tau)e^{-j\omega \tau}d\tau
+  $$
+  is known as the *Wigner-Ville (WV) distribution* .
+
+  This distribution was originally introduced by *Wigner* (1932) in the field of quantum mechanics and successively applied to signal analysis by *Ville* (1948). It plays a fundamental role among the quadratic time-frequency distributions and it is a fundamental part of the *Cohen class* ( *we'll talk about that in the next question*).
+
+  For a *linear chirp* (a signal whose instantaneous frequency varies linearly with time according to $ f_x(t) =f_0 + \alpha t $ ) it can be shown that 
+  $$
+  W_{xx}(t,f) = \delta[t,f-f_x(t)]
+  $$
+  and the WV is a line in the $t-f​$ plane, concentrated at any instant around the instantaneous frequency of the signal. From a practical point of view, this property shows that the representation is able to correctly localize (jointly in *time* and *frequency*) a sinusoidal component whose properties are varying with time.
+
+  ![](images/WV1.PNG)
+
+  Even if the *WV* representation is attractive for representing single-component, nonstationary signals, it becomes of poor utility when multicomponent signals are considered. In these cases, the distribution may assume negative values (and this is in contrast with the interpretation of energetic distribution) and interference terms (or cross terms) appear. The cross terms disturb the interpretation of the $TFR $as they are redundant information that may mask the true characteristics of the signal.
+
+  ![](images/WV2.PNG)
+
+  In the case of an N-component signal the representation will be characterized by N signal terms and 
+  $$
+  {N\choose 2}=\frac{N(N-1)}{2}
+  $$
+  interference terms. The latter grows quadratically in respect to the number of components and may overwhelm the signal contributes quite rapidly. 
+
+  An example is shown in the figure below where two signal terms are centered in $(t_1,f_1)$ and $(t_2,f_2)$ It is possible to observe that interference terms are located around the central point $[\;t_{12} = \frac{t_1+t_2}{2} \:,\:f_{12} = \frac{f_1+f_2}{2}\;]$ and their amplitude oscillates in time with a period of $\frac{1}{|f_1-f_2|}$ and in frequency with a period of  $\frac{1}{|t_1-t_2|}$. Therefore, the oscillation frequency grows with the distance between signal terms and the direction of oscillation is perpendicular to the line connecting the signal points $(t_1,f_1)$and  $(t_2,f_2)$. 
+
+  ![](images/WV3.png)
+
+  It is worth noting that the interference terms may be located in time intervals where no signal is present, for example between $t_1$ and $t_2$ in Figure 10.2, showing signal contributions in an area where no activity is expected (like a mirage in the desert),  Interferences are located in the concavity of the distribution and are related to the interaction between past and future signal frequencies. 
+
+  ![](images/WV4.PNG)
+
+  These effects make the WV hardly readable, especially when a wideband noise is superimposed, and many authors have labeled the WV as a *"noisy"* representation (Cohen, 1989). 
+
+   Finally it is worth noting that any real signals generate interference between positive and negative frequencies of their spectrum, to avoid this effect in practical applications, the Hilbert transform is applied to the real signal to generate the analytic signal in which the negative frequencies are canceled.
+
+- **Talk me about Cohen's Class**
+
+  Source: *Cerutti's* book
+
+  Let's talk now about *Cohen's Class*... The characteristics of cross terms (*oscillating*) suggest the strategy for their suppression: the idea is to perform a *two-dimensional low-pass filtering* of the $TFR$, in order to suppress the higher frequency oscillations.
+
+  If the properties of the selected filter do not depend on their position in the $t-f$ plane (i.e., the filter characteristics are invariant to shifts in the $t-f$ plane), we derive the class of shift-invariant, quadratic $TFRs$, known as *Cohen's Class*.
+  $$
+  C_{x,x}(t,f) = \int \int \Psi(u-t,v-f)W_{xx}(u,v)dudv
+  $$
+  As evident from the above relation, every member of the class can be obtained as the convolution between the $W_{xx}$ and a function $\Psi$ , the *kernel*. 
+
+  Every $TFR$ of this class can be interpreted as a filtered version of $W_{xx} $.  By imposing constraints on the *kernel* one obtains a subclass of $TFR$ with a particular property.
+
+   A few examples of $TFRs$ obtained using different *kernels* are shown in the next figure:
+
+  ![](images/CC1.PNG)
+
+  ![](images/CC2.PNG)
+
+  It is worth noting that the lines corresponding to the *chirps* are larger than in the figure shown in the previous question; thus, the *kernels* reduce time-frequency localization.
+
+  In fact, the useful property (Equation 10.10) is lost in $C_{xx}$ due to the low-pass filtering effect of $\Psi$. Therefore, we are facing a compromise between the entity of the cross term and the preservation of joint time-frequency resolution in the $t-f$ plane.
+
+  *Whereas in the linear time-frequency representations the compromise is between time or frequency resolution, in the quadratic $TFR$ the compromise is between the maximization of joint $t-f$ resolution and the minimization of cross terms.*
+
+  The question is...*which tools* should be used to project the $TFR$ with desired properties? An important tool is the *ambiguity function* ($AF$)
+  $$
+  A_{xx}(\theta,\tau) = \int x\left(t + \frac{\tau}{2}\right)x^*\left(t - \frac{\tau}{2}\right)e^{j\theta t}dt
+  $$
+  It is worth noting the structural analogy with the $WV$, with the difference that integration is performed over time. The $AF$ is the projection of $W_{xx}$ in the plane $\theta - \tau$ (known as the *correlative domain* ).
+
+  In this plane, signal and cross terms tend to separate. The former are mainly located close to the origin; the latter are located far from it. The effect is evident in the next figure:
+
+  ![](images/CC3.PNG)
+
+  A nice property of the *Cohen's Class* is that its representation in the correlative domain is simply described by a product:
+  $$
+  C_{xx}(\theta,\tau) = \phi(\theta,\tau)A(\theta,\tau)
+  $$
+  where $\phi(\theta,\tau)​$ is the two-dimensional Fourier transform of $\Psi​$ . 
+
+  From this equation the effect of the *kernel* can be immediately appreciated; it weights the points of the $\theta - \tau​$ plane. Therefore, in order to perform an efficient reduction of cross terms, the function $\phi(\theta,\tau)​$ should have higher values close to the origin than far from it. Thus $\phi(\theta,\tau)​$ should be the transfer function of a two-dimensional low-pass filter, to get an idea just look at the grey zones in figures $(c)\space,\space (d) \space,\space (e)\space​$ and $\space (f)​$ below .
+
+  ![](images/CC4.PNG)
+
+  $(a)​$ represents the $TFR​$ of the signal and $(b)​$ represents its projection in the $\theta - \tau​$ plane, . signal terms are the two lines passing from the origin; the others are the IT (*interference terms*).
+
+  ![](images/CC5.PNG)
+
+  Here different *kernels* are superimposed on the $AF$:
+
+  $(c)$ *WV* kernel (*Wigner-Ville*)				$\phi(\theta,\tau) = 1$
+
+  $(d)$ BJD (*Born and Jordan*)				$\phi(\theta,\tau) = \frac{sin(\pi \tau\theta)}{\pi \tau \theta}$
+
+  $(e)$ SPWV (*Pseudo Wigner-Ville*)			$\phi(\theta,\tau) = \eta(\frac{\tau}{2})\eta^{*}(-\frac{\tau}{2})G(\theta)$
+
+  $(f)$ generic *time-frequency* filter.
+
+- **Applications of Quadratic TFR**
+
+  - Heart Rate (HR) Variability signal analysis
+  - ECG signal analysis
+  - EEG and ECoG (*Electrocochleography* ) signal analysis
+  - Evoked POtentials
+  - Electromyographic signal (EMG) analysis
+
+- **Talk me about Time-Variant methods**
+
   
 
--  ***How do you read a bivariate analysis plot? (alpha , slope)***
+- **Brief overview of TF methods:**
+
+  - *STFT* *(Short Time Fourier Transform)* :
+
+    uses time windows with constant duration and this allows obtaining a good frequency resolution with long time windows (bad time resolution) and viceversa.
+
+  - *WT*  *(Wavelet Transform)* :
+
+    allows a multiresolution analysis that optimizes the time resolution and the frequency resolution for each frequency value.
+
+  - *WVD* *(Wigner-Ville Distribution)*:
+
+    has a good time and frequency resolution, but it introduces interferences (cross-terms) that make the distribution hardly interpretable.
+
+  - *Time-Variant Models* :
+
+    allow a good time and frequency resolution, but the performance is highly dependent on the morphology of the forgetting factor.
+
+- **What is  a Spectrogram? and a Scalogram?**
 
 - ***What is the Hurst exponent?***
 
