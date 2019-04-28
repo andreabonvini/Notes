@@ -139,21 +139,169 @@ Choose a value that rules out the smallest number of values in variables connect
 
 
 
-# Inference in propositional logic
+# Logic
 
-#### Definitions
+### Introductory Definitions
 
-- *model*
+- *Arguments* 
+  An argument is any set of statements - explicit or implicit - one of which is the conclusion (the statement being defended) and the others are the premises (statements providing the defense). The relationship between the conclusion and the premises is such that the conclusion follows from the premises.
+- *Statement*
+  A statement is any indicative sentence that is either true or false
+- *Deductively Valid Argument*
+  A deductively valid argument is an argument such that it is not possible both for its premises to be true and its conclusion to be false. In other terms, in a valid argument it is not possible that, if the premises are true, the conclusion is false.
+- *Soundness*
+  An argument can be deductively valid, but unlikely to persuade anyone. Normally good argument are not only deductively valid. They also have true premises. These arguments are called *sound*. For example, "All fish fly. Anything which flies talks. So, all fish talk" is a deductively valid argument but it's not sound.
+
+
+
+### Propositional Logic
+
+Propositional Logic is a branch of logic, and it can be thought as comprised of three components:
+
+1. Syntax: which specifies how to build sentences
+2. Semantics: which attaches to these sentences a meaning
+3. Inference Rules: which manipulate these sentences to obtain more sentences
+
+#### Syntax of PL
+
+It defines the allowable sentences in PL, which are:
+
+- *Atomic Sentences*: indivisible syntactic elements consisting of a single propositional symbol, usually an upper case letter (P,Q,R). Every symbol represents a sentence that can be true or false.
+- *Complex Sentences*: constructed from atomic ones by means of logical connectives (negation, conjunction, disjunction, conditional, biconditional).
+
+#### Semantics of PL
+
+the semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
+
+#### Inference in PL
+
+Reasoning aims at getting new knowledge. New knowledge comes from getting new true sentences from other true sentences that are already in our KB.
+
+**Definitions**
+
+- *Model*
   In Propositional Logic, a model is an assignment of truth values to all propositional symbols. 
-- *satisfiability*
+
+- *Satisfiability*
   a sentence is satisfiable if and only if there is a model that satisfies it. 
   A model satisfies a sentence if the sentence is true under the assignment. 
-- *entailment*
-  A set of sentences (called premises) *logically entails* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
 
+- *Logical Entailment*
+  A set of sentences (called premises) *logically entail* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
 
+- *Logical Inference*
+  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is true we can expand our KB with such sentence.
 
-#### Put a proposition in Conjunctive Normal Form
+- *Soundness of an inference rule*
+  An inference rule *i* is said to be sound when all inferred/derived sentences are also entailed.
+  $$
+  if\space\space\space\space (KB\space |-_i \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|=\space\alpha)
+  $$
+
+- *Completeness of an inference rule*
+  An inference rule *i* is said to be complete if it can derive/infer all entailed sentences.
+  $$
+  if\space\space\space\space (KB\space |= \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|-_i\space\alpha)
+  $$
+  We may have a set of inference rules *I* instead of a single rule *i*.
+  $$
+  KB\space|-_I\space\alpha
+  $$
+  means that we obtain alpha from the sentences of KB after applying some of the rules in I a number of times.
+
+- *Soundness & Completeness together*
+
+  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether KB entails alpha or not, instead of constructing the truth table of all sentences in KB and alpha.
+  - if *I* is not sound, 
+    even if we get ${KB \space \vdash_i \alpha}$, we cannot be sure that ${KB \models \alpha}$ 
+  - if *I* is not complete, 
+    even if ${KB \models \alpha}$, we may not get to the result of having ${KB \vdash _i\alpha}$   
+
+- *Logical Equivalence*
+  Two sentences ${P_1}$ and ${P_2}$ are equivalent if they are true in the same set of models.
+  We write ${P_1 \equiv P_2}$  
+
+- *Validity*
+  A sentence is valid if it is true in all models. A valid sentence is also called a tautology.
+
+- *Deduction Theorem*
+  For any sentence ${P_1}$ and ${P_2}$, ${P_1 \models P_2}$ if and only if ${P_1 \rightarrow P_2}$ is valid.
+
+- *Satisfiability*
+  A sentence is said to be satisfiable if it is true in some model.
+
+- *Contradiction*
+  An unsatisfiable sentence.
+
+- *Inference Rules*
+  We use inference rules to derive some conclusions from the sentences in our KB.
+
+  - Resolution
+
+    ${A \or B
+    \\
+    A \or \neg B
+    \\
+    \rule{2cm}{0.5mm}
+    \\
+    A \or A \space (with \space resolution) 
+    \\
+     \rule{2cm}{0.5mm} 
+    \\
+    A \space (with factoring)}$
+
+    Resolution can be applied only to clauses
+
+  - Modus Ponens
+
+    ${\alpha\to\beta
+     \\ 
+     \alpha 
+     \\ 
+     \rule{2cm}{0.5mm} 
+     \\ 
+     \beta}​$
+
+  - Conjunction Elimination
+    ${\alpha \and \beta 
+    \\
+    \rule{2cm}{0.5mm} 
+    \\
+    \alpha}​$
+
+  - Conjunction Introduction
+    ${\alpha \\ \beta \\ \rule{2cm}{0.5mm}  \\ \alpha \and\beta}​$
+
+  - Disjunction Introduction
+    ${\alpha
+    \\
+    \rule{2cm}{0.5mm} 
+    \\
+    \alpha\or\beta}​$
+
+  - All logical equivalences, for instance contraposition
+    ${\alpha \rightarrow \beta \\ \rule{2cm}{0.5mm} 
+    \\
+    \neg\beta\to\neg\alpha}$
+
+- *Monotonicity*
+  A property of Propositional Logic that can be expressed in the following way:
+
+  $${if \space\space KB\models\alpha\space\space\space\space then \space\space KB  \cup{\beta}\models\alpha }$$
+
+  which means that if we expand the KB, we can have additional conclusions, but such expansion cannot invalidate a conclusion already inferred like ${\alpha}$.
+  Monotonicity means that we can apply inference rules whenever suitable premises are found in the KB, regardless of what else is there.
+
+#### Resolution
+
+Resolution, as already said, is one of the many possible inference rules we can apply to our KB.
+Now we'll get deep into Resolution Inference Procedure.
+First of all, remember that resolution ==is not a complete inference rule==, for example, ${A \or B}$ is a logical consequence of ${A}$, because it is true whenever ${A}$ is true,but such consequence cannot be obtained from ${A}$ by resolution.  
+However there is a specific way to exploit resolution, in which some form of completeness hold. if we want to check whether ${A\or B}$ is a logical consequence of ${A}$ we take ${A}$ as hypothesis (that is, we suppose ${A}$ to be true). ${A \or B}$ becomes our thesis, we negate it, and we conjunct the hypothesis with the negated thesis. Such conjunction is not satisfiable if and only if the hypothesis and the negated thesis can never be true at the same time, that is, the thesis is a logical consequence of the hypothesis.  
+When the search for the contradiction is performed by means of the resolution technique, we call it *refutation by resolution*.  
+When we say that resolution is ==refutation complete==, we mean that this procedure always reaches a breakpoint (we obtain the empty clause, or we obtain no new clauses by applying resolution to all possible pairs of clauses from the KB).
+
+##### How to put a proposition in Conjunctive Normal Form
 
 1. Eliminate implications
 2. Move not inwards
@@ -162,15 +310,12 @@ Choose a value that rules out the smallest number of values in variables connect
 5. Drop universal  quantifiers
 6. Distribute OR over AND
 
-
-
-#### Resolution Inference Procedure
+##### Algorithm
 
 solve
 $$
 \phi_1 |= \phi_2
 $$
-
 
 1. negate 
 
@@ -194,22 +339,105 @@ $$
 
 ##### Strategies for selecting clauses:
 
-- Unit-preference preference strategy: 
+- *Unit-preference strategy*
+
+  New Def:
+  "Prescribes that pairs in which one of the two formulas is a literal should be preferred. The basic idea is that, as we are looking for the empty clause, we had better focus on clauses that are already small".
+
+  Old Def:
   Give preference to resolutions involving the clauses with the smallest number of literals.
   In depth: Considera la prima clausola della tua KB con il minimo numero di terminali e confrontala con tutte le altre clausole a partire dalla prima e andando in ordine fino alla fine (paragonala anche con le derivazioni generate in itinere!)
   Una volta che hai finito di confrontare tale clausola con tutte le altre, ripeti il procedimento con una nuova clausola col numero minimo di letterali.
-- Set-of-support resolution: 
+
+- *Set-of-support resolution*
   Solve the problem by using always at least one element of the set of support or its derivations.
-  Does not guarantee completeness
-- Input resolution:
-  Solve the problem by using always at least one of the input propositions, not alpha included.
-  Does not guarantee completeness
-- Subsumption: 
+  Does not guarantee completeness.
+
+- *Input resolution*
+  Solve the problem by using always at least one of the input propositions, the negated thesis included.
+  Does not guarantee completeness.
+
+- *Subsumption* 
   Eliminates all sentences that are subsumed (i.e., more specific than) an existing sentence in the KB.
 
 
 
-#### DPLL Algorithm
+
+
+### First Order Logic (FOL)
+
+As any other type of logic, FOL is composed of three elements:
+
+- a formal language that models a fragment of natural language.
+- a semantics that defines under which conditions a sentence of the language is true or false.
+- a calculus that mechanically determines the validity of a sentence.
+
+##### **Formal language**
+
+Defined by means of
+
+- **A dictionary of symbols**
+
+  - *Logical Symbols*
+    $$
+    \neg,\and,\forall,=,x,y,z,...
+    $$
+
+  - *Descriptive Symbols*
+    constituted by 
+
+    - a set C of individual constants
+      $$
+      a,b,c,...
+      $$
+
+    - a set P of predicate symbols (${P,Q,R,..}​$) or predicates with a function.
+      $$
+      P\to N \space that \space assigns \space to \space every \space symbol \space an \space arity \space (n°\space of \space arguments)
+      $$
+      
+
+  - *Structural Symbols*
+    brackets and commas.
+
+  *Terms* are the symbols utilized to refer to individuals.
+  *Functional Terms* are complex terms ${f(t_1,...,t_n)}$ where *f* is the functional symbol with arity *n* and ${t_k}$ are terms.
+
+- **A grammar**
+  Made out of *formulas* which are made out of *literals* . I will not go into details since it's not the scope of the course. 
+  I will just give a few definitions:
+
+  - *Open and Closed Formulas*
+    A formula is called *closed* if every occurrence of variable in the formula is bound.
+    It is called *open* in the other cases.
+  - *Sentences*
+    A closed formula is called sentence.
+  - *Predicates*
+    A predicate is a property that  a given individual can possess or not, or a relation that can subsist or not subsist among couples, terns, etc. of individuals.
+
+##### **Semantics**
+
+To assign semantics to a logical language means to define a criterion to determine whether an argument is valid. The validity of an argument is reduced to the relation of logical entailment among formulas. This notion of entailment is based on the concept of truth of a formula. But in general a formula is not true or false per se, but only with respect to a precise interpretation of the descriptive symbols of its language (predicates and constants). It follows that to specify the semantics of a language is to define when formula ϕ is true in a model M, which is expressed by the notation ${M \models \varphi}$.
+A few definition:
+
+- *Model*
+  A model consist of an interpretation of the predicates and the constants of the language.
+- *Value assignment*
+  The assignment of a value to a variable of the language.
+
+- *True and False Formulas*
+  There exists formula that are true in all models, formulas that are false in every model, formulas that are false depending on the model. For instance, every formula with the form ${\varphi \or \neg \varphi}$ is true in each model, ${\varphi \and \neg \varphi}$ is false in each model, ${\exists xP(x)}$ is true in some models and false in others
+
+- *Validity*
+  a formula ${\varphi}​$ is valid or logically true if for any model M and for any assignment val we have ${M,val \models \varphi}​$
+- *Satisfiability*
+  a formula ${\varphi}$ is satisfiable if for some model M and for some assignment val we have ${M,val \models \varphi}$.
+
+##### Calculus
+
+Similar to the calculus procedures of Propositional Logic, it's though considered a prerequisite for such course so I will not go deep into it.
+
+### DPLL Algorithm
 
 solve 
 $$
@@ -232,7 +460,7 @@ $$
 
 
 
-#### Backward Chaining
+### Backward Chaining
 
 1. Draw the root, which is the end literal to be derived
 2. derive the AND children.
@@ -243,7 +471,7 @@ $$
 
 
 
-#### Forward Chaining
+### Forward Chaining
 
 - **Algorithm**
 
@@ -633,3 +861,29 @@ $$
 -  Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
    Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
   (trivial, but still...)
+
+
+
+
+
+
+
+
+
+
+
+# References
+
+### Logic
+
+Schiaffonati, V. and Verdicchio, M (2011). Introduction to logic, for the course of Artificial Intelligence of the academic year 2011/2012 at Politecnico di Milano.
+
+they referred to:
+
+Boole, G. (1854). An investigation of the laws of thought, on which are founded the mathematical theories of logic and probabilities, MacMillan & Co., Cambridge.  
+
+ Frege, G. (1879). Begriffsschrift – Eine der arithmetischen nachgebildete Formelsprache des reinen Denkens, Nebert, Halle an der Saale. 
+
+Lepore, E. (2003). Meaning and Argument: An Introduction to Logic Through Language, Blackwell Publishing. 
+
+Robinson J. A. (1965). A Machine-Oriented Logic Based on the Resolution Principle, Journal of the ACM 12(1).  
