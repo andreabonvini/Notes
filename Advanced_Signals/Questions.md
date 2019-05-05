@@ -8,26 +8,62 @@
 
 ## Exam Questions *Cerutti*
 
-- ***What is the Lyapunov Exponent?***
+- ***Talk me about the Wiener filter (in both frequency and time domains) and its applications.***
 
-  It's a number that tells us how sensitive a system is to its initial conditions.
+  The *Wiener Filter* is a non-recursive filter used to produce an estimate of a desired or target random process by linear time-invariant filtering of an observed noisy process, assuming known *stationary* signal and noise spectra, and additive noise. The Wiener filter minimizes the mean square error between the estimated random process and the desired process.
 
-  Let's suppose we have two initial conditions $x_{0}​$ and $y_{0}​$.
-  We define measure of the distance $D_{0}​$ as follows:
-  $D_{0} = |x_{0} - y_{0}|​$
-  and we keep track of it over the time :
-  $D(t) = | x_{t} - y_{t}|​$
+  So...hypothesis behind the Wiener Filter:
 
-  For many systems this is an exponential function of time:
-  $D(t) =D_{0}e^{\lambda t} ​$
+  - $y(k) = x + v(k) \space$
 
-  $\lambda ​$ is the Lyapunov Exponent
+    Where $x$ is the signal we are interested in and $v$ is a random noise. 
+    $x$  and  ​$v$ are not necessarily linked by an additive relationship
 
-  We can see that when $\lambda > 0$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 $ we don't have SDIC.	
+  - $x$ and $v$ are stationary stochastic processes.
+
+  - $M$ (number of samples) must be sufficiently large ( $ M\to \infty $).
+
+  Given these hypothesis *Wiener* designed a LTI filter able to minimize the quadratic error.
+
+  The filter is non-recursive and $h(i)$ will be the coefficients of the Wiener Filter.
+  Since we have to "clean" the $y$ signal we must choose the right values of $h(i)$ in order to reduce the effect of the noise. To do so we compute the derivative of the error function *w.r.t.* the $h(i)$ coefficients and put it to $0$ to find the minimum.
+  $$
+  \hat{x} = \sum_{i= 1}^{M}h(i)\cdot y(i) \\
+  p_{e} = E[e^{2}] = E[(x-\hat{x})^{2}] = E[(x - \sum_{i= 1}^{M}h(i)\cdot y(i))^{2}] \\
+  \frac{\partial{p_{e}}}{\partial{h(j)}} = -2E[(x-\hat{x})^{2}] = -2E[(x - \sum_{i= 1}^{M}h(i)\cdot y(i))]\cdot y(j) = 0  \\ \text{   $j =
+  1,2,$..$,M$} \\
+  $$
+  We drop (-2) (useless) and obtain
+  $$
+  E[(x-\sum_{i=1}^{M}h(i) \cdot y(i)) ]\cdot y(j) = 0 \\
+  \sum_{i}^{M}h(i) \cdot E[y(i) \cdot y(j)] = E[x \cdot y(j)] \\
+  $$
+  We define
+  $$
+  E[y(i) \cdot y(j)] = p_{y}(i,j) = R_{yy} \text{   (autocorrelation)} \\
+  E[x \cdot y(j)] = p_{xy}(j) = R_{xy} \text{   (correlation between x and y)}
+  $$
+  And reach the *Wiener-Hopf* equation:
+  $$
+  \sum_{i}^{M}h(i) \cdot p_y(i,j) = p_{xy}(j) \\
+  h(i) = Unknown \\
+  p_y(i,j) = Known \\
+  p_{xy}(j) = Known \\
+  (???) p_e = E[x^{2}] - \sum_{i=1}^{M}h(i) \cdot E[x \cdot y(i) ] = E[x^{2}] - \sum_{i=1}^{M} h(i) \cdot p_{xy}(i)
+  $$
+  In *matricial form*:
+  $$
+  \begin{cases}
+  \overline{h} = P_{y}^{-1}\overline{p_{xy}} \\
+  \hat{x} = \overline{h^{T}}\overline{y} = \overline{p_{xy}^{T}}P_{y}^{-1}\overline{y} \\
+  p_{e} = E[x^{2}] - \overline{p_{xy}^{T}}P_{y}^{-1}\overline{p_{xy}}
+  \end{cases}
+  $$
+  The *Wiener Filter* is *optimal* among the time-invariant linear filters but, obviously, if the hypothesis are not fulfilled is *sub-optimal*.
 
 - ***What is the Adaptive filter?***
 
-  Source: <http://isl-www.stanford.edu/~widrow/papers/b1971adaptivefilters.pdf>
+  Source: [Paper from Stanford](http://isl-www.stanford.edu/~widrow/papers/b1971adaptivefilters.pdf)
 
   Here we present an approach to signal filtering using an *adaptive filter* that is in some sense self-designing (really self-optimizing). The adaptive filter described here bases its own "design" (its internal adjustment settings) upon *estimated* (measured) statistical characteristics of input and output signals. The statistics are not measured explicitly and then used to design the filter; rather, the filter design is accomplished in a single process by  a recursive algorithm that automatically updates the system adjustments with the arrival of each new data sample. How do we build such system?
 
@@ -47,7 +83,7 @@
   $$
   \bold{\epsilon^{2}}(j) = \bold{d}^{2}(j) -2\bold{d}(j)\bold{X}^T(j)\bold{W}(j) + \bold{W}^T(j)\bold{X}(j)\bold{X}^T(j)\bold{W}(j)
   $$
-  The mean-square error, the expected value of  $\bold{\epsilon^{2}}(j)​$ is
+  The mean-square error, the expected value of  $\bold{\epsilon^{2}}(j)$ is
   $$
   E[\bold{\epsilon^{2}}(j)] = \bold{d}^{2}(j) -2\bold{\Phi}(x,d)\bold{W}(j) + \bold{W}^T(j)\bold{\Phi}(x,x)\bold{W}(j)
   $$
@@ -110,15 +146,28 @@
   $$
   where $\lambda_{max}$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)$.
 
-- ***Talk me about the Wiener filter (in both frequency and time domains) and its applications.***
+- ***What is the Lyapunov Exponent?***
 
-  
+  It's a number that tells us how sensitive a system is to its initial conditions.
+
+  Let's suppose we have two initial conditions $x_{0}​$ and $y_{0}​$.
+  We define measure of the distance $D_{0}​$ as follows:
+  $D_{0} = |x_{0} - y_{0}|​$
+  and we keep track of it over the time :
+  $D(t) = | x_{t} - y_{t}|​$
+
+  For many systems this is an exponential function of time:
+  $D(t) =D_{0}e^{\lambda t} ​$
+
+  $\lambda ​$ is the Lyapunov Exponent
+
+  We can see that when $\lambda > 0$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 $ we don't have SDIC.
 
 - ***Talk me about the Mane-Takens theorem***.
 
 - ***What are Wavelets?***
 
-  Source: https://www.cs.unm.edu/~williams/cs530/arfgtw.pdf
+  Source:[A Really Friendly Guide For Wavelets](https://www.cs.unm.edu/~williams/cs530/arfgtw.pdf)
 
   It is well known from Fourier theory that a signal can be expressed as the sum of a, possibly infinite, series of sines and cosines. This sum is also referred to as a Fourier expansion. The big disadvantage of a Fourier expansion however is that it has only frequency resolution and no time resolution. This means that although we might be able to determine all the frequencies present in a signal, we do not know when they are present. To overcome this problem in the past decades several solutions have been developed which are more or less able to represent a signal in the time and frequency domain at the same time.
 
@@ -159,23 +208,21 @@
     $$
     \Psi_{j,k}(t) = \frac{1}{\sqrt{s_0^j}}\Psi\left(\frac{t-k\tau_0s_0^j}{s_0^j}\right) \\
     $$
-    where $j​$ and $k​$ are integers and $s_0 > 1​$ is a fixed dilatation step.
-    The translation factor $\tau_0​$ depends on the dilation step. The effect of discretizing the
+    where $j$ and $k$ are integers and $s_0 > 1$ is a fixed dilatation step.
+    The translation factor $\tau_0$ depends on the dilation step. The effect of discretizing the
     wavelet is that the time-scale space is now sampled at discrete intervals. 
-    We usually choose $s_0 = 2​$ so that the sampling of the frequency axis corresponds to dyadic sampling.
+    We usually choose $s_0 = 2$ so that the sampling of the frequency axis corresponds to dyadic sampling.
     This is a very natural choice for computers, the human ear and music for instance.
-    For the translation factor we usually choose $\tau_0 = 1​$ so that we also have dyadic
+    For the translation factor we usually choose $\tau_0 = 1$ so that we also have dyadic
     sampling of the time axis.
-
-  MAYBE THAT'S ENOUGH.
 
 - **Talk me about the Mallat's algorithm for FWT.** 
 
   Sources:
 
-  https://it.mathworks.com/help/wavelet/ref/wavedec.html
+  [Mathworks](https://it.mathworks.com/help/wavelet/ref/wavedec.html)
 
-  <https://www.andreadd.it/appunti/polimi/ingegneria/corsi/ing_biomedica/Magistrale/SPEC/Signals_data_processing/viewer.html?file=altro/Algoritmo_mallat.pdf>
+  [Andreadd](https://www.andreadd.it/appunti/polimi/ingegneria/corsi/ing_biomedica/Magistrale/SPEC/Signals_data_processing/viewer.html?file=altro/Algoritmo_mallat.pdf)
 
   The *Fast Wavelet Transform* is a mathematical algorithm designed to turn a waveform or signal in the time domain into a sequence of coefficients based on an orthogonal basis of small finite waves, or wavelets. The transform can be easily extended to multidimensional signals, such as images, where the time domain is replaced with the space domain. This algorithm was introduced in 1989 by *Stéphane Mallat*. 
 
@@ -317,7 +364,7 @@
 
 - **Difference between STFT and WT.**
 
-  Source: https://www.quora.com/What-is-the-difference-between-wavelet-transform-and-STFT
+  Source: [Quora](https://www.quora.com/What-is-the-difference-between-wavelet-transform-and-STFT)
 
   Traditionally, the techniques used for signal processing are realized in either the time or frequency domain. For instance, the Fourier Transform (TF) decomposes a signal into it’s frequency components; However, *information in time is lost.*
 
@@ -450,7 +497,7 @@
 
   ![](images/CC4.PNG)
 
-  $(a)​$ represents the $TFR​$ of the signal and $(b)​$ represents its projection in the $\theta - \tau​$ plane, . signal terms are the two lines passing from the origin; the others are the IT (*interference terms*).
+  $(a)$ represents the $TFR$ of the signal and $(b)$ represents its projection in the $\theta - \tau$ plane, . signal terms are the two lines passing from the origin; the others are the IT (*interference terms*).
 
   ![](images/CC5.PNG)
 
@@ -460,16 +507,16 @@
 
   $(d)$ BJD (*Born and Jordan*)				$\phi(\theta,\tau) = \frac{sin(\pi \tau\theta)}{\pi \tau \theta}$
 
-  $(e)$ SPWV (*Pseudo Wigner-Ville*)			$\phi(\theta,\tau) = \eta(\frac{\tau}{2})\eta^{*}(-\frac{\tau}{2})G(\theta)$
+  $(e)$ SPWV (*Smoothed Pseudo Wigner-Ville*)			$\phi(\theta,\tau) = \eta(\frac{\tau}{2})\eta^{*}(-\frac{\tau}{2})G(\theta)$
 
-  $(f)$ generic *time-frequency* filter.
+  $(f)​$ generic *time-frequency* filter.
 
 - **Applications of Quadratic TFR**
 
   - Heart Rate (HR) Variability signal analysis
   - ECG signal analysis
   - EEG and ECoG (*Electrocochleography* ) signal analysis
-  - Evoked POtentials
+  - Evoked Potentials
   - Electromyographic signal (EMG) analysis
 
 - **Talk me about Time-Variant methods**
@@ -501,3 +548,195 @@
 - ***Which kind of signals have a chaotic behaviour?***
 
 - ***How can we measure the fractal dimension of a signal?***
+
+
+
+
+
+## Exam Questions Barbieri
+
+- ***Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot***
+
+  *Sources:* *Course's Slides*, [Video From Luis Serrano](https://www.youtube.com/watch?v=9r7FIXEAGvs) , [Stanford.edu](<http://micro.stanford.edu/~caiwei/me334/Chap7_Entropy_v04.pdf>) 
+
+  ------------------------------------------------------------------------------------
+
+  *Remember*:  
+
+  *Bayes Theorem* $\to$ $p(x|y) = \frac{p(y|x)p(x)}{p(y)}$
+
+  *Joint probability* $\to$ $p(x,y) = p(y|x)p(x) =p(x|y)p(y)$
+
+  -----------------------------
+
+  Entropy measures the degree of our lack of information about a system. Suppose you throw a coin, which may land either with head up or tail up, each with probability $\frac{1}{2}$ . Then we have some uncertainty about the outcome of each "experiment". The uncertainty can be quantified by a positive number $H$. Now suppose you modified the coin (somehow) that you know for sure that each time you throw it, it will always land with head up (i.e. probability = 1). Then there is no uncertainty about the possible outcome of each “experiment”. The information entropy should be $H = 0$. In general, consider an experiment with $n$ possible outcomes, each with probability $p_{i} ,(\space i =1,...,n)$ with normalization condition $\sum_{i=1}^{n}p_{i} = 1$.
+
+  We are looking for a general formula $H(p_1,p_2,...,p_n)​$ that can characterize the uncertainty in all these experiments. Intuitively, we expect:
+
+  - $ H(p_1=\frac{1}{n},p_2=\frac{1}{n},...,p_n=\frac{1}{n})$ should be the maximum among all values of $H$ with a fixed $n$.
+  - $ H(p_1=0,p_2=1,...,p_n=0)= 0$ should be the minimum (no uncertainty).
+
+  But to develop a general formula for arbitrary ${p_{i}}$ seems impossible! That's why Shannon is so smart. He did it! How we derive it? (For now we abandon the notation $H$ in favor of $I$ ,we'll then define $H$ as the expected value of $I​$)
+
+  Shannon showed that if we assume the entropy function should satisfy a set of reasonable properties then there is only one possible expression for it. These conditions are:
+
+  - $I(p_1,p_2,\dots,p_n)$ is a continuous function and $I(p) \ge0$ (Information is a *non-negative* quantity)
+  - $f(n) = I(\frac{1}{n},\frac{1}{n},\dots,\frac{1}{n})$ us a monotonically increasing function of $n​$.
+  - $I(1) = 0$ (Events that always occur do not communicate information)
+  - $I(p_1p_2) = I(p_1) + I(p_2)$ (Information due to independent events is *additive*)
+
+  The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n​$ equiprobable outcomes and another has one of $m​$ equiprobable outcomes then there are $mn​$ possible outcomes of the joint event. This means that if $log_2(n)​$ bits are needed to encode the first value and $log_2(m)​$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)​$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
+  $$
+  I(p) = \log\left(\frac{1}{p}\right)
+  $$
+  The base of the logarithm can be any fixed real number greater than 1. ($2 \to bits$, $3\to trits$, etc...)
+
+  Now, suppose we have a distribution where event $i$ can happen with probability $p_i$. Suppose we have sampled it $N$ times and outcome $i$ was, accordingly, seen $n_i =Np_i$ times. The total amount of information we have received is:
+  $$
+  \sum_in_iI(p_i)=\sum Np_i\log\left(\frac{1}{p_i}\right)
+  $$
+  The average amount of information that we receive with every event is therefore:
+  $$
+  \sum_ip_i\log\frac{1}{p_i}
+  $$
+  So the entropy of a source that emits a sequence of $N$ symbols that are independent and identically distributed ($iid$) is $N·I$ bits (per message of $N$ symbols). 
+
+  Suppose $1000$ bits ($0s$ and $1s$) are transmitted, If the value of each of these bits is known to the receiver (has a specific value with certainty) *ahead* of transmission, it is clear that no information is transmitted. If, however, each bit is independently equally likely to be $0$ or $1$, $1000​$ shannons of information (more often called bits) have been transmitted. Between these two extremes, information can be quantified as follows.
+
+  If $X$ is the set of all messages $\{ x_1,\dots,x_n\}$ that $X$ could be, and $p(x)$ is the probability of some $x \in X$ , then the entropy $H$ of $X$ is defined:
+  $$
+  H(X) = E_x\left[I(x)\right]=-\sum_{x\in X}p(x)\log p(x)
+  $$
+  The special case of information entropy for a random variable with two outcomes is the *binary entropy functions*, usually taken to the logarithmic base 2, thus having the *shannon (Sh)* as unit:
+  $$
+  H_b(p) = -p\log_2{p}-(1-p)\log_2(1-p)
+  $$
+  Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
+  $$
+  H(X,Y) = E_{X,Y}\left[-\log p(x,y)\right] = -\sum_{x,y}p(x,y)\log p(x,y)
+  $$
+  Let's talk now about *Conditional Entropy*... The conditional entropy or conditional uncertainty of $X$ given random variable $Y$ (also called the equivocation of $X$ about $Y$ ) is the average conditional entropy over $Y$.
+  $$
+  H(X|Y) = E_Y\left[H(X|y)\right]=-\sum_{y\in Y}p(y)\sum_{x\in X}p(x|y)\log p(x|y) = -\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)}
+  $$
+  Because entropy can be conditioned on a random variable or on that random variable being a certain value, care should be taken not to confuse these two definitions of conditional entropy, the former of which is in more common use. A basic property of this form of conditional entropy is that:
+
+  aa
+
+  aa
+
+- Shannon entropy e il legame con l’informazione. 
+
+- Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti?
+
+  ssssss
+
+- Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. 
+
+- Concetto generale dietro l’ICA (Indipendent component analysis).
+
+- Moment generating function e cumulant generating function: la differenza?
+
+- HOS: come sono definiti? (Come la trasformata dei cumulanti di ordine n+1)
+
+- Definizione e concetto dei supervised learning problem (regressione e classificazione). Come descrivo il bias variance trade off? 
+
+- Le sei proprietà dei cumulants.
+
+- Granger Causality. Qual è la novità introdotta? (Viene introdotta una terza variabile percercare di determinare il rapporto tra altre due).
+
+- Bagging? Perché servono più osservazioni (in generale)?
+
+- How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of neuron (tuning curve)
+
+- Unsupervised learning (cluster) + main problem of the cluster
+
+- Hierarchical cluster and how to represent (dendrogram)
+
+- Gini index
+
+- upper and lower bound
+
+- leave-one-out cross validation
+
+- indices of granger causality (voleva principalmente sapere il gci, directed transfer function and partial  directed coherence)how do you call the specific index for general case? Gci, dtf, pdc
+
+- applications of granger causality on neurons: there is a problem. (we consider the point process model and different lambda and joint likelihood)
+
+- bayes theorem (what is it, why is it important and how is it used) p(x|y)p(y)=p(y|x)p(x)
+
+- which are the boundaries of discriminant analysis? Gaussian, small p, variance of every variables is the same
+
+- projection pursuit
+
+- nearest neighbour averaging
+
+- cross validation in general (k fold and bootstrap)
+
+- drawing of mutual information and entropy
+
+- bicoherence and bispectrum
+
+- Confusion matrix. Come creo la curva roc?Che classificatore uso e cosa fa? (immagino ad esempio che la temperatura sia la variabile coniderata, e in funzioen di questa stabilisco la presenza o meno di una malattia). Ogni valore di thr ci da un punto sulla curva. La regola di classificazione è la thr.  Scelgo una thr che mi dia un punto quanto piu possibile vicino al punto [0,1]. Cosa accade se  cambio la mia probabilità a priori? Cambia la distribuzione delle gaussiane. 
+
+-  0-1 loss concept in SVM. 
+
+- Concetto in generale di ICA e come procedo. 
+
+- Trees.  Cos’è una splitting rule? Cosa fa? 
+
+- Cos’è l’RSS? Ricorda che y cappello è la media dei punti nella regione. Come posso rappresentare in un albero grafico se ho diminuito o meno la RSS? Con l’altezza del braccio dell’albero. 
+
+- Logistic regression. Perché si usa? Cos’è?
+
+- Granger causality. Main concept e come la valutiamo.
+
+- Regressione. Qual è il problema principale? Tradeoff bias varianza.
+
+- Tuning curve di un neurone
+
+- Point process
+
+- Projection pursuit. Qual è la novità? Che trovo le proiezioni in modo iterativo, una dopo l’altra, e non tutte insieme. Ne trovo una, la sottraggo per trovare la seconda, e cosi via. 
+
+- HOS
+
+- Metodi per descrivere l’informazione in un neurone
+
+- ICA
+
+- Unsupervised learning
+
+- Hierarchical clustering
+
+- Granger Causality
+
+- Spiking activity di un neuron, come posso caratterizzarla?
+
+- Filosofia della likelihood
+
+- PCA
+
+- HOS. 
+
+- Caratterizzazione spiking activity e point proces
+
+- Supervised: nearest neighboor e bootstrap
+
+- Multivariate point process
+
+- Negentropy
+
+- Cross validation
+
+- Projection pursuit
+
+- neuron spiking activity
+
+- (Spikes, lambda, binning, cond int function,...bernoulli, likelihood)
+
+- supervised learning (nearest neighnour e bias var tradeoff, flexibility, error)
+
+- bootstrap
+
+- multivariant process e granger causality (distrib spike di due neuroni e correlazione che compone terza variabile: insieme le tre distribuzioni sono indipendenti
