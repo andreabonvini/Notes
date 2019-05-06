@@ -14,6 +14,27 @@
 
 - ***Describe the supervised learning technique called ridge regression for regression problems.***
 
+  (*William Bonvini*)  
+  Ridge Regression is a regularization technique that aims to reduce model complexity and prevent over-fitting which may result from simple linear regression.
+
+  In ridge regression, the cost function is altered by adding a penalty equivalent to the square of the magnitude of the coefficients.
+  $$
+  cost \space function=\sum_{i=1}^M(y_i-\sum_{j=0}^p(w_j\times x_{ij})\space)^2+\lambda\sum_{j=0}^pw_j^2
+  $$
+  where ${M}$ is the number of samples and ${p}$ is the number of features.
+
+  The penalty term ${\lambda}$ regularizes the coefficients of the features such that if they take large values the optimization function is penalized. 
+
+  When ${\lambda \to 0}$, the cost function becomes similar to the linear regression cost function. So lowering ${\lambda}$, the model will resemble the linear regression model.
+
+  It is always principled to standardize the features before applying the ridge regression algorithm.
+
+  (Source: [towardsdatascience explanation](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) )
+
+  Ridge Regression is, for example, used when the number of samples is relatively small wrt the number of features. Ridge Regression can improve predictions made from new data (i.e. reducing variance) by making predictions less sensitive to the Training Data.
+
+  (Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
+
 - ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
 
 - ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***
@@ -157,7 +178,7 @@
   $$
   a_1:\space\alpha_t = 1\space\space\space\beta_t=5\space\space\space\hat{r}(a_1)=0.63\space\space\space\mu_1=0.1\\a_2:\space\alpha_t = 6\space\space\space\beta_t=4\space\space\space\hat{r}(a_2)=0.35\space\space\space\mu_2=0.5\\a_3:\space\alpha_t = 11\space\space\space\beta_t=23\space\space\space\hat{r}(a_3)=0.16\space\space\space\mu_3=0.3\\a_4:\space\alpha_t = 12\space\space\space\beta_t=25\space\space\space\hat{r}(a_4)=0.22\space\space\space\mu_4=0.2\\a_5:\space\alpha_t = 38\space\space\space\beta_t=21\space\space\space\hat{r}(a_5)=0.7\space\space\space\mu_5=0.6
   $$
-  
+
 
   - *How much pseudo-regret the $TS$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)$ priors?*
 
