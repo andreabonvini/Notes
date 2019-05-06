@@ -2,7 +2,7 @@
 
 *A series of notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
-### Theory Questions
+## Theory Questions
 
 *Here are listed all the theory questions since 06/07/2017*
 
@@ -33,17 +33,17 @@
   $$
    
 
-  (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience 2](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
+  (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
 
   
 
-  Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}$ values, and compute the cross-validation error rate for each value of ${\lambda}$. We then select the value for ${\lambda}$ for which the cross-validation error is the smallest. Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}$.
+  Since ${\lambda}​$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}​$ values, and compute the cross-validation error rate for each value of ${\lambda}​$. We then select the value for ${\lambda}​$ for which the cross-validation error is the smallest. Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}​$.
 
   Restelli offers the following cost function notation:
 
   ${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
 
-  where ${L_D(\mathbf{w})}$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}$ is the model complexity term.
+  where ${L_D(\mathbf{w})}​$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}​$ is the model complexity term.
 
   By taking ${L(\mathbf{w})=\frac{1}{2} \mathbf{w}^T\mathbf{w}=\frac{1}{2}||\mathbf{w}||^2_2}$
 
@@ -237,3 +237,9 @@
   - *Which one of the previous posteriors is the most peaked one?*
 
   - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)$ priors?*
+
+## Interesting Articles
+
+- [Polynomial Regression](https://towardsdatascience.com/polynomial-regression-bbe8b9d97491)
+
+  
