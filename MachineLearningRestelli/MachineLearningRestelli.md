@@ -105,7 +105,7 @@
 
   *Sources:* [Kernel Methods - Bloomberg](https://www.youtube.com/watch?v=m1otj-SdwYw&feature=youtu.be)
 
-  - Kernel methods allow for HUGE feature spaces (even INFINITE dimensional feature spaces) without suffering from computational cost.
+  One of the main advantages kernel methods allow for HUGE feature spaces (even INFINITE dimensional feature spaces) without suffering from computational cost.
 
   - A method is *kernalized* in inputs only appear inside inner products: $\langle \psi(x),\psi(y)\rangle​$ for $x,y \space \in X​$ 
 
@@ -115,33 +115,9 @@
     k(x,y) = \langle \psi(x),\psi(y)\rangle
     $$
 
-  $XX^T =n\times d \cdot d\times n=n\times n$ !!!!!! we don't care about the dimension spaceeeee
+  $XX^T =n\times d \cdot d\times n=n\times n​$ !!!!!! we don't care about the dimension spaceeeee
 
-  ss
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
-
-  x
+  
 
   
 

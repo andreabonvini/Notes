@@ -555,7 +555,7 @@
 
 ## Exam Questions Barbieri
 
-- ***Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot***
+- **Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot , Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti? Shannon entropy e il legame con l’informazione. **
 
   *Sources:* *Course's Slides*, [Video From Luis Serrano](https://www.youtube.com/watch?v=9r7FIXEAGvs) , [Stanford.edu](<http://micro.stanford.edu/~caiwei/me334/Chap7_Entropy_v04.pdf>) 
 
@@ -569,7 +569,7 @@
 
   -----------------------------
 
-  Entropy measures the degree of our lack of information about a system. Suppose you throw a coin, which may land either with head up or tail up, each with probability $\frac{1}{2}$ . Then we have some uncertainty about the outcome of each "experiment". The uncertainty can be quantified by a positive number $H$. Now suppose you modified the coin (somehow) that you know for sure that each time you throw it, it will always land with head up (i.e. probability = 1). Then there is no uncertainty about the possible outcome of each “experiment”. The information entropy should be $H = 0$. In general, consider an experiment with $n$ possible outcomes, each with probability $p_{i} ,(\space i =1,...,n)$ with normalization condition $\sum_{i=1}^{n}p_{i} = 1$.
+  Entropy measures the degree of our lack of information about a system. Suppose you throw a coin, which may land either with head up or tail up, each with probability $\frac{1}{2}​$ . Then we have some uncertainty about the outcome of each "experiment". The uncertainty can be quantified by a positive number $H​$. Now suppose you modified the coin (somehow) that you know for sure that each time you throw it, it will always land with head up (i.e. probability = 1). Then there is no uncertainty about the possible outcome of each “experiment”. The information entropy should be $H = 0​$. In general, consider an experiment with $n​$ possible outcomes, each with probability $p_{i} ,(\space i =1,...,n)​$ with normalization condition $\sum_{i=1}^{n}p_{i} = 1​$.
 
   We are looking for a general formula $H(p_1,p_2,...,p_n)​$ that can characterize the uncertainty in all these experiments. Intuitively, we expect:
 
@@ -611,6 +611,8 @@
   $$
   H_b(p) = -p\log_2{p}-(1-p)\log_2(1-p)
   $$
+  ![](images/BEG.png)
+
   Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
   $$
   H(X,Y) = E_{X,Y}\left[-\log p(x,y)\right] = -\sum_{x,y}p(x,y)\log p(x,y)
@@ -620,16 +622,58 @@
   H(X|Y) = E_Y\left[H(X|y)\right]=-\sum_{y\in Y}p(y)\sum_{x\in X}p(x|y)\log p(x|y) = -\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)}
   $$
   Because entropy can be conditioned on a random variable or on that random variable being a certain value, care should be taken not to confuse these two definitions of conditional entropy, the former of which is in more common use. A basic property of this form of conditional entropy is that:
+  $$
+  H(X|Y) = H(X,Y)-H(Y)
+  $$
 
-  aa
+  ----------------------------
 
-  aa
+  *Derivation: (probably, not sure of the last step)*
+  $$
+  H(X|Y)=\\-\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)} = -\sum_{x,y}p(x,y)(\log p(x,y)-\log p(y)) =\\ -\sum_{x,y}p(x,y)\log p(x,y)+\sum_{x,y}p(x,y)\log p(y) = H(X,Y)-H(Y)
+  $$
 
-- Shannon entropy e il legame con l’informazione. 
+  ------------------------------------
 
-- Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti?
+  Let's talk now about *Mutual Information*... Mutual information measures the amount of information that can be obtained about one random variable by observing another. It is important in communication where it can be used to maximize the amount of information shared between sent and received signals. The mutual information of $X$ relative to $Y$ is given by:
+  $$
+  I(X;Y) = E_{X,Y}\left[SI(x,y)\right]=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}
+  $$
+  Where *SI* *(Specific mutual information)* is the *pointwise mutual information*.
 
-  ssssss
+  A basic property of the mutual information is that
+  $$
+  I(X;Y) = H(X)-H(X|Y)
+  $$
+  That is, knowing $Y$, we can save an average of $I(X;Y)$ bits in encoding $X$ compared to not knowing $Y$.
+
+  Mutual information is symmetric:
+  $$
+  I(X;Y) = I(Y;X) = H(X)+H(Y)-H(X,Y)
+  $$
+  To have an intuitive understanding of what's going on:
+
+  -------------------------------
+
+  $H(X)$ = The information stored in $X$
+
+  $H(X|Y)$ = The information stored in $X$ given that the value of $Y$ is known 
+
+  $H(X)-H(X|Y)$ = The information we know of $X$ without what we know of $X$ given $Y$, which is a measure of the dependence of $X$ and $Y$.
+
+  If $X$ and $Y$ have no dependence, then we get $I(X;Y) = H(X)-H(X)=0$.
+
+  If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)$ or $I(X;Y)=H(Y)-0=H(Y)$
+
+  So the mutual information $I(X;Y)​$, which is also referred of as a mutual dependence of $X​$ and $Y​$, can be captured using an equation in the form of:
+
+  $I(X;Y)=H(X)-H(X|Y)$.
+
+  -----------------------
+
+  lll
+
+
 
 - Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. 
 
