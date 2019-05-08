@@ -1,7 +1,3 @@
-
-
-
-
 # Advanced Signals and Data Processing in Medicine
 
 *A series of notes on the "Advanced SIgnals and Data Processing in Medicine" course as taught by Sergio Cerutti and Riccardo Barbieri during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
@@ -613,11 +609,11 @@
   $$
   ![](images/BEG.png)
 
-  Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
+  Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X​$ and $Y​$ is merely the entropy of their pairing: $(X,Y)​$. This implies that if $X​$ and $Y​$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to ​$ *Entropies Add* ). For example, if $(X,Y)​$ represents the position of a chess piece ($X​$ is the row and $Y​$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
   $$
   H(X,Y) = E_{X,Y}\left[-\log p(x,y)\right] = -\sum_{x,y}p(x,y)\log p(x,y)
   $$
-  Let's talk now about *Conditional Entropy*... The conditional entropy or conditional uncertainty of $X$ given random variable $Y$ (also called the equivocation of $X$ about $Y$ ) is the average conditional entropy over $Y$.
+  Let's talk now about *Conditional Entropy*... The conditional entropy or conditional uncertainty of $X​$ given random variable $Y​$ (also called the equivocation of $X​$ about $Y​$ ) is the average conditional entropy over $Y​$.
   $$
   H(X|Y) = E_Y\left[H(X|y)\right]=-\sum_{y\in Y}p(y)\sum_{x\in X}p(x|y)\log p(x|y) = -\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)}
   $$
@@ -655,6 +651,8 @@
 
   -------------------------------
 
+  Remember that $H$ can be seen as a measure of *uncertainty*!
+
   $H(X)$ = The information stored in $X$
 
   $H(X|Y)$ = The information stored in $X$ given that the value of $Y$ is known 
@@ -663,17 +661,15 @@
 
   If $X$ and $Y$ have no dependence, then we get $I(X;Y) = H(X)-H(X)=0$.
 
-  If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)$ or $I(X;Y)=H(Y)-0=H(Y)$
+  If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)​$ or $I(X;Y)=H(Y)-0=H(Y)​$
 
   So the mutual information $I(X;Y)​$, which is also referred of as a mutual dependence of $X​$ and $Y​$, can be captured using an equation in the form of:
 
-  $I(X;Y)=H(X)-H(X|Y)$.
+  $I(X;Y)=H(X)-H(X|Y)​$.
 
   -----------------------
 
-  lll
-
-
+  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)​$.
 
 - Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. 
 
