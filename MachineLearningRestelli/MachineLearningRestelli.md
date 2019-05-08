@@ -2,7 +2,7 @@
 
 *A series of notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
-### Theory Questions
+## Theory Questions
 
 *Here are listed all the theory questions since 06/07/2017*
 
@@ -27,9 +27,37 @@
 
   When ${\lambda \to 0}$, the cost function becomes similar to the linear regression cost function. So lowering ${\lambda}$, the model will resemble the linear regression model.
 
-  It is always principled to standardize the features before applying the ridge regression algorithm.
+  It is always principled to standardize the features before applying the ridge regression algorithm. Why is this? The coefficients that are produced by the standard least squares method are scale equivariant, i.e. if we multiply each input by ${c}$ then the corresponding coefficients are scaled by a factor of ${\frac{1}{c}}$. Therefore, regardless of how the predictor is scaled, the multiplication of the coefficient and the predictor ${(w_jx_j)}$ remains the same. However, this is not the case with ridge regression, and therefore, we need to standardize the predictors or bring the predictors to the same scale before performing ridge regression. the formula used to do this is given below.
+  $$
+  \hat{x}_{ij}=\frac{x_{ij}}{\sqrt{\frac{1}{n}\sum^n_{i=1}(x_{ij}-\bar{x}_j)^2}}
+  $$
+   
 
-  (Source: [towardsdatascience explanation](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) )
+  (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
+
+  
+
+  Since ${\lambda}​$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}​$ values, and compute the cross-validation error rate for each value of ${\lambda}​$. We then select the value for ${\lambda}​$ for which the cross-validation error is the smallest. Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}​$.
+
+  Restelli offers the following cost function notation:
+
+  ${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
+
+  where ${L_D(\mathbf{w})}​$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}​$ is the model complexity term.
+
+  By taking ${L(\mathbf{w})=\frac{1}{2} \mathbf{w}^T\mathbf{w}=\frac{1}{2}||\mathbf{w}||^2_2}$
+
+  we obtain:
+  $$
+  L(\mathbf{w})=\frac{1}{2}\sum_{i=1}^N(t_i-\mathbf{w}^T\phi(\mathbf{x}_i))^2+\frac{\lambda}{2}||\mathbf{w}||^2_2
+  $$
+  We observe that the loss function is still quadratic in **w**:
+  $$
+  \hat{\mathbf{w}}_{ridge}=(\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}
+  $$
+  (Source: Restelli's Slides)
+
+  
 
   Ridge Regression is, for example, used when the number of samples is relatively small wrt the number of features. Ridge Regression can improve predictions made from new data (i.e. reducing variance) by making predictions less sensitive to the Training Data.
 
@@ -107,6 +135,53 @@
   - *History based, Stochastic, Non-stationary.*
 
 - ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
+  (William Bonvini) 
+  I've already described Ridge Regression previously.
+
+  *Comparison:*
+
+  Ridge Regression is a frequentist approach:  
+  the model assumes that the response variable (y) is a linear combination of weights multiplied by a set of predictor variables (x). The full formula also includes an error term to account for random sampling noise. 
+
+  What we obtain from frequentist linear regression is a single estimate for the model parameters based only on the training data. Our model is completely informed by the data: in this view, everything that we need to know for our model is encoded in the training data we have available.
+
+  Ridge Regression gives us a single point estimate for the output. However, if we have a small dataset we might like to express our estimate as a distribution of possible values. This is where Bayesian Linear Regression comes in.
+
+  The aim of Bayesian Linear Regression is not to find the single “best” value of the model parameters, but rather to determine the *posterior distribution* (*a probability distribution that represents your updated beliefs about the parameter after having seen the data*) for the model parameters.  
+  Not only is the response generated from a probability distribution, but the model parameters are assumed to come from a distribution as well. The posterior probability of the model parameters is conditional upon the training inputs and outputs:
+  $$
+  P(\beta|y,X)=\frac{P(y|B,X)P(\beta|X)}{P(y|X)}
+  $$
+  Here, ${P(\beta |y,X)}$ is the posterior probability distribution of the model parameters given the inputs and outputs. This is equal to the likelihood of the data, ${P(y|\beta,X)}$, multiplied by the prior probability of the parameters and divided by a normalization constant. This is a simple expression of Bayes Theorem, the fundamental underpinning of Bayesian Inference:
+  $$
+  Posterior = \frac{Likelihood*Prior}{Normalization}
+  $$
+  
+
+  Let's stop and think about what this means. In contrast to Ridge Regression , or Linear Regression in general, we have a *posterior* distribution for the model parameters that is proportional to 
+
+  - the likelihood of the data
+
+  - the *prior* probability of the parameters. 
+
+  Here we can observe the two primary benefits of Bayesian Linear Regression:
+
+  1. **Priors**:   
+     if we have domain knowledge, or a guess for what the model parameters should be, we can include them in our model, unlike in the frequentist apporach which assumes everything there is to know about the parameters comes from the data. If we don't have any estimates ahead of time, we can use <u>non-informative priors</u> for the parameters such as a normal distribution.
+
+  2. **Posterior**:  
+     The result of performing Bayesian Linear Regression is a distribution of possible model parameters based on the data and the prior.  
+     This allows us to quantify our uncertainty about the model: if we have fewer data points, the posterior distribution will be more spread out.
+
+  
+
+  The formulation of model parameters as distributions encapsulates the Bayesian worldview: we start out with an initial estimate, our prior, and as we gather more evidence, **our model becomes less wrong**. Bayesian reasoning is a natural extension of our intuition. Often, we have an initial hypothesis, and as we collect data that either supports or disproves our ideas, we change our model of the world (ideally this is how we would reason)!
+
+  Source:
+
+  [towardsdatascience - Introduction to Bayesian Linear Regression](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7)
+
+  
 
 - ***Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
 
@@ -185,3 +260,9 @@
   - *Which one of the previous posteriors is the most peaked one?*
 
   - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)$ priors?*
+
+## Interesting Articles
+
+- [Polynomial Regression](https://towardsdatascience.com/polynomial-regression-bbe8b9d97491)
+
+  
