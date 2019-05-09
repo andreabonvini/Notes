@@ -231,7 +231,7 @@
   $$
   So, given $N$ vectors, the *Gram Matrix* is the matric of all *inner products* 
 
-  ![](images/GramMatrix.png)
+  ![](images/GramMatrix.PNG)
 
   If we substitute $\mathbf{w} = \Phi^T\mathbf{a}$ into $L_{\mathbf{w}}$ we get
   $$
