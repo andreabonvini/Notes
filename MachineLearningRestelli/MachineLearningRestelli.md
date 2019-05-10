@@ -12,9 +12,11 @@
 
   { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
 
-  Our goal is to build a binary classifier, and we want to do that by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+  { TO DO : adjust part on *KKT* conditions, add *kernels* and *slack variables* }
 
-  <img src="images/svm1.png" style="zoom:50%"/>
+  Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+
+  <img src="images/svm1.png" style="zoom:40%"/>
 
   With SVMs we force our *margin* to be at least *something* in order to accept it. by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
@@ -24,7 +26,7 @@
     $$
     |\mathbf{w}^T\mathbf{x}_n|=1
     $$
-    ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way $1$ does *not* represent the Euclidean distance)
+    ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
 
   - When you solve for the margin, the $w_1​$ to $w_d​$ will play a completely different role from the role $w_0​$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0​$ from $\mathbf{w}​$ and rename $w_0​$ with $b​$ (for *bias*).
     $$
@@ -47,7 +49,7 @@
 
   Since $\mathbf{x}''-\mathbf{x}'​$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}​$ is orthogonal to the *hyperplane*.
 
-  <img src="images/svm2.png" style="zoom:90%"/>
+  <img src="images/svm2.png" style="zoom:60%"/>
 
   Then the distance from $\mathbf{x}_n​$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}​$ (where $\mathbf{x}​$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}​$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}​$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}​$ in the direction of $\hat{\mathbf{w}}​$ ! )
   $$
@@ -55,7 +57,7 @@
   $$
   (We take the absolute value since we don't know if $\mathbf{w}​$ is facing $\mathbf{x}_n​$ or is facing the other direction )
 
-  <img src="images/svm3.PNG" style="zoom:80%"/>
+  <img src="images/svm3.PNG" style="zoom:70%"/>
 
   We'll now try to simplify our notion of *distance*.
   $$
@@ -87,7 +89,42 @@
   $$
   \underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
   $$
-  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for at least one value of $n$.
+  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n$ of the dataset.
+
+  So how can we solve this? This is a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the [*KKT*](<http://www.svms.org/kkt/>) (Karush–Kuhn–Tucker) conditions.
+
+  *Objective Function:*
+
+  We have to minimize
+  $$
+  \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
+  $$
+  *w.r.t.* to $\mathbf{w}$ and $b$ and maximize it *w.r.t.* the *Lagrange Multipliers* $\alpha_n\ge 0 $ (which becomes our only constraint)
+
+  We can easily get the two conditions for the unconstrained part:
+  $$
+  \nabla_{\mathbf{w}}\mathcal{L}=\mathbf{w}-\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n = 0 \;\;\;\;\;\;\;\; \mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n\\
+  \frac{\part\mathcal{L}}{\part b} = -\sum_{n=1}^{N}\alpha_n y_n = 0\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
+  $$
+  Now we can reformulate the *Lagrangian* by applying some substitutions 
+  $$
+  \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
+  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m
+  $$
+  (if you have doubts just go to minute 36.50 of [this](https://www.youtube.com/watch?v=eHsErlPJWUU) lecture by professor Yaser Abu-Mostafa at *Caltech* )
+
+  We end up with the *dual* formulation of the problem
+  $$
+  \underset{\alpha}{\operatorname{argmax}}\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m\\
+  \;\\
+  s.t. \;\;\;\;\;\;\;\;\alpha_n\ge0\;\;\;\forall{n}\\
+  \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
+  $$
+  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha$ , it was a constraint on $\mathbf{w}$ which is not part of our formulation anymore.
+
+  How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
+
+  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active ( $g_i(w^{*}) = 0​$ ) , and hence the point is a support vector, or its multiplier is zero. 
 
 - ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
 
@@ -108,7 +145,7 @@
 
   When ${\lambda \to 0}$, the cost function becomes similar to the linear regression cost function. So lowering ${\lambda}$, the model will resemble the linear regression model.
 
-  It is always principled to standardize the features before applying the ridge regression algorithm. Why is this? The coefficients that are produced by the standard least squares method are scale equivariant, i.e. if we multiply each input by ${c}$ then the corresponding coefficients are scaled by a factor of ${\frac{1}{c}}$. Therefore, regardless of how the predictor is scaled, the multiplication of the coefficient and the predictor ${(w_jx_j)}$ remains the same. However, this is not the case with ridge regression, and therefore, we need to standardize the predictors or bring the predictors to the same scale before performing ridge regression. the formula used to do this is given below.
+  It is always principled to standardize the features before applying the ridge regression algorithm. Why is this? The coefficients that are produced by the standard least squares method are scale equivariant, i.e. if we multiply each input by ${c}​$ then the corresponding coefficients are scaled by a factor of ${\frac{1}{c}}​$. Therefore, regardless of how the predictor is scaled, the multiplication of the coefficient and the predictor ${(w_jx_j)}​$ remains the same. However, this is not the case with ridge regression, and therefore, we need to standardize the predictors or bring the predictors to the same scale before performing ridge regression. the formula used to do this is given below.
   $$
   \hat{x}_{ij}=\frac{x_{ij}}{\sqrt{\frac{1}{n}\sum^n_{i=1}(x_{ij}-\bar{x}_j)^2}}
   $$
@@ -137,8 +174,6 @@ $$
   \hat{\mathbf{w}}_{ridge}=(\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}
 $$
   (Source: Restelli's Slides)
-
-  
 
   Ridge Regression is, for example, used when the number of samples is relatively small wrt the number of features. Ridge Regression can improve predictions made from new data (i.e. reducing variance) by making predictions less sensitive to the Training Data.
 
