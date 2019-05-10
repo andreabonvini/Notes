@@ -8,7 +8,88 @@
 
 - ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
 
-- ***Deﬁne the VC dimension and the describe the importance and usefulness of VC dimension in machine learning.***
+  (*Andrea Bonvini*) 
+
+  { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
+
+  Our goal is to build a binary classifier, and we want to do that by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+
+  <img src="images/svm1.png" style="zoom:50%"/>
+
+  With SVMs we force our *margin* to be at least *something* in order to accept it. by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
+
+  Let be $\mathbf{x}_n​$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0​$ (just image a *line* in a $2​$-D space for simplicity), before finding the distance we just have state two observations:
+
+  - There's a minor technicality about the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ which is annoying , let's say I multiply the vector $\mathbf{w}$ by $1000000$ , I get the *same* hyperplane! So any formula that takes $\mathbf{w}$ and produces the margin will have to have built-in *scale-invariance*, we do that by normalizing $\mathbf{w}$ , requiring that for the nearest data point $\mathbf{x}_n$:
+    $$
+    |\mathbf{w}^T\mathbf{x}_n|=1
+    $$
+    ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way $1$ does *not* represent the Euclidean distance)
+
+  - When you solve for the margin, the $w_1​$ to $w_d​$ will play a completely different role from the role $w_0​$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0​$ from $\mathbf{w}​$ and rename $w_0​$ with $b​$ (for *bias*).
+    $$
+    \mathbf{w} = (w_1,\dots,w_d)\\w_0=b
+    $$
+
+  So now our notation is changed:
+
+  The *hyperplane* is represented by
+  $$
+  \mathbf{w}^T\mathbf{x} +b= 0
+  $$
+  and our constraint becomes
+  $$
+  |\mathbf{w}^T\mathbf{x}_n+b|=1
+  $$
+  It's trivial to demonstrate that the vector $\mathbf{w}$ is orthogonal to the *hyperplane*, just suppose to have two point $\mathbf{x}'$ and $\mathbf{x''}$ belonging to the *hyperplane* , then $\mathbf{w}^T\mathbf{x}' +b= 0$ and $\mathbf{w}^T\mathbf{x}'' +b= 0$.
+
+  And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathbf{w}^T(\mathbf{x}''-\mathbf{x}') = 0 ​$ 
+
+  Since $\mathbf{x}''-\mathbf{x}'​$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}​$ is orthogonal to the *hyperplane*.
+
+  <img src="images/svm2.PNG" style="zoom:90%"/>
+
+  Then the distance from $\mathbf{x}_n$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}$ (where $\mathbf{x}$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}$ in the direction of $\hat{\mathbf{w}}$ ! )
+  $$
+  distance = |\;\hat{\mathbf{w}}^T(\mathbf{x}_n-\mathbf{x})\;|
+  $$
+  (We take the absolute value since we don't know if $\mathbf{w}​$ is facing $\mathbf{x}_n​$ or is facing the other direction )
+
+  <img src="images/svm3.PNG" style="zoom:80%"/>
+
+  We'll now try to simplify our notion of *distance*.
+  $$
+  distance = |\;\hat{\mathbf{w}}^T(\mathbf{x}_n-\mathbf{x})\;| = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n-\mathbf{w}^T\mathbf{x}\;|
+  $$
+  This can be simplified if we add and subtract the missing term $b$.
+  $$
+  distance = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n+b-\mathbf{w}^T\mathbf{x}-b\;| = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n+b-(\mathbf{w}^T\mathbf{x}+b)\;|
+  $$
+  Well, $\mathbf{w}^T\mathbf{x}+b$ is just the value of the equation of the plane...for a point *on* the plane. So without any doubt $\mathbf{w}^T\mathbf{x}+b= 0$ , our notion of *distance* becomes
+  $$
+  distance = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n+b\;|
+  $$
+  But wait...what is $|\;\mathbf{w}^T\mathbf{x}_n+b\;|$ ? It is the constraint the we defined at the beginning of our derivation!
+  $$
+  |\mathbf{w}^T\mathbf{x}_n+b|=1
+  $$
+  So we end up with the formula for the distance being just
+  $$
+  distance = \frac{1}{||\mathbf{w}||}
+  $$
+  *Which is sick AF*.
+
+  Let's now formulate the optimization problem: 
+  $$
+  \underset{w}{\operatorname{argmax}}\frac{1}{||\mathbf{w}||}\\\text{subject to}\;\underset{n=1,2,\dots,N}{\operatorname{min}}|\mathbf{w}^T\mathbf{x}_n+b|=1
+  $$
+  Since this is not a *friendly* optimization problem (the constraint have a minimum and an absolute value in them, which are annoying) we are going to find an equivalent problem which is easier to solve. Our optimization problem can be rewritten as
+  $$
+  \underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
+  $$
+  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for at least one value of $n$.
+
+- ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
 
 - ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***
 
@@ -122,8 +203,8 @@ $$
   | 1       | 3       | 4       | 10      |
   | -1      | 5       | 6       | 26      |
 
-  we can see that minimizing ${l_2}$ we obtain ${w_1=w_2=2}$, which means that it, in this case, tends to spread equally the weights.  
-  While ${l_1}$ can choose arbitrarily between the first three options, as long as the weights have the same sign it's ok. 
+  we can see that minimizing ${l_2}​$ we obtain ${w_1=w_2=2}​$, which means that it, in this case, tends to spread equally the weights.  
+  While ${l_1}​$ can choose arbitrarily between the first three options, as long as the weights have the same sign it's ok. 
 
   Now suppose ${x_2=2x_1}$, which means that ${x_2}$ does not add new information to the model, but such features have different scale now. We can say that all functions with ${w_1+2w_2=k}$ (in the example above ${k=4}$ ) give the same predictions and have same empirical risk.  
 
