@@ -153,7 +153,7 @@
   $D(t) = | x_{t} - y_{t}|​$
 
   For many systems this is an exponential function of time:
-  $D(t) =D_{0}e^{\lambda t} ​$
+  $D(t) =D_{0}e^{\lambda t} $
 
   $\lambda ​$ is the Lyapunov Exponent
 
@@ -733,7 +733,46 @@
 
 - Bagging? Perché servono più osservazioni (in generale)?
 
-- How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of neuron (tuning curve)
+- **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of neuron (tuning curve)**
+
+  So we want to model the response of a neuron... Experimentally it can be observed that the *tuning curve* of a neuron looks like that (this is just a random example)
+
+  ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/TC.png)
+
+  Remember that a *tuning curve* is just a graph of neuronal response (usually measured in action potentials or spikes per unit time) as a function of a continuous stimulus attribute, such as orientation, wavelength, or frequency. A neuron is said to be “tuned” for the stimulus that evokes the greatest response, and the width of the curve from the half-maximum response on either side of the peak indicates how broadly or narrowly tuned a neuron is for a particular stimulus attribute.
+
+  The noisy neuron has a response that can be deﬁned as: 
+  $$
+  R(s) = \mathcal{T}(s)+\sqrt{V(s)\xi}
+  $$
+  where $\mathcal{T}(s)$ represents the *Tuning deterministic* part and the second term represents the *Noise stochastic* part.
+
+  From our definition of *Mutual information* (amount of information that can be obtained about one random variable by observing another) we know that:
+  $$
+  I(X;Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)
+  $$
+  We now are interested in solving the following problem: given a response *r* what are the probabilities of having a stimulus *s* ? Let's try to solve this problem by firstly defining the *mutual information*:
+  $$
+  I(s;r) = H(r)-H(r|s)\\I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
+  $$
+  For each stimulus value $s_i$ a distribution of response values $p(r|s_i)$ is generated, the more $p(r|s_i)$ is closer to a delta function, the lower the value for $H(r|s_i)​$. (*remember: less noise uncertainty = higher information!* ) 
+  $$
+  I(s;r)=-\sum_ip(r_i)\log_2p(r_i)+\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2p(r_i|s_j)\\=\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2\frac{p(r_i|s_j)}{p(r_i)}\\
+  \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i,s_j)}{p(r_i)p(s_j)}
+  $$
+  aa
+
+  kk
+
+  ![](images/BOX1.PNG)
+
+  
+
+  ![](images/BOX2.png)
+
+  ![](images/BOX3.PNG)
+
+  ![](images/BOX4.PNG)
 
 - Unsupervised learning (cluster) + main problem of the cluster
 
