@@ -689,7 +689,7 @@
 
   Consider the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) (also called *Relative entropy*, is a measure of how one probability distribution is different from a second, reference probability distribution.) between the two distributions:
 
-  ![](images/maxentropy.PNG)
+  ![](images/maxen.PNG)
 
   But why are we so interested in maximizing the entropy?
 
