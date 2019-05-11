@@ -445,7 +445,7 @@
 
   These effects make the WV hardly readable, especially when a wideband noise is superimposed, and many authors have labeled the WV as a *"noisy"* representation (Cohen, 1989). 
 
-   Finally it is worth noting that any real signals generate interference between positive and negative frequencies of their spectrum, to avoid this effect in practical applications, the Hilbert transform is applied to the real signal to generate the analytic signal in which the negative frequencies are canceled.
+   Finally it is worth noting that any real signal generates interference between positive and negative frequencies of their spectrum, to avoid this effect in practical applications, the Hilbert transform is applied to the real signal to generate the analytic signal in which the negative frequencies are canceled.
 
 - **Talk me about Cohen's Class**
 
@@ -553,7 +553,7 @@
 
 - **Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot , Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti? Shannon entropy e il legame con l’informazione. **
 
-  *Sources:* *Course's Slides*, [Video From Luis Serrano](https://www.youtube.com/watch?v=9r7FIXEAGvs) , [Stanford.edu](<http://micro.stanford.edu/~caiwei/me334/Chap7_Entropy_v04.pdf>) 
+  *Sources:* *Course's Slides*, [Video From Luis Serrano](https://www.youtube.com/watch?v=9r7FIXEAGvs) , [Stanford.edu](<http://micro.stanford.edu/~caiwei/me334/Chap7_Entropy_v04.pdf>) , [This article](<https://pdfs.semanticscholar.org/d9c2/cde47774542b64697194de87d2d7e75fe16d.pdf>)
 
   ------------------------------------------------------------------------------------
 
@@ -561,7 +561,7 @@
 
   *Bayes Theorem* $\to$ $p(x|y) = \frac{p(y|x)p(x)}{p(y)}$
 
-  *Joint probability* $\to$ $p(x,y) = p(y|x)p(x) =p(x|y)p(y)$
+  *Joint probability* $\to​$ $p(x,y) = p(y|x)p(x) =p(x|y)p(y)​$
 
   -----------------------------
 
@@ -577,7 +577,7 @@
   Shannon showed that if we assume the entropy function should satisfy a set of reasonable properties then there is only one possible expression for it. These conditions are:
 
   - $I(p_1,p_2,\dots,p_n)$ is a continuous function and $I(p) \ge0$ (Information is a *non-negative* quantity)
-  - $f(n) = I(\frac{1}{n},\frac{1}{n},\dots,\frac{1}{n})$ us a monotonically increasing function of $n​$.
+  - $f(n) = I(\frac{1}{n},\frac{1}{n},\dots,\frac{1}{n})$ is a monotonically increasing function of $n$.
   - $I(1) = 0$ (Events that always occur do not communicate information)
   - $I(p_1p_2) = I(p_1) + I(p_2)$ (Information due to independent events is *additive*)
 
@@ -587,7 +587,7 @@
   $$
   The base of the logarithm can be any fixed real number greater than 1. ($2 \to bits$, $3\to trits$, etc...)
 
-  Now, suppose we have a distribution where event $i$ can happen with probability $p_i$. Suppose we have sampled it $N$ times and outcome $i$ was, accordingly, seen $n_i =Np_i$ times. The total amount of information we have received is:
+  Now, suppose we have a distribution where event $i​$ can happen with probability $p_i​$. Suppose we have sampled it $N​$ times and outcome $i​$ was, accordingly, seen $n_i =Np_i​$ times. The total amount of information we have received is:
   $$
   \sum_in_iI(p_i)=\sum Np_i\log\left(\frac{1}{p_i}\right)
   $$
@@ -669,7 +669,53 @@
 
   -----------------------
 
-  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)​$.
+  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)$.
+
+  Let's define now the *entropy* in a continuous domain, we see that the sum is replaced with an integral:
+  $$
+  H(X)=\int_{S}P(x)I(x)dx=-\int_SP(x)log_bP(x)dx
+  $$
+  where $P(x)​$ represents a *probability density function* and $S​$ is the support region of the random variable. Let's try to derive the *differential entropy* of a *Gaussian* centered in $0​$ (*Normal distribution*) :
+
+  We have $X \sim \mathcal{N}(0,\sigma^{2})​$ with *probability density function*​ $\phi(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{x^{2}}{2\sigma^{2}}}​$  then
+  $$
+  h_a(x) = -\int\phi(x)\log_a\phi(x)dx = -\int\phi(x)\left(\log_a{\frac{1}{\sqrt{2\pi\sigma^{2}}}-\frac{x^2}{2\sigma^2}\log_ae}\right)dx\\=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}E_{\phi}\left[X^2\right]=\frac{1}{2}\log_a(2\pi e\sigma^2)
+  $$
+  Even if we had considered a mean $\mu \neq 0$ the result would have been the same, $\mu$ does not enter the final formula, so all Gaussians with a common $\sigma $ have the same entropy.
+
+  We are going to prove that on the reals $\R$, the maximum entropy distribution with a given mean and variance is the *Gaussian* distribution
+
+  Let $g(x)$ be a *Gaussian PDF* (probability density function) with mean $\mu$ and variance $\sigma^2$ and $f(x)$ an arbitrary *PDF* with the same variance. Since differential entropy is translation invariant we can assume that $f(x)$ has the same mean of $\mu$ as $g(x)$
+
+  Consider the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) (also called *Relative entropy*, is a measure of how one probability distribution is different from a second, reference probability distribution.) between the two distributions:
+
+  ![](images/maxentropy.PNG)
+
+  But why are we so interested in maximizing the entropy?
+
+  ------
+
+  A data set where each point is equally probable has maximum entropy (or disorder). If we are given $16$ letters of the alphabet and each one of them appears equally often, and independently of each other, we need exactly $4$ bits to encode the $16$ letters. If we do not put any constraints on the data, the uniform distribution has maximum entropy. Now, assume that we are given data points from a specific problem (binarization of documents, for example) and we decide to keep only the mean $\mu $ and the variance $\sigma^2$ as descriptors of the data. The question would be, which distribution, among the many possible probability distributions, should we use later on to describe the data? Which is the distribution which makes no additional spurious assumptions? Which distribution most effectively models our ignorance by maximizing disorder? Not surprisingly, the answer is that the Gaussian distribution is the one with maximum entropy.
+
+  When in a pattern recognition problem we refer to a data class by its mean and
+  variance, we are in fact compressing the original data. We delete all additional
+  information possibly hidden in the data set. But we gain simplicity. If we keep
+  only the mean and variance of the data, the distribution which does not ”jump to
+  conclusions”, that is, the most general distribution given such constraints, is the
+  Gaussian distribution. When we model data using the normal distribution we are
+  trying to be as general as possible and we are trying to avoid introducing spurious
+  expectations in the distribution. We are in fact recognizing our ignorance about
+  the real data distribution.
+  In applications, when dealing with real data, we expect a normal distribution
+  (for example for the height of people or for the darkness of ink pixels in an OCR
+  task). Most of the time, however, we have no real clue as to the specific probability
+  distribution. In such cases, we play it safe, assuming a Gaussian distribution.
+
+  ------
+
+  TO DO : ADD LAST SLIDES (27 $\to$ 31)(THE DEFINITION OF RELATIVE ENTROPY IN THE SLIDES IS WRONG!)
+
+  
 
 - Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. 
 
