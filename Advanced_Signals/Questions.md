@@ -768,7 +768,7 @@
 
   ![](images/BOX2.png)
 
-  Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
+  Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)​$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
 
   For time-dependent signals, entropy grows with duration (uncertainty increases over time as properties may change).
 
@@ -776,7 +776,41 @@
 
   ![](images/BOX4.PNG)
 
-  
+  ...
+
+  ...
+
+  ...
+
+  ...
+
+  ...
+
+  If we use too large bins we lose resolution, if we use too small bins we lose structure. Too much resolution is less able to capture "common rules" (Trade-off)
+
+  It would be nice to build a model which doesn't suffer from this trade-off. How can we do that? We will have to make some specific assumptions. Remember that when we build a model we can only *restrict* the total amount of information that the brain is passing.
+
+  The first thing we do to build a model is to build the *ISI* (Inter Spike Interval) function.
+
+  An *inter-spike-interval histogram* is one of the ways by which experimental neurophysiologists analyze the electrical behaviour of neurons in the brain.
+
+  One of the simplest ways to study the patterning of spike activity in a neuron is to record the spikes from a single neuron, using a fine microelectrode , and then to construct an inter-spike interval histogram. This is simply a plot of the distribution of the observed times between spikes ($t_1, t_2, t_3,$ etc) collected in ‘bins’ of fixed width, say $1$ $ms$. Typically, such a histogram would be constructed from about $2000$ such intervals; if a neuron is firing at an average rate of about 5 spikes/s this will need a recording of $5$-$10$ $min$ of activity.
+
+  The *ISIH* below is the result of of maintaining retinal neurons under constant light and environmental conditions. The spontaneous spiking activity of these neurons is recorded.
+
+  ![](images/ISI1.PNG)
+
+  The ISIH is more powerful than the PSTH because it allows to extrapolate concepts independently from the stimulus , so if you want to go beyond the specific stimulus you have to build histograms where *time* is absolute ( *ISIH* ). This is extremely useful because we know that neurons are encoding in frequency and the *ISIH* is telling us something about it. The ISI Probability Density Function is the ISI normalized by the total number of spikes.
+
+  Given the following problem:
+
+  ![](images/PP.PNG)
+
+  We'd like to infer the *stimulus* (position) by looking at the *response* (spiking) [Look here](<https://www.youtube.com/watch?v=lfNVv0A8QvI>)
+
+  We have a *continuous* hidden process (which is the trajectory of the *rat*) and then there is the spiking activity which is *not* continuous but happens in *specific* points in time, we call this kind of process a *Point Process*. Point processes are characterized by events that are specific and unpredictable without any other information.
+
+  ...
 
 - Unsupervised learning (cluster) + main problem of the cluster
 
