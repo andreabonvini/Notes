@@ -2,12 +2,24 @@
 
 *A series of notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
 
-# Search Algorithms
+# Search Problems
+
+### Definition of a Search Problem
+
+- Set of states
+- Initial state
+- Actions
+- Result Function: ${Result(s,a)=s'}$
+- Costs
+- Goal test
+
+### Search Algorithms
 
 Legenda:
 
-- b =  Branching factor: what is the maximum number of children a node can have, the maximum cardinality of the set returned
-- Epsilon is the smallest path cost you have.
+- ${b}$  =  Branching Factor:   
+  what is the maximum number of children a node can have, the maximum cardinality of the set returned
+- ${\epsilon}​$ is the smallest path cost you have.
 
 
 
@@ -30,8 +42,6 @@ Legenda:
 | Iterative Deepening Search | Yes(but not when it's infinite) | No (but if all costs are 1 it finds the optimal solution) | $O(b^d)$ | $O(bd)$ |
 |  |  |  |  |  |
 |                            |                                 |                                                           |        |       |
-
-
 
 
 
@@ -91,7 +101,7 @@ Legenda:
 
 # Constraint Satisfaction Problems
 
-#### Definition
+### Definition
 
 A (discrete) CSP is defined by:
 
@@ -101,27 +111,28 @@ A (discrete) CSP is defined by:
 
 CSP constraints are represented by logical expressions involving the problem's variables. Such expressions may take a definite truth value when they are applied to an assignment.
 
-#### Backtracking
+### Methods
 
-Choose variables with the specified method (in lexical graphical order if not specified), don't update domains
+<u>*Basic Solving Tecnhiques*</u>
 
-#### Backtracking with forward checking
+- **Backtracking**  
+  Choose variables with the specified method (in lexical graphical order if not specified), don't update domains
+- **Backtracking with forward checking**  
+  Choose variables with the specified method (in lexical graphical order if not specified), update domains
 
-Choose variables with the specified method (in lexical graphical order if not specified), update domains
+<u>*Variable Selection Heuristics*</u>
 
-#### Degree Heuristic
+- **Degree Heuristic**  
+  Choose the variable that is involved in the largest number of constraints on other unassigned variables
+- **Minimum Remaining Values (MRV) **  
+  Choose the variable with the fewest possible values in the domain
 
-Assign a value to the variable that is involved in the largest number of constraints on other unassigned variables
+<u>*Value Selection Heuristics*</u>
 
-#### Minimum Remaining Values (MRV)
+- **Least-constraining value heuristic**  
+  Choose the value of the selected variable that rules out the smallest number of values in variables connected to the current variable by constraints
 
-Choose the variable with the fewest possible values in the domain
-
-#### Least-constraining value heuristic:
-
-Choose a value that rules out the smallest number of values in variables connected to current variable by constraints
-
-#### Arc Consistency
+### Arc Consistency
 
 1. build the constraint directed graph
 
@@ -530,23 +541,27 @@ The algorithm ends as soon as you find one of the following:
 
 ### Forward Chaining
 
-- **Algorithm**
+Forward Chaining is a *sound and complete* inference procedure
 
-1. let's consider rules in the "implication form", do not put them in CNF
-2. start from your knowledge base and consider the one literals which means:
-   if you have a rule that says: 'a' it means that in your knowledge base there is 'a' , since it is telling you that 'a' must be true.
-3. Consider the rules and try to apply Modus Ponens:
+- **Algorithm**  
+  consider rules in the "implication form", do not put them in CNF .  
+  1. Start from your knowledge base which is composed only by the one literals that have been provided to you
+  2. Apply Modus Ponens.  
+     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}$.
+  3. If all the predicates on the right of the clauses (the effects) have been derived stop. You obtained all the sentences entailed by the KB.  
+     else go back to step 2  
 
-- **Example**
 
-1. A -> B
-2. A (which means that A got to be true)
-3. B MP(2,1)
+- **Example**   
+  1. ${A \to B}$
+  2. ${A}$
+  3. ${B \space \space \space  MP(2,1)}$
 
-write the monus ponens in the form MP(preconditions, effects) (pre= left side of implication, eff = right side)
 
-- **Quali sono tutte le conseguenze logiche della KB? Perché?** 
-  - Le formule b, c, a trovate al punto precedente sono tutte e sole le conseguenze logiche della KB perché la procedura di inferenza della concatenazione in avanti è una sound and complete inference procedure 
+
+
+
+
 
 
 
@@ -897,7 +912,7 @@ $$
 
 
 
-# Parate di culo
+# Ass Savers
 
 - Is [a] logically entailed by the KB? Explain why. 
   Formula [a] is logically entailed by the KB because resolution is a sound inference procedure
@@ -909,7 +924,7 @@ $$
 
   
 
-- Arc consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
+- The Arc Consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
 
 - Factoring:
   A v A = A
@@ -917,8 +932,6 @@ $$
 -  Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
    Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
   (trivial, but still...)
-
-
 
 
 
@@ -940,15 +953,12 @@ $$
 
 -  **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
   Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem. Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state that is satisfied by the initial state of the planning problem. 
-
 -  **Why are forward planning and backward planning said to search in the space of states and in the space of goals, respectively?**    
   The states of the search problem formulated by forward planning are states of the planning problem. The states of the search problem formulated by backward planning are goals of the planning problem. 
-
 -  **Which one between forward planning and backward planning can generate inconsistent situations? Why? How can these inconsistencies be managed?**   
   Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
-
-   
-
+- **Consider using forward chaining for deriving the sentences entailed by your KB, can you list all the sentences entailed by such KB?**  
+  Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
 
 
 
