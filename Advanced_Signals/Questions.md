@@ -624,14 +624,20 @@
 
   ----------------------------
 
-  *Derivation: (probably, not sure of the last step)*
+  *Derivation* :
   $$
-  H(X|Y)=\\-\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)} = -\sum_{x,y}p(x,y)(\log p(x,y)-\log p(y)) =\\ -\sum_{x,y}p(x,y)\log p(x,y)+\sum_{x,y}p(x,y)\log p(y) = H(X,Y)-H(Y)
+  H(X|Y)=\\-\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)} = -\sum_{x,y}p(x,y)(\log p(x,y)-\log p(y)) =\\ -\sum_{x,y}p(x,y)\log p(x,y)+\sum_{x,y}p(x,y)\log p(y) = H(X,Y)-H(Y)
+  $$
+  ​				Observe that by the law of total probability $\sum_xp(x,y) = p(y)$ , hence
+  $$
+  \sum_{x,y}p(x,y)\log p(y) = \sum_yp(y)\log{p(y)=-H(Y)}
   $$
 
   ------------------------------------
 
-  Let's talk now about *Mutual Information*... Mutual information measures the amount of information that can be obtained about one random variable by observing another. It is important in communication where it can be used to maximize the amount of information shared between sent and received signals. The mutual information of $X$ relative to $Y$ is given by:
+  
+
+  Let's talk now about *Mutual Information*... Mutual information measures the amount of information that can be obtained about one random variable by observing another. It is important in communication where it can be used to maximize the amount of information shared between sent and received signals. The mutual information of $X​$ relative to $Y​$ is given by:
   $$
   I(X;Y) = E_{X,Y}\left[SI(x,y)\right]=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}
   $$
@@ -697,19 +703,7 @@
 
   A data set where each point is equally probable has maximum entropy (or disorder). If we are given $16$ letters of the alphabet and each one of them appears equally often, and independently of each other, we need exactly $4$ bits to encode the $16$ letters. If we do not put any constraints on the data, the uniform distribution has maximum entropy. Now, assume that we are given data points from a specific problem (binarization of documents, for example) and we decide to keep only the mean $\mu $ and the variance $\sigma^2$ as descriptors of the data. The question would be, which distribution, among the many possible probability distributions, should we use later on to describe the data? Which is the distribution which makes no additional spurious assumptions? Which distribution most effectively models our ignorance by maximizing disorder? Not surprisingly, the answer is that the Gaussian distribution is the one with maximum entropy.
 
-  When in a pattern recognition problem we refer to a data class by its mean and
-  variance, we are in fact compressing the original data. We delete all additional
-  information possibly hidden in the data set. But we gain simplicity. If we keep
-  only the mean and variance of the data, the distribution which does not ”jump to
-  conclusions”, that is, the most general distribution given such constraints, is the
-  Gaussian distribution. When we model data using the normal distribution we are
-  trying to be as general as possible and we are trying to avoid introducing spurious
-  expectations in the distribution. We are in fact recognizing our ignorance about
-  the real data distribution.
-  In applications, when dealing with real data, we expect a normal distribution
-  (for example for the height of people or for the darkness of ink pixels in an OCR
-  task). Most of the time, however, we have no real clue as to the specific probability
-  distribution. In such cases, we play it safe, assuming a Gaussian distribution.
+  When in a pattern recognition problem we refer to a data class by its mean and variance, we are in fact compressing the original data. We delete all additional information possibly hidden in the data set. But we gain simplicity. If we keep only the mean and variance of the data, the distribution which does not ”jump to conclusions”, that is, the most general distribution given such constraints, is the Gaussian distribution. When we model data using the normal distribution we are trying to be as general as possible and we are trying to avoid introducing spurious expectations in the distribution. We are in fact recognizing our ignorance about the real data distribution. In applications, when dealing with real data, we expect a normal distribution (for example for the height of people or for the darkness of ink pixels in an OCR task). Most of the time, however, we have no real clue as to the specific probability distribution. In such cases, we play it safe, assuming a Gaussian distribution.
 
   ------
 
@@ -733,11 +727,11 @@
 
 - Bagging? Perché servono più osservazioni (in generale)?
 
-- **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of neuron (tuning curve)**
+- **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of a neuron (tuning curve)**
 
   So we want to model the response of a neuron... Experimentally it can be observed that the *tuning curve* of a neuron looks like that (this is just a random example)
 
-  ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/TC.png)
+  ![](images/TC.png)
 
   Remember that a *tuning curve* is just a graph of neuronal response (usually measured in action potentials or spikes per unit time) as a function of a continuous stimulus attribute, such as orientation, wavelength, or frequency. A neuron is said to be “tuned” for the stimulus that evokes the greatest response, and the width of the curve from the half-maximum response on either side of the peak indicates how broadly or narrowly tuned a neuron is for a particular stimulus attribute.
 
@@ -755,14 +749,18 @@
   $$
   I(s;r) = H(r)-H(r|s)\\I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
   $$
-  For each stimulus value $s_i$ a distribution of response values $p(r|s_i)$ is generated, the more $p(r|s_i)$ is closer to a delta function, the lower the value for $H(r|s_i)​$. (*remember: less noise uncertainty = higher information!* ) 
+  For each stimulus value $s_i​$ a distribution of response values $p(r|s_i)​$ is generated, the more $p(r|s_i)​$ is closer to a delta function, the lower the value for $H(r|s_i)​$. ( *remember: less noise uncertainty = higher information!* ) 
   $$
-  I(s;r)=-\sum_ip(r_i)\log_2p(r_i)+\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2p(r_i|s_j)\\=\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2\frac{p(r_i|s_j)}{p(r_i)}\\
-  \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i,s_j)}{p(r_i)p(s_j)}
+  I(s;r)=-\sum_ip(r_i)\log_2p(r_i)+\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2p(r_i|s_j)\\
+  = -\sum_ip(r_i)\log_2p(r_i)+\sum_{i,j}p(r_i,s_i)\log_2p(r_i|s_j)\\
+  = -\sum_{i,j}p(r_i,s_j)\log_2p(r_i)+\sum_{i,j}p(r_i,s_i)\log_2p(r_i|s_j)\\
+  \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i,s_j)}{p(r_i)p(s_j)}= \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i|s_j)}{p(r_i)}
   $$
-  aa
-
-  kk
+  ​			Observe that by the law of total probability $\sum_jp(r_i,s_j) = p(r_i)​$ , hence
+  $$
+  \sum_ip(r_i)\log_2p(r_i) = \sum_{i,j}p(r_i,s_j)\log_2p(r_i)
+  $$
+  
 
   ![](images/BOX1.PNG)
 
@@ -770,9 +768,15 @@
 
   ![](images/BOX2.png)
 
+  Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
+
+  For time-dependent signals, entropy grows with duration (uncertainty increases over time as properties may change).
+
   ![](images/BOX3.PNG)
 
   ![](images/BOX4.PNG)
+
+  
 
 - Unsupervised learning (cluster) + main problem of the cluster
 
