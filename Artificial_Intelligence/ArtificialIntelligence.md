@@ -83,13 +83,23 @@ Legenda:
 
 - Like breadth-first search,  A* is *complete* and will always find a solution if one exists provided c(node_1,node_2) > epsilon > 0 for fixed epsilon
 
-- Optimal if h() is admissible, with tree search (no elimination repeated nodes)
-- Optimal if h() is consistent, with graph search (elimination repeated nodes)
+- Optimal if h() is admissible, with tree search (no elimination of repeated nodes)
+- Optimal if h() is consistent, with graph search (elimination of repeated nodes)
 
 
 
 
 # Constraint Satisfaction Problems
+
+#### Definition
+
+A (discrete) CSP is defined by:
+
+- A finite set ${}X={x_1,...,x_n}$ of *variables*
+- For every variable ${x_i}$, a set ${D_i}$ of possible values, called the *domain* of ${x_i}$ (such domain can be a tuple of domains if required)
+- A finite set ${C=\{c_1,...,c_m\}}$ of *constraints* on possible assignments of values to variables.
+
+CSP constraints are represented by logical expressions involving the problem's variables. Such expressions may take a definite truth value when they are applied to an assignment.
 
 #### Backtracking
 
@@ -161,6 +171,10 @@ Propositional Logic is a branch of logic, and it can be thought as comprised of 
 1. Syntax: which specifies how to build sentences
 2. Semantics: which attaches to these sentences a meaning
 3. Inference Rules: which manipulate these sentences to obtain more sentences
+
+Before diving into it let's see an example of PL sentence:
+
+${MotherAB \iff FemaleA \space \and ParentAB}$
 
 #### Syntax of PL
 
@@ -314,7 +328,7 @@ When we say that resolution is ==refutation complete==, we mean that this proced
 
 solve
 $$
-\phi_1 |= \phi_2
+\phi_1 \models \phi_2
 $$
 
 1. negate 
@@ -327,13 +341,13 @@ $$
 3. Enumerate all clauses
 4. compare them together, if a literal appears in both clauses and in only one of them it is negated we get rid of it and write a new clause 
    Examples:
-   - 1. A
-     2. notA or B
-     3. B   R (1,2) 
-   - 1. notA or notB
-     2. A or B
-     3. notB or B   R(1,2)
-     4. notA or A   R(1,2)
+   - 1. ${A}$ 
+     2. ${\neg A \or B}$ 
+     3. ${B}$                          R (1,2) 
+   - 1. ${\neg A \or \neg B}$
+     2. ${A \or B}$ 
+     3. ${\neg B \or B}$               R(1,2)
+     4. ${\neg A \or A}$               R(1,2)
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
@@ -341,16 +355,35 @@ $$
 
 - *Unit-preference strategy*
 
-  New Def:
-  "Prescribes that pairs in which one of the two formulas is a literal should be preferred. The basic idea is that, as we are looking for the empty clause, we had better focus on clauses that are already small".
+  **Definition**
+  "Pairs in which one of the two formulas is a literal should be preferred. The basic idea is that, as we are looking for the empty clause, we have better focus on clauses that are already small".
 
-  Old Def:
+  **Marco's quote**  
+  "Basta che ci sia sempre una clausola con un solo letterale.  
+  Non credo importi l'ordine.   
+  Io infatti vado sempre a sentimento cercando di scegliere quelle che mi fanno finire prima"
+
+  **Gne Procedure **  
+  The order in which you compare the clauses can be random, though if you want to make sure to compare all the clauses with each other it's better to follow a procedure (sometimes it can be time consuming). The procedure followed during the correction is probably the following:  
   Give preference to resolutions involving the clauses with the smallest number of literals.
-  In depth: Considera la prima clausola della tua KB con il minimo numero di terminali e confrontala con tutte le altre clausole a partire dalla prima e andando in ordine fino alla fine (paragonala anche con le derivazioni generate in itinere!)
-  Una volta che hai finito di confrontare tale clausola con tutte le altre, ripeti il procedimento con una nuova clausola col numero minimo di letterali.
+  In depth: Consider the first clause of your KB with the smallest number of literals and compare it with all of the others starting from the first one and going orderly until the end (compare it even with the derivations you obtained in itinere!).  
+
+  Once you are done comparing such clause, repeat the algorithm with the following clause with the smallest number of literals.  
+
+  This procedure can be misleading since if there were clauses with more than 2 literals, we should start comparing the one literals with the two-literals clauses, and 
+
+  **Example**  
+  ![](images/unit_resolution_1.jpeg)
+
+  **CounterExample**
+
+  # ![](images/unit_resolution_2.png)
+
+  
 
 - *Set-of-support resolution*
-  Solve the problem by using always at least one element of the set of support or its derivations.
+
+- Solve the problem by using always at least one element of the set of support or its derivations.
   Does not guarantee completeness.
 
 - *Input resolution*
@@ -372,7 +405,11 @@ As any other type of logic, FOL is composed of three elements:
 - a semantics that defines under which conditions a sentence of the language is true or false.
 - a calculus that mechanically determines the validity of a sentence.
 
-##### **Formal language**
+Before diving into it let's see an example of FOL sentence:
+
+${\forall x \forall y(Mother(x,y))\iff Female(x) \and Parent(x,y))}$
+
+#### **Formal language**
 
 Defined by means of
 
@@ -415,7 +452,7 @@ Defined by means of
   - *Predicates*
     A predicate is a property that  a given individual can possess or not, or a relation that can subsist or not subsist among couples, terns, etc. of individuals.
 
-##### **Semantics**
+#### **Semantics**
 
 To assign semantics to a logical language means to define a criterion to determine whether an argument is valid. The validity of an argument is reduced to the relation of logical entailment among formulas. This notion of entailment is based on the concept of truth of a formula. But in general a formula is not true or false per se, but only with respect to a precise interpretation of the descriptive symbols of its language (predicates and constants). It follows that to specify the semantics of a language is to define when formula ϕ is true in a model M, which is expressed by the notation ${M \models \varphi}$.
 A few definition:
@@ -433,7 +470,7 @@ A few definition:
 - *Satisfiability*
   a formula ${\varphi}$ is satisfiable if for some model M and for some assignment val we have ${M,val \models \varphi}$.
 
-##### Calculus
+#### Calculus
 
 Similar to the calculus procedures of Propositional Logic, it's though considered a prerequisite for such course so I will not go deep into it.
 
@@ -462,14 +499,34 @@ $$
 
 ### Backward Chaining
 
-1. Draw the root, which is the end literal to be derived
-2. derive the AND children.
-3. Analyze the children from the left to the right:
-   1. if the literal of the AND child is a clause of the KB we are happy with it and leave the terminal alone.
-   2. if the literal of the AND child is a right member of a clause of the KB go back to 2.
-   3. otherwise suck it up, you can't derive the root from your KB
+Backward chaining is the logical process of inferring unknown truths from known conclusions by moving backward from a solution to determine the initial conditions and rules.   
+In AI, backward chaining is used to find the conditions and rules by which a logical result or conclusion was reached. An AI might utilize backward chaining to find information related to conclusions or solutions in reverse engineering or game theory applications.  
+As a goal-driven and top-down form of reasoning, backward chaining usually employs a depth-first search strategy by starting from a conclusion, result or goal and going backward to infer the conditions from which it resulted.
 
+**Algorithm**
 
+Initially the KB is composed only from the single literals and the Goal List is composed only from the literal we want to infer. In our example we have ${KB=\{E;F;P\}}$ and ${Goal \space List = Z}​$.  
+The children to be derived can be a conjunct of literals (which translates into two children whose branches are connected via an arc) or a single literal (simply one only-child).
+
+1. Draw the root, which is the end literal to be derived.
+2. Analyze the children using depth first search:
+   1. if the node is part of our KB a we are happy with it and we mark it with a check mark.
+   2. elif the node is derivable and is not in the Goal List we add it to the Goal List and derive it.
+   3. elif the node is already in the goal list we end the search for that node
+   4. elif the node is not in the Goal List, is not part of the KB, and is not derivable we mark it with an X.
+   5. go back to 2
+
+The algorithm ends as soon as you find one of the following:
+
+1. a conjunct of true (check marked) children of the goal literal
+2. a true only child of the goal literal
+3. end of the search (in this case the goal is not satisfied)
+
+ 
+
+**Exam's Example**
+
+![1557584378119](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1557584378119.png)
 
 ### Forward Chaining
 
@@ -603,7 +660,7 @@ this algorithm is Any Time: we can repeat these steps as long as we want and the
 
 
 
-# PLANNING
+# Planning
 
 #### Closed World Assumption
 
@@ -614,8 +671,9 @@ In STRIPS, this means that all the predicates not listed in the representation o
 
 - *<u>Predicate</u>*
 
-  - something that can be true or false. stuff with parameters or without. as parameters, parameters take constants.
-    a predicate with more than one parameter is called relation
+  - something that can be true or false. stuff with parameters or without.   
+    As parameters, predicates take constants.
+    A predicate with more than one parameter is called *relation*.
 
   - Predicates can be divided in two classes:
     - *Fluent*
@@ -625,7 +683,7 @@ In STRIPS, this means that all the predicates not listed in the representation o
     - *Atemporal predicate*
       (e.g. Ball(A))
 
-- *<u>Costants</u>*
+- *<u>Constants</u>*
   A, B : denotes object
 
 - *<u>Primitives & Derivables</u>*
@@ -650,23 +708,20 @@ A state is represented by a set of literals that are:
 
 - PDLL
 
-  - Set of literals that are function-free
+  - Goals are represented by a set of literals that are function-free ${\to}$ variables and negative literals are allowed!
     e.g. 
     not On(A,B) 
     On(x,A)
-    can be negative and can contain variables!
 
-  - PDLL -> extends STRIPS
+  - PDLL extends STRIPS
 
   - if you have a variable in a goal than this variable has an existence quantifier
     On(x,A) means Exists x |on(x,A) is true?
 
 - STRIPS 
 
-  - set of positive literals without variables
-    STRIPS doesn't allow negative goals and variables in goal
-
-    
+  - Goals are represented by a set of positive literals
+  - STRIPS doesn't allow negative goals and variables in goals
 
 #### Action Schemas & Actions
 
@@ -680,12 +735,12 @@ Valid for both STRIPS and PDLL:
 
   - *<u>Preconditions</u>*
     list of literals that are function free that state what should be true in the current state in order for the action to be applicable.
-    definition:
+    A precondition allows to decide if an action is applicable in a state.
+    An action is *applicable* in a state when 
 
-    - precondition allows to decide if an action is applicable in a state.
-      An action is applicable in a state when all the positive preconditions of the action are present in the description of the state
-      (and not any negative precondition of the action is present in the description of the state)
-      In fact he precondition can also contain some negative literals (something that Amigoni doesn't like). 
+    - All the positive preconditions of the action are present in the description of the state
+    - None of the negative preconditions of the action is present in the description of the state.
+      I*n fact the precondition can also contain some negative literals* (something that Amigoni doesn't like). 
 
   - *<u>Effects</u>*
 
@@ -693,11 +748,11 @@ Valid for both STRIPS and PDLL:
     2. delete the negative effects.
     3. add the positive effects.
 
-    do not mention atemporal predicates in the actions please.
+    Do not mention atemporal predicates in the actions please.
 
 - ***frame problem***
   transitioning from a state to the other most of the things don't change. (I wrote it just because he could ask it at the exam).
-  Example? Disney Cartoons LOL. fixed background, mickey mouse moves just moves his legs and arms e.e
+  Example? Disney Cartoons LOL. fixed background, mickey mouse just moves his legs and arms e.e
 
 - Action types (concept needed for backward planning)
   - *relevant actions:*  
@@ -717,7 +772,7 @@ Valid for both STRIPS and PDLL:
 
 #### Backward Planning / Regression Planning
 
-*definition*: Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state (he means goal state probably) that is satisfied by the initial state of the planning problem. 
+*definition*: Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a goal state that is satisfied by the initial state of the planning problem. 
 
 - given an action A and a goal G, such that A is relevant and consistent for the goal G, the regression of the goal G through the action A is the goal G'
   R[G,A] = G'
@@ -727,7 +782,7 @@ Valid for both STRIPS and PDLL:
 - In Practice:
   g' is found by copying g, deleting positive effects of the action, adding all the preconditions of A
 
-- Some goals g' will not be consistent , I would  need a consistency check but usually it's not done. 
+- Some goals g' will not be consistent , I would need a consistency check but usually it's not done. 
   Depth first search would suck! limited depth search would be ok, other searches as well.
 
   
@@ -735,8 +790,10 @@ Valid for both STRIPS and PDLL:
 
 #### Hierarchical Task Network
 
-- Search in the space of plans, which means: let's start from an empty plan (just initial state + goal state) as the root. its children will be all the plans with only one action going from the initial state to the goal state. Their children will have two actions and so on until we find a plan that actually is feasible for reaching the goal state.
-- An optimization consists in the Partial Ordering Planning which constraints the actions of the plan to respect a certain order
+- Search in the space of plans, which means: let's start from an empty plan (just initial state + goal state) as the root.  
+  Its children will be all the plans with only one action going from the initial state to the goal state.  
+  Their children will have two actions and so on until we find a plan that actually is feasible for reaching the goal state.
+- An optimization consists in the Partial Ordering Planning which constraints the actions of the plan to respect a certain order.
 
 
 
@@ -790,7 +847,7 @@ $$
   In this case no precondition.
   it says that if I'm dropping x in a situation s then i will reach a situation in which im not holding x.
 
-- <u>*frame axiom</u>*
+- <u>frame axiom</u>
 
   Unfortunately we have to specify even what is not changing
   it consists in describing what is not changing:
@@ -823,9 +880,8 @@ $$
 
 
 
-- STRIPS WAS CREATED TO SIMPLIFY ALL THIS MESS.
-  but:
-  SITUATION CALCULUS --> TOO COMPLEX --> MOVE TO STRIPS --> SOMETIMES DIFFUCULT --> MOVE TO SITUATION CALCLULUS BUT USE PROPOSITIONAL LOGIC INSTEAD OF FIRST ORDER LOGIC.
+- STRIPS was created to simplify all this mess, but:
+  Situation Calculus ${\to}$ Too Complex ${\to}$ Move to STRIPS ${\to}$ Sometimes difficult to handle ${\to}$ Move to Situation Calculus but use Propositional Logic instead of First Order Logic.
 
 
 
@@ -868,6 +924,30 @@ $$
 
 
 
+
+
+
+
+# Doubts
+
+- Unit Resolution
+
+  
+
+
+
+# Theory Questions
+
+-  **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
+  Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem. Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state that is satisfied by the initial state of the planning problem. 
+
+-  **Why are forward planning and backward planning said to search in the space of states and in the space of goals, respectively?**    
+  The states of the search problem formulated by forward planning are states of the planning problem. The states of the search problem formulated by backward planning are goals of the planning problem. 
+
+-  **Which one between forward planning and backward planning can generate inconsistent situations? Why? How can these inconsistencies be managed?**   
+  Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
+
+   
 
 
 
