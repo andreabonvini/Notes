@@ -28,7 +28,7 @@
     $$
     ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
 
-  - When you solve for the margin, the $w_1​$ to $w_d​$ will play a completely different role from the role $w_0​$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0​$ from $\mathbf{w}​$ and rename $w_0​$ with $b​$ (for *bias*).
+  - When you solve for the margin, the $w_1$ to $w_d$ will play a completely different role from the role $w_0$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0$ from $\mathbf{w}$ and rename $w_0$ with $b$ (for *bias*).
     $$
     \mathbf{w} = (w_1,\dots,w_d)\\w_0=b
     $$
@@ -45,17 +45,17 @@
   $$
   It's trivial to demonstrate that the vector $\mathbf{w}$ is orthogonal to the *hyperplane*, just suppose to have two point $\mathbf{x}'$ and $\mathbf{x''}$ belonging to the *hyperplane* , then $\mathbf{w}^T\mathbf{x}' +b= 0$ and $\mathbf{w}^T\mathbf{x}'' +b= 0$.
 
-  And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathbf{w}^T(\mathbf{x}''-\mathbf{x}') = 0 ​$ 
+  And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathbf{w}^T(\mathbf{x}''-\mathbf{x}') = 0 $ 
 
-  Since $\mathbf{x}''-\mathbf{x}'​$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}​$ is orthogonal to the *hyperplane*.
+  Since $\mathbf{x}''-\mathbf{x}'$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}$ is orthogonal to the *hyperplane*.
 
   <img src="images/svm2.png" style="zoom:60%"/>
 
-  Then the distance from $\mathbf{x}_n​$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}​$ (where $\mathbf{x}​$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}​$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}​$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}​$ in the direction of $\hat{\mathbf{w}}​$ ! )
+  Then the distance from $\mathbf{x}_n$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}$ (where $\mathbf{x}$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}$ in the direction of $\hat{\mathbf{w}}​$ ! )
   $$
   distance = |\;\hat{\mathbf{w}}^T(\mathbf{x}_n-\mathbf{x})\;|
   $$
-  (We take the absolute value since we don't know if $\mathbf{w}​$ is facing $\mathbf{x}_n​$ or is facing the other direction )
+  (We take the absolute value since we don't know if $\mathbf{w}$ is facing $\mathbf{x}_n$ or is facing the other direction )
 
   <img src="images/svm3.PNG" style="zoom:70%"/>
 
@@ -124,7 +124,7 @@
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active ( $g_i(w^{*}) = 0​$ ) , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active ( $g_i(w^{*}) = 0$ ) , and hence the point is a support vector, or its multiplier is zero. 
 
 - ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
 
@@ -502,7 +502,7 @@ $$
   $$
 
 
-  - *How much pseudo-regret the $TS$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)$ priors?*
+  - *How much pseudo-regret the $TS​$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)​$ priors?*
 
   - *Which one of the previous posteriors is the most peaked one?*
 
