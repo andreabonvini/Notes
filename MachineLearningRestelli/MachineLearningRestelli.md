@@ -12,7 +12,7 @@
 
   { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
 
-  { TO DO : adjust part on *KKT* conditions, add *kernels* and *slack variables* }
+  { TO DO : add generalizations stuff and *slack variables* (relaxed formulation) }
 
   Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
@@ -20,7 +20,7 @@
 
   With SVMs we force our *margin* to be at least *something* in order to accept it. by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
-  Let be $\mathbf{x}_n​$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0​$ (just image a *line* in a $2​$-D space for simplicity), before finding the distance we just have state two observations:
+  Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just image a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
 
   - There's a minor technicality about the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ which is annoying , let's say I multiply the vector $\mathbf{w}$ by $1000000$ , I get the *same* hyperplane! So any formula that takes $\mathbf{w}$ and produces the margin will have to have built-in *scale-invariance*, we do that by normalizing $\mathbf{w}$ , requiring that for the nearest data point $\mathbf{x}_n$:
     $$
@@ -28,7 +28,7 @@
     $$
     ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
 
-  - When you solve for the margin, the $w_1$ to $w_d$ will play a completely different role from the role $w_0$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0$ from $\mathbf{w}$ and rename $w_0$ with $b$ (for *bias*).
+  - When you solve for the margin, the $w_1$ to $w_d$ will play a completely different role from the role of $w_0$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0$ from $\mathbf{w}$ and rename $w_0$ with $b$ (for *bias*).
     $$
     \mathbf{w} = (w_1,\dots,w_d)\\w_0=b
     $$
@@ -99,13 +99,21 @@
   $$
   \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
   $$
-  *w.r.t.* to $\mathbf{w}$ and $b$ and maximize it *w.r.t.* the *Lagrange Multipliers* $\alpha_n\ge 0 $ (which becomes our only constraint)
+  *w.r.t.* to $\mathbf{w}$ and $b$ and maximize it *w.r.t.* the *Lagrange Multipliers* $\alpha_n$ 
 
   We can easily get the two conditions for the unconstrained part:
   $$
   \nabla_{\mathbf{w}}\mathcal{L}=\mathbf{w}-\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n = 0 \;\;\;\;\;\;\;\; \mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n\\
   \frac{\part\mathcal{L}}{\part b} = -\sum_{n=1}^{N}\alpha_n y_n = 0\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
+  And list the other *KKT* conditions:
+  $$
+  y_i(\mathbf{w}^T\mathbf{x}_i+b)-1\ge0\;\;\;\;\;\;\forall{i}\\
+  \alpha_i\ge0\;\;\;\;\;\;\;\forall{i}\\
+  \alpha_i(y_i(\mathbf{w}^T\mathbf{x}_i+b)-1)=0\;\;\;\;\;\;\forall{i}
+  $$
+  *Alert* :  the last condition is called the KKT *dual complementary condition* and will be key for showing that the SVM has only a small number of "support vectors", and will also give us our convergence test when we'll talk about the *SMO* algorithm. 
+
   Now we can reformulate the *Lagrangian* by applying some substitutions 
   $$
   \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
@@ -118,13 +126,28 @@
   \underset{\alpha}{\operatorname{argmax}}\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m\\
   \;\\
   s.t. \;\;\;\;\;\;\;\;\alpha_n\ge0\;\;\;\forall{n}\\
-  \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
+  \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
   We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha$ , it was a constraint on $\mathbf{w}$ which is not part of our formulation anymore.
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active ( $g_i(w^{*}) = 0$ ) , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+
+  Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
+  $$
+  \mathbf{w} = \sum_{\mathbf{x}_n \in \text{ SV}}\alpha_ny_n\mathbf{x}_n\\
+  y_n(\mathbf{w}^T\mathbf{x}_{n\in\text{SV}}+b)=1
+  $$
+  where $\mathbf{x}_{n\in\text{SV}}$ is any *support vector*. (you'd find the *same* $b$ for every support vector)
+
+  But the coolest thing about *SVMs* is that we can rewrite our *objective functions* as follows:
+  $$
+  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)
+  $$
+  We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
+
+  And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Yes.
 
 - ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
 

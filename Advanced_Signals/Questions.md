@@ -876,8 +876,6 @@
 
   - *Log Normal*
 
-  Any probability density satisfying $f(t) >0$ for $t>0​$ can be a renewal probability density.
-
   ...
 
 - Unsupervised learning (cluster) + main problem of the cluster
@@ -935,6 +933,8 @@
 - Metodi per descrivere l’informazione in un neurone
 
 - ICA
+
+  INDEPENDEN COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
 
 - Unsupervised learning
 
