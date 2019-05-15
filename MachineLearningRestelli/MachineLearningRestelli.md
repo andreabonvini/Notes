@@ -132,7 +132,7 @@
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
 
   Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
   $$
