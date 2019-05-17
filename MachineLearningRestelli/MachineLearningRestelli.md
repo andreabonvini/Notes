@@ -6,13 +6,13 @@
 
 *Here are listed all the theory questions since 06/07/2017*
 
-- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
+- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
   (*Andrea Bonvini*) 
 
   { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
 
-  { TO DO : add generalizations stuff and *slack variables* (relaxed formulation) }
+  { TO DO : add generalization stuff and *slack variables* (relaxed formulation) }
 
   Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
@@ -149,7 +149,77 @@
 
   And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Yes.
 
-- ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
+- ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
+
+  ( *Andrea Bonvini*)
+
+  First, some concepts you need to know:
+
+  - When counting the number of hypotheses, the entire input space is taken into consideration. In the case of a perceptron, each perceptron differs from another if they differ in at least one input point, and since the input is continuous, there are an infinite number of different perceptrons. (e.g. in a $2-D$ space you can draw an infinite number of different lines)
+
+    Instead of counting the number of hypotheses in the entire input space, we are going to restrict the count only to the sample: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
+
+    A *hypothesis* is a function that maps an input from the entire *input space* to a result:
+    $$
+    h:\mathcal{X}\to\{-1,+1\}
+    $$
+    The number of hypotheses $|\mathcal{H}|$ can be infinite.
+
+    A *dichotomy* is a hypothesis that maps from an input from the *sample size* to a result:
+    $$
+    h:\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_N\}\to\{-1,+1\}
+    $$
+    The number of *dichotomies* $|\mathcal{H}\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_N\}|$ is at most $2^N$, where $N$ is the sample size.
+
+    e.g. for a sample size $N = 3$ we have $8$ possible dichotomies:
+
+    ```python
+    '''
+    	x1 x2 x3
+    1	-1 -1 -1
+    2   -1 -1 +1
+    3   -1 +1 -1
+    4	-1 +1 +1
+    5	+1 -1 -1 
+    6	+1 -1 +1
+    7	+1 +1 -1
+    8	+1 +1 +1
+    '''
+    ```
+
+  - The *growth function* is a function that counts the *most* dichotomies on any $N$ points.
+    $$
+    m_{\mathcal{H}}(N)=\underset{\mathbf{x}_1,\dots,\mathbf{x}_N\in\mathcal{X}}{max}|\mathcal{H}(\mathbf{x}_1,\dots,\mathbf{x}_N)|
+    $$
+    This translates to choosing any $N$ points and laying them out in *any* fashion in the input space. Determining $m$ is equivalent to looking for such a layout of the $N$ points that yields the *most* dichotomies.
+
+    The growth function satisfies:
+    $$
+    m_{\mathcal{H}}(N)\le 2^N
+    $$
+    This can be applied to the perceptron. For example, when $N=4$, we can lay out the points so that they are easily separated. However, given a layout, we must then consider all possible configurations of labels on the points, one of which is the following:
+
+    ![](images/perc.PNG)
+
+    This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m​$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
+
+  The *VC* dimension of a hypothesis set $\mathcal{H}$ , denoted by $d_{VC}(\mathcal{H})$ is the largest value of $N$ for which $m_{\mathcal{H}}(N)=2^N$  , in other words is "*the most points $\mathcal{H}$ can shatter* " 
+
+  ----
+
+  With respect to learning, the effect of the VC dimension is that if the VC dimension is finite, then the hypothesis will generalize:
+  $$
+  d_{vc}(\mathcal H)\ \Longrightarrow\ g \in \mathcal H \text { will generalize }
+  $$
+  The key observation here is that this statement is independent of:
+
+  - The learning algorithm
+  - The input distribution
+  - The target function
+
+  The only things that factor into this are the training examples, the hypothesis set, and the final hypothesis.
+
+  -----
 
 - ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***
 
@@ -214,8 +284,6 @@ $$
 
 - ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
 
-- ***Describe the SVM algorithm for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
-
 - ***Describe what are eligibility traces and how they are used in the TD(λ) algorithm. Explain what happens when λ = 0 and when λ = 1.***
 
 - ***Describe and compare the ridge regression and the LASSO algorithms.***    
@@ -240,7 +308,7 @@ $$
   The following example may be explanatory:  
 
   Consider a model with only one feature ${x_1}$. This model learns the following output: ${\hat{f}(x_1)=4x_1}$. 
-  Now let's add a new feature to the model: ${x_2}$.  Suppose that such second feature does not tell anything new to the model, which means that it depends linearly from ${x_1}$. Actually, ${x_2 = x_1}$.  
+  Now let's add a new feature to the model: ${x_2}$.  Suppose that such second feature does not tell anything new to the model, which means that it depends linearly from ${x_1}$. Actually, ${x_2 = x_1}$.   
   This means that any of the following weights will do the job:  
   ${\hat{f}(x_1,x_2)=4x_1}$
 
@@ -397,11 +465,7 @@ $$
 
   
 
-- ***Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
-
 - ***Describe which methods can be used to compute the value function $V^{\pi}$ of a policy $\pi$ in a discounted Markov Decision Process.***
-
-- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
 
 - ***Describe the supervised learning technique denominated logistic regression for classiﬁcation problems.***
 

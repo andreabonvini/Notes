@@ -2,6 +2,32 @@
 
 *A series of notes on the "Computer Security" course as taught by Stefano Zanero during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
+- **BUFFER_OVERFLOW**
+
+  We assume, for simplicity,  [ELFs](<https://en.wikipedia.org/wiki/Executable_and_Linkable_Format>) running on *Linux* $\ge 2.6$ processes on top of a *32-bit x86* machine.
+
+  Watch lesson 10.(?)
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Exams 
+
 - ***3/07/2017***
 
 ***Ex.1***
@@ -49,6 +75,5 @@
 
   <img src="images/1.1.1.PNG" style="zoom:55%"/>
 
-  
+**Ex.2**
 
-​		
