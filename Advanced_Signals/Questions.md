@@ -553,8 +553,6 @@
 
 - **Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot , Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti? Shannon entropy e il legame con l’informazione. **
 
-  *Sources:* *Course's Slides*, [Video From Luis Serrano](https://www.youtube.com/watch?v=9r7FIXEAGvs) , [Stanford.edu](<http://micro.stanford.edu/~caiwei/me334/Chap7_Entropy_v04.pdf>) , [This article](<https://pdfs.semanticscholar.org/d9c2/cde47774542b64697194de87d2d7e75fe16d.pdf>)
-
   ------------------------------------------------------------------------------------
 
   *Remember*:  
@@ -581,13 +579,13 @@
   - $I(1) = 0$ (Events that always occur do not communicate information)
   - $I(p_1p_2) = I(p_1) + I(p_2)$ (Information due to independent events is *additive*)
 
-  The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n​$ equiprobable outcomes and another has one of $m​$ equiprobable outcomes then there are $mn​$ possible outcomes of the joint event. This means that if $log_2(n)​$ bits are needed to encode the first value and $log_2(m)​$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)​$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
+  The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n$ equiprobable outcomes and another has one of $m$ equiprobable outcomes then there are $mn$ possible outcomes of the joint event. This means that if $log_2(n)$ bits are needed to encode the first value and $log_2(m)$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
   $$
   I(p) = \log\left(\frac{1}{p}\right)
   $$
   The base of the logarithm can be any fixed real number greater than 1. ($2 \to bits$, $3\to trits$, etc...)
 
-  Now, suppose we have a distribution where event $i​$ can happen with probability $p_i​$. Suppose we have sampled it $N​$ times and outcome $i​$ was, accordingly, seen $n_i =Np_i​$ times. The total amount of information we have received is:
+  Now, suppose we have a distribution where event $i$ can happen with probability $p_i$. Suppose we have sampled it $N$ times and outcome $i$ was, accordingly, seen $n_i =Np_i$ times. The total amount of information we have received is:
   $$
   \sum_in_iI(p_i)=\sum Np_i\log\left(\frac{1}{p_i}\right)
   $$
@@ -626,7 +624,7 @@
 
   *Derivation* :
   $$
-  H(X|Y)=\\-\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)} = -\sum_{x,y}p(x,y)(\log p(x,y)-\log p(y)) =\\ -\sum_{x,y}p(x,y)\log p(x,y)+\sum_{x,y}p(x,y)\log p(y) = H(X,Y)-H(Y)
+  H(X|Y)=\\-\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(y)} = -\sum_{x,y}p(x,y)(\log p(x,y)-\log p(y)) =\\ -\sum_{x,y}p(x,y)\log p(x,y)+\sum_{x,y}p(x,y)\log p(y) = H(X,Y)-H(Y)
   $$
   ​				Observe that by the law of total probability $\sum_xp(x,y) = p(y)$ , hence
   $$
@@ -637,7 +635,7 @@
 
   
 
-  Let's talk now about *Mutual Information*... Mutual information measures the amount of information that can be obtained about one random variable by observing another. It is important in communication where it can be used to maximize the amount of information shared between sent and received signals. The mutual information of $X​$ relative to $Y​$ is given by:
+  Let's talk now about *Mutual Information*... Mutual information measures the amount of information that can be obtained about one random variable by observing another. It is important in communication where it can be used to maximize the amount of information shared between sent and received signals. The mutual information of $X$ relative to $Y$ is given by:
   $$
   I(X;Y) = E_{X,Y}\left[SI(x,y)\right]=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}
   $$
@@ -667,15 +665,15 @@
 
   If $X$ and $Y$ have no dependence, then we get $I(X;Y) = H(X)-H(X)=0$.
 
-  If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)​$ or $I(X;Y)=H(Y)-0=H(Y)​$
+  If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)$ or $I(X;Y)=H(Y)-0=H(Y)$
 
-  So the mutual information $I(X;Y)​$, which is also referred of as a mutual dependence of $X​$ and $Y​$, can be captured using an equation in the form of:
+  So the mutual information $I(X;Y)$, which is also referred of as a mutual dependence of $X$ and $Y$, can be captured using an equation in the form of:
 
-  $I(X;Y)=H(X)-H(X|Y)​$.
+  $I(X;Y)=H(X)-H(X|Y)$.
 
   -----------------------
 
-  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)$.
+  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X​$ and $Y​$. The area contained by both circles is the *joint entropy* $H(X,Y)​$. The circle on the left (red and violet) is the individual entropy $H(X)​$ , with the red being the *conditional entropy* $H(X|Y) ​$. The circle on the right (blue and violet) is $H(Y)​$, with the blue being $H(Y|X)​$. The violet is the *mutual information* $I(X;Y)​$.
 
   Let's define now the *entropy* in a continuous domain, we see that the sum is replaced with an integral:
   $$
@@ -685,11 +683,11 @@
 
   We have $X \sim \mathcal{N}(0,\sigma^{2})​$ with *probability density function*​ $\phi(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{x^{2}}{2\sigma^{2}}}​$  then
   $$
-  h_a(x) = -\int\phi(x)\log_a\phi(x)dx = -\int\phi(x)\left(\log_a{\frac{1}{\sqrt{2\pi\sigma^{2}}}-\frac{x^2}{2\sigma^2}\log_ae}\right)dx\\=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}E_{\phi}\left[X^2\right]=\frac{1}{2}\log_a(2\pi e\sigma^2)
+  h_a(x) = -\int\phi(x)\log_a\phi(x)dx = -\int\phi(x)\left(\log_a{\frac{1}{\sqrt{2\pi\sigma^{2}}}-\frac{x^2}{2\sigma^2}\log_ae}\right)dx\\=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}E_{\phi}\left[X^2\right]=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}\sigma^2=\\\frac{1}{2}\log_a(2\pi e\sigma^2)
   $$
   Even if we had considered a mean $\mu \neq 0$ the result would have been the same, $\mu$ does not enter the final formula, so all Gaussians with a common $\sigma $ have the same entropy.
 
-  We are going to prove that on the reals $\R$, the maximum entropy distribution with a given mean and variance is the *Gaussian* distribution
+  We are going to prove that on the reals $\R$, the maximum entropy distribution with a given mean and variance is the *Gaussian* distribution.
 
   Let $g(x)$ be a *Gaussian PDF* (probability density function) with mean $\mu$ and variance $\sigma^2$ and $f(x)$ an arbitrary *PDF* with the same variance. Since differential entropy is translation invariant we can assume that $f(x)$ has the same mean of $\mu$ as $g(x)$
 
@@ -709,12 +707,6 @@
 
   TO DO : ADD LAST SLIDES (27 $\to$ 31)(THE DEFINITION OF RELATIVE ENTROPY IN THE SLIDES IS WRONG!)
 
-  
-
-- Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. 
-
-- Concetto generale dietro l’ICA (Indipendent component analysis).
-
 - Moment generating function e cumulant generating function: la differenza?
 
 - HOS: come sono definiti? (Come la trasformata dei cumulanti di ordine n+1)
@@ -727,7 +719,7 @@
 
 - Bagging? Perché servono più osservazioni (in generale)?
 
-- **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of a neuron (tuning curve)**
+- **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of a neuron (tuning curve). Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. Upper and lower bound. Tuning curve di un neurone. Spiking activity di un neurone, come posso caratterizzarla? Metodi per descrivere l’informazione in un neurone. (Spikes, lambda, binning, cond int function,...bernoulli, likelihood)** 
 
   So we want to model the response of a neuron... Experimentally it can be observed that the *tuning curve* of a neuron looks like that (this is just a random example)
 
@@ -747,36 +739,85 @@
   $$
   We now are interested in solving the following problem: given a response *r* what are the probabilities of having a stimulus *s* ? Let's try to solve this problem by firstly defining the *mutual information*:
   $$
-  I(s;r) = H(r)-H(r|s)\\I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
+  I(s;r) = H(r)-H(r|s)\\
+  I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
   $$
-  For each stimulus value $s_i​$ a distribution of response values $p(r|s_i)​$ is generated, the more $p(r|s_i)​$ is closer to a delta function, the lower the value for $H(r|s_i)​$. ( *remember: less noise uncertainty = higher information!* ) 
+  For each stimulus value $s_i$ a distribution of response values $p(r|s_i)$ is generated, the more $p(r|s_i)$ is closer to a delta function, the lower the value for $H(r|s_i)$. ( *remember: less noise uncertainty = higher information!* ) 
+
+  In neural coding, $H(R|S)​$ is the entropy in the neural response given the stimulus. This variable, called neuronal noise, measures the uncertainty remaining in the neural response when the stimulus conditions are known.
+
+  Note that entropy measures uncertainty and that information is defined as the difference of entropies $\to​$ a reduction of uncertainty.
   $$
   I(s;r)=-\sum_ip(r_i)\log_2p(r_i)+\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2p(r_i|s_j)\\
   = -\sum_ip(r_i)\log_2p(r_i)+\sum_{i,j}p(r_i,s_i)\log_2p(r_i|s_j)\\
   = -\sum_{i,j}p(r_i,s_j)\log_2p(r_i)+\sum_{i,j}p(r_i,s_i)\log_2p(r_i|s_j)\\
   \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i,s_j)}{p(r_i)p(s_j)}= \sum_{i,j}p(r_i,s_j)\log_2\frac{p(r_i|s_j)}{p(r_i)}
   $$
-  ​			Observe that by the law of total probability $\sum_jp(r_i,s_j) = p(r_i)​$ , hence
+  ​			Observe that by the law of total probability $\sum_jp(r_i,s_j) = p(r_i)$ , hence
   $$
   \sum_ip(r_i)\log_2p(r_i) = \sum_{i,j}p(r_i,s_j)\log_2p(r_i)
   $$
+
+  A final basic point of information theory is the "*data processing inequality*" theorem. Its basis is the somewhat trivial statement that information cannot be recovered after being degraded. For example, consider a neural processing chain where S is encoded by a first neuron in a set of neuronal responses R1, and R1 is then encoded by a second set of neuronal responses R2. The data processing inequality says that $I(S, R1) ≥ I(S, R2)$. Note that this is true of all information channels, not just neurons. This theorem is a cornerstone of the method (below) used to find a lower bound on the amount of information about a dynamic stimulus transmitted in a neuronal channel. 
+
+  <img src="images/BOX1.PNG" style="zoom:50%"/>
+
+  <img src="images/BOX2.PNG" style="zoom:45%"/>
+
   
 
-  ![](images/BOX1.PNG)
-
-  
-
-  ![](images/BOX2.png)
+  Now, remember that we are in a real case scenario, where we have *noise*, our problem is that we don't know if uncertainty is given by the way the system is working or by a noisy variable that is not contemplated by the paradigm of *information theory*. We have to redefine information theory in terms of *Signal to Noise Ratio*. We will see tables that relate information theory and entropy as a function of the SNR.
 
   Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
 
   For time-dependent signals, entropy grows with duration (uncertainty increases over time as properties may change).
 
-  ![](images/BOX3.PNG)
+  
 
-  ![](images/BOX4.PNG)
+  <img src="images/BOX3.PNG" style="zoom:55%"/>
+
+  <img src="images/BOX4.PNG" style="zoom:55%"/>
 
   ...
+
+  Now we want to estimate *information*, remember that
+
+   
+  $$
+  I(s;r) = H(r)-H(r|s)\\
+  I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
+  $$
+  we have $3$ different methods for *estimating information*:
+
+  - ***Direct***:
+
+    The first ("*direct*") method calculates information directly from the neural response by estimating its entropy, $H(R)$, and neural noise, $H(R|S)$. This method exactly determines the average information transmitted, but it does not reveal what aspects of the stimulus are being encoded. Because the direct method does not make any assumptions about response probability distributions, it also requires a lot of experimental data.
+
+  - ***Upper Bound***:
+
+    The second method is similar to the first, with the added assumption that the neuronal response amplitudes, expressed in the frequency domain (see below), have Gaussian probability distributions. This method, which gives an upper bound for information transfer, requires significantly less data because Gaussian distributions are completely described by their mean and variance. 
+
+    *Remember :* The fundamental assumption of this method is that the neuronal response and neuronal noise have Gaussian probability distributions in the *frequency domain* and that neuronal noise is *additive*. 
+
+    <img src="images/AvgSNR.PNG" style="zoom:55%"/>  
+
+    The figure above consists in the flow chart of how to measure the channel capacity of a neuron. The same stimulus is presented $n$ times while the responses $R_i$ are measured (*left*). These responses are averaged to obtain the average response $R_{avg}$. The difference between each $R_i$ and $R_{avg} $ become the noise traces $N_i$ (*middle*). These are Fourier-transformed to the noise power spectra $N_i(f)$ (*right*), which can be averaged as well. Bottom left, power spectra of the mean response (*red*) together with the mean power spectra of the noise (*yellow*). Bottom right, ratio of these two functions, the so-called signal-to-noise ratio or $SNR​$, together with the *cumulative* information rate. Response and noise data were created in a pseudorandom way from Gaussian distributions.
+
+    - [ ] DOUBT: WHAT'S THE LINK BETWEEN INFORMATION RATE AND $I(s;r)$ ?
+
+  - ***Lower Bound***:
+
+    We can investigate stimulus encoding by testing diﬀerent encoding *models*. Because these models might not capture all the transmitted information, this gives a lower-bound estimate of information.
+
+    One method of modeling stimulus encoding ("*reverse reconstruction*") describes how to calculate the best possible stimulus estimate from the neural responses. In this procedure, the stimulus signal $S$ is encoded into response spike trains. A reconstruction algorithm of choice is then used to estimate $S$ ($S_{est}$) from the response $R$. 
+
+    Mutual information between $S$ and $R$ is then estimated by calculating the information between $S$ and $S_{est}$. From the *data processing inequality*, the information estimate is smaller than (or equal to) the information about $S$ that is in $R$. Thus this procedure gives us a *lower bound on the information*. If $S$ is estimated well, the resulting lower bound is close to the real information transmitted about the stimulus.
+
+    - [ ] TO-DO: AGGIUNGI ESEMPIO DI REVERSE RECONSTRUCTION PRESENTE NELLE SLIDE
+
+  ...
+
+  
 
   ...
 
@@ -802,7 +843,7 @@
 
   The ISIH is more powerful than the PSTH because it allows to extrapolate concepts independently from the stimulus , so if you want to go beyond the specific stimulus you have to build histograms where *time* is absolute ( *ISIH* ). This is extremely useful because we know that neurons are encoding in frequency and the *ISIH* is telling us something about it. The ISI Probability Density Function is the ISI normalized by the total number of spikes.
 
-  Given the following problem:
+  Given the following problem (a rat moving in some $2-D$ space denoted by $x_1$ and $x_2​$)
 
   ![](images/PP.PNG)
 
@@ -816,26 +857,29 @@
 
   - by the timing of the spikes
   - by the waiting times between spikes, using a counting process
-  - as a set of $1s$ and $0s$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
+  - as a set of $1s$ and $0s​$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
 
    A *temporal point process* is a stochastic time-series of binary events that occurs in continuous time. 
 
-  One of the simplest types of neural-spiking models is the *Poisson Process*. The *rate function* of a Poisson Process is $\lambda$  ($Number\;of\;spikes/second$) , in other words $\lambda$ is the mean of spikes occurrences in the time unit. 
+  One of the simplest types of neural-spiking models is the *Poisson Process* (a *Poisson Process* is a model for a series of discrete events where the average time between events is known, but the exact timing of events is random. The arrival of an event is independent of the event before (waiting time between events is memoryless).) The *rate function* of a Poisson Process is $\lambda​$  ($Number\;of\;spikes/second​$) , in other words $\lambda​$ is the mean of spikes occurrences in the time *unit*. 
   $$
   Pr(spike\;in\,[t,t+\Delta]) \sim \lambda\Delta\\
-  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s-t))^k}{k!}e^{-\lambda(s-t)}\;\;\;\;\;for\;k=1,2,...\\
+  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s-t))^k}{k!}e^{-\lambda(s-t)}\;\;\;\;\;for\;k=1,2,...\\ \text{DUBBI SU QUESTA FORMULA!!! }
   $$
   The formula above can be seen as a generalization of the canonical *Poisson* distribution
-  $$
-  p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}
-  $$
-  where $\lambda '=\lambda(s-t)=\lambda\Delta$
 
-  The inter-spike interval ($t$) (which is what we're interested in) probability density is the exponential probability density (here we force $k = 1$):
+  ![](images/PoissonPlot.PNG)
+  $$
+  p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}\\
+  p(k,t) = \frac{e^{-(\lambda \Delta)}(\lambda \Delta)^k}{k!}
+  $$
+  where, in our case, $\lambda '=\lambda(s-t)=\lambda\Delta​$
+
+  The inter-spike interval ($t$) (which is what we're interested in) probability density is the exponential probability density (here we force $k = 1$ so $p(t)$ will express the probability of having exactly $1$ spike in the time interval $t$ ):
   $$
   p(t)=\lambda e^{-\lambda t}
   $$
-  Since in our case the rate function $\lambda$ is *time-varying* it makes sense to consider an *Inhomogeneous Poisson Process* where $\lambda = \lambda(t)$
+  Since in our case the rate function $\lambda$ is *time-varying* it makes sense to consider an *Inhomogeneous Poisson Process* where $\lambda = \lambda(t)​$
   $$
   Pr(spike\;in\,[t,t+\Delta]) \sim \lambda(t)\Delta\\
   Pr(k\;spikes\;in\;[t,t+s])=\frac{\int_t^{t+s}\lambda(u)du}{k!}e^{-\int_t^{t+s}\lambda(u)du}\;\;\;\;\;for\;k=1,2,...\\
@@ -844,7 +888,7 @@
   $$
   p(t) = \lambda(t)e^{\lambda(t)t}
   $$
-  The *Poisson process*, however, is limited in that it is *memory-less*. It does not account for any spiking history when calculating the current probability of firing! And we know that neurons exhibit a fundamental ( *biophysical* )*history dependence* by way of their relative and absolute refractory periods.
+  The *Poisson process*, however, is limited in that it is *memory-less*. It does not account for any spiking history when calculating the current probability of firing! And we know that neurons exhibit a fundamental ( *biophysical* ) *history dependence* by way of their relative and absolute refractory periods.
 
   So we have to build a more accurate model of the neural spiking activity.
 
@@ -884,8 +928,6 @@
 
 - Gini index
 
-- upper and lower bound
-
 - leave-one-out cross validation
 
 - indices of granger causality (voleva principalmente sapere il gci, directed transfer function and partial  directed coherence)how do you call the specific index for general case? Gci, dtf, pdc
@@ -908,7 +950,7 @@
 
 - Confusion matrix. Come creo la curva roc?Che classificatore uso e cosa fa? (immagino ad esempio che la temperatura sia la variabile coniderata, e in funzioen di questa stabilisco la presenza o meno di una malattia). Ogni valore di thr ci da un punto sulla curva. La regola di classificazione è la thr.  Scelgo una thr che mi dia un punto quanto piu possibile vicino al punto [0,1]. Cosa accade se  cambio la mia probabilità a priori? Cambia la distribuzione delle gaussiane. 
 
--  0-1 loss concept in SVM. 
+- 0-1 loss concept in SVM. 
 
 - Concetto in generale di ICA e come procedo. 
 
@@ -922,19 +964,9 @@
 
 - Regressione. Qual è il problema principale? Tradeoff bias varianza.
 
-- Tuning curve di un neurone
-
-- Point process
-
 - Projection pursuit. Qual è la novità? Che trovo le proiezioni in modo iterativo, una dopo l’altra, e non tutte insieme. Ne trovo una, la sottraggo per trovare la seconda, e cosi via. 
 
 - HOS
-
-- Metodi per descrivere l’informazione in un neurone
-
-- ICA
-
-  INDEPENDEN COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
 
 - Unsupervised learning
 
@@ -942,32 +974,64 @@
 
 - Granger Causality
 
-- Spiking activity di un neuron, come posso caratterizzarla?
-
 - Filosofia della likelihood
 
-- PCA
+- ***ICA***
+
+  INDEPENDEN COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
+
+- ***PCA***
+
+  *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}$ .
+
+  Formally, principal component analysis (PCA) is a statistical procedure that uses an *orthogonal transformation* to convert a set of observations of possibly correlated variables into a set of values of *linearly uncorrelated* variables called *principal components*.
+
+  To have a graphical intuition:
+
+  ![](C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/PCA.png)
+
+  It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
+
+  - Find a line such that when the data is projected onto that line, it has the maximum variance. 
+  - Find a new line, orthogonal to the ﬁrst one, that has maximum projected variance. 
+  - Repeat until $m$ lines have been identiﬁed and project the points in the data set on these lines. 
+
+  The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ the number of dimensions) : 
+
+  - Compute the mean of the data
+    $$
+    \overline{\mathbf{x}} = \frac{1}{N}\sum_{n=1}^N\mathbf{x}_n
+    $$
+
+  - Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}$ )
+
+  - Compute the covariance matrix $\mathbf{S} = \mathbf{X}^T\mathbf{X} = \frac{1}{N-1}\sum_{n=1}^{N}(\mathbf{x}_n-\overline{\mathbf{x}})^T(\mathbf{x}_n-\overline{\mathbf{x}})$
+
+    - Eigenvector $\mathbf{e}_1$ with largest eigenvalue $\lambda_1$ is the *first principal component* 
+    - Eigenvector $\mathbf{e}_k$ with largest eigenvalue $\lambda_k$ is the *$k^{th}$ principal component* 
+    - $\frac{\lambda_k}{\sum_i\lambda_i}$ is the proportion of variance captured by the $k^{th}$ principal component.
+
+  Transforming the reduced dimensionality projection back into the original spaces gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts: 
+
+  - Helps to reduce the computational complexity 
+
+  - Can help supervised learning, because reduced dimensions allow simpler hypothesis spaces and less risk of overﬁtting 
+
+  - Can be used for noise reduction 
+
+  But also some drawbacks:
+
+  - Fails when data consists of multiple clusters
+  - The directions of greatest variance may not be the most informative
+  - Computational problems with many dimensions 
+  - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
 - HOS. 
-
-- Caratterizzazione spiking activity e point proces
-
 - Supervised: nearest neighboor e bootstrap
-
 - Multivariate point process
-
 - Negentropy
-
 - Cross validation
-
 - Projection pursuit
-
-- neuron spiking activity
-
-- (Spikes, lambda, binning, cond int function,...bernoulli, likelihood)
-
 - supervised learning (nearest neighnour e bias var tradeoff, flexibility, error)
-
 - bootstrap
-
 - multivariant process e granger causality (distrib spike di due neuroni e correlazione che compone terza variabile: insieme le tre distribuzioni sono indipendenti
