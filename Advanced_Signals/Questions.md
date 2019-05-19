@@ -776,7 +776,107 @@
 
   ![](images/BOX4.PNG)
 
-  
+  ...
+
+  ...
+
+  ...
+
+  ...
+
+  ...
+
+  If we use too large bins we lose resolution, if we use too small bins we lose structure. Too much resolution is less able to capture "common rules" (Trade-off)
+
+  It would be nice to build a model which doesn't suffer from this trade-off. How can we do that? We will have to make some specific assumptions. Remember that when we build a model we can only *restrict* the total amount of information that the brain is passing.
+
+  The first thing we do to build a model is to build the *ISI* (Inter Spike Interval) function.
+
+  An *inter-spike-interval histogram* is one of the ways by which experimental neurophysiologists analyze the electrical behaviour of neurons in the brain.
+
+  One of the simplest ways to study the patterning of spike activity in a neuron is to record the spikes from a single neuron, using a fine microelectrode , and then to construct an inter-spike interval histogram. This is simply a plot of the distribution of the observed times between spikes ($t_1, t_2, t_3,$ etc) collected in ‘bins’ of fixed width, say $1$ $ms$. Typically, such a histogram would be constructed from about $2000$ such intervals; if a neuron is firing at an average rate of about 5 spikes/s this will need a recording of $5$-$10$ $min$ of activity.
+
+  The *ISIH* below is the result of of maintaining retinal neurons under constant light and environmental conditions. The spontaneous spiking activity of these neurons is recorded.
+
+  ![](images/ISI1.PNG)
+
+  The ISIH is more powerful than the PSTH because it allows to extrapolate concepts independently from the stimulus , so if you want to go beyond the specific stimulus you have to build histograms where *time* is absolute ( *ISIH* ). This is extremely useful because we know that neurons are encoding in frequency and the *ISIH* is telling us something about it. The ISI Probability Density Function is the ISI normalized by the total number of spikes.
+
+  Given the following problem:
+
+  ![](images/PP.PNG)
+
+  We'd like to infer the *stimulus* (position) by looking at the *response* (spiking) [Look here](<https://www.youtube.com/watch?v=lfNVv0A8QvI>)
+
+  We have a *continuous* hidden process (which is the trajectory of the *rat*) and then there is the spiking activity which is *not* continuous but happens in *specific* points in time, we call this kind of process a *Point Process*. Point processes are characterized by events that are specific and unpredictable without any other information. 
+
+  - *Definition* : a *Point Process* is a binary ($0$-$1​$) stochastic process that occurs in continuous time or space.
+
+  A point - process can be represented:
+
+  - by the timing of the spikes
+  - by the waiting times between spikes, using a counting process
+  - as a set of $1s$ and $0s$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
+
+   A *temporal point process* is a stochastic time-series of binary events that occurs in continuous time. 
+
+  One of the simplest types of neural-spiking models is the *Poisson Process*. The *rate function* of a Poisson Process is $\lambda$  ($Number\;of\;spikes/second$) , in other words $\lambda$ is the mean of spikes occurrences in the time unit. 
+  $$
+  Pr(spike\;in\,[t,t+\Delta]) \sim \lambda\Delta\\
+  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s-t))^k}{k!}e^{-\lambda(s-t)}\;\;\;\;\;for\;k=1,2,...\\
+  $$
+  The formula above can be seen as a generalization of the canonical *Poisson* distribution
+  $$
+  p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}
+  $$
+  where $\lambda '=\lambda(s-t)=\lambda\Delta$
+
+  The inter-spike interval ($t$) (which is what we're interested in) probability density is the exponential probability density (here we force $k = 1$):
+  $$
+  p(t)=\lambda e^{-\lambda t}
+  $$
+  Since in our case the rate function $\lambda$ is *time-varying* it makes sense to consider an *Inhomogeneous Poisson Process* where $\lambda = \lambda(t)$
+  $$
+  Pr(spike\;in\,[t,t+\Delta]) \sim \lambda(t)\Delta\\
+  Pr(k\;spikes\;in\;[t,t+s])=\frac{\int_t^{t+s}\lambda(u)du}{k!}e^{-\int_t^{t+s}\lambda(u)du}\;\;\;\;\;for\;k=1,2,...\\
+  $$
+  The inter-spike interval ($t$) probability density is the exponential probability density:
+  $$
+  p(t) = \lambda(t)e^{\lambda(t)t}
+  $$
+  The *Poisson process*, however, is limited in that it is *memory-less*. It does not account for any spiking history when calculating the current probability of firing! And we know that neurons exhibit a fundamental ( *biophysical* )*history dependence* by way of their relative and absolute refractory periods.
+
+  So we have to build a more accurate model of the neural spiking activity.
+
+  To address *history dependence*, a conditional intensity function is used to represent the probability of a neuron spiking, conditioned on its own history.  The *conditional intensity function* expresses the instantaneous firing probability and implicitly defines a complete probability model for the point process. It defines a *probability per unit time*. 
+
+  If this unit time is taken small enough to ensure that only one spike could occur in that time window, then our conditional intensity function completely specifies the *probability that a given neuron will fire at a certain time*.
+
+  ...
+
+  A *renewal process* is an idealized stochastic model for events that occur randomly in time (generically called renewals or arrivals). The basic mathematical assumption is that the times between the successive arrivals are independent and identically distributed. Renewal processes have a very rich and interesting mathematical structure and can be used as a foundation for building more realistic models. Moreover, renewal processes are often found embedded in other stochastic processes, most notably Markov chains.
+
+  Any probability density satisfying $f(t) >0$ for $t>0$ can be a renewal probability density.
+
+  Common probability models used as renewal processes include:
+
+  - *Exponential*
+
+    Probability distribution that describes the time between events in a Poisson process, i.e. a process in which events occur continuously and independently at a constant average rate. It is a particular case of the gamma distribution. It is the continuous analogue of the geometric distribution, and it has the key property of being memoryless.
+
+    *PDF* : $p(t)=\lambda e^{-\lambda x}$
+
+    ![](images/exp.PNG)
+
+  - *Gamma*
+
+     
+
+  - *Inverse Gaussian*
+
+  - *Log Normal*
+
+  ...
 
 - Unsupervised learning (cluster) + main problem of the cluster
 
@@ -833,6 +933,8 @@
 - Metodi per descrivere l’informazione in un neurone
 
 - ICA
+
+  INDEPENDEN COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
 
 - Unsupervised learning
 

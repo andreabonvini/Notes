@@ -6,13 +6,13 @@
 
 *Here are listed all the theory questions since 06/07/2017*
 
-- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
+- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
   (*Andrea Bonvini*) 
 
   { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
 
-  { TO DO : adjust part on *KKT* conditions, add *kernels* and *slack variables* }
+  { TO DO : add generalization stuff and *slack variables* (relaxed formulation) }
 
   Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
@@ -20,7 +20,7 @@
 
   With SVMs we force our *margin* to be at least *something* in order to accept it. by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
-  Let be $\mathbf{x}_n​$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0​$ (just image a *line* in a $2​$-D space for simplicity), before finding the distance we just have state two observations:
+  Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just image a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
 
   - There's a minor technicality about the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ which is annoying , let's say I multiply the vector $\mathbf{w}$ by $1000000$ , I get the *same* hyperplane! So any formula that takes $\mathbf{w}$ and produces the margin will have to have built-in *scale-invariance*, we do that by normalizing $\mathbf{w}$ , requiring that for the nearest data point $\mathbf{x}_n$:
     $$
@@ -28,7 +28,7 @@
     $$
     ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
 
-  - When you solve for the margin, the $w_1​$ to $w_d​$ will play a completely different role from the role $w_0​$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0​$ from $\mathbf{w}​$ and rename $w_0​$ with $b​$ (for *bias*).
+  - When you solve for the margin, the $w_1$ to $w_d$ will play a completely different role from the role of $w_0$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0$ from $\mathbf{w}$ and rename $w_0$ with $b$ (for *bias*).
     $$
     \mathbf{w} = (w_1,\dots,w_d)\\w_0=b
     $$
@@ -45,17 +45,17 @@
   $$
   It's trivial to demonstrate that the vector $\mathbf{w}$ is orthogonal to the *hyperplane*, just suppose to have two point $\mathbf{x}'$ and $\mathbf{x''}$ belonging to the *hyperplane* , then $\mathbf{w}^T\mathbf{x}' +b= 0$ and $\mathbf{w}^T\mathbf{x}'' +b= 0$.
 
-  And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathbf{w}^T(\mathbf{x}''-\mathbf{x}') = 0 ​$ 
+  And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathbf{w}^T(\mathbf{x}''-\mathbf{x}') = 0 $ 
 
-  Since $\mathbf{x}''-\mathbf{x}'​$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}​$ is orthogonal to the *hyperplane*.
+  Since $\mathbf{x}''-\mathbf{x}'$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}$ is orthogonal to the *hyperplane*.
 
   <img src="images/svm2.png" style="zoom:60%"/>
 
-  Then the distance from $\mathbf{x}_n​$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}​$ (where $\mathbf{x}​$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}​$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}​$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}​$ in the direction of $\hat{\mathbf{w}}​$ ! )
+  Then the distance from $\mathbf{x}_n$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}$ (where $\mathbf{x}$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}$ in the direction of $\hat{\mathbf{w}}​$ ! )
   $$
   distance = |\;\hat{\mathbf{w}}^T(\mathbf{x}_n-\mathbf{x})\;|
   $$
-  (We take the absolute value since we don't know if $\mathbf{w}​$ is facing $\mathbf{x}_n​$ or is facing the other direction )
+  (We take the absolute value since we don't know if $\mathbf{w}$ is facing $\mathbf{x}_n$ or is facing the other direction )
 
   <img src="images/svm3.PNG" style="zoom:70%"/>
 
@@ -99,13 +99,21 @@
   $$
   \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
   $$
-  *w.r.t.* to $\mathbf{w}$ and $b$ and maximize it *w.r.t.* the *Lagrange Multipliers* $\alpha_n\ge 0 $ (which becomes our only constraint)
+  *w.r.t.* to $\mathbf{w}$ and $b$ and maximize it *w.r.t.* the *Lagrange Multipliers* $\alpha_n$ 
 
   We can easily get the two conditions for the unconstrained part:
   $$
   \nabla_{\mathbf{w}}\mathcal{L}=\mathbf{w}-\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n = 0 \;\;\;\;\;\;\;\; \mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n\\
   \frac{\part\mathcal{L}}{\part b} = -\sum_{n=1}^{N}\alpha_n y_n = 0\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
+  And list the other *KKT* conditions:
+  $$
+  y_i(\mathbf{w}^T\mathbf{x}_i+b)-1\ge0\;\;\;\;\;\;\forall{i}\\
+  \alpha_i\ge0\;\;\;\;\;\;\;\forall{i}\\
+  \alpha_i(y_i(\mathbf{w}^T\mathbf{x}_i+b)-1)=0\;\;\;\;\;\;\forall{i}
+  $$
+  *Alert* :  the last condition is called the KKT *dual complementary condition* and will be key for showing that the SVM has only a small number of "support vectors", and will also give us our convergence test when we'll talk about the *SMO* algorithm. 
+
   Now we can reformulate the *Lagrangian* by applying some substitutions 
   $$
   \mathcal{L}(\mathbf{w},b,\mathbf{\alpha}) = \frac{1}{2}\mathbf{w}^T\mathbf{w}-\sum_{n=1}^{N}\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)\\
@@ -118,15 +126,214 @@
   \underset{\alpha}{\operatorname{argmax}}\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m\\
   \;\\
   s.t. \;\;\;\;\;\;\;\;\alpha_n\ge0\;\;\;\forall{n}\\
-  \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
+  \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
-  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha$ , it was a constraint on $\mathbf{w}$ which is not part of our formulation anymore.
+  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n​$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha​$ , it was a constraint on $\mathbf{w}​$ which is not part of our formulation anymore.
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives you back the solution you find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active ( $g_i(w^{*}) = 0​$ ) , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha​$ are just $0​$ !  All the $\alpha​$ which are not $0​$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
 
-- ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning.***
+  Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
+  $$
+  \mathbf{w} = \sum_{\mathbf{x}_n \in \text{ SV}}\alpha_ny_n\mathbf{x}_n\\
+  y_n(\mathbf{w}^T\mathbf{x}_{n\in\text{SV}}+b)=1
+  $$
+  where $\mathbf{x}_{n\in\text{SV}}$ is any *support vector*. (you'd find the *same* $b$ for every support vector)
+
+  But the coolest thing about *SVMs* is that we can rewrite our *objective functions* as follows:
+  $$
+  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)
+  $$
+  We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
+
+  And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Yes.
+
+- ***Write just a very very little definition of PAC Learning, then deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
+
+  ( *Andrea Bonvini*)
+
+  First, some concepts you need to know:
+
+  - We are talking about *Classification*.
+
+  - Overfitting happens:
+
+    - Because with a large hypothesis space the training error is a bad estimate of the prediction error, hence we would like to infer something about the generalization error from the training samples. 
+    - When the learner doesn’t have access to enough samples, hence we would like to estimate how many samples are enough.
+
+    This cannot be performed by measuring the bias and the variance, but we can bound them.
+
+    Given:
+
+    - Set of instances $\mathcal{X}$
+    - Set of hypotheses $\mathcal{H}$ (finite)
+    - Set of possible target concepts $C$. Each concept $c$ corresponds to a boolean function $c:\mathcal{X} \to\{0,1\}$ which can be viewed as belonging to a certain class or not
+    - Training instances generated by a fixed, unknown probability distribution $P$ over $X$. 
+
+    The learner observes a sequence $D$ of training examples $\langle x,c(x) \rangle$, for some target concept $c \in C$ and it must output a hypothesis $h$ estimating $c$.
+
+    $h$ is evaluated by its performance on subsequent instances drawn according to $P$
+    $$
+    L_{true} = Pr_{x \in P}[c(x) \neq h(x)]
+    $$
+    We want to bound $L_{true}$ given $L_{train}​$, which is the percentage of misclassiﬁed training instances.
+
+    Let's talk now about *Version Spaces* : The version space $VS_{\mathcal{H},\mathcal{D}}$ is the subset of hypothesis in $H$ consistent with the training data $D$ (in other words is the subset of $H$ where $L_{train} = 0$).
+
+    ![](images/VS1.PNG)
+
+    How likely is the learner to pick a *bad hypothesis* ?
+
+    ![](images/th1.PNG)
+
+    If you're interested in the proof:
+
+    -------------
+
+    ![](images/PROOF.PNG)
+
+    where $k$ is probably the number of hypothesis $h \in VS_{\mathcal{H},\mathcal{D}}$  
+
+    --------
+
+    Now, we use a *Probably Approximately Correct (PAC) bound*:
+
+    If we want this probability to be at most $\delta$ we can write
+    $$
+    |H|e^{-\epsilon N}\le \delta
+    $$
+    which means
+    $$
+    N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+    $$
+    and
+    $$
+    \epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+    $$
+    Note that if we consider $M$ boolean features, there are $|C| = 2^M$ distinct concepts and hence $|H| = 2^{2^M}​$ (which is huuuge)
+
+    If you wonder why let's suppose we have just $2$ boolean features ($A$ and $B$ ) , then we have $|H| = 2^{2^2} = 16$ distinct boolean functions :
+
+    ```
+    A   B|  F0  F1  F2  F3  F4  F5  F6  F7
+    0   0|  0   0   0   0   0   0   0   0
+    0   1|  0   0   0   0   1   1   1   1
+    1   0|  0   0   1   1   0   0   1   1
+    1   1|  0   1   0   1   0   1   0   1
+    
+    A   B|  F8  F9  F10 F11 F12 F13 F14 F15
+    0   0|  1   1   1   1   1   1   1   1
+    0   1|  0   0   0   0   1   1   1   1
+    1   0|  0   0   1   1   0   0   1   1
+    1   1|  0   1   0   1   0   1   0   1
+    
+    function            symbol          name
+    F0                  0               FALSE
+    F1                  A ^ B           AND
+    F2                  A ^ !B          A AND NOT B
+    F3                  A               A
+    F4                  !A ^ B          NOT A AND B
+    F5                  B               B
+    F6                  A xor B         XOR
+    F7                  A v B           OR
+    F8                  A nor B         NOR
+    F9                  A XNOR B        XNOR
+    F10                 !B              NOT B
+    F11                 A v !B          A OR NOT B
+    F12                 !A              NOT A
+    F13                 !A v B          NOT A OR B
+    F14                 A nand B        NAND
+    F15                 1               TRUE
+    ```
+
+    and so the bounds have an *exponential* dependency on the number of features M !
+    $$
+    N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
+    N \ge \frac{1}{\epsilon}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
+    N \ge \frac{1}{\epsilon}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)\\
+    \epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
+    \epsilon \ge \frac{1}{N}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
+    \epsilon \ge \frac{1}{N}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)
+    $$
+    which is bad news.
+
+    Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
+
+    Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
+
+    ![](images/PAC2.PNG)
+
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+  - When counting the number of hypotheses, the entire input space is taken into consideration. In the case of a perceptron, each perceptron differs from another if they differ in at least one input point, and since the input is continuous, there are an infinite number of different perceptrons. (e.g. in a $2-D$ space you can draw an infinite number of different lines)
+
+    Instead of counting the number of hypotheses in the entire input space, we are going to restrict the count only to the sample: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
+
+    A *hypothesis* is a function that maps an input from the entire *input space* to a result:
+    $$
+    h:\mathcal{X}\to\{-1,+1\}
+    $$
+    The number of hypotheses $|\mathcal{H}|$ can be infinite.
+
+    A *dichotomy* is a hypothesis that maps from an input from the *sample size* to a result:
+    $$
+    h:\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_N\}\to\{-1,+1\}
+    $$
+    The number of *dichotomies* $|\mathcal{H}\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_N\}|$ is at most $2^N$, where $N$ is the sample size.
+
+    e.g. for a sample size $N = 3$ we have at most $8$ possible dichotomies:
+
+    ```
+    	x1 x2 x3
+    1	-1 -1 -1
+    2	-1 -1 +1
+    3	-1 +1 -1
+    4	-1 +1 +1
+    5	+1 -1 -1 
+    6	+1 -1 +1
+    7	+1 +1 -1
+    8	+1 +1 +1
+    
+    ```
+
+  - The *growth function* is a function that counts the *most* dichotomies on any $N$ points.
+    $$
+    m_{\mathcal{H}}(N)=\underset{\mathbf{x}_1,\dots,\mathbf{x}_N\in\mathcal{X}}{max}|\mathcal{H}(\mathbf{x}_1,\dots,\mathbf{x}_N)|
+    $$
+    This translates to choosing any $N$ points and laying them out in *any* fashion in the input space. Determining $m$ is equivalent to looking for such a layout of the $N$ points that yields the *most* dichotomies. 
+
+    The growth function satisfies:
+    $$
+    m_{\mathcal{H}}(N)\le 2^N
+    $$
+    This can be applied to the perceptron. For example, when $N=4$, we can lay out the points so that they are easily separated. However, given a layout, we must then consider all possible configurations of labels on the points, one of which is the following:
+
+    ![](images/perc.PNG)
+
+    This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14​$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m​$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
+
+  The *VC* ( *Vapnik-Chervonenkis ) dimension* of a hypothesis set $\mathcal{H}$ , denoted by $d_{VC}(\mathcal{H})$ is the largest value of $N$ for which $m_{\mathcal{H}}(N)=2^N$  , in other words is "*the most points $\mathcal{H}$ can shatter* " 
+
+  In soldoni, we can say that the *VC* dimension is one of many measures that characterize the expressive power, or capacity, of a hypothesis class. 
+
+  You can think of the VC dimension as "how many points can this model class memorize?" (a ton? $\to$ BAD! not so many? $\to$ GOOD!)
+
+  ----
+
+  With respect to learning, the effect of the VC dimension is that if the VC dimension is finite, then the hypothesis will generalize:
+  $$
+  d_{vc}(\mathcal H)\ \Longrightarrow\ g \in \mathcal H \text { will generalize }
+  $$
+  The key observation here is that this statement is independent of:
+
+  - The learning algorithm
+  - The input distribution
+  - The target function
+
+  The only things that factor into this are the training examples, the hypothesis set, and the final hypothesis.
+
+  -----
 
 - ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***
 
@@ -191,8 +398,6 @@ $$
 
 - ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
 
-- ***Describe the SVM algorithm for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
-
 - ***Describe what are eligibility traces and how they are used in the TD(λ) algorithm. Explain what happens when λ = 0 and when λ = 1.***
 
 - ***Describe and compare the ridge regression and the LASSO algorithms.***    
@@ -217,7 +422,7 @@ $$
   The following example may be explanatory:  
 
   Consider a model with only one feature ${x_1}$. This model learns the following output: ${\hat{f}(x_1)=4x_1}$. 
-  Now let's add a new feature to the model: ${x_2}$.  Suppose that such second feature does not tell anything new to the model, which means that it depends linearly from ${x_1}$. Actually, ${x_2 = x_1}$.  
+  Now let's add a new feature to the model: ${x_2}$.  Suppose that such second feature does not tell anything new to the model, which means that it depends linearly from ${x_1}$. Actually, ${x_2 = x_1}$.   
   This means that any of the following weights will do the job:  
   ${\hat{f}(x_1,x_2)=4x_1}$
 
@@ -273,6 +478,52 @@ $$
   
 
 - ***Describe the Principal Component Analysis technique***
+
+  ( *Andrea Bonvini* )
+
+  *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}$ .
+
+  Formally, principal component analysis (PCA) is a statistical procedure that uses an *orthogonal transformation* to convert a set of observations of possibly correlated variables into a set of values of *linearly uncorrelated* variables called *principal components*.
+
+  To have a graphical intuition:
+
+  ![](images/PCA.png)
+
+  It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
+
+  - Find a line such that when the data is projected onto that line, it has the maximum variance. 
+  - Find a new line, orthogonal to the ﬁrst one, that has maximum projected variance. 
+  - Repeat until $m$ lines have been identiﬁed and project the points in the data set on these lines. 
+
+  The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ the number of dimensions) : 
+
+  - Compute the mean of the data
+    $$
+    \overline{\mathbf{x}} = \frac{1}{N}\sum_{n=1}^N\mathbf{x}_n
+    $$
+
+  - Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}​$ )
+
+  - Compute the covariance matrix $\mathbf{S} = \mathbf{X}^T\mathbf{X} = \frac{1}{N-1}\sum_{n=1}^{N}(\mathbf{x}_n-\overline{\mathbf{x}})^T(\mathbf{x}_n-\overline{\mathbf{x}})$
+
+    - Eigenvector $\mathbf{e}_1$ with largest eigenvalue $\lambda_1$ is the *first principal component* 
+    - Eigenvector $\mathbf{e}_k$ with largest eigenvalue $\lambda_k$ is the *$k^{th}$ principal component* 
+    - $\frac{\lambda_k}{\sum_i\lambda_i}$ is the proportion of variance captured by the $k^{th}$ principal component.
+
+  Transforming the reduced dimensionality projection back into the original spaces gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts: 
+
+  - Helps to reduce the computational complexity 
+
+  - Can help supervised learning, because reduced dimensions allow simpler hypothesis spaces and less risk of overﬁtting 
+
+  - Can be used for noise reduction 
+
+  But also some drawbacks:
+
+  - Fails when data consists of multiple clusters
+  - The directions of greatest variance may not be the most informative
+  - Computational problems with many dimensions 
+  - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
 - ***Describe and compare Value Iteration and Policy Iteration algorithms.***
 
@@ -374,11 +625,7 @@ $$
 
   
 
-- ***Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
-
 - ***Describe which methods can be used to compute the value function $V^{\pi}$ of a policy $\pi$ in a discounted Markov Decision Process.***
-
-- ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
 
 - ***Describe the supervised learning technique denominated logistic regression for classiﬁcation problems.***
 
@@ -502,7 +749,7 @@ $$
   $$
 
 
-  - *How much pseudo-regret the $TS$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)$ priors?*
+  - *How much pseudo-regret the $TS​$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)​$ priors?*
 
   - *Which one of the previous posteriors is the most peaked one?*
 
