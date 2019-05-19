@@ -2,7 +2,7 @@
 
 *A series of notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
 
-# Search Problems
+# 1 - Search Problems
 
 ### Definition of a Search Problem
 
@@ -99,7 +99,7 @@ Legenda:
 
 
 
-# Constraint Satisfaction Problems
+# 2 - Constraint Satisfaction Problems
 
 ### Definition
 
@@ -160,7 +160,7 @@ CSP constraints are represented by logical expressions involving the problem's v
 
 
 
-# Logic
+# 3 - Logic
 
 ### Introductory Definitions
 
@@ -187,18 +187,18 @@ Before diving into it let's see an example of PL sentence:
 
 ${MotherAB \iff FemaleA \space \and ParentAB}$
 
-#### Syntax of PL
+**Syntax of PL**
 
 It defines the allowable sentences in PL, which are:
 
 - *Atomic Sentences*: indivisible syntactic elements consisting of a single propositional symbol, usually an upper case letter (P,Q,R). Every symbol represents a sentence that can be true or false.
 - *Complex Sentences*: constructed from atomic ones by means of logical connectives (negation, conjunction, disjunction, conditional, biconditional).
 
-#### Semantics of PL
+**Semantics of PL**
 
 the semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
 
-#### Inference in PL
+**Inference in PL**
 
 Reasoning aims at getting new knowledge. New knowledge comes from getting new true sentences from other true sentences that are already in our KB.
 
@@ -326,7 +326,7 @@ However there is a specific way to exploit resolution, in which some form of com
 When the search for the contradiction is performed by means of the resolution technique, we call it *refutation by resolution*.  
 When we say that resolution is ==refutation complete==, we mean that this procedure always reaches a breakpoint (we obtain the empty clause, or we obtain no new clauses by applying resolution to all possible pairs of clauses from the KB).
 
-##### How to put a proposition in Conjunctive Normal Form
+**How to put a proposition in Conjunctive Normal Form**
 
 1. Eliminate implications
 2. Move not inwards
@@ -335,7 +335,7 @@ When we say that resolution is ==refutation complete==, we mean that this proced
 5. Drop universal  quantifiers
 6. Distribute OR over AND
 
-##### Algorithm
+**Algorithm**
 
 solve
 $$
@@ -362,7 +362,7 @@ $$
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
-##### Strategies for selecting clauses:
+**Strategies for selecting clauses:**
 
 - *Unit-preference strategy*
 
@@ -420,7 +420,7 @@ Before diving into it let's see an example of FOL sentence:
 
 ${\forall x \forall y(Mother(x,y))\iff Female(x) \and Parent(x,y))}$
 
-#### **Formal language**
+**Formal language**
 
 Defined by means of
 
@@ -463,7 +463,7 @@ Defined by means of
   - *Predicates*
     A predicate is a property that  a given individual can possess or not, or a relation that can subsist or not subsist among couples, terns, etc. of individuals.
 
-#### **Semantics**
+**Semantics**
 
 To assign semantics to a logical language means to define a criterion to determine whether an argument is valid. The validity of an argument is reduced to the relation of logical entailment among formulas. This notion of entailment is based on the concept of truth of a formula. But in general a formula is not true or false per se, but only with respect to a precise interpretation of the descriptive symbols of its language (predicates and constants). It follows that to specify the semantics of a language is to define when formula ϕ is true in a model M, which is expressed by the notation ${M \models \varphi}$.
 A few definition:
@@ -481,7 +481,7 @@ A few definition:
 - *Satisfiability*
   a formula ${\varphi}$ is satisfiable if for some model M and for some assignment val we have ${M,val \models \varphi}$.
 
-#### Calculus
+**Calculus**
 
 Similar to the calculus procedures of Propositional Logic, it's though considered a prerequisite for such course so I will not go deep into it.
 
@@ -512,7 +512,7 @@ $$
 
 Backward chaining is the logical process of inferring unknown truths from known conclusions by moving backward from a solution to determine the initial conditions and rules.   
 In AI, backward chaining is used to find the conditions and rules by which a logical result or conclusion was reached. An AI might utilize backward chaining to find information related to conclusions or solutions in reverse engineering or game theory applications.  
-As a goal-driven and top-down form of reasoning, backward chaining usually employs a depth-first search strategy by starting from a conclusion, result or goal and going backward to infer the conditions from which it resulted.
+As a goal-driven and top-down form of reasoning, backward chaining usually employs a <u>depth-first search strategy</u> by starting from a conclusion, result or goal and going backward to infer the conditions from which it resulted.
 
 **Algorithm**
 
@@ -521,7 +521,7 @@ The children to be derived can be a conjunct of literals (which translates into 
 
 1. Draw the root, which is the end literal to be derived.
 2. Analyze the children using depth first search:
-   1. if the node is part of our KB a we are happy with it and we mark it with a check mark.
+   1. if the node is part of our KB  we are happy with it and we mark it with a check mark.
    2. elif the node is derivable and is not in the Goal List we add it to the Goal List and derive it.
    3. elif the node is already in the goal list we end the search for that node
    4. elif the node is not in the Goal List, is not part of the KB, and is not derivable we mark it with an X.
@@ -538,6 +538,10 @@ The algorithm ends as soon as you find one of the following:
 **Exam's Example**
 
 ![1557584378119](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1557584378119.png)
+
+
+
+
 
 ### Forward Chaining
 
@@ -567,7 +571,7 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
-# Alpha-Beta Pruning
+# 4 - Alpha-Beta Pruning
 
 - alpha initial value = + infinity 
 
@@ -586,7 +590,7 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
-#### Zero Sum Game
+**Zero Sum Game**
 
 A zero sum game is (confusingly) defined as one where the total payoff to all players is the same for every instance of the game.
 Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
@@ -596,7 +600,7 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 
 
-# Montecarlo Tree Search
+# 5 - Montecarlo Tree Search
 
 Problem: the tree is deep in the search space: the time in order to find a solution would be exponential.
 What tries to do montecarlo? tries to find some approximate solutions to the problem.
@@ -675,14 +679,16 @@ this algorithm is Any Time: we can repeat these steps as long as we want and the
 
 
 
-# Planning
+# 6 - Planning
 
-#### Closed World Assumption
+### Introduction
+
+**Closed World Assumption**
 
 The Closed World Assumption amounts to consider as false all the sentences that are not known to be true. 
 In STRIPS, this means that all the predicates not listed in the representation of a state are considered false. 
 
-#### Terminology
+**Terminology**
 
 - *<u>Predicate</u>*
 
@@ -705,7 +711,9 @@ In STRIPS, this means that all the predicates not listed in the representation o
 
   Clear(A) is derivable because a block is clear if there is not a block upon it.
 
-#### State
+
+
+**State**
 
 A state is represented by a set of literals that are:
 
@@ -715,7 +723,9 @@ A state is represented by a set of literals that are:
 - *function free*
   there are no functions
 
-#### Goal
+
+
+**Goal**
 
 - Goals are a set of states 
   [ C over A over B ]  or [ (A over B) and  C ]     --> both satisfy on(A,B)
@@ -738,7 +748,9 @@ A state is represented by a set of literals that are:
   - Goals are represented by a set of positive literals
   - STRIPS doesn't allow negative goals and variables in goals
 
-#### Action Schemas & Actions
+
+
+**Action Schemas & Actions**
 
 Valid for both STRIPS and PDLL:
 
@@ -777,7 +789,7 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Forward Planning / Progressive Planning
+### Forward Planning / Progressive Planning
 
 *definition:* Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem.
 
@@ -785,7 +797,7 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Backward Planning / Regression Planning
+### Backward Planning / Regression Planning
 
 *definition*: Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a goal state that is satisfied by the initial state of the planning problem. 
 
@@ -803,7 +815,7 @@ Valid for both STRIPS and PDLL:
   
 
 
-#### Hierarchical Task Network
+### Hierarchical Task Network
 
 - Search in the space of plans, which means: let's start from an empty plan (just initial state + goal state) as the root.  
   Its children will be all the plans with only one action going from the initial state to the goal state.  
@@ -812,7 +824,7 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Situation Calculus
+### Situation Calculus
 
 - Start from a planning problem and transform it into a satisfiability problem, which means in a very big propositional logic formula.
 
@@ -912,7 +924,7 @@ $$
 
 
 
-# Ass Savers
+# 7 - Ass Savers
 
 - Is [a] logically entailed by the KB? Explain why. 
   Formula [a] is logically entailed by the KB because resolution is a sound inference procedure
@@ -941,15 +953,17 @@ $$
 
 
 
-# Doubts
+# 8 - Doubts
 
-- Unit Resolution
+- Unit Resolution, is there a pattern to be followed?
+
+- ai18feb16s - question 2 of exercise5: At least, how many nodes would have been generated by A* search strategy with the same heuristic function?
 
   
 
 
 
-# Theory Questions
+# 9 - Theory Questions
 
 -  **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
   Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem. Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state that is satisfied by the initial state of the planning problem. 
