@@ -2,7 +2,7 @@
 
 *A series of notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
 
-# Search Problems
+# 1 - Search Problems
 
 ### Definition of a Search Problem
 
@@ -19,29 +19,29 @@ Legenda:
 
 - ${b}$  =  Branching Factor:   
   what is the maximum number of children a node can have, the maximum cardinality of the set returned
-- ${\epsilon}​$ is the smallest path cost you have.
+- ${\epsilon}$ is the smallest path cost you have.
 
 
 
-| Strategy | Complete? | Optimal? | T C  | S    |
-| -------- | --------- | -------- | ---- | ---- |
-|          |           |          |      |      |
+| Strategy             | Complete?                                       | Optimal?                                           | T C      | S        |
+| -------------------- | ----------------------------------------------- | -------------------------------------------------- | -------- | -------- |
+|                      |                                                 |                                                    |          |          |
 | Breadth First Search | Yes (no when the branch factor (b) is infinite) | No (yes if the cost function increases with depth) | $O(b^d)$ | $O(b^d)$ |
-|  |  |  |  |  |
-|                      |                                                 |                                                    |        |        |
+|                      |                                                 |                                                    |          |          |
+|                      |                                                 |                                                    |          |          |
 
-| Uniform Cost | Yes (not guaranteed if some costs = 0) | Yes  | $O(b^c\cdot \epsilon)$ | $O(b^c\cdot  \epsilon)$ |
-| ------------ | ------------------------------------ | ---- | --------------- | --------------- |
-|              |                                      |      |                 |                 |
-| Depth First | tree search: no (loop) graph search: yes | No   |      |      |
-|  |  |  |  |  |
-|             |                                               |      |      |      |
-| Depth Limited Search | No   | No   | $O(b^l)$ | $O(bl)$ |
-|  |  |  |  |  |
-|                      |      |      |        |       |
-| Iterative Deepening Search | Yes(but not when it's infinite) | No (but if all costs are 1 it finds the optimal solution) | $O(b^d)$ | $O(bd)$ |
-|  |  |  |  |  |
-|                            |                                 |                                                           |        |       |
+| Uniform Cost               | Yes (not guaranteed if some costs = 0)   | Yes                                                       | $O(b^c\cdot \epsilon)$ | $O(b^c\cdot  \epsilon)$ |
+| -------------------------- | ---------------------------------------- | --------------------------------------------------------- | ---------------------- | ----------------------- |
+|                            |                                          |                                                           |                        |                         |
+| Depth First                | tree search: no (loop) graph search: yes | No                                                        |                        |                         |
+|                            |                                          |                                                           |                        |                         |
+|                            |                                          |                                                           |                        |                         |
+| Depth Limited Search       | No                                       | No                                                        | $O(b^l)$               | $O(bl)$                 |
+|                            |                                          |                                                           |                        |                         |
+|                            |                                          |                                                           |                        |                         |
+| Iterative Deepening Search | Yes(but not when it's infinite)          | No (but if all costs are 1 it finds the optimal solution) | $O(b^d)$               | $O(bd)$                 |
+|                            |                                          |                                                           |                        |                         |
+|                            |                                          |                                                           |                        |                         |
 
 
 
@@ -53,7 +53,7 @@ Legenda:
   - A property is g(n) that is the path cost. Chooses first from the frontier the node with the smallest path cost. 
     You can never have a loop if costs are different from zero
 - Depth First Search
-  -  Depth-first strategy: when you have to choose a node from the frontier choose the deepest node. "m" is the longest path i can have in the state space.
+  - Depth-first strategy: when you have to choose a node from the frontier choose the deepest node. "m" is the longest path i can have in the state space.
   - Backtracking : when you expand a node you don't generate all successors but only one, you keep in a separate data structure a track of which are the successor already tried. 
     A memory saving version of depth first. Here spatial complexity is "m", excluding the data structure. 
 - Depth Limited Search
@@ -92,14 +92,12 @@ Legenda:
 ### A* Star Algorithm Completeness & Optimality
 
 - Like breadth-first search,  A* is *complete* and will always find a solution if one exists provided c(node_1,node_2) > epsilon > 0 for fixed epsilon
-
 - Optimal if h() is admissible, with tree search (no elimination of repeated nodes)
 - Optimal if h() is consistent, with graph search (elimination of repeated nodes)
 
 
 
-
-# Constraint Satisfaction Problems
+# 2 - Constraint Satisfaction Problems
 
 ### Definition
 
@@ -135,32 +133,22 @@ CSP constraints are represented by logical expressions involving the problem's v
 ### Arc Consistency
 
 1. build the constraint directed graph
-
 2. Take a walk in the queue knowing that the arc "X -> Y"  is consistent if for every value of X there is some possible legal value of Y
-
 3. 
-
-   1. 
-      if it is not consistent 
-
+   1. if it is not consistent 
       1. I will change the domain of the left member node (X in the example) in order to make it consistent
-      2. 
-         1. if after removing the element of the domain that makes the arc consistent I obtain an empty domain there is no solution and I stop
+      2. 1. if after removing the element of the domain that makes the arc consistent I obtain an empty domain there is no solution and I stop
          2. otherwise I'll push in the queue some other arcs: 
             since I modified the domain of X, I will have to push in the queue all the arcs in the form of Z -> X, where Z is any node of the graph, excluding Y and excluding the arcs I already evaluated consistent.
          3. if the queue is empty I stop
-
-   2. 
-      if it is consistent 
-
+   2. if it is consistent 
       1. I throw it away and I forget it forever, it will never be back in the queue
       2. if the queue is empty I stop
-
 4. go back to step 2.
 
 
 
-# Logic
+# 3 - Logic
 
 ### Introductory Definitions
 
@@ -187,18 +175,18 @@ Before diving into it let's see an example of PL sentence:
 
 ${MotherAB \iff FemaleA \space \and ParentAB}$
 
-#### Syntax of PL
+**Syntax of PL**
 
 It defines the allowable sentences in PL, which are:
 
 - *Atomic Sentences*: indivisible syntactic elements consisting of a single propositional symbol, usually an upper case letter (P,Q,R). Every symbol represents a sentence that can be true or false.
 - *Complex Sentences*: constructed from atomic ones by means of logical connectives (negation, conjunction, disjunction, conditional, biconditional).
 
-#### Semantics of PL
+**Semantics of PL**
 
 the semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
 
-#### Inference in PL
+**Inference in PL**
 
 Reasoning aims at getting new knowledge. New knowledge comes from getting new true sentences from other true sentences that are already in our KB.
 
@@ -285,24 +273,24 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
      \\ 
      \rule{2cm}{0.5mm} 
      \\ 
-     \beta}​$
+     \beta}$
 
   - Conjunction Elimination
     ${\alpha \and \beta 
     \\
     \rule{2cm}{0.5mm} 
     \\
-    \alpha}​$
+    \alpha}$
 
   - Conjunction Introduction
-    ${\alpha \\ \beta \\ \rule{2cm}{0.5mm}  \\ \alpha \and\beta}​$
+    ${\alpha \\ \beta \\ \rule{2cm}{0.5mm}  \\ \alpha \and\beta}$
 
   - Disjunction Introduction
     ${\alpha
     \\
     \rule{2cm}{0.5mm} 
     \\
-    \alpha\or\beta}​$
+    \alpha\or\beta}$
 
   - All logical equivalences, for instance contraposition
     ${\alpha \rightarrow \beta \\ \rule{2cm}{0.5mm} 
@@ -326,7 +314,7 @@ However there is a specific way to exploit resolution, in which some form of com
 When the search for the contradiction is performed by means of the resolution technique, we call it *refutation by resolution*.  
 When we say that resolution is ==refutation complete==, we mean that this procedure always reaches a breakpoint (we obtain the empty clause, or we obtain no new clauses by applying resolution to all possible pairs of clauses from the KB).
 
-##### How to put a proposition in Conjunctive Normal Form
+**How to put a proposition in Conjunctive Normal Form**
 
 1. Eliminate implications
 2. Move not inwards
@@ -335,7 +323,7 @@ When we say that resolution is ==refutation complete==, we mean that this proced
 5. Drop universal  quantifiers
 6. Distribute OR over AND
 
-##### Algorithm
+**Algorithm**
 
 solve
 $$
@@ -362,7 +350,7 @@ $$
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
-##### Strategies for selecting clauses:
+**Strategies for selecting clauses:**
 
 - *Unit-preference strategy*
 
@@ -384,11 +372,11 @@ $$
   This procedure can be misleading since if there were clauses with more than 2 literals, we should start comparing the one literals with the two-literals clauses, and 
 
   **Example**  
-  ![](images/unit_resolution_1.jpeg)
+  ![](C:/Users/Willi/Desktop/Notes/Artificial_Intelligence/images/unit_resolution_1.jpeg)
 
   **CounterExample**
 
-  # ![](images/unit_resolution_2.png)
+  # ![](C:/Users/Willi/Desktop/Notes/Artificial_Intelligence/images/unit_resolution_2.png)
 
   
 
@@ -420,7 +408,7 @@ Before diving into it let's see an example of FOL sentence:
 
 ${\forall x \forall y(Mother(x,y))\iff Female(x) \and Parent(x,y))}$
 
-#### **Formal language**
+**Formal language**
 
 Defined by means of
 
@@ -439,11 +427,10 @@ Defined by means of
       a,b,c,...
       $$
 
-    - a set P of predicate symbols (${P,Q,R,..}​$) or predicates with a function.
+    - a set P of predicate symbols (${P,Q,R,..}$) or predicates with a function.
       $$
       P\to N \space that \space assigns \space to \space every \space symbol \space an \space arity \space (n°\space of \space arguments)
       $$
-      
 
   - *Structural Symbols*
     brackets and commas.
@@ -463,7 +450,7 @@ Defined by means of
   - *Predicates*
     A predicate is a property that  a given individual can possess or not, or a relation that can subsist or not subsist among couples, terns, etc. of individuals.
 
-#### **Semantics**
+**Semantics**
 
 To assign semantics to a logical language means to define a criterion to determine whether an argument is valid. The validity of an argument is reduced to the relation of logical entailment among formulas. This notion of entailment is based on the concept of truth of a formula. But in general a formula is not true or false per se, but only with respect to a precise interpretation of the descriptive symbols of its language (predicates and constants). It follows that to specify the semantics of a language is to define when formula ϕ is true in a model M, which is expressed by the notation ${M \models \varphi}$.
 A few definition:
@@ -472,16 +459,14 @@ A few definition:
   A model consist of an interpretation of the predicates and the constants of the language.
 - *Value assignment*
   The assignment of a value to a variable of the language.
-
 - *True and False Formulas*
   There exists formula that are true in all models, formulas that are false in every model, formulas that are false depending on the model. For instance, every formula with the form ${\varphi \or \neg \varphi}$ is true in each model, ${\varphi \and \neg \varphi}$ is false in each model, ${\exists xP(x)}$ is true in some models and false in others
-
 - *Validity*
-  a formula ${\varphi}​$ is valid or logically true if for any model M and for any assignment val we have ${M,val \models \varphi}​$
+  a formula ${\varphi}$ is valid or logically true if for any model M and for any assignment val we have ${M,val \models \varphi}$
 - *Satisfiability*
   a formula ${\varphi}$ is satisfiable if for some model M and for some assignment val we have ${M,val \models \varphi}$.
 
-#### Calculus
+**Calculus**
 
 Similar to the calculus procedures of Propositional Logic, it's though considered a prerequisite for such course so I will not go deep into it.
 
@@ -512,16 +497,16 @@ $$
 
 Backward chaining is the logical process of inferring unknown truths from known conclusions by moving backward from a solution to determine the initial conditions and rules.   
 In AI, backward chaining is used to find the conditions and rules by which a logical result or conclusion was reached. An AI might utilize backward chaining to find information related to conclusions or solutions in reverse engineering or game theory applications.  
-As a goal-driven and top-down form of reasoning, backward chaining usually employs a depth-first search strategy by starting from a conclusion, result or goal and going backward to infer the conditions from which it resulted.
+As a goal-driven and top-down form of reasoning, backward chaining usually employs a <u>depth-first search strategy</u> by starting from a conclusion, result or goal and going backward to infer the conditions from which it resulted.
 
 **Algorithm**
 
-Initially the KB is composed only from the single literals and the Goal List is composed only from the literal we want to infer. In our example we have ${KB=\{E;F;P\}}$ and ${Goal \space List = Z}​$.  
+Initially the KB is composed only from the single literals and the Goal List is composed only from the literal we want to infer. In our example we have ${KB=\{E;F;P\}}$ and ${Goal \space List = Z}$.  
 The children to be derived can be a conjunct of literals (which translates into two children whose branches are connected via an arc) or a single literal (simply one only-child).
 
 1. Draw the root, which is the end literal to be derived.
 2. Analyze the children using depth first search:
-   1. if the node is part of our KB a we are happy with it and we mark it with a check mark.
+   1. if the node is part of our KB  we are happy with it and we mark it with a check mark.
    2. elif the node is derivable and is not in the Goal List we add it to the Goal List and derive it.
    3. elif the node is already in the goal list we end the search for that node
    4. elif the node is not in the Goal List, is not part of the KB, and is not derivable we mark it with an X.
@@ -539,6 +524,10 @@ The algorithm ends as soon as you find one of the following:
 
 ![1557584378119](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1557584378119.png)
 
+
+
+
+
 ### Forward Chaining
 
 Forward Chaining is a *sound and complete* inference procedure
@@ -550,7 +539,6 @@ Forward Chaining is a *sound and complete* inference procedure
      Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}$.
   3. If all the predicates on the right of the clauses (the effects) have been derived stop. You obtained all the sentences entailed by the KB.  
      else go back to step 2  
-
 
 - **Example**   
   1. ${A \to B}$
@@ -567,18 +555,13 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
-# Alpha-Beta Pruning
+# 4 - Alpha-Beta Pruning
 
 - alpha initial value = + infinity 
-
 - beta initial value = - infinity
-
 - v initial value = none.
-
 - alpha & beta are inherited by the daddy
-
 - v is inherited by the children
-
 - the first v is computed on the left leaf (depth first search)
 - Pruning condition
   - If the utility function v is bounded --> as soon as we find find a winning path (starting from the root!) for max we end the search there
@@ -586,7 +569,7 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
-#### Zero Sum Game
+**Zero Sum Game**
 
 A zero sum game is (confusingly) defined as one where the total payoff to all players is the same for every instance of the game.
 Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
@@ -596,7 +579,7 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 
 
-# Montecarlo Tree Search
+# 5 - Montecarlo Tree Search
 
 Problem: the tree is deep in the search space: the time in order to find a solution would be exponential.
 What tries to do montecarlo? tries to find some approximate solutions to the problem.
@@ -674,22 +657,22 @@ this algorithm is Any Time: we can repeat these steps as long as we want and the
 
 
 
+# 6 - Planning
 
-# Planning
+### Introduction
 
-#### Closed World Assumption
+**Closed World Assumption**
 
 The Closed World Assumption amounts to consider as false all the sentences that are not known to be true. 
 In STRIPS, this means that all the predicates not listed in the representation of a state are considered false. 
 
-#### Terminology
+**Terminology**
 
 - *<u>Predicate</u>*
 
   - something that can be true or false. stuff with parameters or without.   
     As parameters, predicates take constants.
     A predicate with more than one parameter is called *relation*.
-
   - Predicates can be divided in two classes:
     - *Fluent*
       Predicates that can change with time (true in some instances of time, false in others)
@@ -705,7 +688,9 @@ In STRIPS, this means that all the predicates not listed in the representation o
 
   Clear(A) is derivable because a block is clear if there is not a block upon it.
 
-#### State
+
+
+**State**
 
 A state is represented by a set of literals that are:
 
@@ -715,30 +700,28 @@ A state is represented by a set of literals that are:
 - *function free*
   there are no functions
 
-#### Goal
+
+
+**Goal**
 
 - Goals are a set of states 
   [ C over A over B ]  or [ (A over B) and  C ]     --> both satisfy on(A,B)
 - A state S satisfies a goal G when the state S contains all the positive literals of G and does not contain any of the negative literals of G
-
 - PDLL
-
   - Goals are represented by a set of literals that are function-free ${\to}$ variables and negative literals are allowed!
     e.g. 
     not On(A,B) 
     On(x,A)
-
   - PDLL extends STRIPS
-
   - if you have a variable in a goal than this variable has an existence quantifier
     On(x,A) means Exists x |on(x,A) is true?
-
 - STRIPS 
-
   - Goals are represented by a set of positive literals
   - STRIPS doesn't allow negative goals and variables in goals
 
-#### Action Schemas & Actions
+
+
+**Action Schemas & Actions**
 
 Valid for both STRIPS and PDLL:
 
@@ -770,6 +753,7 @@ Valid for both STRIPS and PDLL:
   Example? Disney Cartoons LOL. fixed background, mickey mouse just moves his legs and arms e.e
 
 - Action types (concept needed for backward planning)
+
   - *relevant actions:*  
     An action is relevant to a goal if it achieves at least one of the conjuncts of the goal.
   - *consistent actions:* 
@@ -777,7 +761,7 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Forward Planning / Progressive Planning
+### Forward Planning / Progressive Planning
 
 *definition:* Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem.
 
@@ -785,7 +769,7 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Backward Planning / Regression Planning
+### Backward Planning / Regression Planning
 
 *definition*: Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a goal state that is satisfied by the initial state of the planning problem. 
 
@@ -802,8 +786,7 @@ Valid for both STRIPS and PDLL:
 
   
 
-
-#### Hierarchical Task Network
+### Hierarchical Task Network
 
 - Search in the space of plans, which means: let's start from an empty plan (just initial state + goal state) as the root.  
   Its children will be all the plans with only one action going from the initial state to the goal state.  
@@ -812,22 +795,15 @@ Valid for both STRIPS and PDLL:
 
 
 
-#### Situation Calculus
+### Situation Calculus
 
 - Start from a planning problem and transform it into a satisfiability problem, which means in a very big propositional logic formula.
-
 - a situation is a picture of the world
-
 - situations are objects, 
-
 - reification: give names to objects
-
 - at(robot1,room6,s_3)   it's a fluent --> it is true for situation 3 but it can be false for s_4
-
 - by convention the situation is the last argument of the thing.
-
 - so, you have logical formulas that are changing their truth values in time.
-
 - *<u>Result Action</u>*
   we define very special elements, one of this elements is a function that is called "Result"
   Result takes an action and a situation and returns a new situation:
@@ -857,8 +833,6 @@ $$
   $$
   \forall x \forall s \space \neg Holding(x,Result(Drop(x),s))
   $$
-  
-
   In this case no precondition.
   it says that if I'm dropping x in a situation s then i will reach a situation in which im not holding x.
 
@@ -873,13 +847,10 @@ $$
 
 ​	If I grab an object x, its color c doesn't change.
 
-
 ​	Another way of writing it is with functions (this means that we can use functions in situation calculus)
 $$
 \forall x\forall s \space Color(x,s)=Color(x,Result(Grab(x),s))
 $$
-
-
 
 
 - *In synthesis for each action that you have you should define an effect axiom + a number of frame axioms. moreover you need to specify an initial state (a set of conjuncted predicates) and goal state. how is the goal specified? it is something like this: it's usually an existentially quantified formula*
@@ -912,7 +883,7 @@ $$
 
 
 
-# Ass Savers
+# 7 - Ass Savers
 
 - Is [a] logically entailed by the KB? Explain why. 
   Formula [a] is logically entailed by the KB because resolution is a sound inference procedure
@@ -929,8 +900,8 @@ $$
 - Factoring:
   A v A = A
 
--  Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
-   Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
+- Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
+  Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
   (trivial, but still...)
 
 
@@ -941,21 +912,23 @@ $$
 
 
 
-# Doubts
+# 8 - Doubts
 
-- Unit Resolution
+- Unit Resolution, is there a pattern to be followed?
+
+- ai18feb16s - question 2 of exercise5: At least, how many nodes would have been generated by A* search strategy with the same heuristic function?
 
   
 
 
 
-# Theory Questions
+# 9 - Theory Questions
 
--  **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
+- **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
   Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem. Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state that is satisfied by the initial state of the planning problem. 
--  **Why are forward planning and backward planning said to search in the space of states and in the space of goals, respectively?**    
+- **Why are forward planning and backward planning said to search in the space of states and in the space of goals, respectively?**    
   The states of the search problem formulated by forward planning are states of the planning problem. The states of the search problem formulated by backward planning are goals of the planning problem. 
--  **Which one between forward planning and backward planning can generate inconsistent situations? Why? How can these inconsistencies be managed?**   
+- **Which one between forward planning and backward planning can generate inconsistent situations? Why? How can these inconsistencies be managed?**   
   Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
 - **Consider using forward chaining for deriving the sentences entailed by your KB, can you list all the sentences entailed by such KB?**  
   Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
