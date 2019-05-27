@@ -1,4 +1,4 @@
-# Advanced Signals and Data Processing in Medicine
+Advanced Signals and Data Processing in Medicine
 
 *A series of notes on the "Advanced SIgnals and Data Processing in Medicine" course as taught by Sergio Cerutti and Riccardo Barbieri during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
@@ -146,11 +146,11 @@
 
   It's a number that tells us how sensitive a system is to its initial conditions.
 
-  Let's suppose we have two initial conditions $x_{0}​$ and $y_{0}​$.
-  We define measure of the distance $D_{0}​$ as follows:
-  $D_{0} = |x_{0} - y_{0}|​$
+  Let's suppose we have two initial conditions $x_{0}$ and $y_{0}$.
+  We define measure of the distance $D_{0}$ as follows:
+  $D_{0} = |x_{0} - y_{0}|$
   and we keep track of it over the time :
-  $D(t) = | x_{t} - y_{t}|​$
+  $D(t) = | x_{t} - y_{t}|$
 
   For many systems this is an exponential function of time:
   $D(t) =D_{0}e^{\lambda t} $
@@ -405,7 +405,7 @@
   $$
   TFR(t,\omega) = \frac{1}{2\pi}\int \frac{\partial}{\partial t}R_t(\tau)e^{-j\omega \tau}d\tau = \frac{1}{2\pi}\int K_t(\tau)e^{-j\omega \tau}d\tau
   $$
-  where $K_t(\tau)​$  is known as a *local autocorrelation function*. The above relation shows that a $TFR​$ can be obtained as the Fourier transform of a time-dependent autocorrelation function. We may observe that due to the derivative operation, the integral that characterizes the $R_t(\tau)​$ disappears in $K_t(\tau)​$ which de facto describes local properties of the signal. Among all the possible choices of $K_t(\tau)​$ the most simple (Mark, 1970) is to select
+  where $K_t(\tau)$  is known as a *local autocorrelation function*. The above relation shows that a $TFR$ can be obtained as the Fourier transform of a time-dependent autocorrelation function. We may observe that due to the derivative operation, the integral that characterizes the $R_t(\tau)$ disappears in $K_t(\tau)$ which de facto describes local properties of the signal. Among all the possible choices of $K_t(\tau)$ the most simple (Mark, 1970) is to select
   $$
   K_t(\tau) = x\left(t + \frac{\tau}{2}\right)x^*\left(t - \frac{\tau}{2}\right) \\
   $$
@@ -421,7 +421,7 @@
   $$
   W_{xx}(t,f) = \delta[t,f-f_x(t)]
   $$
-  and the WV is a line in the $t-f​$ plane, concentrated at any instant around the instantaneous frequency of the signal. From a practical point of view, this property shows that the representation is able to correctly localize (jointly in *time* and *frequency*) a sinusoidal component whose properties are varying with time.
+  and the WV is a line in the $t-f$ plane, concentrated at any instant around the instantaneous frequency of the signal. From a practical point of view, this property shows that the representation is able to correctly localize (jointly in *time* and *frequency*) a sinusoidal component whose properties are varying with time.
 
   ![](images/WV1.PNG)
 
@@ -551,7 +551,7 @@
 
 ## Exam Questions Barbieri
 
-- **Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot , Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti? Shannon entropy e il legame con l’informazione. **
+- **Talk me about Shannon entropy: what's the concept behind the formula and how can we derive the latter? What's the link with information theory? Se ho n samples, how many bit i need? Compute binary entropy + plot , Relazione grafica tra entropia e mutua informazione. Joint entropy se sono indipendenti? Shannon entropy e il legame con l’informazione. Drawing of mutual information and entropy **
 
   ------------------------------------------------------------------------------------
 
@@ -673,7 +673,7 @@
 
   -----------------------
 
-  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X​$ and $Y​$. The area contained by both circles is the *joint entropy* $H(X,Y)​$. The circle on the left (red and violet) is the individual entropy $H(X)​$ , with the red being the *conditional entropy* $H(X|Y) ​$. The circle on the right (blue and violet) is $H(Y)​$, with the blue being $H(Y|X)​$. The violet is the *mutual information* $I(X;Y)​$.
+  ![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)$.
 
   Let's define now the *entropy* in a continuous domain, we see that the sum is replaced with an integral:
   $$
@@ -715,8 +715,6 @@
 
 - Le sei proprietà dei cumulants.
 
-- Granger Causality. Qual è la novità introdotta? (Viene introdotta una terza variabile percercare di determinare il rapporto tra altre due).
-
 - Bagging? Perché servono più osservazioni (in generale)?
 
 - **How can we model a neuron? (stimulus-response model (p(r|s)) e poi point process model) + how to represent the response of a neuron (tuning curve). Descrivere il point process(in generale, partendo dalla definizione fino a spiegare il legame col segnale neuronale). La rappresentazione che lega il segnale con questo processo è l’ISI. Upper and lower bound. Tuning curve di un neurone. Spiking activity di un neurone, come posso caratterizzarla? Metodi per descrivere l’informazione in un neurone. (Spikes, lambda, binning, cond int function,...bernoulli, likelihood)** 
@@ -742,11 +740,11 @@
   I(s;r) = H(r)-H(r|s)\\
   I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
   $$
-  For each stimulus value $s_i$ a distribution of response values $p(r|s_i)$ is generated, the more $p(r|s_i)$ is closer to a delta function, the lower the value for $H(r|s_i)$. ( *remember: less noise uncertainty = higher information!* ) 
+  For each stimulus value $s_i$ a distribution of response values $p(r|s_i)$ is generated, the more $p(r|s_i $ is closer to a delta function, the lower the value for $H(r|s_i)$. ( *remember: less noise uncertainty = higher information!* ) 
 
-  In neural coding, $H(R|S)​$ is the entropy in the neural response given the stimulus. This variable, called neuronal noise, measures the uncertainty remaining in the neural response when the stimulus conditions are known.
+  In neural coding, $H(R|S)$ is the entropy in the neural response given the stimulus. This variable, called neuronal noise, measures the uncertainty remaining in the neural response when the stimulus conditions are known.
 
-  Note that entropy measures uncertainty and that information is defined as the difference of entropies $\to​$ a reduction of uncertainty.
+  Note that entropy measures uncertainty and that information is defined as the difference of entropies $\to$ a reduction of uncertainty.
   $$
   I(s;r)=-\sum_ip(r_i)\log_2p(r_i)+\sum_jp(s_j)\sum_ip(r_i|s_j)\log_2p(r_i|s_j)\\
   = -\sum_ip(r_i)\log_2p(r_i)+\sum_{i,j}p(r_i,s_i)\log_2p(r_i|s_j)\\
@@ -758,54 +756,46 @@
   \sum_ip(r_i)\log_2p(r_i) = \sum_{i,j}p(r_i,s_j)\log_2p(r_i)
   $$
 
-  A final basic point of information theory is the "*data processing inequality*" theorem. Its basis is the somewhat trivial statement that information cannot be recovered after being degraded. For example, consider a neural processing chain where S is encoded by a first neuron in a set of neuronal responses R1, and R1 is then encoded by a second set of neuronal responses R2. The data processing inequality says that $I(S, R1) ≥ I(S, R2)$. Note that this is true of all information channels, not just neurons. This theorem is a cornerstone of the method (below) used to find a lower bound on the amount of information about a dynamic stimulus transmitted in a neuronal channel. 
+  A final basic point of information theory is the "*data processing inequality*" theorem. Its basis is the somewhat trivial statement that information cannot be recovered after being degraded. For example, consider a neural processing chain where S is encoded by a first neuron in a set of neuronal responses R1, and R1 is then encoded by a second set of neuronal responses R2. The data processing inequality says that $I(S, R1) ≥ I(S, R2)​$. Note that this is true of all information channels, not just neurons. This theorem is a cornerstone of the method (below) used to find a lower bound on the amount of information about a dynamic stimulus transmitted in a neuronal channel. 
 
-  <img src="images/BOX1.PNG" style="zoom:50%"/>
+  <img src="images/BOX1.PNG" style="zoom:40%"/>
 
-  <img src="images/BOX2.PNG" style="zoom:45%"/>
-
-  
+  <img src="images/BOX2.PNG" style="zoom:35%"/>
 
   Now, remember that we are in a real case scenario, where we have *noise*, our problem is that we don't know if uncertainty is given by the way the system is working or by a noisy variable that is not contemplated by the paradigm of *information theory*. We have to redefine information theory in terms of *Signal to Noise Ratio*. We will see tables that relate information theory and entropy as a function of the SNR.
 
-  Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
+  Remember that the entropy of a Gaussian is proportional to the variance (  $H(S) = \frac{1}{2}\log_a(2\pi e\sigma^2)​$ ) and, intuitively,  for additive Gaussian noise, information is proportional to signal-to-noise ratio (*SNR*) .
 
   For time-dependent signals, entropy grows with duration (uncertainty increases over time as properties may change).
 
-  
+  <img src="images/BOX3.PNG" style="zoom:45%"/>
 
-  <img src="images/BOX3.PNG" style="zoom:55%"/>
-
-  <img src="images/BOX4.PNG" style="zoom:55%"/>
-
-  ...
+  <img src="images/BOX4.PNG" style="zoom:45%"/>
 
   Now we want to estimate *information*, remember that
-
-   
   $$
   I(s;r) = H(r)-H(r|s)\\
-  I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
+    I(s;r) = H(r)-\sum_{s_i}p(s_i)H(r|s_i)
   $$
   we have $3$ different methods for *estimating information*:
 
-  - ***Direct***:
+  - *Direct*:
 
     The first ("*direct*") method calculates information directly from the neural response by estimating its entropy, $H(R)$, and neural noise, $H(R|S)$. This method exactly determines the average information transmitted, but it does not reveal what aspects of the stimulus are being encoded. Because the direct method does not make any assumptions about response probability distributions, it also requires a lot of experimental data.
 
-  - ***Upper Bound***:
+  - *Upper Bound*:
 
-    The second method is similar to the first, with the added assumption that the neuronal response amplitudes, expressed in the frequency domain (see below), have Gaussian probability distributions. This method, which gives an upper bound for information transfer, requires significantly less data because Gaussian distributions are completely described by their mean and variance. 
+    The second method is similar to the first, with the added assumption that the neuronal response amplitudes, expressed in the frequency domain (see below), have *Gaussian* probability distributions. This method, which gives an upper bound for information transfer, requires significantly less data because Gaussian distributions are completely described by their mean and variance. 
 
-    *Remember :* The fundamental assumption of this method is that the neuronal response and neuronal noise have Gaussian probability distributions in the *frequency domain* and that neuronal noise is *additive*. 
+    *Remember :* The fundamental assumption of this method is that the neuronal response and neuronal noise have Gaussian probability distributions in the *frequency domain* and that neuronal noise is *additive*.  Since the *Gaussian* has maximum entropy, the *real* entropy  has to be lower!
 
-    <img src="images/AvgSNR.PNG" style="zoom:55%"/>  
+    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/AvgSNR.PNG" style="zoom:55%"/>  
 
-    The figure above consists in the flow chart of how to measure the channel capacity of a neuron. The same stimulus is presented $n$ times while the responses $R_i$ are measured (*left*). These responses are averaged to obtain the average response $R_{avg}$. The difference between each $R_i$ and $R_{avg} $ become the noise traces $N_i$ (*middle*). These are Fourier-transformed to the noise power spectra $N_i(f)$ (*right*), which can be averaged as well. Bottom left, power spectra of the mean response (*red*) together with the mean power spectra of the noise (*yellow*). Bottom right, ratio of these two functions, the so-called signal-to-noise ratio or $SNR​$, together with the *cumulative* information rate. Response and noise data were created in a pseudorandom way from Gaussian distributions.
+    The figure above consists in the flow chart of how to measure the channel capacity of a neuron. The same stimulus is presented $n$ times while the responses $R_i$ are measured (*left*). These responses are averaged to obtain the average response $R_{avg}$. The difference between each $R_i$ and $R_{avg} $ become the noise traces $N_i$ (*middle*). These are Fourier-transformed to the noise power spectra $N_i(f)$ (*right*), which can be averaged as well. Bottom left, power spectra of the mean response (*red*) together with the mean power spectra of the noise (*yellow*). Bottom right, ratio of these two functions, the so-called signal-to-noise ratio or $SNR$, together with the *cumulative* information rate. Response and noise data were created in a pseudorandom way from Gaussian distributions.
 
     - [ ] DOUBT: WHAT'S THE LINK BETWEEN INFORMATION RATE AND $I(s;r)$ ?
 
-  - ***Lower Bound***:
+  - *Lower Bound*:
 
     We can investigate stimulus encoding by testing diﬀerent encoding *models*. Because these models might not capture all the transmitted information, this gives a lower-bound estimate of information.
 
@@ -813,80 +803,114 @@
 
     Mutual information between $S$ and $R$ is then estimated by calculating the information between $S$ and $S_{est}$. From the *data processing inequality*, the information estimate is smaller than (or equal to) the information about $S$ that is in $R$. Thus this procedure gives us a *lower bound on the information*. If $S$ is estimated well, the resulting lower bound is close to the real information transmitted about the stimulus.
 
-    - [ ] TO-DO: AGGIUNGI ESEMPIO DI REVERSE RECONSTRUCTION PRESENTE NELLE SLIDE
+    ------
 
-  ...
+    An example of reverse reconstruction:
 
-  
+    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/REVREC.PNG" style="zoom:55%"/>
 
-  ...
+    Here a visual interneuron of the fly ( *H1 cell* ) was stimulated by a grating moving in front of the animal using a pseudo-random waveform (upper diagram, red trace). The spike output of the cell (shown in black) follows the velocity signal only roughly. The impulse response of the reverse filter (right diagram) is negative in time and possesses band-pass characteristics. Applied to the neural response, the reconstructed or estimated stimulus function comes out as shown in black in the bottom diagram. Except for fast signal deflections, this signal is close to the stimulus (Haag and Borst, unpublished).
 
-  ...
+  The following image is an example of upper and lower bound of information as calculated from the spike train of a fly motion-sensitive nerve cell (H1 cell). The fly was stimulated by a moving grating while the spikes were recorded extracellularly. The lower bound was calculated from the coherence between the membrane potential and the stimulus velocity, the upper bound was calculated from the SNR. The upper integration limit was set to 50 Hz, because higher frequencies were not delivered by the stimulation device. The neural signal is carrying 21–73 bits per s about the stimulus velocity (Haag and Borst, unpublished).
 
-  ...
+  <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/INFCOH.PNG" style="zoom:65%"/>
 
-  ...
+  Finally, here is the summary diagram for calculation of *upper* and *lower* bounds on information transfer. Top, situation where a stimulus $S$ is corrupted by additive noise and subsequently fed through an unknown encoder to result in the response $R$. The lower bound is obtained with a linear reverse filter operation. The upper bound is obtained directly by comparing average and individual responses.
+
+  <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/SD.PNG" style="zoom:65%"/>
+
+  ------
+
+  <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/EX1.PNG" style="zoom:65%"/>
+
+  Here a mock neuron is tested with different stimulus intensities (from $0$ to $10$). For each stimulus intensity, it reveals a Gaussian distribution of spike responses around a mean value, ranging from $20 Hz$ for weak up to $80 Hz$ for strong stimuli. 
+
+  $(a)$ Complete response distributions for each stimulus intensity; darker values indicate higher probabilities. 
+
+  $(b)$ Summing these values along the horizontal lines leads to the overall response probability distribution (right), *assuming that each stimulus is equally likely to occur.* 
+
+  $(c)$ Information theory allows one to replace the traditional stimulus–response curve (mean ± s.d.) with an information curve (thick line) that indicates how well different values of the stimulus are encoded in the response. The information calculation is based not only the mean value of the response but also on its complete distribution at each stimulus condition.
+
+  The distribution of responses obtained for this mock neuron at the middle of its operating range is more unique than the distribution of responses obtained for other stimulus values, leading to maximal values of information in that range.
+
+  ------------
+
+  Within this general framework, the key problem is to find the best way to *estimate the stimulus from the response.*
+
+  Why should we do that? *Brain Computer Interfaces*!
+
+  First question, how can we represent *neural data?*
+
+  Binning:
+
+  ![](images/BINNING.PNG)
+
+    ![](images/PSTH.PNG)
+
+  What's the problem of *binning*?
 
   If we use too large bins we lose resolution, if we use too small bins we lose structure. Too much resolution is less able to capture "common rules" (Trade-off)
 
-  It would be nice to build a model which doesn't suffer from this trade-off. How can we do that? We will have to make some specific assumptions. Remember that when we build a model we can only *restrict* the total amount of information that the brain is passing.
+  It would be nice to build a model which doesn't suffer from this trade-off. How can we do that? We will have to make some specific assumptions. Remember that when we build a model we can only *restrict* the total amount of information that the brain is actually passing.
+
+  We formulate the problem in terms of the probability distribution $p(T)$ of inter-spike intervals (ISIs), assuming that spikes are detected with arbitrary but finite temporal resolution . In the absence of added noise, all the variability in the ISIs could encode information, and the information rate is simply the entropy of the lSI distribution, $H(T) = \langle-p(T) \log_2 p(T)\rangle$, times the *spike rate*. $H(T)$ thus provides an exact expression for the information rate.  (??)
 
   The first thing we do to build a model is to build the *ISI* (Inter Spike Interval) function.
 
   An *inter-spike-interval histogram* is one of the ways by which experimental neurophysiologists analyze the electrical behaviour of neurons in the brain.
 
-  One of the simplest ways to study the patterning of spike activity in a neuron is to record the spikes from a single neuron, using a fine microelectrode , and then to construct an inter-spike interval histogram. This is simply a plot of the distribution of the observed times between spikes ($t_1, t_2, t_3,$ etc) collected in ‘bins’ of fixed width, say $1$ $ms$. Typically, such a histogram would be constructed from about $2000$ such intervals; if a neuron is firing at an average rate of about 5 spikes/s this will need a recording of $5$-$10$ $min$ of activity.
+  One of the simplest ways to study the patterning of spike activity in a neuron is to record the spikes from a single neuron, using a fine microelectrode , and then to construct an inter-spike interval histogram. This is simply a plot of the distribution of the observed times between spikes ($t_1, t_2, t_3,​$ etc) collected in ‘bins’ of fixed width, say $1​$ $ms​$. Typically, such a histogram would be constructed from about $2000​$ such intervals; if a neuron is firing at an average rate of about 5 spikes/s this will need a recording of $5​$-$10​$ $min​$ of activity.
 
   The *ISIH* below is the result of of maintaining retinal neurons under constant light and environmental conditions. The spontaneous spiking activity of these neurons is recorded.
 
-  ![](images/ISI1.PNG)
+   <img src="images/ISI1.PNG" style="zoom:50%"/>
 
   The ISIH is more powerful than the PSTH because it allows to extrapolate concepts independently from the stimulus , so if you want to go beyond the specific stimulus you have to build histograms where *time* is absolute ( *ISIH* ). This is extremely useful because we know that neurons are encoding in frequency and the *ISIH* is telling us something about it. The ISI Probability Density Function is the ISI normalized by the total number of spikes.
 
-  Given the following problem (a rat moving in some $2-D$ space denoted by $x_1$ and $x_2​$)
+  Given the following problem (a rat moving in some $2-D$ space denoted by $x_1$ and $x_2$)
 
-  ![](images/PP.PNG)
+    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PP.PNG" style="zoom:55%"/>
 
   We'd like to infer the *stimulus* (position) by looking at the *response* (spiking) [Look here](<https://www.youtube.com/watch?v=lfNVv0A8QvI>)
 
   We have a *continuous* hidden process (which is the trajectory of the *rat*) and then there is the spiking activity which is *not* continuous but happens in *specific* points in time, we call this kind of process a *Point Process*. Point processes are characterized by events that are specific and unpredictable without any other information. 
 
-  - *Definition* : a *Point Process* is a binary ($0$-$1​$) stochastic process that occurs in continuous time or space.
+  - *Definition* : a *Point Process* is a binary ($0$-$1$) stochastic process that occurs in continuous time or space.
 
-  A point - process can be represented:
+    A point - process can be represented:
 
   - by the timing of the spikes
   - by the waiting times between spikes, using a counting process
-  - as a set of $1s$ and $0s​$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
+  - as a set of $1s$ and $0s$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
 
    A *temporal point process* is a stochastic time-series of binary events that occurs in continuous time. 
 
-  One of the simplest types of neural-spiking models is the *Poisson Process* (a *Poisson Process* is a model for a series of discrete events where the average time between events is known, but the exact timing of events is random. The arrival of an event is independent of the event before (waiting time between events is memoryless).) The *rate function* of a Poisson Process is $\lambda​$  ($Number\;of\;spikes/second​$) , in other words $\lambda​$ is the mean of spikes occurrences in the time *unit*. 
+  One of the simplest types of neural-spiking models is the *Poisson Process* (a *Poisson Process* is a model for a series of discrete events where the average time between events is known, but the exact timing of events is random. The arrival of an event is independent of the event before (waiting time between events is memoryless). The *rate function* of a Poisson Process is $\lambda$  ($Number\;of\;spikes/second$) , in other words $\lambda$ is the mean of spikes occurrences in the time *unit*. 
   $$
-  Pr(spike\;in\,[t,t+\Delta]) \sim \lambda\Delta\\
-  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s-t))^k}{k!}e^{-\lambda(s-t)}\;\;\;\;\;for\;k=1,2,...\\ \text{DUBBI SU QUESTA FORMULA!!! }
+    Pr(spike\;in\,[t,t+\Delta]) \sim \lambda\Delta\\
+    Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s-t))^k}{k!}e^{-\lambda(s-t)}\;\;\;\;\;for\;k=1,2,...\\ \text{DUBBI SU QUESTA FORMULA!!! }
   $$
-  The formula above can be seen as a generalization of the canonical *Poisson* distribution
+    The formula above can be seen as a generalization of the canonical *Poisson* distribution
 
   ![](images/PoissonPlot.PNG)
   $$
   p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}\\
-  p(k,t) = \frac{e^{-(\lambda \Delta)}(\lambda \Delta)^k}{k!}
+    p(k,\Delta) = \frac{e^{-(\lambda \Delta)}(\lambda \Delta)^k}{k!}
   $$
-  where, in our case, $\lambda '=\lambda(s-t)=\lambda\Delta​$
+    where, in our case, $\lambda '=\lambda(s-t)=\lambda\Delta$
 
-  The inter-spike interval ($t$) (which is what we're interested in) probability density is the exponential probability density (here we force $k = 1$ so $p(t)$ will express the probability of having exactly $1$ spike in the time interval $t$ ):
+  The inter-spike interval ($t​$) (which is what we're interested in) probability density is the exponential probability density (here we force $k = 1​$ so $p(t)​$ will express the probability of having exactly $1​$ spike in the time interval $t​$ ):
   $$
   p(t)=\lambda e^{-\lambda t}
   $$
-  Since in our case the rate function $\lambda$ is *time-varying* it makes sense to consider an *Inhomogeneous Poisson Process* where $\lambda = \lambda(t)​$
+  Since in our case the rate function $\lambda​$ is *time-varying* it makes sense to consider an *Inhomogeneous Poisson Process* where $\lambda = \lambda(t)​$
   $$
-  Pr(spike\;in\,[t,t+\Delta]) \sim \lambda(t)\Delta\\
-  Pr(k\;spikes\;in\;[t,t+s])=\frac{\int_t^{t+s}\lambda(u)du}{k!}e^{-\int_t^{t+s}\lambda(u)du}\;\;\;\;\;for\;k=1,2,...\\
+    Pr(spike\;in\,[t,t+\Delta]) \sim \lambda(t)\Delta\\
+    Pr(k\;spikes\;in\;[t,t+s])=\frac{\int_t^{t+s}\lambda(u)du}{k!}e^{-\int_t^{t+s}\lambda(u)du}\;\;\;\;\;for\;k=1,2,...\\
   $$
-  The inter-spike interval ($t$) probability density is the exponential probability density:
+    The inter-spike interval ($t​$) probability density is the exponential probability density:
   $$
-  p(t) = \lambda(t)e^{\lambda(t)t}
+  p(t) = \lambda(t)e^{-\lambda(t)t}
   $$
   The *Poisson process*, however, is limited in that it is *memory-less*. It does not account for any spiking history when calculating the current probability of firing! And we know that neurons exhibit a fundamental ( *biophysical* ) *history dependence* by way of their relative and absolute refractory periods.
 
@@ -896,13 +920,11 @@
 
   If this unit time is taken small enough to ensure that only one spike could occur in that time window, then our conditional intensity function completely specifies the *probability that a given neuron will fire at a certain time*.
 
-  ...
+    ...
 
   A *renewal process* is an idealized stochastic model for events that occur randomly in time (generically called renewals or arrivals). The basic mathematical assumption is that the times between the successive arrivals are independent and identically distributed. Renewal processes have a very rich and interesting mathematical structure and can be used as a foundation for building more realistic models. Moreover, renewal processes are often found embedded in other stochastic processes, most notably Markov chains.
 
-  Any probability density satisfying $f(t) >0$ for $t>0$ can be a renewal probability density.
-
-  Common probability models used as renewal processes include:
+  Any probability density satisfying $f(t) >0$ for $t>0$ can be a renewal probability density. Common probability models used as renewal processes include:
 
   - *Exponential*
 
@@ -910,15 +932,98 @@
 
     *PDF* : $p(t)=\lambda e^{-\lambda x}$
 
-    ![](images/exp.PNG)
+    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/exp.PNG)
 
   - *Gamma*
 
-     
+    In probability theory and statistics, the *gamma distribution* is a two-parameter family of continuous probability distributions. The exponential distribution, Erlang distribution, and chi-squared distribution are special cases of the gamma distribution.
+
+    The gamma distribution can be parameterized in terms of a shape parameter *α* = *k* and an inverse scale parameter *β* = 1/*θ*, called a rate parameter. A random variable *X* that is gamma-distributed with shape *α* and rate *β* is denoted
+    $$
+    X \sim \Gamma(\alpha,\beta) = \text{Gamma}(\alpha,\beta)
+    $$
+    The corresponding probability density function in the shape-rate parametrization is
+    $$
+    p(x;\alpha,\beta) = \frac{1}{\Gamma(\alpha)}\beta^{\alpha}x^{\alpha-1}e^{-\beta x}\ \ \ \ \text{for $x>0$ and $\alpha,\beta>0$}\\
+    \text{or, equivalently...}\\
+    p(x;k,\theta) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}
+    $$
+    ![](images/GAMMA1.PNG)
+
+    Where $\Gamma(\alpha)$ is the *gamma function* , which is an extension of the *factorial function*( $ \Gamma(n) = (n-1)!$ ) and is defined as follows:
+    $$
+    \Gamma(t)=\int_{0}^{\infty}x^{t-1}e^{-x}dx
+    $$
+    Both parametrizations are common because either can be more convenient depending on the situation.
+
+    The *cumulative distribution function* is the regularized gamma function:
+    $$
+    P(x;k,\theta) = \int_{0}^{x}f(u;k,\theta)du
+    $$
+    ![](images/GAMMA2.PNG)
 
   - *Inverse Gaussian*
+    $$
+    p(x;\mu,\lambda) = \left[\frac{\lambda}{2\pi x^{3}}\right]^{\frac{1}{2}}e^{-\frac{\lambda(x-\mu)^2}{2\mu^{2}x}}\ \ \ \ \ \mu>0\ ,\ \lambda>0
+    $$
+    <img src="images/IG.PNG" style="zoom:75%"/>
+
+    As λ tends to infinity, the inverse Gaussian distribution becomes more like a normal (Gaussian) distribution. 
 
   - *Log Normal*
+
+    A log-normal (or lognormal) distribution is a continuous probability distribution of a random variable whose logarithm is normally distributed. Thus, if the random variable $X$ is lognormally distributed, then $Y = \ln(X)$ has a normal distribution. Likewise, if $Y$ has a normal distribution, then $X = exp(Y)$ has a log-normal distribution. A random variable which is log-normally distributed takes only positive real values. 
+    $$
+    P(x;\mu,\lambda) = \frac{1}{x\sigma\sqrt{2\pi}}e^{-\frac{(\ln(x)-\mu)^{2}}{2\sigma^{2}}}
+    $$
+    <img src="images/LN1.PNG" style="zoom:55%"/><img src="images/LN2.PNG" style="zoom:55%"/>
+
+  Between these *pdf* we choose the *Inverse Gaussian*, why?
+
+  The inverse Gaussian distribution is the link between deterministic and stochastic models of neural spiking activity because it can be derived from an integrate and fire model defined as a *random walk with drift* (*Definition*: For a random *walk with drift*, the best forecast of tomorrow's price is today's price plus a *drift* term. One could think of the *drift* as measuring a trend in the price (perhaps reflecting long-term inflation). Given the *drift* is usually assumed to be constant. Related: *Mean* reversion.) 
+  $$
+  V(t) = V_0+\beta t+\int_{0}^{t}dW(u)du\ \ \ \ \ V(t)<\theta\\
+  \text{or}\\
+  dV(t)=\beta t+dW(t)
+  $$
+  where $W(t)​$ is a *Wiener* process (*Brownian motion*)
+
+  Coming back to the ISI function let's see how each of these function are able to model the former:
+
+  <img src="images/ISI1.PNG" style="zoom:45%"/><img src="images/ISI2.png" style="zoom:55%"/>
+
+  Now, remember that we modeled the ISI pdf as an *Inhomogeneous Poisson Process*:
+  $$
+  p(t) = \lambda(t)e^{-\lambda(t)t}
+  $$
+  To address *history dependence*, a conditional intensity function is used to represent the probability of a neuron spiking, conditioned on its own history.  The *conditional intensity function* expresses the instantaneous firing probability and implicitly defines a complete probability model for the point process. It defines a *probability per unit time*. 
+  $$
+  CIF = \lambda(t|H_t)\\
+  \lambda(t|H_t)=\lim_{\Delta\to0}\frac{Pr(spike\ in\ [t,t+\Delta]|H_t)}{\Delta}
+  $$
+  The $CIF$ generalizes the Poisson process rate function!
+  $$
+  Pr(spike\ in\ [t,t+\Delta]|H_t) \sim\lambda(t|H_t)\Delta
+  $$
+  Knowing the conditional intensity function univocally defines the ISI probability density and viceversa. We obtain the following formulas:
+
+  ISI Probability Density Function:
+  $$
+  p(t|H_t)=\lambda(t|H_t)e^{-\int_{0}^{t}\lambda(u|H_u)du}
+  $$
+  Conditional Intensity function:
+  $$
+  \lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_{0}^{t}p(u|H_u)du}
+  $$
+  
+
+
+
+
+
+  
+
+  - 
 
   ...
 
@@ -930,29 +1035,19 @@
 
 - leave-one-out cross validation
 
-- indices of granger causality (voleva principalmente sapere il gci, directed transfer function and partial  directed coherence)how do you call the specific index for general case? Gci, dtf, pdc
-
-- applications of granger causality on neurons: there is a problem. (we consider the point process model and different lambda and joint likelihood)
-
 - bayes theorem (what is it, why is it important and how is it used) p(x|y)p(y)=p(y|x)p(x)
 
 - which are the boundaries of discriminant analysis? Gaussian, small p, variance of every variables is the same
-
-- projection pursuit
 
 - nearest neighbour averaging
 
 - cross validation in general (k fold and bootstrap)
 
-- drawing of mutual information and entropy
-
 - bicoherence and bispectrum
 
 - Confusion matrix. Come creo la curva roc?Che classificatore uso e cosa fa? (immagino ad esempio che la temperatura sia la variabile coniderata, e in funzioen di questa stabilisco la presenza o meno di una malattia). Ogni valore di thr ci da un punto sulla curva. La regola di classificazione è la thr.  Scelgo una thr che mi dia un punto quanto piu possibile vicino al punto [0,1]. Cosa accade se  cambio la mia probabilità a priori? Cambia la distribuzione delle gaussiane. 
 
-- 0-1 loss concept in SVM. 
-
-- Concetto in generale di ICA e come procedo. 
+- 0-1 loss concept in SVM.  
 
 - Trees.  Cos’è una splitting rule? Cosa fa? 
 
@@ -960,11 +1055,7 @@
 
 - Logistic regression. Perché si usa? Cos’è?
 
-- Granger causality. Main concept e come la valutiamo.
-
 - Regressione. Qual è il problema principale? Tradeoff bias varianza.
-
-- Projection pursuit. Qual è la novità? Che trovo le proiezioni in modo iterativo, una dopo l’altra, e non tutte insieme. Ne trovo una, la sottraggo per trovare la seconda, e cosi via. 
 
 - HOS
 
@@ -972,13 +1063,32 @@
 
 - Hierarchical clustering
 
-- Granger Causality
+- ***Granger causality. Main concept e come la valutiamo..Granger Causality. Multivariant process e granger causality (distrib spike di due neuroni e correlazione che compone terza variabile: insieme le tre distribuzioni sono indipendenti. indices of granger causality (voleva principalmente sapere il gci, directed transfer function and partial  directed coherence)how do you call the specific index for general case? Gci, dtf, pdc. Applications of granger causality on neurons: there is a problem. (we consider the point process model and different lambda and joint likelihood). Granger Causality. Qual è la novità introdotta? (Viene introdotta una terza variabile percercare di determinare il rapporto tra altre due).***
+
+  *"The topic of how to define causality has kept philosophers busy for over two thousand years and has yet to be resolved. It is a deep convoluted question with many possible answers which do not satisfy everyone, and yet it remains of some importance. Investigators would like to think that they have found a "cause", which is a deep fundamental relationship and possibly potentially useful. In the early 1960's I was considering a pair of related stochastic processes which were clearly inter-related and I wanted to know if this relationship could be broken down into a pair of one way relationships. It was suggested to me to look at a definition of causality proposed by a very famous mathematician, Norbert Weiner, so I adapted this definition (Wiener 1956) into a practical form and discussed it."* ( *Clive Granger* )
+
+  A time series *X* is said to Granger-cause *Y* if it can be shown, usually through a series of t-tests and F-tests on lagged values of *X* (and with lagged values of *Y* also included), that those *X* values provide statistically-significative information about future values of *Y*.
+
+  ![](images/GR1.png)
+
+  When time series $X$ *Granger-causes* time series $Y$, the patterns in $X$ are approximately repeated in $Y$ after some time lag (two examples are indicated with arrows). Thus, past values of $X$ can be used for the prediction of future values of $Y$.
+
+  ------------------------
+
+  The basic "Granger Causality" definition is quite simple. The definition relies on the idea that the cause occurs before the effect. Suppose that we have three time series (*which are not related with the image above*) $X_t$, $Y_t$ and $W_t$, and that we first attempt to predict $X_{t+1}$ using past terms of $X_t$ and $W_t$. We then try to predict $X_{t+1}$ using past terms of $X_t$ , $W_t$ and $Y_t$ .  If the second prediction is found to be more successful, according to standard cost functions, then the past of $Y$ appears to contain information helping in forecasting $X_{t+1}$ that is not in past $X_t$ or $W_t$. In particular, $W_t$ could be a vector of possible explanatory variables. 
+
+  Thus, $Y_t​$ would *Grange cause* $X_{t+1}​$ if:
+
+  - $Y_t$ occurs before $X_{t+1}$
+  - It contains information useful in predicting $X_{t+1}$ that is not found in a group of other appropriate variables.
+
+  The larger $W_t$ is, the more carefully its contents are selected, and the more $Y_t$ is passing a stringent criterion.  Eventually, $Y_t$ might seem to contain unique information about $X_{t+1}​$ that is not found in other variables which is why the "causality" label is perhaps appropriate.
 
 - Filosofia della likelihood
 
-- ***ICA***
+- **ICA. Negentropy. Projection pursuit, qual è la novità? Che trovo le proiezioni in modo iterativo, una dopo l’altra, e non tutte insieme. Ne trovo una, la sottraggo per trovare la seconda, e cosi via. **
 
-  INDEPENDEN COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
+  INDEPENDENT COMPONENT ANALYSIS, SUPPONI CHE I SEGNALI CHE HAI A DISPOSIZIONE SIANO L'INTERAZIONE DI ALCUNE SOURCES NON GAUSSIANE (NON GUAUSSIANE!) INDIPENDENTI TRA LORO, RICORDA CHE IL PRODOTTO DI GAUSSIANE è A SUA VOLTA UNA GAUSSIANA ETC...
 
 - ***PCA***
 
@@ -988,7 +1098,7 @@
 
   To have a graphical intuition:
 
-  ![](C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/PCA.png)
+  <img src="images/PCA.PNG" style="zoom:55%"/>
 
   It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -1026,12 +1136,12 @@
   - Computational problems with many dimensions 
   - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
-- HOS. 
 - Supervised: nearest neighboor e bootstrap
+
 - Multivariate point process
-- Negentropy
+
 - Cross validation
-- Projection pursuit
+
 - supervised learning (nearest neighnour e bias var tradeoff, flexibility, error)
+
 - bootstrap
-- multivariant process e granger causality (distrib spike di due neuroni e correlazione che compone terza variabile: insieme le tre distribuzioni sono indipendenti
