@@ -440,17 +440,13 @@
   $$
   \hat{x}_{ij}=\frac{x_{ij}}{\sqrt{\frac{1}{n}\sum^n_{i=1}(x_{ij}-\bar{x}_j)^2}}
   $$
+  (Sources: [tds - Ridge And Lasso Regression](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) -  [tds - Regularization in ML](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
 
-
-​        (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
-
-​	Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation 
-​	for solving this problem: we choose a grid of ${\lambda}$ values, and compute the cross-validation error   
-​	rate for each value of ${\lambda}$.  
-​	We then select the value for ${\lambda}$ for which the cross-validation error is the smallest. Finally, the model  
-​	is re-fit using all of the available observations and the selected value of ${\lambda}$.
-
-  	Restelli offers the following cost function notation:
+  Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it.  
+  We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}$ values, and compute the cross-validation error rate for each value of ${\lambda}$.  
+  We then select the value for ${\lambda}$ for which the cross-validation error is the smallest.  
+  Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}$.  
+  Restelli offers the following cost function notation:
 
 ​	${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
 
@@ -478,7 +474,7 @@ $$
 - ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
 
 - ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***   
-  (WB)  
+  *(WB)*  
   Let's first revise some concepts:  
 
   - a  **probability distribution** is a mathematical function that provides the probabilities of occurrence of different possible outcomes in an experiment
@@ -698,7 +694,7 @@ $$
   - *History based, Stochastic, Non-stationary.*
 
 - ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
-  (William Bonvini) 
+  *(WB)* 
   I've already described Ridge Regression previously.
 
   *Comparison:*
@@ -743,7 +739,45 @@ $$
 
 - ***Describe the supervised learning technique denominated logistic regression for classiﬁcation problems.***
 
-- ***Describe the policy iteration technique for control problems on Markov Decision Processes***
+- ***Describe the policy iteration technique for control problems on Markov Decision Processes***  
+  *(WB*)   
+  premise: what is a control problem? is the task of finding the optimal value function, which translates into finding the optimal policy.  
+  Policy Iteration is a dynamic programming policy optimization technique that can be decoupled in two phases:
+
+  - Policy Evaluation
+  - Policy Improvement
+
+  <u>*Policy Evaluation*</u> consists in computing the state-value function ${V^\pi}$ for a given policy ${\pi}$.   
+  It is done by iteratively applying the Bellman expectation backup an infinite number of times.  
+  $$
+  V_{k+1}(s)\leftarrow \sum_{a\in A}\pi (a|s)\Bigg[R(s,a)+\gamma \sum_{s'\in S}P(s'|s,a)V_k(s') \Bigg]
+  $$
+  Applying a backup operation to each state is called **sweep**. Using synchronous backups: at each iteration ${k+1}$, for all states ${s \in S}$, update ${V_{k+1}(s)}$ from ${V_k(s')}$.  
+  After a few iterations, even if the optimal value function is not determined, the optimal policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.
+
+  <u>*Policy Improvement*</u> consists in changing the policy according to the newly estimated values.  
+  For a given state  ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
+  We can improve the policy by acting greedily:  
+  $$
+  \pi'(s)=arg\  \max_{a \in A}Q^\pi(s,a)
+  $$
+  This improves the value from any state ${s}$ over one step  
+  $$
+  Q^\pi(s,\pi'(s))=\max_{a \in A}Q^\pi(s,a)\ge Q^\pi(s,\pi(s))=V^\pi(s)
+  $$
+  <u>*Theorem: Policy Improvement theorem*</u>
+
+  let ${\pi}$ and ${\pi '}$ be any pair of deterministic policies such that
+  $$
+  Q^\pi(s,\pi '(s))\ge V^\pi(s) \ \ \ , \ \ \ \forall s \in S
+  $$
+  Then, the policy ${\pi '}$ must be as good as, or better than ${\pi}$
+  $$
+  V^{\pi'}(s)\ge V^\pi (s) \ \ \ , \ \ \ \forall s \in S
+  $$
+  
+
+  ( Sources: PMDS Notes - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
 - ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***
 
