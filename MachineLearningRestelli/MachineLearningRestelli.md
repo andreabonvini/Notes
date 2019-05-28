@@ -335,11 +335,95 @@
 
   -----
 
-- ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***
+- ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***  
+  *(WB)*  
+  Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
+  It implies that  
+
+  - SARSA learns the Q-value based on the action performed by the current policy 
+  - Q-learning learns the Q-value based on the action performed by a behavioral policy.
+
+  ***SARSA Algorithm***  
+
+  ![](images/sarsa1.jpg)
+
+  It's called SARSA because we are starting from a state-action pair ${(S,A)}​$.  
+
+  We are going to randomly sample from our environment to see what reward ${R}$ we receive and what state ${S'}$ we end up in.  
+  Afterwards we are going to sample from our policy to generate ${A'}$.So basically, SARSA, indicates a particular update pattern we can use.  
+  *Updating ${Q}$ functions with SARSA*:  
+  Now let's study out update function:
+  ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}$
+
+  We move our ${Q}$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}$ value of where we started.  
+  This update is done after every transition from a nonterminal state ${s}$. If ${s'}$ is terminal, then ${Q(s',a')}$ is zero.
+
+  *Policy Improvement/ Control with SARSA*:  
+  Ok, so far we did prediction: we updated our ${Q}$ function using the formula above. Implicitly we did Policy Evaluation. How do we do Policy Improvement when we apply SARSA?
+
+  we simply use an ${\epsilon}$- greedy policy improvement:  
+
+  - All ${m}$ actions are tried with non-zero probability.
+  - With probability ${1-\epsilon}$ we choose the greedy action
+  - With probability ${\epsilon}$ we choose an action at random (possibly we select the greedy one!)
+
+  $$
+  \pi(s,a)=\begin{cases}\frac{\epsilon}{m}+1-\epsilon  \ \ \ \ if \ \    a^*=arg\max_{a\in A} Q(s,a) \\
+  \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ otherwise\end{cases} 
+  $$
+
+  ***Q-Learning***  
+
+  Consider being in state ${S_t}$ and selecting our next action following our behavioral policy: ${A_{t+1}\sim \bar{\pi}(\cdot |S_t)}$.  
+  In the meanwhile consider some alternative successor action that we might have taken following our target policy ${A'\sim\pi(\cdot|S_t)}$. 
+  Finally we update our ${Q}$-value for the state we started in and the action that we actually took (${Q(S_t,A_t)}$) towards the value of our alternative action ${A'}$. 
+
+  ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma Q(S_{t+1},A') \color{black} - Q(S_t,A_t))}$
+
+  ${S_t}$ = actual state  
+  ${A_t}$= actual action taken following behavioral policy ${\pi}$.   
+  ${\alpha}$ = learning rate  
+  ${R_{t+1}}$ = actual reward taken by performing ${A_t}.$    
+
+  ${\gamma}$ = discounting factor.  
+  ${S_{t+1}}$= successor state.
+
+  ${A'}$ = action sampled from our target policy in state ${S_t}$. 
+
+  A special case of this updating process is the Q-Learning algorithm.  
+  In this case, the target policy ${\pi}$ is a greedy policy wrt ${Q(s,a)}$ and the behavior policy ${\bar{\pi}}$ is ${\epsilon}$-greedy wrt ${Q(s,a)}$.
+  $$
+  \pi(S_{t+1})=\arg\max_{a'}Q(S_{t+1},a')
+  $$
+  
+
+  Let's update the new estimation of the final return:
+  $$
+  R_{t+1} +\gamma Q(S_{t+1},A')=          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+  $$
+  
+  $$
+  R_{t+1}+\gamma Q(S_{t+1},\arg\max_{a'}Q(S_{t+1},a') )=
+  $$
+
+  $$
+  R_{t+1}+\max_{a'} \gamma Q(S_{t+1},a') \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+  $$
+
+  
+
+  If we plug this estimation in the general Q update equation I described earlier, just by replacing the old red colored component with the new one, we obtain the Q-update equation for Q-Learning:
+  $$
+  Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
+  $$
+
+  (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
+
+  
 
 - ***Describe the supervised learning technique called ridge regression for regression problems.***
 
-  (*William Bonvini*)  
+  (*WB*)  
   Ridge Regression is a regularization technique that aims to reduce model complexity and prevent over-fitting which may result from simple linear regression.
 
   In ridge regression, the cost function is altered by adding a penalty equivalent to the square of the magnitude of the coefficients.
@@ -358,37 +442,74 @@
   $$
 
 
-  (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
+​        (Source: [towardsdatascience 1](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) & [towardsdatascience](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
 
-  
+​	Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation 
+​	for solving this problem: we choose a grid of ${\lambda}$ values, and compute the cross-validation error   
+​	rate for each value of ${\lambda}$.  
+​	We then select the value for ${\lambda}$ for which the cross-validation error is the smallest. Finally, the model  
+​	is re-fit using all of the available observations and the selected value of ${\lambda}$.
 
-  Since ${\lambda}​$ is not defined a priori, we need a method to select a good value for it. We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}​$ values, and compute the cross-validation error rate for each value of ${\lambda}​$. We then select the value for ${\lambda}​$ for which the cross-validation error is the smallest. Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}​$.
+  	Restelli offers the following cost function notation:
 
-  Restelli offers the following cost function notation:
+​	${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
 
-  ${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
+  	where ${L_D(\mathbf{w})}$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}$ is the model complexity term.
 
-  where ${L_D(\mathbf{w})}​$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}​$ is the model complexity term.
+  	By taking ${L(\mathbf{w})=\frac{1}{2} \mathbf{w}^T\mathbf{w}=\frac{1}{2}||\mathbf{w}||^2_2}$
 
-  By taking ${L(\mathbf{w})=\frac{1}{2} \mathbf{w}^T\mathbf{w}=\frac{1}{2}||\mathbf{w}||^2_2}$
-
-  we obtain:
+  	we obtain:
 $$
-  L(\mathbf{w})=\frac{1}{2}\sum_{i=1}^N(t_i-\mathbf{w}^T\phi(\mathbf{x}_i))^2+\frac{\lambda}{2}||\mathbf{w}||^2_2
+L(\mathbf{w})=\frac{1}{2}\sum_{i=1}^N(t_i-\mathbf{w}^T\phi(\mathbf{x}_i))^2+\frac{\lambda}{2}||\mathbf{w}||^2_2
 $$
-  We observe that the loss function is still quadratic in **w**:
+  	We observe that the loss function is still quadratic in **w**:
 $$
-  \hat{\mathbf{w}}_{ridge}=(\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}
+\hat{\mathbf{w}}_{ridge}=(\lambda \mathbf{I} + \mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T\mathbf{t}
 $$
-  (Source: Restelli's Slides)
+  	(Source: Restelli's Slides)
 
-  Ridge Regression is, for example, used when the number of samples is relatively small wrt the number of features. Ridge Regression can improve predictions made from new data (i.e. reducing variance) by making predictions less sensitive to the Training Data.
+  	Ridge Regression is, for example, used when the number of samples is relatively small wrt the  
+	number of features.  
+	Ridge Regression can improve predictions made from new data (i.e. reducing variance) by  
+	making predictions less sensitive to the Training Data.
 
-  (Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
+  	(Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
 
 - ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
 
-- ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***
+- ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***   
+  (WB)  
+  Let's first revise some concepts:  
+
+  - a  **probability distribution** is a mathematical function that provides the probabilities of occurrence of different possible outcomes in an experiment
+  - A **policy** ${\pi}$ is a distribution, a mapping, at any given point in time, from states to probabilities of selecting each possible action. It decides which action the agents selects, defining its behavior.    
+    A more concise definition is the following:  
+    A policy ${\pi}$ is a distribution over actions given the state:  
+    ${\pi(a|s)= \mathbb{P} [a|s]}$   
+
+  The difference between Off and On policy techniques is the following:  
+  **On-policy learning** "learns on the job". The policy that I'm following is the policy that I'm learning about.   
+  It learns about policy ${\pi}$ from experience sampled from ${\pi}$ itself.   
+  An example of on-policy technique is  *SARSA Algorithm*.   
+
+  SARSA update function (on-policy):  
+  ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha (\color{red} R_{t+1}+\gamma Q(S_{t+1},A_{t+1}) \color{black} -Q(S_t,A_t))}$  
+
+  **Off-policy learning** "learns over someone's shoulders". It learns about the **target policy** ${\pi(a|s)}$ while following a **behavior policy** ${\bar{\pi}(a|s)}$.  
+  Off policies learn from observing humans or other agents.  
+  They re-use experience generated from old policies ${\pi_1,\pi_2,...,\pi_{t-1}}$ in order to generate the new target policy ${\pi}$.
+
+  the best known example of why off-policy learning is used is the one regarding the exploration-exploitation tradeoff. We can follow and exploratory policy  and at the same time learn about the optimal policy.  
+  Another interesting use of off-policy learning is wanting to learn about multiple policies while following one: there might be many different behaviors we want to figure out.
+
+  An example of off-policy technique is *Q-Learning*.  
+
+  *Q-Learning* update function (off-policy)  :  
+  ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t))}$  
+
+  (Sources: PMDS Notes and [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) )
+
+  
 
 - ***Describe the Gaussian Processes model for regression problems***
 
@@ -401,7 +522,7 @@ $$
 - ***Describe what are eligibility traces and how they are used in the TD(λ) algorithm. Explain what happens when λ = 0 and when λ = 1.***
 
 - ***Describe and compare the ridge regression and the LASSO algorithms.***    
-  (William Bonvini)
+  (*WB*)
 
   Before diving into the definitions, let's define what is Regularization: it's a technique which makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data.  
 
@@ -602,28 +723,21 @@ $$
 
   Let's stop and think about what this means. In contrast to Ridge Regression , or Linear Regression in general, we have a *posterior* distribution for the model parameters that is proportional to 
 
-  - the likelihood of the data
+    - the likelihood of the data
 
-  - the *prior* probability of the parameters. 
+    - the *prior* probability of the parameters. 
 
   Here we can observe the two primary benefits of Bayesian Linear Regression:
 
   1. **Priors**:   
      if we have domain knowledge, or a guess for what the model parameters should be, we can include them in our model, unlike in the frequentist apporach which assumes everything there is to know about the parameters comes from the data. If we don't have any estimates ahead of time, we can use <u>non-informative priors</u> for the parameters such as a normal distribution.
-
   2. **Posterior**:  
      The result of performing Bayesian Linear Regression is a distribution of possible model parameters based on the data and the prior.  
      This allows us to quantify our uncertainty about the model: if we have fewer data points, the posterior distribution will be more spread out.
 
-  
-
   The formulation of model parameters as distributions encapsulates the Bayesian worldview: we start out with an initial estimate, our prior, and as we gather more evidence, **our model becomes less wrong**. Bayesian reasoning is a natural extension of our intuition. Often, we have an initial hypothesis, and as we collect data that either supports or disproves our ideas, we change our model of the world (ideally this is how we would reason)!
 
-  Source:
-
-  [towardsdatascience - Introduction to Bayesian Linear Regression](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7)
-
-  
+  (Sources: [towardsdatascience - Introduction to Bayesian Linear Regression](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7) )  
 
 - ***Describe which methods can be used to compute the value function $V^{\pi}$ of a policy $\pi$ in a discounted Markov Decision Process.***
 
@@ -758,7 +872,7 @@ $$
 ## Interesting Articles
 
 - [Polynomial Regression](https://towardsdatascience.com/polynomial-regression-bbe8b9d97491)
-
 - [Difference between Frequentist and Bayesian Approach](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7) 
-
-  
+- [Model Based Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-reinforcement-learning-complete-guide-towardsagi-ceea325c5d53)
+- [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)
+- [Q-Learning and Policy Gradients](https://medium.com/deep-math-machine-learning-ai/ch-13-deep-reinforcement-learning-deep-q-learning-and-policy-gradients-towards-agi-a2a0b611617e)
