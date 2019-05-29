@@ -153,6 +153,8 @@
 
   ( *Andrea Bonvini*)
 
+  `TODO: { add *Agnostic Learning* and finish *VC DIMENSION* }`
+
   First, some concepts you need to know:
 
   - We are talking about *Classification*.
@@ -211,7 +213,7 @@
     $$
     \epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
     $$
-    Note that if we consider $M$ boolean features, there are $|C| = 2^M$ distinct concepts and hence $|H| = 2^{2^M}​$ (which is huuuge)
+    Note that if, *for example*, we consider $M$ boolean features, there are $|C| = 2^M$ distinct concepts and hence $|H| = 2^{2^M}$ (which is huuuge)
 
     If you wonder why let's suppose we have just $2$ boolean features ($A$ and $B$ ) , then we have $|H| = 2^{2^2} = 16$ distinct boolean functions :
 
@@ -260,9 +262,13 @@
 
     Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
 
-    Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
+    Consider a class $C​$ of possible target concepts deﬁned over a set of instances $X​$ and a learner $L​$ using hypothesis space $H​$.
 
-    ![](images/PAC2.PNG)
+    *Definition :*
+
+    $C​$ is ***PAC-learnable*** it there exists an algorithm $L​$ such that for every $c \in C​$ , for any distribution $P​$ , for any $\epsilon​$ such that $0\le\epsilon\le\frac{1}{2}​$ and $\delta​$ such that $0\le\delta\le 1​$, with probability at least $1-\delta​$, outputs an hypothesis $h\in H​$, such that $L_{true}(h) \le \epsilon​$, using a number of samples that is polynomial of $\frac{1}{\epsilon}​$ and $\frac{1}{\delta}​$ 
+
+    $C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$, $M$ and $size(c)$.
 
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
@@ -395,13 +401,13 @@
   $$
   \pi(S_{t+1})=\arg\max_{a'}Q(S_{t+1},a')
   $$
-  
+
 
   Let's update the new estimation of the final return:
   $$
   R_{t+1} +\gamma Q(S_{t+1},A')=          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
   $$
-  
+
   $$
   R_{t+1}+\gamma Q(S_{t+1},\arg\max_{a'}Q(S_{t+1},a') )=
   $$
@@ -515,12 +521,71 @@ $$
 
 - ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
 
+  (*Andrea Bonvini*) Source: PMDS
+
+  `TO DO: COMPARISON WITH PERCEPTRON`
+
+  Although the name might confuse, please note that it is a *classiﬁcation* algorithm.
+
+  Considering a problem of two-class classiﬁcation, in logistic regression the posterior probability of class $C_1​$ can be written as a logistic sigmoid function:
+  $$
+  p(C_1|\phi) = \frac{1}{1+e^{-\mathbf{w}^T\phi}}=\sigma(\mathbf{w}^T\phi)
+  $$
+  ![](images/sigmoid.png)
+
+  and $p(C_2|\phi) = 1 - p(C_1|\phi)$ 
+
+  Applying the *Maximum Likelihood* approach...
+
+  Given a dataset $\mathcal{D} = \{\mathbf{x}_n,t_n\}$, $t_n \in \{0,1\}​$, we have to maximize the probability of getting the right label:
+  $$
+  P(\mathbf{t}|\mathbf{X},\mathbf{w}) = \prod_{n=1}^{N}y_n^{t_n}(1-y_n)^{1-t_n},\ \ y_n = \sigma(\mathbf{w}^T\phi_n)
+  $$
+  Taking the negative log of the likelihood, the *cross-entropy* error function can be deﬁned and it has to be minimized:
+  $$
+  L(\mathbf{w}) = -\ln P(\mathbf{t}|\mathbf{X},\mathbf{w}) = -\sum_{n=1}^{N}(t_n\ln y_n+(1-t_n)\ln(1-y_n))=\sum_{n}^NL_n
+  $$
+  Differentiating and using the chain rule:
+  $$
+  \frac{\part L_n}{\part y_n}= \frac{y_n-t_n}{y_n(1-y_n)},\ \ \ \ \frac{\part y_n}{\part\mathbf{w}}=y_n(1-y_n)\phi_n\\
+  \frac{\part L_n}{\part \mathbf{w}}= \frac{\part L_n}{\part y_n}\frac{\part y_n}{\part\mathbf{w}}=(y_n-t_n)\phi
+  $$
+  The gradient of the loss function is
+  $$
+  \nabla L(\mathbf{w}) = \sum_{n=1}^{N}(y_n-t_n)\phi_n
+  $$
+  It has the same form as the gradient of the sum-of-squares error function for linear regression. But in this case $y$ is not a linear function of $\mathbf{w}$ and so, there is no closed form solution. The error function is *convex* (only one optimum) and can be optimized by standard *gradient-based* optimization techniques. It is, hence, easy to adapt to the online learning setting.
+
+  Talking about *Multiclass Logistic Regression*...
+
+  For the multiclass case, the posterior probabilities can be represented by a *softmax* transformation of linear functions of feature variables:
+  $$
+  p(C_k|\phi)=y_k(\phi)=\frac{e^{\mathbf{w}_k^T\phi}}{\sum_j e^{\mathbf{w}_j^T\phi}}
+  $$
+  $\phi(\mathbf{x})$ has been abbreviated with $\phi$ for simplicity.
+
+  *Maximum Likelihood* is used to directly determine the parameters
+  $$
+  p(\mathbf{T}|\Phi,\mathbf{w}_1,\dots,\mathbf{w}_K)=\prod_{n=1}^{N}\underset{\underbrace{\text{Term for correct class}}}{\left(\prod_{k=1}^{K}p(C_k|\phi_n)^{t_{nk}}\right)}=\prod_{n=1}^{N}\left(\prod_{k=1}^{K}y_{nk}^{t_{nk}}\right)\\
+  $$
+  where $y_{nk}=p(C_k|\phi_n)=\frac{e^{\mathbf{w}_k^T\phi_n}}{\sum_j e^{\mathbf{w}_j^T\phi_n}}$
+
+  The *cross-entropy* function is:
+  $$
+  L(\mathbf{w}_1,\dots,\mathbf{w}_K)=-\ln p(\mathbf{T}|\Phi,\mathbf{w}_1,\dots,\mathbf{w}_K)=-\sum_{n=1}^{N}\left(\sum_{k=1}^{K}t_{nk}\ln y_{nk}\right)
+  $$
+  Taking the gradient
+  $$
+  \nabla L_{\mathbf{w}_j}(\mathbf{w}_1,\dots,\mathbf{w}_K) =\sum_{n=1}^{N}(y_{nj}-t_{nj})\phi_n
+  $$
+  AAAA
+
 - ***Describe what are eligibility traces and how they are used in the TD(λ) algorithm. Explain what happens when λ = 0 and when λ = 1.***
 
 - ***Describe and compare the ridge regression and the LASSO algorithms.***    
   (*WB*)
 
-  Before diving into the definitions, let's define what is Regularization: it's a technique which makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data.  
+  Before diving into the definitions, let's define what is Regularization: it's a technique which makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data. 
 
   Ridge Regression is a Regularization Technique which consists in adding to the Linear Regression Loss Function a penalty term called L2 regularization element:  
 
@@ -720,7 +785,7 @@ $$
   Let's stop and think about what this means. In contrast to Ridge Regression , or Linear Regression in general, we have a *posterior* distribution for the model parameters that is proportional to 
 
     - the likelihood of the data
-
+    
     - the *prior* probability of the parameters. 
 
   Here we can observe the two primary benefits of Bayesian Linear Regression:
