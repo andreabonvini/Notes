@@ -89,7 +89,7 @@
   $$
   \underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
   $$
-  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n$ of the dataset.
+  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n​$ of the dataset.
 
   So how can we solve this? This is a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the [*KKT*](<http://www.svms.org/kkt/>) (Karush–Kuhn–Tucker) conditions.
 
@@ -128,11 +128,11 @@
   s.t. \;\;\;\;\;\;\;\;\alpha_n\ge0\;\;\;\forall{n}\\
   \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
-  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n​$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha​$ , it was a constraint on $\mathbf{w}​$ which is not part of our formulation anymore.
+  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha$ , it was a constraint on $\mathbf{w}$ which is not part of our formulation anymore.
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha​$ are just $0​$ !  All the $\alpha​$ which are not $0​$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
 
   Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
   $$
@@ -262,11 +262,11 @@
 
     Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
 
-    Consider a class $C​$ of possible target concepts deﬁned over a set of instances $X​$ and a learner $L​$ using hypothesis space $H​$.
+    Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
 
     *Definition :*
 
-    $C​$ is ***PAC-learnable*** it there exists an algorithm $L​$ such that for every $c \in C​$ , for any distribution $P​$ , for any $\epsilon​$ such that $0\le\epsilon\le\frac{1}{2}​$ and $\delta​$ such that $0\le\delta\le 1​$, with probability at least $1-\delta​$, outputs an hypothesis $h\in H​$, such that $L_{true}(h) \le \epsilon​$, using a number of samples that is polynomial of $\frac{1}{\epsilon}​$ and $\frac{1}{\delta}​$ 
+    $C$ is ***PAC-learnable*** it there exists an algorithm $L$ such that for every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le 1$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$ 
 
     $C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$, $M$ and $size(c)$.
 
@@ -343,11 +343,24 @@
 
 - ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***  
   *(WB)*  
+  First of all, let's say what they are used for:  
+  *SARSA* and *Q-Learning* are two algorithms used to do control using the model free method called *Temporal Difference*.   
+  If you don't remember what a control task is, here you are:   
+  *Control is the task of obtaining an improved policy ${\pi'}$ starting from a policy ${\pi}$.*  
+  Now let's jump into the differences:  
   Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
-  It implies that  
+  It implies that    
 
-  - SARSA learns the Q-value based on the action performed by the current policy 
-  - Q-learning learns the Q-value based on the action performed by a behavioral policy.
+  - Q-learning learns the Q-value based on the action performed following a different policy called behavioral policy (off-policy).  =={TODO: FIX, I follow the target policy (greedy), not the behavioral one, isn't it?}==
+    ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)}$   
+
+    
+
+  - SARSA learns the Q-value based on the action performed following its own policy (on-policy)  
+    ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha (\color{red} R+\gamma Q(S_{t+1},A_{t+1}) \color{black} -Q(S_t,A_t))}$   
+
+
+  If you want to get a full understanding of both algorithms, here you are:
 
   ***SARSA Algorithm***  
 
@@ -373,10 +386,10 @@
   - With probability ${1-\epsilon}$ we choose the greedy action
   - With probability ${\epsilon}$ we choose an action at random (possibly we select the greedy one!)
 
-  $$
+$$
   \pi(s,a)=\begin{cases}\frac{\epsilon}{m}+1-\epsilon  \ \ \ \ if \ \    a^*=arg\max_{a\in A} Q(s,a) \\
   \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ otherwise\end{cases} 
-  $$
+$$
 
   ***Q-Learning***  
 
@@ -398,12 +411,13 @@
 
   A special case of this updating process is the Q-Learning algorithm.  
   In this case, the target policy ${\pi}$ is a greedy policy wrt ${Q(s,a)}$ and the behavior policy ${\bar{\pi}}$ is ${\epsilon}$-greedy wrt ${Q(s,a)}$.
-  $$
+$$
   \pi(S_{t+1})=\arg\max_{a'}Q(S_{t+1},a')
-  $$
+$$
 
 
-  Let's update the new estimation of the final return:
+    Let's update the new estimation of the final return:
+
 $$
   R_{t+1} +\gamma Q(S_{t+1},A')=          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
 $$
@@ -418,21 +432,23 @@ $$
 
   
 
-  If we plug this estimation in the general Q update equation I described earlier, just by replacing the old red colored component with the new one, we obtain the Q-update equation for Q-Learning:
+  	If we plug this estimation in the general Q update equation I described earlier, just by replacing the  
+	old red colored component with the new one, we obtain the Q-update equation for Q-Learning:     
+
 $$
 Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
 $$
+​	 
+  	(Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
-  (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
-  
 
-- ***Describe the supervised learning technique called ridge regression for regression problems.***
+ 
 
+- **Describe the supervised learning technique called ridge regression for regression problems.**  
   (*WB*)  
-  Ridge Regression is a regularization technique that aims to reduce model complexity and prevent over-fitting which may result from simple linear regression.
-
-  In ridge regression, the cost function is altered by adding a penalty equivalent to the square of the magnitude of the coefficients.
+  Ridge Regression is a regularization technique that aims to reduce model complexity and prevent over-fitting which may result from simple linear regression.  
+  In ridge regression, the cost function is altered by adding a penalty equivalent to the square of the magnitude of the coefficients.  
   $$
   cost \space function=\sum_{i=1}^M(y_i-\sum_{j=0}^p(w_j\times x_{ij})\space)^2+\lambda\sum_{j=0}^pw_j^2
   $$
@@ -442,17 +458,19 @@ $$
 
   When ${\lambda \to 0}$, the cost function becomes similar to the linear regression cost function. So lowering ${\lambda}$, the model will resemble the linear regression model.
 
-  It is always principled to standardize the features before applying the ridge regression algorithm. Why is this? The coefficients that are produced by the standard least squares method are scale equivariant, i.e. if we multiply each input by ${c}​$ then the corresponding coefficients are scaled by a factor of ${\frac{1}{c}}​$. Therefore, regardless of how the predictor is scaled, the multiplication of the coefficient and the predictor ${(w_jx_j)}​$ remains the same. However, this is not the case with ridge regression, and therefore, we need to standardize the predictors or bring the predictors to the same scale before performing ridge regression. the formula used to do this is given below.
-  $$
-  \hat{x}_{ij}=\frac{x_{ij}}{\sqrt{\frac{1}{n}\sum^n_{i=1}(x_{ij}-\bar{x}_j)^2}}
-  $$
-  (Sources: [tds - Ridge And Lasso Regression](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) -  [tds - Regularization in ML](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
+  It is always principled to standardize the features before applying the ridge regression algorithm. Why is this? The coefficients that are produced by the standard least squares method are scale equivariant, i.e. if we multiply each input by ${c}$ then the corresponding coefficients are scaled by a factor of ${\frac{1}{c}}$. Therefore, regardless of how the predictor is scaled, the multiplication of the coefficient and the predictor ${(w_jx_j)}$ remains the same. However, this is not the case with ridge regression, and therefore, we need to standardize the predictors or bring the predictors to the same scale before performing ridge regression. the formula used to do this is given below.
 
-  Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it.  
-  We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}$ values, and compute the cross-validation error rate for each value of ${\lambda}$.  
-  We then select the value for ${\lambda}$ for which the cross-validation error is the smallest.  
-  Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}$.  
-  Restelli offers the following cost function notation:
+$$
+\hat{x}_{ij}=\frac{x_{ij}}{\sqrt{\frac{1}{n}\sum^n_{i=1}(x_{ij}-\bar{x}_j)^2}}
+$$
+​	(Sources: [tds - Ridge And Lasso Regression](https://towardsdatascience.com/ridge-and-lasso-regression-a-complete-guide-with-python-scikit-learn-e20e34bcbf0b ) -  [tds - Regularization in ML](https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a) )
+
+​	Since ${\lambda}$ is not defined a priori, we need a method to select a good value for it.  
+​	We use Cross-Validation for solving this problem: we choose a grid of ${\lambda}$ values, and compute   
+​	the cross-validation error rate for each value of ${\lambda}$.  
+​	We then select the value for ${\lambda}$ for which the cross-validation error is the smallest.  
+​	Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}$.  
+​	Restelli offers the following cost function notation:
 
 ​	${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
 
@@ -781,12 +799,10 @@ $$
   Posterior = \frac{Likelihood*Prior}{Normalization}
   $$
 
+  Let's stop and think about what this means. In contrast to Ridge Regression , or Linear Regression in general, we have a *posterior* distribution for the model parameters that is proportional to  
 
-  Let's stop and think about what this means. In contrast to Ridge Regression , or Linear Regression in general, we have a *posterior* distribution for the model parameters that is proportional to 
-
-    - the likelihood of the data
-    
-    - the *prior* probability of the parameters. 
+  - The likelihood of the data
+  - The prior probability of the parameters
 
   Here we can observe the two primary benefits of Bayesian Linear Regression:
 
@@ -934,13 +950,13 @@ $$
 
   If we act greedily all the time we don't do exploration, we just do exploitation: we just exploit what looks to be the best path, but maybe there is another path that for the first steps does not give us a good reward, but later on gives us a better reward than the path we are exploiting.  
   The simplest idea for ensuring continual exploitation is to use an ${\epsilon}$-greedy approach:
-  $$
+$$
   \pi(s,a)=
   \begin{cases}
   \frac{\epsilon}{m}+1-\epsilon \ \ \ \ \ if \ a^*=arg \max_{a \in A}Q(s,a) \\
   \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  otherwise
   \end{cases}
-  $$
+$$
   This means that all ${m}$ actions are tried with a non-zero probability. With probability ${\frac{\epsilon}{m}+1-\epsilon}$ we choose the greedy action, and with probability ${\frac{\epsilon}{m}}$ we choose any of the remaining ${m-1}$ actions. Pay attention: we could see it as choosing the greedy action with probability ${1-\epsilon}$ and with probability ${\frac{\epsilon}{m}}$ any of the actions, including the greedy one.  
   This approach works well, and this is shown by the Policy Improvement Theorem:  
   For any ${\epsilon}$–greedy policy ${\pi}$, the ${\epsilon}$–greedy policy ${\pi '}$ wrt ${Q^\pi}$ is an improvement.  
@@ -1005,26 +1021,31 @@ $$
      $$
      \epsilon \leftarrow\frac{1}{k}
      $$
-     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}$-greedy${(Q)}$
-
+     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}​$-greedy${(Q)}​$
 
   So what has changed from before? well, we are updating ${\epsilon}$ every time we run a new episode! Now it will become smaller and smaller each time we generate a new episode.  
   Theorem:  
   *GLIE Monte Carlo Control converges to the optimal action-value function:*  
-  $$
+$$
   Q(s,a)\to q^*(s,a)
-  $$
+$$
   Well, GLIE MC is our first full solution. We can throw this into any MDP and it will find the right solution!  
-  So, let's sum up the solutions we adopted for control for MC:
+  So, let's sum up the solutions we adopted for MC control:
 
   1. Use ${Q}$, not ${V}$
   2. evaluate and improve your policy *every time you run an episode*
   3. use an ${\epsilon}$-greedy policy
   4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy.
 
+  
 
+<<<<<<< HEAD
 ​     
+
   *I'll see you in another life when we are both cats*
+=======
+  *I'll see you in another life when we are both cats*.
+>>>>>>> 16d46709e93269ea52baa157c4c80120f62e5c12
 
   (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
