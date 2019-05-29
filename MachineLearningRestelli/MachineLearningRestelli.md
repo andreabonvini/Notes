@@ -351,7 +351,7 @@
   Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
   It implies that    
 
-  - Q-learning learns the Q-value based on the action performed following a different policy called behavioral policy (off-policy).  =={TODO: FIX, I follow the target policy (greedy), not the behavioral one, isn't it?}==
+  - Q-learning uses a target policy (greedy) to choose the best next action ${a'}$ while following the behavior policy (${\epsilon}$-greedy)  (off-policy).  =={TODO: clearify}==
     ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)}$   
 
     
@@ -366,16 +366,17 @@
 
   ![](images/sarsa1.jpg)
 
-  It's called SARSA because we are starting from a state-action pair ${(S,A)}​$.  
+  It's called SARSA because the agent starts in ${S}$, performs action ${A}$ following its own policy. 
 
-  We are going to randomly sample from our environment to see what reward ${R}$ we receive and what state ${S'}$ we end up in.  
-  Afterwards we are going to sample from our policy to generate ${A'}$.So basically, SARSA, indicates a particular update pattern we can use.  
-  *Updating ${Q}$ functions with SARSA*:  
+  Afterwards, we are going to randomly sample from our environment to see what reward ${R}​$ we receive and what state ${S'}​$ we end up in.  
+  then we are going to sample again from our policy to generate ${A'}​$.  
+  So basically, SARSA, indicates a particular update pattern we can use.  
+  *Updating ${Q}​$ functions with SARSA*:  
   Now let's study out update function:
-  ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}$
+  ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}​$
 
-  We move our ${Q}$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}$ value of where we started.  
-  This update is done after every transition from a nonterminal state ${s}$. If ${s'}$ is terminal, then ${Q(s',a')}$ is zero.
+  We move our ${Q}​$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}​$ value of where we started.  
+  This update is done after every transition from a nonterminal state ${s}​$. If ${s'}​$ is terminal, then ${Q(s',a')}​$ is zero.
 
   *Policy Improvement/ Control with SARSA*:  
   Ok, so far we did prediction: we updated our ${Q}$ function using the formula above. Implicitly we did Policy Evaluation. How do we do Policy Improvement when we apply SARSA?
@@ -823,7 +824,7 @@ $$
 - ***Describe the policy iteration technique for control problems on Markov Decision Processes***  
   *(WB*)   
   premise: what is a control problem? is the task of finding the optimal value function, which translates into finding the optimal policy.  
-  Policy Iteration is a dynamic programming policy optimization technique that can be decoupled in two phases:
+  Policy Iteration is a dynamic programming (==just dp? sure?==) policy optimization technique that can be decoupled in two phases:
 
   - Policy Evaluation
   - Policy Improvement
