@@ -404,24 +404,24 @@
 
 
   Let's update the new estimation of the final return:
-  $$
+$$
   R_{t+1} +\gamma Q(S_{t+1},A')=          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-  $$
+$$
 
-  $$
+$$
   R_{t+1}+\gamma Q(S_{t+1},\arg\max_{a'}Q(S_{t+1},a') )=
-  $$
+$$
 
-  $$
+$$
   R_{t+1}+\max_{a'} \gamma Q(S_{t+1},a') \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-  $$
+$$
 
   
 
   If we plug this estimation in the general Q update equation I described earlier, just by replacing the old red colored component with the new one, we obtain the Q-update equation for Q-Learning:
-  $$
+$$
   Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
-  $$
+$$
 
   (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
@@ -840,17 +840,202 @@ $$
   $$
   V^{\pi'}(s)\ge V^\pi (s) \ \ \ , \ \ \ \forall s \in S
   $$
-  
+
 
   ( Sources: PMDS Notes - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
-- ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***
+- ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***   
+  *(WB)*
+
+  - Prediction:  
+    this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}$ is given. 
+  - Control:  
+    This type of task consists in finding the policy ${\pi(a|s)}$ that maximizes the expected total reward from any given state. In other words, some policy ${\pi}$ is given, and it finds the optimal policy ${\pi^*}$. 
+
+  Monte Carlo is Model Free RL technique.  
+  Model Free means that we don't have complete knowledge of the environment, for example, namely, we don't know the transition matrix ${P}$ and the rewards ${r}$ associated with each state-action pair.  
+
+  ***Prediction In Monte Carlo***  
+  The way Monte Carlo estimates the state-value function for a given policy from experience is simply by averaging the returns observed after visits to that state. As more returns are observed, the average should converge to the expected value. 
+
+  So Monte Carlo policy evaluations uses empirical mean return instead of the expected return and it can be computed with two different approaches:
+
+  - First-Visit MC  
+    Average returns only for the first time ${s}$ is visited (**unbiased** estimator) in an episode
+  - Every-Visit MC  
+    Average returns for every time ${s}$ is visited (**biased** but **consistent** estimator)
+
+  
+
+  Once an episode is over, we proceed with updating the two values
+
+  - ${V(s)}$ : the state-value function
+  - ${N(s)}$: the total number of times ${s}$ has been visited
+
+  for each state ${s}$ that has been visited during the last episode.
+
+  ${N(s_t)\leftarrow N(s_t)+1}$
+
+  ${V(s_t)\leftarrow V(s_t)+ \frac{1}{N(s_t)}(\color{red}v_t-V(s_t)\color{black} )}$
+
+  So what have we done? 
+
+  1. We incremented the number of occurrences ${N}$ of the visited state ${s_t}$.
+  2. We updated our estimate of ${V}$ a little bit in the direction of the error (red colored) between the old expected value of ${V}$ and the return we actually observed during this episode ${v_t}$.  
+     Just think of it as saying that ${V}$ is exactly the same ${V}$ as before but incremented/decremented of a small quantity weighted by ${\frac{1}{N(s_t)}}$.  Or google *incremental mean* to get such equation starting from the generic equation of the *arithmetic mean*. 
+
+  ***Control in Monte Carlo***
+
+  {DISCLAIMER: I derived MC Control step by step, if you want you can jump to *GLIE Monte Carlo Control* for the short answer}  
+  We use Policy Iteration for the control tasks.
+
+  It is composed of Policy Evaluation and Policy Improvement.
+
+  - Policy Evaluation:  
+    Estimate ${v_\pi}$ 
+  - Policy Improvement  
+    Generate ${\pi ' \ge \pi}$ 
+
+   So let's try to plug in this iteration process in Monte Carlo.  
+  The first thing that comes up in our mind is to do the following:  
+
+  ![](images/policy_it_1.png)
+
+  Which means, estimate the ${V}$ values of the visited states ${s}$ using policy ${\pi}$ and then act greedily wrt to ${V}$ to improve our policy.   
+  (The diagram above shows the iteration process: while the arrow goes up we do evaluation, while it goes down we do improvement. These arrows become smaller and smaller because after some iterations ${V}$ and ${\pi}$ converge.)
+
+  There are actually two problems with this  approach: we can't use ${V}$ and we can't be so greedy.
+
+  ***We can't use ${V}$***:
+
+  we want to be model free, but how can we me model free if we are using the state-value function ${V}$?   
+  We'd still need a model of the MDP to figure out how to act greedily wrt to ${V}$. We'd only know the values of the estimated return of each state, and we want to know what action is the best to be taken, so we would have to imagine in which state ${s'}$ we would go for each possible action. But wait, we don't know the transition matrix ${P}$!  
+  The solution consists in using ${Q}$. action-value functions ${(Q)}$ allow us to do control in a model free setting.  
+  sum up:  
+  Greedy Policy Improvement over ${V(s)}$ *requires model* of MDP (can't be used in model free setting)
+  $$
+  \pi'(s)=arg \max_{a \in A}\bigg(R(s,a)+P(s'|s,a)V(s')\bigg)
+  $$
+  Greedy Policy Improvement over ${Q(s,a)}$ is *model-free*
+  $$
+  \pi'(s)=arg \max_{a \in A}Q(s,a)
+  $$
+  
+
+  So here we are, this is our new approach:
+
+  ![](images/policy_it_2.png)
+
+  The same as before, but instead of ${V}$ we use ${Q}$
+
+  
+
+  ***We can't be so greedy***
+
+  If we act greedily all the time we don't do exploration, we just do exploitation: we just exploit what looks to be the best path, but maybe there is another path that for the first steps does not give us a good reward, but later on gives us a better reward than the path we are exploiting.  
+  The simplest idea for ensuring continual exploitation is to use an ${\epsilon}$-greedy approach:
+  $$
+  \pi(s,a)=
+  \begin{cases}
+  \frac{\epsilon}{m}+1-\epsilon \ \ \ \ \ if \ a^*=arg \max_{a \in A}Q(s,a) \\
+  \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  otherwise
+  \end{cases}
+  $$
+  This means that all ${m}$ actions are tried with a non-zero probability. With probability ${\frac{\epsilon}{m}+1-\epsilon}$ we choose the greedy action, and with probability ${\frac{\epsilon}{m}}$ we choose any of the remaining ${m-1}$ actions. Pay attention: we could see it as choosing the greedy action with probability ${1-\epsilon}$ and with probability ${\frac{\epsilon}{m}}$ any of the actions, including the greedy one.  
+  This approach works well, and this is shown by the Policy Improvement Theorem:  
+  For any ${\epsilon}$–greedy policy ${\pi}$, the ${\epsilon}$–greedy policy ${\pi '}$ wrt ${Q^\pi}$ is an improvement.  
+  Therefore ${V^{\pi'}(s)\ge V^{\pi}(s)}$ 
+  (The demonstration of the theorem is easily findable on the internet or on page 56 of Restelli's slides of lecture 10 ).  
+  Moreover, when the number of episodes ${k\to \infty}$, the policy converges on a greedy policy
+
+  Here we are with our new approach:
+
+  ![](images/policy_it_3.png)
+
+  We just got rid of the greedy improvement, and went for an ${\epsilon}$-greedy one. (yes, there is a mistake in the slide, in the diagram there should be written ${\pi=\epsilon}$-greedy${(Q)}$) )
+
+  ***But there is more!***
+
+  Let's make this a little more efficient:  
+  In this kind of policy iteration frameworks, it's not necessary to fully evaluate our policy (run many episodes and get the mean return for each ${Q}$): we can just run **one** episode, update only the ${Q}$ values of the state-action pairs we visited during such episode (evaluation), improve our policy based on the new ${Q}$s we obtained, and repeat. Why should we wait to get more episodes of information when we could already improve the policy?   
+  So once again, here we are with our new approach:
+
+  ![](images/policy_it_4.png)
+
+  **No, we are not done yet, there's still one little problem to solve**  
+  We almost have the full picture. One last step:  
+  How can we really guarantee that we find the best possible policy? what we really want to find is ${\pi^*}$, the optimal policy. Such policy is greedy by definition, it tells us what action to take (with no doubts) in state ${s}$.  
+  So what we want to do is to explore in order to  make sure we are not missing out on anything, but at a certain point, asymptotically, we want to stop exploring, and just exploiting.  
+  This translates into the GLIE property (Greedy in the Limit with Infinite Exploration):
+
+  - All state-action pairs are explored **infinitely** many tymes:  
+    $$
+    \lim_{k\to\infty}N_k(s,a)=\infty
+    $$
+
+  - The policy **converges** on a **greedy** policy:  
+    $$
+    \lim_{k\to\infty}\pi_k(a|s)=
+    \begin{cases} 
+    \mathbf{1} \ \ \ \ if \ a=\arg \max_{a'\in A}Q_k(s,a') \\
+    \mathbf{0} \ \ \ \ otherwise
+    \end{cases}
+    $$
+      
+    (if you haven't read PoliMi slides don't bother reading: on Restelli's slides there is a mistake: there's written ${Q_k(s',a')}$ but that ${s'}$ should be ${s}$. )
+
+  Now we are ready to actually answer the question: what is used in Monte Carlo Control?
+  Here it is:  
+  **GLIE Monte Carlo Control**  
+
+  1. Sample ${k}$-th episode using ${\pi}$: ${\{S_1,A_1,R_2,...,S_T\} \sim \pi}$  
+     
+
+  2. For each state ${S_t}$ and action ${A_t}$ visited in the episode:  
+     $$
+     N(S_t,A_t) \leftarrow N(S_t,A_t)+1
+     $$
+
+     $$
+     Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\frac{1}{N(S_t,A_t)}(G_t-Q(S_t,A_t))
+     $$
+
+       
+
+  3.  Improve the policy based on the new action-value function, considering:  
+     $$
+     \epsilon \leftarrow\frac{1}{k}
+     $$
+     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}$-greedy${(Q)}$
+
+    
+  So what has changed from before? well, we are updating ${\epsilon}$ every time we run a new episode! Now it will become smaller and smaller each time we generate a new episode.  
+  Theorem:  
+  *GLIE Monte Carlo Control converges to the optimal action-value function:*  
+  $$
+  Q(s,a)\to q^*(s,a)
+  $$
+  Well, GLIE MC is our first full solution. We can throw this into any MDP and it will find the right solution!  
+  So, let's sum up the solutions we adopted for control for MC:
+
+  1. Use ${Q}$, not ${V}$
+  2. evaluate and improve your policy *every time you run an episode*
+  3. use an ${\epsilon}$-greedy policy
+  4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy.
+
+
+     
+  *I'll see you in another life when we are both cats*
+
+  (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
+
+  
 
 - ***Describe the purpose of using kernels in Machine Learning techniques. How can you construct a valid Kernel? Provide an example of a ML method using kernels and describe the speciﬁc advantage of using them for this method.***
 
   *(Andrea Bonvini)*
 
-  Traditionally, theory and algorithms of machine learning and statistics has been very well developed for the linear case. Real world data analysis problems, on the other hand, often require nonlinear methods to detect the kind of dependencies that allow successful prediction of properties of interest. By using a positive definite kernel, one can sometimes have the best of both worlds. The kernel corresponds to a dot product in a (*usually high-dimensional, possibly infinite*) feature space. In this space, our estimation methods are linear, but as long as we can formulate everything in terms of kernel evaluations, we never explicitly have to compute in the high dimensional feature space! (This is called the *Kernel Trick*)
+  Traditionally, theory and algorithms of machine learning and statistics have been very well developed for the linear case. Real world data analysis problems, on the other hand, often require nonlinear methods to detect the kind of dependencies that allow successful prediction of properties of interest. By using a positive definite kernel, one can sometimes have the best of both worlds. The kernel corresponds to a dot product in a (*usually high-dimensional, possibly infinite*) feature space. In this space, our estimation methods are linear, but as long as we can formulate everything in terms of kernel evaluations, we never explicitly have to compute in the high dimensional feature space! (This is called the *Kernel Trick*)
 
   Suppose we have a mapping $\varphi : \R^d \to \R^m$ that brings our vectors in to some feature space $\R^m$. Then the dot product of $\textbf{x}$ and $\textbf{y}$ in this space is $\varphi (\textbf{x})^T\varphi (\textbf{y})$. A kernel is a function $k$ that corresponds to this dot product, i.e. $k(\textbf{x},\textbf{y})=\varphi (\textbf{x})^T\varphi (\textbf{y}) $ . Why is this useful? *Kernels* give a way to compute dot products in some feature space without even knowing what this space is and what is $\varphi$ . For example, consider a simple polynomial kernel $k(\textbf{x},\textbf{y})=(1+\textbf{x}^T\textbf{y})^2$ with $\textbf{x},\textbf{y} \in \R^2$. This doesn't seem to correspond to any mapping function $\varphi$ ,  it's just a function that returns a real number. Assuming that $\textbf{x} = (x_1,x_2)$ and $\textbf{y} = (y_1,y_2)$, let's expand this expression:
   $$
