@@ -315,7 +315,7 @@
     $$
     This can be applied to the perceptron. For example, when $N=4$, we can lay out the points so that they are easily separated. However, given a layout, we must then consider all possible configurations of labels on the points, one of which is the following:
 
-    ![](images/perc.PNG)
+    <img src="images/perc.PNG" style="zoom:75%"/>
 
     This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14​$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m​$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
 
@@ -351,7 +351,7 @@
 
   ***SARSA Algorithm***  
 
-  ![](images/sarsa1.jpg)
+  <img src="images/sarsa1.jpg" style="zoom:45%"/>
 
   It's called SARSA because we are starting from a state-action pair ${(S,A)}​$.  
 
@@ -420,7 +420,7 @@ $$
 
   If we plug this estimation in the general Q update equation I described earlier, just by replacing the old red colored component with the new one, we obtain the Q-update equation for Q-Learning:
 $$
-  Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
+Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
 $$
 
   (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
@@ -669,7 +669,7 @@ $$
 
   To have a graphical intuition:
 
-  ![](images/PCA.png)
+  <img src="images/PCA.png" style="zoom:60%"/>
 
   It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -899,7 +899,7 @@ $$
    So let's try to plug in this iteration process in Monte Carlo.  
   The first thing that comes up in our mind is to do the following:  
 
-  ![](images/policy_it_1.png)
+  <img src="images/policy_it_1.png" style="zoom:55%"/>
 
   Which means, estimate the ${V}$ values of the visited states ${s}$ using policy ${\pi}$ and then act greedily wrt to ${V}$ to improve our policy.   
   (The diagram above shows the iteration process: while the arrow goes up we do evaluation, while it goes down we do improvement. These arrows become smaller and smaller because after some iterations ${V}$ and ${\pi}$ converge.)
@@ -920,11 +920,11 @@ $$
   $$
   \pi'(s)=arg \max_{a \in A}Q(s,a)
   $$
-  
+
 
   So here we are, this is our new approach:
 
-  ![](images/policy_it_2.png)
+  <img src="images/policy_it_2.png" style="zoom:55%"/>
 
   The same as before, but instead of ${V}$ we use ${Q}$
 
@@ -950,17 +950,17 @@ $$
 
   Here we are with our new approach:
 
-  ![](images/policy_it_3.png)
+  <img src="images/policy_it_3.png" style="zoom:40%"/>
 
   We just got rid of the greedy improvement, and went for an ${\epsilon}$-greedy one. (yes, there is a mistake in the slide, in the diagram there should be written ${\pi=\epsilon}$-greedy${(Q)}$) )
 
   ***But there is more!***
 
   Let's make this a little more efficient:  
-  In this kind of policy iteration frameworks, it's not necessary to fully evaluate our policy (run many episodes and get the mean return for each ${Q}$): we can just run **one** episode, update only the ${Q}$ values of the state-action pairs we visited during such episode (evaluation), improve our policy based on the new ${Q}$s we obtained, and repeat. Why should we wait to get more episodes of information when we could already improve the policy?   
+  In this kind of policy iteration frameworks, it's not necessary to fully evaluate our policy (run many episodes and get the mean return for each ${Q}$): we can just run **one** episode, update only the ${Q}$ values of the state-action pairs we visited during such episode (evaluation), improve our policy based on the new ${Q}​$s we obtained, and repeat. Why should we wait to get more episodes of information when we could already improve the policy?   
   So once again, here we are with our new approach:
 
-  ![](images/policy_it_4.png)
+  <img src="images/policy_it_4.png" style="zoom:45%"/>
 
   **No, we are not done yet, there's still one little problem to solve**  
   We almost have the full picture. One last step:  
@@ -981,7 +981,7 @@ $$
     \mathbf{0} \ \ \ \ otherwise
     \end{cases}
     $$
-      
+    
     (if you haven't read PoliMi slides don't bother reading: on Restelli's slides there is a mistake: there's written ${Q_k(s',a')}$ but that ${s'}$ should be ${s}$. )
 
   Now we are ready to actually answer the question: what is used in Monte Carlo Control?
@@ -989,7 +989,6 @@ $$
   **GLIE Monte Carlo Control**  
 
   1. Sample ${k}$-th episode using ${\pi}$: ${\{S_1,A_1,R_2,...,S_T\} \sim \pi}$  
-     
 
   2. For each state ${S_t}$ and action ${A_t}$ visited in the episode:  
      $$
@@ -1008,7 +1007,7 @@ $$
      $$
      ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}$-greedy${(Q)}$
 
-    
+
   So what has changed from before? well, we are updating ${\epsilon}$ every time we run a new episode! Now it will become smaller and smaller each time we generate a new episode.  
   Theorem:  
   *GLIE Monte Carlo Control converges to the optimal action-value function:*  
@@ -1024,7 +1023,7 @@ $$
   4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy.
 
 
-     
+​     
   *I'll see you in another life when we are both cats*
 
   (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
@@ -1111,13 +1110,13 @@ $$
 
 - ***Tell if the following statements are true or false. Provide adequate motivations to your answer.***
 
-  - *Reinforcement Learning (RL) techniques use a tabular representation of MDPs to handle continuous state and/or action spaces*
+  - [ ] *Reinforcement Learning (RL) techniques use a tabular representation of MDPs to handle continuous state and/or action spaces*
 
-  - *We can use data coming from sub-optimal policies to learn the optimal one.*
+  - [ ] *We can use data coming from sub-optimal policies to learn the optimal one.*
 
-  - *In RL we always estimate the model of the environment.*
+  - [ ] *In RL we always estimate the model of the environment.*
 
-  - *In RL we require to have the model of the environment.*
+  - [ ] *In RL we require to have the model of the environment.*
 
 - ***Consider separately the following characteristics for an ML problem:***
 
