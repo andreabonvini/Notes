@@ -89,7 +89,7 @@
   $$
   \underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
   $$
-  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n$ of the dataset.
+  where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n​$ of the dataset.
 
   So how can we solve this? This is a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the [*KKT*](<http://www.svms.org/kkt/>) (Karush–Kuhn–Tucker) conditions.
 
@@ -128,11 +128,11 @@
   s.t. \;\;\;\;\;\;\;\;\alpha_n\ge0\;\;\;\forall{n}\\
   \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\sum_{n=1}^{N}\alpha_n y_n=0
   $$
-  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n​$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha​$ , it was a constraint on $\mathbf{w}​$ which is not part of our formulation anymore.
+  We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mathbf{x}_n$ doesn't appear in the new formulation since it is *not* a constraint on $\alpha$ , it was a constraint on $\mathbf{w}$ which is not part of our formulation anymore.
 
   How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha​$ are just $0​$ !  All the $\alpha​$ which are not $0​$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+  Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
 
   Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
   $$
@@ -262,11 +262,11 @@
 
     Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
 
-    Consider a class $C​$ of possible target concepts deﬁned over a set of instances $X​$ and a learner $L​$ using hypothesis space $H​$.
+    Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
 
     *Definition :*
 
-    $C​$ is ***PAC-learnable*** it there exists an algorithm $L​$ such that for every $c \in C​$ , for any distribution $P​$ , for any $\epsilon​$ such that $0\le\epsilon\le\frac{1}{2}​$ and $\delta​$ such that $0\le\delta\le 1​$, with probability at least $1-\delta​$, outputs an hypothesis $h\in H​$, such that $L_{true}(h) \le \epsilon​$, using a number of samples that is polynomial of $\frac{1}{\epsilon}​$ and $\frac{1}{\delta}​$ 
+    $C$ is ***PAC-learnable*** it there exists an algorithm $L$ such that for every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le 1$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$ 
 
     $C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$, $M$ and $size(c)$.
 
@@ -315,7 +315,7 @@
     $$
     This can be applied to the perceptron. For example, when $N=4$, we can lay out the points so that they are easily separated. However, given a layout, we must then consider all possible configurations of labels on the points, one of which is the following:
 
-    ![](images/perc.PNG)
+    <img src="images/perc.PNG" style="zoom:75%"/>
 
     This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14​$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m​$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
 
@@ -364,7 +364,7 @@
 
   ***SARSA Algorithm***  
 
-  ![](images/sarsa1.jpg)
+  <img src="images/sarsa1.jpg" style="zoom:45%"/>
 
   It's called SARSA because the agent starts in ${S}$, performs action ${A}$ following its own policy. 
 
@@ -387,10 +387,10 @@
   - With probability ${1-\epsilon}$ we choose the greedy action
   - With probability ${\epsilon}$ we choose an action at random (possibly we select the greedy one!)
 
-  $$
+$$
   \pi(s,a)=\begin{cases}\frac{\epsilon}{m}+1-\epsilon  \ \ \ \ if \ \    a^*=arg\max_{a\in A} Q(s,a) \\
   \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ otherwise\end{cases} 
-  $$
+$$
 
   ***Q-Learning***  
 
@@ -412,9 +412,9 @@
 
   A special case of this updating process is the Q-Learning algorithm.  
   In this case, the target policy ${\pi}$ is a greedy policy wrt ${Q(s,a)}$ and the behavior policy ${\bar{\pi}}$ is ${\epsilon}$-greedy wrt ${Q(s,a)}$.
-  $$
+$$
   \pi(S_{t+1})=\arg\max_{a'}Q(S_{t+1},a')
-  $$
+$$
 
 
     Let's update the new estimation of the final return:
@@ -688,7 +688,7 @@ $$
 
   To have a graphical intuition:
 
-  ![](images/PCA.png)
+  <img src="images/PCA.png" style="zoom:60%"/>
 
   It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -916,7 +916,7 @@ $$
    So let's try to plug in this iteration process in Monte Carlo.  
   The first thing that comes up in our mind is to do the following:  
 
-  ![](images/policy_it_1.png)
+  <img src="images/policy_it_1.png" style="zoom:55%"/>
 
   Which means, estimate the ${V}$ values of the visited states ${s}$ using policy ${\pi}$ and then act greedily wrt to ${V}$ to improve our policy.   
   (The diagram above shows the iteration process: while the arrow goes up we do evaluation, while it goes down we do improvement. These arrows become smaller and smaller because after some iterations ${V}$ and ${\pi}$ converge.)
@@ -937,11 +937,11 @@ $$
   $$
   \pi'(s)=arg \max_{a \in A}Q(s,a)
   $$
-  
+
 
   So here we are, this is our new approach:
 
-  ![](images/policy_it_2.png)
+  <img src="images/policy_it_2.png" style="zoom:55%"/>
 
   The same as before, but instead of ${V}$ we use ${Q}$
 
@@ -951,13 +951,13 @@ $$
 
   If we act greedily all the time we don't do exploration, we just do exploitation: we just exploit what looks to be the best path, but maybe there is another path that for the first steps does not give us a good reward, but later on gives us a better reward than the path we are exploiting.  
   The simplest idea for ensuring continual exploitation is to use an ${\epsilon}$-greedy approach:
-  $$
+$$
   \pi(s,a)=
   \begin{cases}
   \frac{\epsilon}{m}+1-\epsilon \ \ \ \ \ if \ a^*=arg \max_{a \in A}Q(s,a) \\
   \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  otherwise
   \end{cases}
-  $$
+$$
   This means that all ${m}$ actions are tried with a non-zero probability. With probability ${\frac{\epsilon}{m}+1-\epsilon}$ we choose the greedy action, and with probability ${\frac{\epsilon}{m}}$ we choose any of the remaining ${m-1}$ actions. Pay attention: we could see it as choosing the greedy action with probability ${1-\epsilon}$ and with probability ${\frac{\epsilon}{m}}$ any of the actions, including the greedy one.  
   This approach works well, and this is shown by the Policy Improvement Theorem:  
   For any ${\epsilon}$–greedy policy ${\pi}$, the ${\epsilon}$–greedy policy ${\pi '}$ wrt ${Q^\pi}$ is an improvement.  
@@ -967,17 +967,17 @@ $$
 
   Here we are with our new approach:
 
-  ![](images/policy_it_3.png)
+  <img src="images/policy_it_3.png" style="zoom:40%"/>
 
   We just got rid of the greedy improvement, and went for an ${\epsilon}$-greedy one. (yes, there is a mistake in the slide, in the diagram there should be written ${\pi=\epsilon}$-greedy${(Q)}$) )
 
   ***But there is more!***
 
   Let's make this a little more efficient:  
-  In this kind of policy iteration frameworks, it's not necessary to fully evaluate our policy (run many episodes and get the mean return for each ${Q}$): we can just run **one** episode, update only the ${Q}$ values of the state-action pairs we visited during such episode (evaluation), improve our policy based on the new ${Q}$s we obtained, and repeat. Why should we wait to get more episodes of information when we could already improve the policy?   
+  In this kind of policy iteration frameworks, it's not necessary to fully evaluate our policy (run many episodes and get the mean return for each ${Q}$): we can just run **one** episode, update only the ${Q}$ values of the state-action pairs we visited during such episode (evaluation), improve our policy based on the new ${Q}​$s we obtained, and repeat. Why should we wait to get more episodes of information when we could already improve the policy?   
   So once again, here we are with our new approach:
 
-  ![](images/policy_it_4.png)
+  <img src="images/policy_it_4.png" style="zoom:45%"/>
 
   **No, we are not done yet, there's still one little problem to solve**  
   We almost have the full picture. One last step:  
@@ -998,7 +998,7 @@ $$
     \mathbf{0} \ \ \ \ otherwise
     \end{cases}
     $$
-      
+    
     (if you haven't read PoliMi slides don't bother reading: on Restelli's slides there is a mistake: there's written ${Q_k(s',a')}$ but that ${s'}$ should be ${s}$. )
 
   Now we are ready to actually answer the question: what is used in Monte Carlo Control?
@@ -1006,7 +1006,6 @@ $$
   **GLIE Monte Carlo Control**  
 
   1. Sample ${k}$-th episode using ${\pi}$: ${\{S_1,A_1,R_2,...,S_T\} \sim \pi}$  
-     
 
   2. For each state ${S_t}$ and action ${A_t}$ visited in the episode:  
      $$
@@ -1023,15 +1022,14 @@ $$
      $$
      \epsilon \leftarrow\frac{1}{k}
      $$
-     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}$-greedy${(Q)}$
+     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}​$-greedy${(Q)}​$
 
-    
   So what has changed from before? well, we are updating ${\epsilon}$ every time we run a new episode! Now it will become smaller and smaller each time we generate a new episode.  
   Theorem:  
   *GLIE Monte Carlo Control converges to the optimal action-value function:*  
-  $$
+$$
   Q(s,a)\to q^*(s,a)
-  $$
+$$
   Well, GLIE MC is our first full solution. We can throw this into any MDP and it will find the right solution!  
   So, let's sum up the solutions we adopted for MC control:
 
@@ -1042,7 +1040,13 @@ $$
 
   
 
+<<<<<<< HEAD
+​     
+
+  *I'll see you in another life when we are both cats*
+=======
   *I'll see you in another life when we are both cats*.
+>>>>>>> 16d46709e93269ea52baa157c4c80120f62e5c12
 
   (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
@@ -1128,13 +1132,13 @@ $$
 
 - ***Tell if the following statements are true or false. Provide adequate motivations to your answer.***
 
-  - *Reinforcement Learning (RL) techniques use a tabular representation of MDPs to handle continuous state and/or action spaces*
+  - [ ] *Reinforcement Learning (RL) techniques use a tabular representation of MDPs to handle continuous state and/or action spaces*
 
-  - *We can use data coming from sub-optimal policies to learn the optimal one.*
+  - [ ] *We can use data coming from sub-optimal policies to learn the optimal one.*
 
-  - *In RL we always estimate the model of the environment.*
+  - [ ] *In RL we always estimate the model of the environment.*
 
-  - *In RL we require to have the model of the environment.*
+  - [ ] *In RL we require to have the model of the environment.*
 
 - ***Consider separately the following characteristics for an ML problem:***
 

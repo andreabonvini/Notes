@@ -1,10 +1,96 @@
 ## Model Identification 
 
-*A series of notes on the "Identificazione dei modelli" course as taught by Simone Garatti during the first semester of the academic year 2018-2019 at Politecnico di Milano.*
+*A series of notes on the "Identificazione dei modelli" course as taught by Simone Garatti (maybe?) during the first semester of the academic year 2018-2019 at Politecnico di Milano.*
+
+#### Formulas & Ass-Savers
+
+* *Magic formulas:*
+
+$$
+e^{jw}+e^{-jw} =2cos(w)
+$$
+
+- *Canonical Form*:
+  - Numeratore e Denominatore dello *stesso grado*
+  - Numeratore e Denominatore *monici*
+  - Numeratore e Denominatore *asintoticamente stabili*
+  - Numeratore e Denominatore *coprimi* 
+
+- *Trick n°1*:
+
+$$
+\eta(t)\sim WN(0,\sigma^2)\\
+\frac{1+az^{-1}}{1+\frac{1}{a} z^{-1}}\eta(t)=\frac{z+a}{z+\frac{1}{a}}\eta(t)=e(t)\\
+e(t)\sim WN(0,\sigma^2\cdot a^{2})
+$$
+
+- *Filtro passa-tutto*:
+
+$$
+\frac{1}{a}\frac{z+a}{z+\frac{1}{a}}
+$$
+
+1. Spettro di uscita identico allo spettro di ingresso.
+2. Per noi due processi con lo stesso spettro sono equivalenti.
+
+- *Long Division*:
+  $$
+  y(t)=\frac{C(z)}{A(z)}e(t)=\frac{1+\frac{1}{4}z^{-1}}{1+\frac{1}{2}z^{-1}}e(t)\\
+  $$
+
+  - *one - step*
+
+    ```
+    			         1 + 1/4 z^(-1)   |  1 + 1/2 z^(-1)
+    		         - ( 1 + 1/2 z^(-1) ) |________________
+      	             _____________________|  1
+          	               - 1/4 z^(-1)   | {E(z)}
+                            {F(z) z^(-k)} |
+    ```
+
+  - *two - step*
+
+    ```
+    			         1 + 1/4 z^(-1)   |  1 + 1/2 z^(-1)
+    		         - ( 1 + 1/2 z^(-1) ) |________________
+      	             _____________________|  1 - 1/4 z^(-1)
+          	               - 1/4 z^(-1)   | {E(z)}
+           - (- 1/4 z^(-1) - 1/8 z^(-2) ) |
+           _______________________________|
+                             1/8 z^(-2)   |
+                            {F(z) z^(-k)} |
+    ```
+
+    $$
+    C(z)=E(z)\cdot A(z)+F(z)z^{-k} \\
+    \frac{C(z)}{A(z)} = E(z) +\frac{F(z)z^{-k}}{A(z)}
+    $$
+
+    
+
+- *one-step predictor fast formula*:
+
+  from
+
+$$
+y(t)=\frac{C(z)}{A(z)}e(t)
+$$
+
+​	we obtain
+$$
+\hat{y}(t|t-1)=\frac{C(z)-A(z)}{C(z)}y(t)\ \ \ \ \ \ \text{from the data}\\
+\hat{y}(t|t-1) =\frac{C(z)-A(z)}{A(z)}e(t)\ \ \ \ \ \ \text{from the noise}
+$$
+
+- *error prediction variance*:
+  $$
+  \mathbb{E}\left[(y(t)-\hat{y}(t|t-1))^2\right] = \mathbb{E}\left[(E(z)e(t))^2\right]
+  $$
+  
 
 ### Exam Questions
 
-- ***Si dia la definizione di un processo $MA(\infty)$ e si discutano le condizioni affinchè tale processo sia stazionario e ben definito. Dimostrare la formula per il calcolo della funzione di covarianza di un processo $MA(\infty)$. Spiegare infine perchè questi processi sono d'interesse nello studio dei processi $AR$ e $ARMA​$.*** 
+- ***Si dia la definizione di un processo $MA(\infty)​$ e si discutano le condizioni affinchè tale processo sia stazionario e ben definito. Dimostrare la formula per il calcolo della funzione di covarianza di un processo $MA(\infty)​$. Spiegare infine perchè questi processi sono d'interesse nello studio dei processi $AR​$ e $ARMA​$.*** 
   $$
   y(t) = c_0e(t)+c_1e(t-1)+\dots+c_ie(t-i)+\dots=\sum_{i=0}^{\infty}c_ie(t-i)\\
   e(t)\sim WN(0,\lambda^2)
@@ -93,15 +179,18 @@
 
   PEM identification:
 
-  - Collect INPUT/OUTPUT measurements $\begin{equation}
-        
+  - Collect INPUT/OUTPUT measurements
+    $$
+    \begin{equation}
         \begin{cases}
-          y(1), y(2), \dots,y(N) & \\
-          u(1), u(2), \dots,u(N) 
-        \end{cases}
-      \end{equation}​$
+      y(1), y(2), \dots,y(N) & \\
+      u(1), u(2), \dots,u(N) 
+    \end{cases}
+    
+      \end{equation}
+    $$
 
-  - Select a suitable ($ARMAX$) model class $\mathcal{M}(\theta) = \{M(\theta),\theta\in \Theta \subseteq\mathcal{R}^{n_\theta} \}$ where $\Theta$ is the set of admissable values for the *parameter* vector $\theta$
+  - Select a suitable ($ARMAX$) model class $\mathcal{M}(\theta) = \{M(\theta),\theta\in \Theta \subseteq\mathcal{R}^{n_\theta} \}$ where $\Theta$ is the set of admissible values for the *parameter* vector $\theta$
 
   - Find the optmal model parameter $\hat{\theta}_N$ minimizing the empirical prediction error variance:
     $$
@@ -193,7 +282,6 @@
   $$
   e(t)=W(z)^{-1}y(t) = \overline{w_0}y(t) + \overline{w_1}y(t-1) + \overline{w_2}y(t-2) +\dots
   $$
-  
 
 - ***Si consideri l'identificazione PEM (cifra di costo : $\frac{1}{N}\sum_{i=1}^{N}(y(i)-\hat{y}(i|i-1))^2​$) di modelli ARX ($\hat{y}(i|i-1) = \theta^T\varphi(i)​$). Dire che cosa si intende per equazioni normali del metodo dei minimi quadrati. Derivare rali equazioni e discutere sull'unicità/non unicità della soluzione.***
 
@@ -345,7 +433,7 @@
 
 - ***Prediction of ARMAX processes***
 
-  
+
   $$
   y(t) = \underset{\text{deterministic part of the process}}{\underbrace{\frac{B(z)}{A(z)}{u(t-d)}}}+\underset{\text{stochastic part of the process}}{\underbrace{\frac{C(z)}{A(z)}{e(t)}}}\ \ \ \ \ \ \ e(t)\sim WN(0,\lambda^2)
   $$
@@ -374,7 +462,7 @@
   \hat{y}(t+k|t) = \frac{B(z)}{C(z)}\underset{E(z)}{\underbrace{\left(\frac{C(z)}{A(z)}-\frac{F(z)z^{-k}}{A(z)}\right)}}u(t+k-d)+\frac{F(z)}{C(z)}y(t)\\
   \hat{y}(t+k|t) = \frac{B(z)E(z)}{C(z)}u(t+k-d)+\frac{F(z)}{C(z)}y(t)
   $$
-   
+
 
 
 
