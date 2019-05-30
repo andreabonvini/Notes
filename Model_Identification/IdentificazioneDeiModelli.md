@@ -19,9 +19,9 @@ $$
 - *Trick n°1*:
 
 $$
-\eta(t)\sim WN(0,\sigma^2)\\
+\eta(t)\sim WN(\mu,\sigma^2)\\
 \frac{1+az^{-1}}{1+\frac{1}{a} z^{-1}}\eta(t)=\frac{z+a}{z+\frac{1}{a}}\eta(t)=e(t)\\
-e(t)\sim WN(0,\sigma^2\cdot a^{2})
+e(t)\sim WN(\ \mu\cdot a\ ,\ \sigma^2\cdot a^{2})
 $$
 
 - *Filtro passa-tutto*:

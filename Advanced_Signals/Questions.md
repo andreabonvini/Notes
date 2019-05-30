@@ -946,7 +946,7 @@ Advanced Signals and Data Processing in Medicine
     $$
     p(x;\alpha,\beta) = \frac{1}{\Gamma(\alpha)}\beta^{\alpha}x^{\alpha-1}e^{-\beta x}\ \ \ \ \text{for $x>0$ and $\alpha,\beta>0$}\\
     \text{or, equivalently...}\\
-    p(x;k,\theta) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}
+    p(x;k,\theta) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}
     $$
     ![](images/GAMMA1.PNG)
 
@@ -1015,7 +1015,47 @@ Advanced Signals and Data Processing in Medicine
   $$
   \lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_{0}^{t}p(u|H_u)du}
   $$
-  
+  This $\lambda$ defines the probability of having a spike at time $t$.
+
+  Now, supposing to have a set of $n​$ events, if events are independent, the probability of their union of happening all together, is the product of the probability of having each of the events, because they are independent. If they aren't, it means that one event is conditional to another event or more than one event. So we can define the total probability of having a series of events, that gets a little bit more complex cause the events are linked to each other.
+
+  Given a set of $n$ events $E_1,E_2,E_3,\dots,E_n$
+
+  it the events are independent
+
+  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=1}^{n}Pr(E_j)​$
+
+  if they are not independent
+
+  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=2}^{n}Pr(E_j|E_1,\dots E_{j-1})Pr(E_1)​$
+
+  which comes from (e.g. for $4$ events) :
+  $$
+  {\displaystyle {\begin{aligned}\mathrm {P} (E_{4}\cap E_{3}\cap E_{2}\cap E_{1})&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\cap E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\mid E_{1})\cdot \mathrm {P} (E_{1})\end{aligned}}}
+  $$
+  Special *Markov* case
+
+  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=2}^{n}Pr(E_j|E_{j-1})Pr(E_1)​$
+
+  *Multiplication Rule*:
+
+  $Pr(E_1|E_2)=Pr(E_2|E_1)Pr(E_1)$
+
+  Why are we interested in this? Well, spike train is a series of events, so we can define the joint density of a spike train.
+
+  Joint probability density can be written as a product of conditional *Bernoulli* probabilities in terms of the conditional intensity function. At each moment in time we might have or not a spike. The probability of having a spike is $p$ and the probability of not having a spike is $1-p$ , in the following formulation $n_t$ is $1$ if a spike has been observed in our dataset and is $0$ otherwise:
+  $$
+  \prod_{j=1}^{k}Pr(n_t|H_t) = \prod_{j=1}^{k}\left[\lambda(t|H_t)\Delta\right]^{n_t}\left[1-\lambda(t|H_t)\Delta\right]^{1-n_t}
+  $$
+  This *joint probability* is extremely important! It is the measure that we will use to choose a model in respect to another model.
+
+  Given the *spike times* $0<u_1,u_2,u_3,\dots,u_k<T​$ 
+
+  The joint distribution of the spikes is 
+  $$
+  p(u_1,u_2,u_3,\dots,u_k)=\prod_{j=1}^{k}\lambda(u_j|H_j)e^{-\int_0^t\lambda(u|H_u)du}
+  $$
+  aa
 
 
 
@@ -1023,7 +1063,7 @@ Advanced Signals and Data Processing in Medicine
 
   
 
-  - 
+
 
   ...
 
