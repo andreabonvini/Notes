@@ -691,7 +691,7 @@ $$
 
   What is function approximation? well, in most cases we have tons and tons of states, and it's not very efficient to compute the value function of each single state, so with function approximation we mean that we compute an approximate value for some states' value function.
 
-  it's bad to use function approximation in TD because, once you update the value of a certain ${s}$, you need to update the linear equation that approximates the behavior of each value of ${V}$ wrt to the states ${s' \neq s}$.
+  it's bad to use function approximation in TD because, once you update the value of a certain ${s}​$, you need to update the linear equation that approximates the behavior of each value of ${V}​$ wrt to the states ${s' \neq s}​$.
 
   Ok, we are done, what follows is a concise summary of the differences between the two algorithms:
 
@@ -1271,15 +1271,9 @@ $$
   3. use an ${\epsilon}$-greedy policy
   4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy.
 
-  
-
-<<<<<<< HEAD
-​     
+  ​     
 
   *I'll see you in another life when we are both cats*
-=======
-  *I'll see you in another life when we are both cats*.
->>>>>>> 16d46709e93269ea52baa157c4c80120f62e5c12
 
   (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
