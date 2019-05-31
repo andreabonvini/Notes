@@ -505,7 +505,7 @@ $$
 
   *Monte-Carlo Update:*  
   The following updates are used *each time* an episode ends.  
-  For each state ${s_t}$ with return ${v_t}$: 
+  For each state ${s_t}​$ with return ${v_t}​$: 
 
   Stationary Case:
   $$
@@ -520,12 +520,12 @@ $$
   $$
   \color{blue}V(s_t)\leftarrow V(s_t)+ \alpha\bigg(\color{red}v_t\color{blue}-V(s_t)\bigg)
   $$
-  ${v_t}$: the return we observed from ${s_t}$ during the current episode:  
-  ${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}$
+  ${v_t}​$: the return we observed from ${s_t}​$ during the current episode:  
+  ${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}​$
 
-  ${N(s_t)}$: the total number of times I visited state ${s_t}$ along all episodes I've ever run.   
-  Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}$ we always go with the non-stationary update function.  
-  (if you haven't understood this last part don't worry, will be clearer once you study control techniques).
+  ${N(s_t)}​$: the total number of times I visited state ${s_t}​$ along all episodes I've ever run.   
+  Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}​$ we always go with the non-stationary update function.  
+  (if you haven't understood this last part don't worry, it will be clearer once you study control techniques).
 
   ${}$
 
@@ -1062,16 +1062,62 @@ $$
   - Policy Evaluation
   - Policy Improvement
 
-  <u>*Policy Evaluation*</u> consists in computing the state-value function ${V^\pi}$ for a given policy ${\pi}$.   
-  It is done by iteratively applying the Bellman expectation backup an infinite number of times.  
+  <u>*Policy Evaluation*</u> 
+  Consists in computing the state-value function ${V^\pi}$ for a given policy ${\pi}$.   
+  It is done by iteratively applying the Bellman expectation backup.  
   $$
   V_{k+1}(s)\leftarrow \sum_{a\in A}\pi (a|s)\Bigg[R(s,a)+\gamma \sum_{s'\in S}P(s'|s,a)V_k(s') \Bigg]
   $$
-  Applying a backup operation to each state is called **sweep**. Using synchronous backups: at each iteration ${k+1}$, for all states ${s \in S}$, update ${V_{k+1}(s)}$ from ${V_k(s')}$.  
-  After a few iterations, even if the optimal value function is not determined, the optimal policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.
+  Applying a backup operation to each state is called **sweep**.  
+
+  What we will actually do is to start off with an arbitrary initial value function, let's call it ${V_1}$. So, this ${V_1}$ tells us what is the value of all states in the MDP (the canonical case is to start with ${V(\forall s)=0}$).  
+  Afterwards we are going to plug in one step of our Bellman equation: we do a one step lookahead and doing so we figure out a new value function that we call ${V_2}$.  
+  If we iterate this process many times we end up with the true value function ${V_\pi}$.  
+  $$
+  V_1\to V_2 \to... \to V_\pi
+  $$
+  Ok, but how do we actually pass from ${V_k}$ to ${V_{k+1}}$?  
+
+  We do it by using *synchronous backups*: 
+
+  - at each iteration ${k+1}$
+  - for all states ${s \in S}$
+  - update ${V_{k+1}(s)}$ from ${V_k(s')}$
+  - where ${s'}$ is a successor state of ${s}$
+
+  
+
+  So let's understand exactly how to do such update:
+
+  ![](images/policy_evaluation1.png)
+
+  
+
+  The picture above shows our one-step lookahead tree and the *Bellman Expectation Equation*, what do they tell us?  
+  They tell us that the value of the root is given by a one-step lookahead: we consider all the actions we might take and all the states we might go in.  
+  We know the value of each state we might go in, so we back them all up (summing them together weighted by the probabilities involved) and we get the new value of the root.  
+  Why do we know the value of such successor states? Because in our example they are all leaves, obviously if they weren't leaves we should have iterated the process over such states.
+
+  So, imagine just to start always from the root of your tree, go down the tree until you find the leaves, and then come back up by doing what I just described.  
+  Ok but by doing so we just "changed our skin" once, we went from ${V_1}$ to ${V_2}$ for example. Well, in order to go from ${V_2}$ to ${V_3}$ and in the end find ${V_\pi}$ we just iterate this process of updating ${V}$.
+
+  So, let's consider we just computed ${V_2}$, now we simply plug ${V_2}$ into the leaves, back them up, and get ${V_3}$ at the root.
+
+  This process is guaranteed to converge to the true value function ${V_\pi}​$ (pay attention, it's not that it converges to the optimal value function, it might, but what I'm saying is that it converges to the value function of the policy you are considering!).
+
+  The following paragraph on policy evaluation may not be very intuitive (but it might!). You'll surely understand it if you watch the example of David Silver's Lecture on RL - Lecture 3 at minute 21:43.  
+  Here it is:  
+
+  One interesting thing about Policy Evaluation is that, by evaluating our policy, we could infer a new policy!  
+  We can do so just by looking to our neighbor states and see which of them contains a more convenient value.  
+  And there is more: after a few iterations of policy evaluation, even if the true value function has not been determined yet, the new policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.  
+
+  In David Silver's example we are lucky because the first value function we evaluate gives us right away the optimal policy, but this is not always the case.   
+
+  Ok, policy evaluation is done.
 
   <u>*Policy Improvement*</u> consists in changing the policy according to the newly estimated values.  
-  For a given state  ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
+  For a given state ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
   We can improve the policy by acting greedily:  
   $$
   \pi'(s)=arg\  \max_{a \in A}Q^\pi(s,a)
@@ -1092,13 +1138,13 @@ $$
   $$
 
 
-  ( Sources: PMDS Notes - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
+  ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 
 - ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***   
   *(WB)*
 
   - Prediction:  
-    this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}$ is given. 
+    this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}​$ is given. 
   - Control:  
     This type of task consists in finding the policy ${\pi(a|s)}$ that maximizes the expected total reward from any given state. In other words, some policy ${\pi}$ is given, and it finds the optimal policy ${\pi^*}$. 
 
@@ -1399,7 +1445,7 @@ $$
 
   - *Which one of the previous posteriors is the most peaked one?*
 
-  - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)$ priors?*
+  - *What would $UCB1​$ have chosen for the next round? Assume $Bernoulli​$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)​$ priors?*
 
 ## Interesting Articles
 
