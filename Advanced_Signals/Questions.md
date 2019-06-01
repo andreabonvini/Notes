@@ -12,17 +12,17 @@ Advanced Signals and Data Processing in Medicine
 
   - $y(k) = x + v(k) \space$
 
-    Where $x$ is the signal we are interested in and $v$ is a random noise. 
-    $x$  and  ​$v$ are not necessarily linked by an additive relationship
+    Where $x​$ is the signal we are interested in and $v​$ is a random noise. 
+    $x​$  and  ​$[Math Processing Error]v​$ are not necessarily linked by an additive relationship
 
-  - $x$ and $v$ are stationary stochastic processes.
+  - $[Math Processing Error]x$ and $[Math Processing Error]v$ are stationary stochastic processes.
 
-  - $M$ (number of samples) must be sufficiently large ( $ M\to \infty $).
+  - $[Math Processing Error]M$ (number of samples) must be sufficiently large ( $[Math Processing Error] M\to \infty $).
 
   Given these hypothesis *Wiener* designed a LTI filter able to minimize the quadratic error.
 
-  The filter is non-recursive and $h(i)$ will be the coefficients of the Wiener Filter.
-  Since we have to "clean" the $y$ signal we must choose the right values of $h(i)$ in order to reduce the effect of the noise. To do so we compute the derivative of the error function *w.r.t.* the $h(i)$ coefficients and put it to $0$ to find the minimum.
+  The filter is non-recursive and $[Math Processing Error]h(i)$ will be the coefficients of the Wiener Filter.
+  Since we have to "clean" the $[Math Processing Error]y$ signal we must choose the right values of $[Math Processing Error]h(i)$ in order to reduce the effect of the noise. To do so we compute the derivative of the error function *w.r.t.* the $[Math Processing Error]h(i)$ coefficients and put it to $[Math Processing Error]0$ to find the minimum.
   $$
   \hat{x} = \sum_{i= 1}^{M}h(i)\cdot y(i) \\
   p_{e} = E[e^{2}] = E[(x-\hat{x})^{2}] = E[(x - \sum_{i= 1}^{M}h(i)\cdot y(i))^{2}] \\
@@ -1111,18 +1111,101 @@ Advanced Signals and Data Processing in Medicine
 
   ![](images/GR1.png)
 
-  When time series $X$ *Granger-causes* time series $Y$, the patterns in $X$ are approximately repeated in $Y$ after some time lag (two examples are indicated with arrows). Thus, past values of $X$ can be used for the prediction of future values of $Y$.
+  When time series $X​$ *Granger-causes* time series $Y​$, the patterns in $X​$ are approximately repeated in $Y​$ after some time lag (two examples are indicated with arrows). Thus, past values of $X​$ can be used for the prediction of future values of $Y​$.
 
   ------------------------
 
-  The basic "Granger Causality" definition is quite simple. The definition relies on the idea that the cause occurs before the effect. Suppose that we have three time series (*which are not related with the image above*) $X_t$, $Y_t$ and $W_t$, and that we first attempt to predict $X_{t+1}$ using past terms of $X_t$ and $W_t$. We then try to predict $X_{t+1}$ using past terms of $X_t$ , $W_t$ and $Y_t$ .  If the second prediction is found to be more successful, according to standard cost functions, then the past of $Y$ appears to contain information helping in forecasting $X_{t+1}$ that is not in past $X_t$ or $W_t$. In particular, $W_t$ could be a vector of possible explanatory variables. 
+  The basic "Granger Causality" definition is quite simple. The definition relies on the idea that the cause occurs before the effect. Suppose that we have three time series (*which are not related with the image above*) $X_t​$, $Y_t​$ and $W_t​$, and that we first attempt to predict $X_{t+1}​$ using past terms of $X_t​$ and $W_t​$. We then try to predict $X_{t+1}​$ using past terms of $X_t​$ , $W_t​$ and $Y_t​$ .  If the second prediction is found to be more successful, according to standard cost functions, then the past of $Y​$ appears to contain information helping in forecasting $X_{t+1}​$ that is not in past $X_t​$ or $W_t​$. In particular, $W_t​$ could be a vector of possible explanatory variables. 
 
-  Thus, $Y_t​$ would *Grange cause* $X_{t+1}​$ if:
+  Thus, $Y_t$ would *Granger cause* $X_{t+1}$ if:
 
   - $Y_t$ occurs before $X_{t+1}$
   - It contains information useful in predicting $X_{t+1}$ that is not found in a group of other appropriate variables.
 
-  The larger $W_t$ is, the more carefully its contents are selected, and the more $Y_t$ is passing a stringent criterion.  Eventually, $Y_t$ might seem to contain unique information about $X_{t+1}​$ that is not found in other variables which is why the "causality" label is perhaps appropriate.
+  The larger $W_t$ is, the more carefully its contents are selected, and the more $Y_t$ is passing a stringent criterion.  Eventually, $Y_t$ might seem to contain unique information about $X_{t+1}$ that is not found in other variables which is why the "causality" label is perhaps appropriate.
+
+  Let's see an example with the classical *bivariate linear autoregressive model*:
+  $$
+  X_1(t) = \sum_{j=1}^{p}A_{11}X_1(t-j)+\sum_{j=1}^{p}A_{12}X_2(t-j)+E_1(t)\\
+  X_2(t) = \sum_{j=1}^{p}A_{21}X_1(t-j)+\sum_{j=1}^{p}A_{22}X_2(t-j)+E_1(t)
+  $$
+  Where *p* is the maximum number of lagged observations included in the model (the model order), the matrix $A$ contains the coefficients of the model (i.e. the contributions of each lagged observation to the predicted values of $X_1(t)$ and $X_2(t)$ ) and $E_1$ and $E_2​$ are residuals (prediction errors) for each time series.
+
+  We already know this model, we used it to model blood pressure and heart rate (RRs).
+
+  Our $W$ variable will be the expressed by the residuals in this case. The idea is that if , looing at the first equation, the variance of $E_1$ is reduced by the introduction of $X_2$ then we can say that $X_2$ granger cause $X_1$ (and the other way around). Obviously we are talking about a *significant* reduction of the variance. We can test it statistically by performing an $F-test$ of the null hypothesis that $A_{12}=0$ , given assumptions of covariance stationarity on $X_1$ and $X_2$ .
+
+  With *Granger Causality* we can test directionality, we can use *Granger* to both direction to see, indeed, if there's a double flow.
+
+  Another thing is that without *Granger* if we have three variables ($X$,$Y$ and $Z$) we could find that $X$ causes $Y$ even in this case (*the one on the right*), but that's not true (in reality there's no arrow between $X$ and $Y$ !).
+
+  <img src="images/GGG1.png" style="zoom:75%"/><img src="images/GGG2.png" style="zoom:75%"/>
+
+  Supposing we are in the second model (*the one on the right*) and we already have $Z$ and $Y$,  applying *Granger* between $X$ and $Y$ would result in a false outcome, since $X$ wouldn't add any additional information (all the information we needed was already in $Z$, that we knew!)
+
+  Instead in the first case we would have that not *all* the information goes to $Z$, but part of it goes to $Y$, so if we include the variable $X$ in the model we'd see that the prediction of $Y$ would be improved. (so considering $Z$ as the "noise" $W$ of before we'd observe a decrease in the variance of $Z$).
+
+  We'll see later on that every *arrow* can be expressed as a *transfer function*.
+
+  By the way *Granger causality* has some limitations since it makes two important assumptions about the data:
+
+  - It is covariance *stationary* (i.e. , the mean and variance of each time series do not change over time)
+  - it can be adequately described by a *linear model*
+
+  Let's have the following example, a bivariate system which describes the interactions between R-R intervals and *systolic blood pressure* series which can be expressed in the following matrix form:
+  $$
+  Y(n) = \sum_{k=1}^{p}A[k]X[n-k]+W[n] \\
+  \mathbf{A}[K] = \left[\matrix{a_{11}[k] && a_{12}[k]\\a_{21}[k] && a_{22}[k]}\right]\\
+  X[n] = \left[\matrix{RR[n] \\SBP[n]}\right]\\
+  \mathbf{W}[n] = \left[\matrix{w_{RR}[n] \\ w_{SBP}[n]}\right]
+  $$
+  where $p$ is the order of the model.
+
+  In the frequency domain we have that:
+  $$
+  \left[\matrix{RR(f)\\SBP(f)}\right] = \left[\matrix{A_{11}(f) && A_{12}(f)\\A_{21}(f)&& A_{22}(f)}\right]\left[\matrix{RR(f)\\SBP(f)}\right]+ \left[\matrix{w_{RR}(f) \\ w_{SBP}(f)}\right]
+  $$
+  If we isolate the single variables we can see the transfer functions form SBP to RR and from RR to SBP:
+
+  <img src="images/SCH_G.PNG" style="zoom:65%"/>
+  $$
+  RR(f) = \frac{A_{12}(f)}{1-A_{11}(f)}SBP(f) + \frac{1}{1-A_{11}(f)}w_{RR}(f)\\
+  SBP(f) = \frac{A_{21}(f)}{1-A_{22}(f)}RR(f) + \frac{1}{1-A_{22}(f)}w_{SBP}(f) \\
+  A_{ij}(f) = \sum_{k=1}^{p}a_{ij}[k]e^{-j2\pi fk}
+  $$
+  Applying some trick it is possible to rewrite this equations in order to consider the generation of each of the two output signals as produced by contributions coming from the modulation of the two white uncorrelated noise inputs.
+
+  <img src="images/GGWW.PNG" style="zoom:45%"/>
+
+  From here we can compute the power spectrum
+  $$
+  \underline{S}(f) = \underline{H}^*(f)\ \underline{\Sigma}\ \underline{H}^T(f)\\
+  \Sigma \cong \left[\matrix{\sigma_{RR} && 0\\0 && \sigma_{SBP}}\right]\\
+  \left[\matrix{S_{RR}(f) && S_{CROSS}(f)\\S^*_{CROSS}(f) && S_{SBP}(f)}\right] = \left[\matrix{|h_{11}|^2\sigma_{RR}^2+|h_{12}|^2\sigma_{SBP}^2 && h_{11}\ ^*h_{21}\sigma_{RR}^2+h_{12}\ ^*h_{22}\sigma_{SBP}^2 \\
+  h_{21}\ ^*h_{11}\sigma_{RR}^2+h_{22}\ ^*h_{12}\sigma_{SBP}^2 && |h_{21}|^2\sigma_{RR}^2+|h_{22}|^2\sigma_{SBP}^2}\right]
+  $$
+  Remember that the $h$s are just a combination of the initial $a$s parameters, all we did is just technical passages. All we have to estimate is the $a$s to minimize the variance of the noise (we obviously want it to be as low as possible). 
+
+  Then we can obtain the gain (which is how much information is transferred between SBP and RR) in two different ways:
+
+  as the square root of the ratio between the auto-spectrum of the output (RR) and the auto-spectrum of the input (SBP)
+  $$
+  \alpha_o^{I}(f) = \sqrt{\frac{S_{RR}(f)}{S_{SBP}(f)}}
+  $$
+  as the ratio between the cross-spectrum and the auto-spectrum of the input noise (SBP)
+  $$
+  \alpha_0^{II}(f)=\frac{S_{CROSS}(f)}{S_{SBP}(f)}
+  $$
+   The Cross-spectral quantification could also be expressed considering the subdivision of the contributions from the two noises, but the cross-spectrum is reflected in a more complex sum of cross-products of the $h$ terms.
+
+   
+  $$
+  Coh(f) = \frac{S^2_{CROSS}(f)}{S_{SBP}(f)S_{RR}(f)}<1 \\
+  {\alpha_o^{II}}^2(f) = \frac{S^2_{CROSS}(f)}{S_{SBP}^2(f)}<\frac{S_{SBP}(f)S_{RR}(f)}{S_{SBP}^2(f)}={\alpha_0^{I}}^{2}(f)
+  $$
+  SS
+
+  SS
 
 - Filosofia della likelihood
 
@@ -1132,7 +1215,7 @@ Advanced Signals and Data Processing in Medicine
 
 - ***PCA***
 
-  *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}$ .
+  *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}​$ .
 
   Formally, principal component analysis (PCA) is a statistical procedure that uses an *orthogonal transformation* to convert a set of observations of possibly correlated variables into a set of values of *linearly uncorrelated* variables called *principal components*.
 

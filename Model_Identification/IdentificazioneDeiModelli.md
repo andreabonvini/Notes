@@ -68,7 +68,7 @@ $$
 
     
 
-- *one-step predictor fast formula*:
+- *one-step predictor fast formulas*:
 
   from
 
@@ -86,7 +86,13 @@ $$
   $$
   \mathbb{E}\left[(y(t)-\hat{y}(t|t-1))^2\right] = \mathbb{E}\left[(E(z)e(t))^2\right]
   $$
-  
+
+- *what to do before computing the optimal predictor*
+
+  - depolarize everything
+  - check if both the numerator and the denominator are asymptotically stable
+
+- Per i modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
 
 ### Exam Questions
 
@@ -434,9 +440,9 @@ $$
 - ***Prediction of ARMAX processes***
 
 
-  $$
+$$
   y(t) = \underset{\text{deterministic part of the process}}{\underbrace{\frac{B(z)}{A(z)}{u(t-d)}}}+\underset{\text{stochastic part of the process}}{\underbrace{\frac{C(z)}{A(z)}{e(t)}}}\ \ \ \ \ \ \ e(t)\sim WN(0,\lambda^2)
-  $$
+$$
   $u(t-d)​$ is a measurable signal and $d​$ is a time-delay.
 
   $\frac{C(z)}{A(z)}$ is a *canonical representation*.
@@ -444,15 +450,15 @@ $$
   $u(t-d)$ is a signal completely known for $t=-\infty$ to $t=\infty$
 
   Let $z(t) = y(t)-\frac{B(z)}{A(z)}u(t-d)​$ , then $z(t) = \frac{C(z)}{A(z)}e(t)​$ is an ARMA process.
-  $$
+$$
   \frac{C(z)}{A(z)} = E(z)+z^{-k}\frac{F(z)}{A(z)}\ \ \ \ \ \text{k step division between $C(z)$ and $A(z)$}
-  $$
+$$
   So
-  $$
+$$
   \hat{z}(t+k|t)=\frac{F(z)}{C(z)}z(t)\ \ \ \ \ \text{(or $\hat{z}(t|t-k)=\frac{F(z)z^{-k}}{C(z)}z(t)$ )}
-  $$
+$$
   and
-  $$
+$$
   y(t) = \frac{B(z)}{A(z)}u(t-d)+z(t) \\
   \hat{y}(t+k|t) = \frac{B(z)}{A(z)}u(t+k-d)+\hat{z}(t+k|t) \\
   \hat{y}(t+k|t) = \frac{B(z)}{A(z)}u(t+k-d)+\frac{F(z)}{C(z)}z(t)\\
@@ -461,7 +467,7 @@ $$
   \hat{y}(t+k|t) = \frac{B(z)}{A(z)}u(t+k-d)+\frac{F(z)}{C(z)}y(t)-\frac{F(z)B(z)z^{-k}}{C(z)A(z)}u(t+k-d)\\
   \hat{y}(t+k|t) = \frac{B(z)}{C(z)}\underset{E(z)}{\underbrace{\left(\frac{C(z)}{A(z)}-\frac{F(z)z^{-k}}{A(z)}\right)}}u(t+k-d)+\frac{F(z)}{C(z)}y(t)\\
   \hat{y}(t+k|t) = \frac{B(z)E(z)}{C(z)}u(t+k-d)+\frac{F(z)}{C(z)}y(t)
-  $$
+$$
 
 
 

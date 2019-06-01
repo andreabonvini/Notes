@@ -2,6 +2,8 @@
 
 *A series of notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
+`Feel free to modify the document in order to correct any mistakes / add additional material in order to favour a better understanding of the concepts`
+
 ## Theory Questions
 
 *Here are listed all the theory questions since 06/07/2017*
@@ -12,13 +14,13 @@
 
   { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
 
-  { TO DO : add generalization stuff and *slack variables* (relaxed formulation) }
+  { TO DO : add upper bound stuff }
 
   Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
   <img src="images/svm1.png" style="zoom:40%"/>
 
-  With SVMs we force our *margin* to be at least *something* in order to accept it. by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
+  With SVMs we force our *margin* to be at least *something* in order to accept it, by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
   Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just image a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
 
@@ -147,7 +149,74 @@
   $$
   We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
 
-  And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Yes.
+  Finally we end up with the following equation for classifying *new points*:
+  $$
+  y(\mathbf{x}) = sign\left(\sum_{n=1}^{N}\alpha_n t_n k(\mathbf{x},\mathbf{x}_n)+b\right)
+  $$
+  The method described until here is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happens that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
+
+  We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the margin constraint but we add a *penalty*.
+
+  We now have to 
+  $$
+  \text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
+  \text{s.t.}\\ \ t_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
+  \xi_i\ge0\ ,\ \ \ \forall{i}
+  $$
+  $C$ is a coefficient that allows to treadeoff bias-variance and is chosen by *cross-validation*.
+
+  And obtain the *Dual Representation*
+
+  
+  $$
+  \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+  \text{s.t.}\\
+  0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
+  \sum_{n=1}^N\alpha_n t_n = 0
+  $$
+  Support vectors are points associated with $\alpha_n > 0$
+
+  if $\alpha_n<C$ the points lies *on the margin*
+
+  if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_i \le 1$) or *misclassified* ($\xi_i>1$)  
+
+  Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
+
+  And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Kinda.
+
+  As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
+  $$
+  L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
+  $$
+  This is called *Leave-One-Out Bound* because _______________ (<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf>) check here. The good thing is that it can be easily computed and we don't need to run SVM multiple times.
+
+  The other error bound is blabla
+
+  
+
+  Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence,specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
+
+  Remember our formulation for the *soft-margin SVM*:
+  $$
+  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+  s.t.\\
+  0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
+  \sum_{i=1}^ny_i\alpha_i=0
+  $$
+  *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
+  $$
+  0\le\alpha_1,\alpha_2\le C\\
+  y_i\alpha_1+y_2\alpha_2=k
+  $$
+  and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration.
+
+  The algorithm proceeds as follows:
+
+  - Find a Lagrange multiplier $\alpha_1$ that violates the *KKT* conditions for the optimization problem.
+  - Pick a second multiplier $\alpha_2$ and optimize the pair ($\alpha_1$,$\alpha_2$).
+  - Repeat steps $1$ and $2$ until convergence.
+
+  When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
 
 - ***Write just a very very little definition of PAC Learning, then deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
 
@@ -266,7 +335,7 @@
 
     *Definition :*
 
-    $C$ is ***PAC-learnable*** it there exists an algorithm $L$ such that for every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le 1$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$ 
+    $C​$ is ***PAC-learnable*** it there exists an algorithm $L​$ such that for every $c \in C​$ , for any distribution $P​$ , for any $\epsilon​$ such that $0\le\epsilon\le\frac{1}{2}​$ and $\delta​$ such that $0\le\delta\le 1​$, with probability at least $1-\delta​$, outputs an hypothesis $h\in H​$, such that $L_{true}(h) \le \epsilon​$, using a number of samples that is polynomial of $\frac{1}{\epsilon}​$ and $\frac{1}{\delta}​$ 
 
     $C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$, $M$ and $size(c)$.
 
@@ -321,7 +390,7 @@
 
   The *VC* ( *Vapnik-Chervonenkis ) dimension* of a hypothesis set $\mathcal{H}$ , denoted by $d_{VC}(\mathcal{H})$ is the largest value of $N$ for which $m_{\mathcal{H}}(N)=2^N$  , in other words is "*the most points $\mathcal{H}$ can shatter* " 
 
-  In soldoni, we can say that the *VC* dimension is one of many measures that characterize the expressive power, or capacity, of a hypothesis class. 
+  We can say that the *VC* dimension is one of many measures that characterize the expressive power, or capacity, of a hypothesis class. 
 
   You can think of the VC dimension as "how many points can this model class memorize?" (a ton? $\to$ BAD! not so many? $\to$ GOOD!)
 
@@ -351,7 +420,7 @@
   Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
   It implies that    
 
-  - Q-learning learns the Q-value based on the action performed following a different policy called behavioral policy (off-policy).  =={TODO: FIX, I follow the target policy (greedy), not the behavioral one, isn't it?}==
+  - Q-learning uses a target policy (greedy) to choose the best next action ${a'}$ while following the behavior policy (${\epsilon}$-greedy)  (off-policy).  =={TODO: clearify}==
     ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)}$   
 
     
@@ -366,16 +435,17 @@
 
   <img src="images/sarsa1.jpg" style="zoom:45%"/>
 
-  It's called SARSA because we are starting from a state-action pair ${(S,A)}​$.  
+  It's called SARSA because the agent starts in ${S}$, performs action ${A}$ following its own policy. 
 
-  We are going to randomly sample from our environment to see what reward ${R}$ we receive and what state ${S'}$ we end up in.  
-  Afterwards we are going to sample from our policy to generate ${A'}$.So basically, SARSA, indicates a particular update pattern we can use.  
-  *Updating ${Q}$ functions with SARSA*:  
+  Afterwards, we are going to randomly sample from our environment to see what reward ${R}​$ we receive and what state ${S'}​$ we end up in.  
+  then we are going to sample again from our policy to generate ${A'}​$.  
+  So basically, SARSA, indicates a particular update pattern we can use.  
+  *Updating ${Q}​$ functions with SARSA*:  
   Now let's study out update function:
-  ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}$
+  ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}​$
 
-  We move our ${Q}$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}$ value of where we started.  
-  This update is done after every transition from a nonterminal state ${s}$. If ${s'}$ is terminal, then ${Q(s',a')}$ is zero.
+  We move our ${Q}​$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}​$ value of where we started.  
+  This update is done after every transition from a nonterminal state ${s}​$. If ${s'}​$ is terminal, then ${Q(s',a')}​$ is zero.
 
   *Policy Improvement/ Control with SARSA*:  
   Ok, so far we did prediction: we updated our ${Q}$ function using the formula above. Implicitly we did Policy Evaluation. How do we do Policy Improvement when we apply SARSA?
@@ -488,7 +558,240 @@ $$
 
   	(Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
 
-- ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
+- ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***  
+  *(WB)*  
+  If you are looking for a concise answer just go to the end.  
+  Monte Carlo and Temporal Difference are two different algorithms to solve Model Free Reinforcement Learning planning problems.
+
+  The question asks us to find the differences between MC-Prediction and TD-Prediction, so let's first write down both update equations:  
+
+  *Monte-Carlo Update:*  
+  The following updates are used *each time* an episode ends.  
+  For each state ${s_t}​$ with return ${v_t}​$: 
+
+  Stationary Case:
+  $$
+  N(s_t)\leftarrow N(s_t)+1
+  $$
+
+  $$
+  V(s_t)\leftarrow V(s_t)+ \frac{1}{N(s_t)}\bigg(v_t-V(s_t)\bigg)
+  $$
+
+  Non Stationary Case (we use a running mean: we forget old episodes thanks to ${\alpha}$):
+  $$
+  \color{blue}V(s_t)\leftarrow V(s_t)+ \alpha\bigg(\color{red}v_t\color{blue}-V(s_t)\bigg)
+  $$
+  ${v_t}​$: the return we observed from ${s_t}​$ during the current episode:  
+  ${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}​$
+
+  ${N(s_t)}​$: the total number of times I visited state ${s_t}​$ along all episodes I've ever run.   
+  Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}​$ we always go with the non-stationary update function.  
+  (if you haven't understood this last part don't worry, it will be clearer once you study control techniques).
+
+  ${}$
+
+  *TD-Update*  
+  $$
+  \color{blue} V(s_t)\leftarrow V(s_t)+\alpha \bigg(\color{red}r_{t+1}+\gamma V(s_{t+1})\color{blue}-V(s_t)\bigg)
+  $$
+  The one above is the simplest temporal-difference learning algorithm, called ${TD(0)}$. We'll use it as reference. The red colored part is called TD-target.
+
+  In this case we are updating our value function towards the estimated return after one step:  
+  Specifically, the estimate consists in two parts: the immediate reward ${r_{t+1}}$ plus the discounted value of the next step ${\gamma V(S_{t+1})}$. 
+
+  **Gimme the differences!**
+
+  Ok, here you are:  
+  Let's start from a concrete example:  
+  Imagine you are driving your car and suddenly see another car moving towards you. You think you are going to crash, but in the end the car swerves out of the way, and you don't actually crash. In MC you wouldn't get any crash in the end so you wouldn't update your values, even if you almost died.  
+  In TD learning, you start thinking that everything's fine, but ,when you see the car coming towards you, you immediately update you estimate of the return ("damn it, If I don't do something I'm gonna die") and choose to slow down the car (which translates into choosing the action of decelerating because it gives a better estimate of the final reward)
+
+  You asked for a second example? no? sorry:  
+
+  Another driving example.  
+  We need to predict how much time we need to reach home from our office.  
+  "Elapsed time" is the time passed, "Predicted Time to Go" is the time we are predicting to need in order to get home, "Predicted Total Time" is the total time, starting from our office, we predict to need to get home.  
+  So: the "Elapsed Time" from a state ${i}$ to a state ${j}$ is our reward: from the office to the car we get 5 minutes of reward, from the car to the exit of the highway we get 15 minutes of reward. "Predicted time to go" is our value function. The sum of the total elapsed time and the "Predicted Time to Go" give us the total predicted time.  
+  (But wait, why is the reward positive? shouldn't it be negative? yes, but it's just an example, easier to deal with positive values).
+
+  ![](images\driving.png)
+
+  Each row corresponds to a state: the starting state is the office, then we get to the parking lot, highway, etc.  
+  Now, consider ${\alpha=1}$ for both MC and TD (just to make things easier). what does this mean? that we completely forget about the past (just look at the equations above and you'll find out why).  
+  The following charts show you how both algorithms update the value function of each state (for visualization purposes Sutton (the book) plots the predicted total time instead of the Predicted Time to Go):
+
+  ![](images\driving_mc_td.png)
+
+  MC updates every state to have a "predicted total time" equal to the end estimate, so to 43:  
+  ${V(lo)\leftarrow 30+1\bigg(43-(30)\bigg)=43}$  	(Elapsed Time = 0)  
+
+  ${V(rc)\leftarrow 35+1\bigg(38-(35)\bigg)=38}$ 		(Elapsed Time = 5)    
+
+  ${V(eh) \leftarrow 15+1\bigg(23-(15)\bigg)=23}$			(Elapsed Time = 20)  
+  ${...}$  
+  The sum of each ${V}$ with the relative elapsed time makes always 43.
+
+  While TD updates every state to the estimate of the successor state.:   
+  (we are considering ${\gamma=1}$ as well)
+
+  ${V(lo)\leftarrow V(lo)+1 \bigg(r_{t+1}+\gamma V(rc)-V(lo)\bigg)}$
+
+  ${V(lo)\leftarrow 30 + 1\bigg(5+1\cdot35-(30)\bigg)=40}$		(Elapsed Time = 0)  
+
+  ${V(rc) \leftarrow 35 + 1\bigg( 15+1\cdot 15-(35)\bigg)=30}$		(Elapsed Time = 5)  
+
+  ${V(eh)\leftarrow 15 + \bigg(10+1\cdot 10-(15)\bigg)=20}$		(Elapsed Time = 20)
+
+  The sum of each ${V(S_t)}$ with the relative elapsed time makes always the total predicted time in state ${S_{t+1}}$.
+
+  **Complete/Incomplete - Episodic/Continuing environments**
+
+  - TD can learn *before* knowing the final outcome, it  learns online, step by step. (online means that it learns on the go, doesn't wait the episode to be over)
+  - MC *must* wait until the end of the episode before the return is known.
+
+  But what if there is no episode? what if there is no final outcome?
+
+  - TD can learn from incomplete sequences
+  - MC can only learn from complete sequences
+  - TD works in continuing (non-terminating) environments
+  - MC only works for episodic (terminating) environments
+
+  **Bias & Variance differences**
+
+  But the major difference between this two algorithms translates into a Bias/Variance Trade-Off:  
+  Monte-Carlo's estimate of the value function ${v_\pi(s_t)}$ is *unbiased*:   
+  ${G_t= R_{t+1}+\gamma R_{t+2} +...+ \gamma^{T-1}R_{T}}$  
+  ${V}$ is an actual sample of the expected return, we are not introducing any bias.  
+
+  Temporal-Difference's estimate of the value function ${v_\pi(s_t)}$ is *biased*   
+
+  ${TD}$ - ${target}$ ${= R_{t+1}+\gamma V(S_{t+1})}$
+
+  because ${V(S_{t+1})}$ is just an estimate of the value function of ${S_{t+1}}$.  
+  That said, TD is biased but it's much more lower variance in the return wrt MC, why?
+
+  - MC return ${G_t}$ depends on many random actions, transitions, rewards
+  - TD-target depends on one random action, transition, reward
+
+  
+
+  Moreover TD is more efficient, since it is much more lower variance!  
+  Let's see an example of this:
+
+  *Random Walk Example*:
+
+  ![](images\rw1.png)
+
+  consider the following MDP where you get zero reward for any transition but moving right from E. the episode ends only in two situations:  
+  When you reach the leftmost square, or the rightmost one. let's adopt a policy that makes you move to the left and to the right with 50% probability. Once we run any algorithm we should obtain something like this:
+  $$
+  V(A)=\frac{1}{6} \\
+  V(B)=\frac{2}{6} \\
+  V(C)=\frac{3}{6} \\
+  V(D)=\frac{4}{6} \\
+  V(E)=\frac{5}{6}
+  $$
+  The chart above shows you how the value estimates of each state change based on how many episodes we run. (this chart was plotted applying ${TD(0)}$).  
+  We can see that by running roughly 100 episode we get a good approximation of the true value function.
+
+  Now let's compare TD and MC for this example:
+
+  ![](images\rw2.png)
+
+  In the ${y}$ axis we have the total error over all states, which means "how much the function we estimated is wrong wrt to the true one".  
+  We can notice that we plot lines for both MC an TD and for different step sizes ${\alpha}$.  
+  We notice that TD does better than MC, doesn't matter how many episodes we run.  
+  We even notice that MC is noisier (more variance).
+
+  **Markov / non-Markov Environments**  
+
+  Last but non least: which of them takes advantage of the Markov property? (*the future is independent of the past given the present*). the short answer is: TD does, MC does not.
+
+  The long answer is: follow the example (we are almost done).
+
+  So far we have dealt with convergence given that we run a huge number of episodes:
+
+  ${MC}$ and ${TD}$ converge: ${V(s) \to v_\pi(s)}$ as experience ${\to \infty}$.
+
+  But what if we can't run a huge number of episodes? what if we are provided with 8 episodes and we should learn only from them? In this cases we would get a *batch* solution: we would repeatedly sample from our ${k}$ episodes to learn everything we can.
+
+  To get an intuition consider the following problem:
+
+  ![](images/ab1.png)
+
+  Each line corresponds to an episode, and each episode correspond to a sequence of states and rewards.  
+  if we run Monte-Carlo we would get ${V(A)=0}$ and ${V(B)=\frac{6}{8}}$. Why? In every episode we saw ${A}$ we got a total reward of ${0}$ (we visit it only in the first episode), so it makes sense that, even if we run 1000 times the first episode we would still get ${V(A)=0}$.  
+  This is a completely legit value for ${A}$.  
+  ${V(B)=\frac{6}{8}}$ because, if we run ${k}$ times our 8 episodes, we get that ${6k}$ times out of the ${8k}$ we encountered ${B}$, we got a total reward of 1.
+
+  Now let's run ${TD(0)}$:  
+  ${V(A)=\frac{6}{8}}$ and ${V(B)=\frac{6}{8}}$.  
+  Why? the return of ${A}$ has changed? you could see it like this:  
+  In ${TD}$ we have that
+  $$
+  V(A)\leftarrow V(A)+\alpha \bigg(r_{t+1}+\gamma V(B)-V(A)\bigg) \\
+    V(A)\leftarrow V(A)+\alpha \bigg(0+\gamma V(B)-V(A)\bigg)
+  $$
+  the expected return of ${B}$ will become ${\frac{6}{8}}$ so ${V(A)}$ gets updated toward that value.  
+  ${TD}$ is able to capture, *even in finite experience situations*, the Markov property.  
+  ${TD}$, *even in finite experience situations*, is able to build an MDP model, ${MC}$ can't! 
+
+  This is what ${TD}$ builds:  
+  ![](images\ab2.png)
+
+  if you want to have a look to the math behind all of this here you are:  
+  ![](images/ab3.png)
+
+  
+
+  MC would still capture partially the Markov property if it was given a higher number of episodes to deal with, but, since he can deal with just those 8 ones (and those 8 ones are not very representative of the model) it can't capture the structure of the MDP. 
+
+  
+
+  **Function Approximation**
+
+  What is function approximation? well, in most cases we have tons and tons of states, and it's not very efficient to compute the value function of each single state, so with function approximation we mean that we compute an approximate value for some states' value function.
+
+  it's bad to use function approximation in TD because, once you update the value of a certain ${s}​$, you need to update the linear equation that approximates the behavior of each value of ${V}​$ wrt to the states ${s' \neq s}​$.
+
+  Ok, we are done, what follows is a concise summary of the differences between the two algorithms:
+
+  **Concise Summary**
+
+  if you want to briefly answer the question you could probably just say the following:
+
+  - MC
+    - high variance, zero bias
+    - good convergence properties
+    - converges even with function approximation
+    - Not very sensitive to initial value
+    - Very simple to understand and use
+    - learns only from complete sequences
+    - works only for episodic environments
+    - Usually more effective in non-Markov environments
+  - TD
+    - low variance, some bias
+    - ${TD(0)}$ converges to ${V_\pi(s)}$
+    - doesn't always converge with function appriximation
+    - more sensitive to the initial value
+    - learns even from incomplete sequences
+    - works for both episodic and continuing environments
+    - Usually more effective in Markov environments
+
+  
+
+  ![](images\mcbackup.png)
+
+  ![](images/tdbackup.png)
+
+  
+
+  
+
+  (  Sources: David Silver's Slides;  [David Silver's RL Lecture 04](https://www.youtube.com/watch?v=PnHCvfgC_ZA&t=1702s)  ) 
+
+  
 
 - ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***   
   *(WB)*  
@@ -577,9 +880,9 @@ $$
 
   *Maximum Likelihood* is used to directly determine the parameters
   $$
-  p(\mathbf{T}|\Phi,\mathbf{w}_1,\dots,\mathbf{w}_K)=\prod_{n=1}^{N}\underset{\underbrace{\text{Term for correct class}}}{\left(\prod_{k=1}^{K}p(C_k|\phi_n)^{t_{nk}}\right)}=\prod_{n=1}^{N}\left(\prod_{k=1}^{K}y_{nk}^{t_{nk}}\right)\\
+  p(\mathbf{T}|\Phi,\mathbf{w}_1,\dots,\mathbf{w}_K)=\prod_{n=1}^{N}{\underset{\text{Term for correct class$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\,\,\;\;\;\;\;\;\;\;\;\;\;$}}{\underbrace{\left(\prod_{k=1}^{K}p(C_k|\phi_n)^{t_{nk}}\right)}=\prod_{n=1}^{N}\left(\prod_{k=1}^{K}y_{nk}^{t_{nk}}\right)}}\\
   $$
-  where $y_{nk}=p(C_k|\phi_n)=\frac{e^{\mathbf{w}_k^T\phi_n}}{\sum_j e^{\mathbf{w}_j^T\phi_n}}$
+  where $y_{nk}=p(C_k|\phi_n)=\frac{e^{\mathbf{w}_k^T\phi_n}}{\sum_j e^{\mathbf{w}_j^T\phi_n}}​$
 
   The *cross-entropy* function is:
   $$
@@ -816,21 +1119,67 @@ $$
 - ***Describe the policy iteration technique for control problems on Markov Decision Processes***  
   *(WB*)   
   premise: what is a control problem? is the task of finding the optimal value function, which translates into finding the optimal policy.  
-  Policy Iteration is a dynamic programming policy optimization technique that can be decoupled in two phases:
+  Policy Iteration is a dynamic programming (==just dp? sure?==) policy optimization technique that can be decoupled in two phases:
 
   - Policy Evaluation
   - Policy Improvement
 
-  <u>*Policy Evaluation*</u> consists in computing the state-value function ${V^\pi}$ for a given policy ${\pi}$.   
-  It is done by iteratively applying the Bellman expectation backup an infinite number of times.  
+  <u>*Policy Evaluation*</u> 
+  Consists in computing the state-value function ${V^\pi}$ for a given policy ${\pi}$.   
+  It is done by iteratively applying the Bellman expectation backup.  
   $$
   V_{k+1}(s)\leftarrow \sum_{a\in A}\pi (a|s)\Bigg[R(s,a)+\gamma \sum_{s'\in S}P(s'|s,a)V_k(s') \Bigg]
   $$
-  Applying a backup operation to each state is called **sweep**. Using synchronous backups: at each iteration ${k+1}$, for all states ${s \in S}$, update ${V_{k+1}(s)}$ from ${V_k(s')}$.  
-  After a few iterations, even if the optimal value function is not determined, the optimal policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.
+  Applying a backup operation to each state is called **sweep**.  
+
+  What we will actually do is to start off with an arbitrary initial value function, let's call it ${V_1}$. So, this ${V_1}$ tells us what is the value of all states in the MDP (the canonical case is to start with ${V(\forall s)=0}$).  
+  Afterwards we are going to plug in one step of our Bellman equation: we do a one step lookahead and doing so we figure out a new value function that we call ${V_2}$.  
+  If we iterate this process many times we end up with the true value function ${V_\pi}$.  
+  $$
+  V_1\to V_2 \to... \to V_\pi
+  $$
+  Ok, but how do we actually pass from ${V_k}$ to ${V_{k+1}}$?  
+
+  We do it by using *synchronous backups*: 
+
+  - at each iteration ${k+1}$
+  - for all states ${s \in S}$
+  - update ${V_{k+1}(s)}$ from ${V_k(s')}$
+  - where ${s'}$ is a successor state of ${s}$
+
+  
+
+  So let's understand exactly how to do such update:
+
+  ![](images/policy_evaluation1.png)
+
+  
+
+  The picture above shows our one-step lookahead tree and the *Bellman Expectation Equation*, what do they tell us?  
+  They tell us that the value of the root is given by a one-step lookahead: we consider all the actions we might take and all the states we might go in.  
+  We know the value of each state we might go in, so we back them all up (summing them together weighted by the probabilities involved) and we get the new value of the root.  
+  Why do we know the value of such successor states? Because in our example they are all leaves, obviously if they weren't leaves we should have iterated the process over such states.
+
+  So, imagine just to start always from the root of your tree, go down the tree until you find the leaves, and then come back up by doing what I just described.  
+  Ok but by doing so we just "changed our skin" once, we went from ${V_1}$ to ${V_2}$ for example. Well, in order to go from ${V_2}$ to ${V_3}$ and in the end find ${V_\pi}$ we just iterate this process of updating ${V}$.
+
+  So, let's consider we just computed ${V_2}$, now we simply plug ${V_2}$ into the leaves, back them up, and get ${V_3}$ at the root.
+
+  This process is guaranteed to converge to the true value function ${V_\pi}​$ (pay attention, it's not that it converges to the optimal value function, it might, but what I'm saying is that it converges to the value function of the policy you are considering!).
+
+  The following paragraph on policy evaluation may not be very intuitive (but it might!). You'll surely understand it if you watch the example of David Silver's Lecture on RL - Lecture 3 at minute 21:43.  
+  Here it is:  
+
+  One interesting thing about Policy Evaluation is that, by evaluating our policy, we could infer a new policy!  
+  We can do so just by looking to our neighbor states and see which of them contains a more convenient value.  
+  And there is more: after a few iterations of policy evaluation, even if the true value function has not been determined yet, the new policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.  
+
+  In David Silver's example we are lucky because the first value function we evaluate gives us right away the optimal policy, but this is not always the case.   
+
+  Ok, policy evaluation is done.
 
   <u>*Policy Improvement*</u> consists in changing the policy according to the newly estimated values.  
-  For a given state  ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
+  For a given state ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
   We can improve the policy by acting greedily:  
   $$
   \pi'(s)=arg\  \max_{a \in A}Q^\pi(s,a)
@@ -851,13 +1200,13 @@ $$
   $$
 
 
-  ( Sources: PMDS Notes - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
+  ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 
 - ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***   
   *(WB)*
 
   - Prediction:  
-    this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}$ is given. 
+    this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}​$ is given. 
   - Control:  
     This type of task consists in finding the policy ${\pi(a|s)}$ that maximizes the expected total reward from any given state. In other words, some policy ${\pi}$ is given, and it finds the optimal policy ${\pi^*}$. 
 
@@ -1027,10 +1376,10 @@ $$
 
   1. Use ${Q}$, not ${V}$
   2. evaluate and improve your policy *every time you run an episode*
-  3. use an ${\epsilon}$-greedy policy
+    3. use an ${\epsilon}$-greedy policy
   4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy
 
-  *I'll see you in another life when we are both cats*.
+  *I'll see you in another life when we are both cats*
 
 (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
@@ -1106,7 +1455,7 @@ $$
 
   - *By construction*: we choose a feature space mapping $ \varphi (\mathbf{x})$ and use it to ﬁnd the corresponding kernel. (I'd call this method *by hand*)
 
-  - It is possible to test whether a function is a valid kernel without having to construct the basis function explicitly. The necessary and suﬃcient condition for a function $k(\mathbf{x},\mathbf{x}')$ to be a kernel is that the Gram matrix $K$ is positive semi-deﬁnite for all possible choices of the set $\{x_n\}$. It means that $\mathbf{x}^TK\mathbf{x}\ge 0$ for non-zero vectors $\mathbf{x}$ with real entries, i.e.$\sum_n\sum_m K_{n,m}x_nx_m \ge 0$ for any real number $x_n,x_m$. 
+  - It is possible to test whether a function is a valid kernel without having to construct the basis function explicitly. The necessary and suﬃcient condition for a function $k(\mathbf{x},\mathbf{x}')​$ to be a kernel is that the Gram matrix $K​$ is positive semi-deﬁnite for all possible choices of the set $\{x_n\}​$. It means that $\mathbf{x}^TK\mathbf{x}\ge 0​$ for non-zero vectors $\mathbf{x}​$ with real entries, i.e.$\sum_n\sum_m K_{n,m}x_nx_m \ge 0​$ for any real number $x_n,x_m​$. 
 
     *Mercer's Theorem :* Any continuous, symmetric, positive semi-deﬁnite kernel function $k(\mathbf{x},\mathbf{y})$ can be expressed as a dot product in a high-dimensional space.
 
@@ -1156,7 +1505,6 @@ $$
     - *Which one of the previous posteriors is the most peaked one?*
 
     - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)$ priors?*
-
 ## Interesting Articles
 
 - [Polynomial Regression](https://towardsdatascience.com/polynomial-regression-bbe8b9d97491)
