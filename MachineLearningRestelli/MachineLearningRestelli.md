@@ -168,12 +168,12 @@
   And obtain the *Dual Representation*
 
 
-  $$
+$$
   \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
   0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
   \sum_{n=1}^N\alpha_n t_n = 0
-  $$
+$$
   Support vectors are points associated with $\alpha_n > 0$
 
   if $\alpha_n<C$ the points lies *on the margin*
@@ -185,9 +185,9 @@
   And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Kinda.
 
   As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
-  $$
+$$
   L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
-  $$
+$$
   This is called *Leave-One-Out Bound* because _______________ (<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf>) check here. The good thing is that it can be easily computed and we don't need to run SVM multiple times.
 
   The other error bound is blabla
@@ -197,17 +197,17 @@
   Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence,specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
 
   Remember our formulation for the *soft-margin SVM*:
-  $$
+$$
   \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   s.t.\\
   0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
   \sum_{i=1}^ny_i\alpha_i=0
-  $$
+$$
   *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
-  $$
+$$
   0\le\alpha_1,\alpha_2\le C\\
   y_i\alpha_1+y_2\alpha_2=k
-  $$
+$$
   and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration.
 
   The algorithm proceeds as follows:
@@ -989,29 +989,29 @@ $$
   ${[0,1]}$:
 
 
-  $$
+$$
   V_* ([0,1]) \leftarrow \max _{a \in A}\bigg\{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a V_*(s') \bigg\} 
   \\
   V_* ([0,1]) \leftarrow -1+1 \bigg(1\cdot0+0\cdot(-1)+0\cdot(-1)+0\cdot(-1)\bigg) 
   \\
   V_*([0,1])\leftarrow-1
-  $$
+$$
 
 
   ${[2,2]}$:
-  $$
+$$
   V_*([2,2])\leftarrow -1+1\cdot\bigg(1\cdot(-1)+0\cdot(-1)+0\cdot(-1)+0\cdot(-1)\bigg)
   \\
   V_*([2,2])\leftarrow-2
-  $$
+$$
   (In ${[2,2]}$ I chose randomly to perform one of the actions, they all give the same result. In ${[0,1]}$ I considered moving west since it's the most convenient choice).
 
   I did a couple of examples for ${V_2}$, hopefully you can get the sense of the algorithm.
 
   Let's take stock of the situation: value iteration is a method for solving MDPs, how do we do it? by applying iteratively the Bellman Optimality Equation, doing so we find the optimal value function.
-  $$
+$$
   v_1 \to v_2 \to v_3 \to... \to v_*
-  $$
+$$
   *What are the differences between policy iteration and value iteration?*
 
   - in V.I. we are not building a policy at each step, we are working directly in value space. in P.I. there is an alternation between value and policy space.
@@ -1043,16 +1043,16 @@ $$
   Value Iteration converges to the optimal state-value function ${\lim_{k\to\infty}V_k=V^*}$
 
   *Proof*:
-  $$
+$$
   ||V_{k+1}-V^*||_\infty =||T^*V_k-T^*V^*||_\infty\le \gamma||V_k-V^*||_\infty \\
   \le  \ ... \ \le \gamma^{k+1}||V_0-V^*||_\infty \to \infty
-  $$
+$$
 
 
   *Theorem*  
-  $$
+$$
   ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
-  $$
+$$
 
 
   ***Concise Answer***  
@@ -1063,9 +1063,9 @@ $$
   In fact, intermediate value functions may not correspond to any policy.  
 
   *Bellman's Optimality Equation*:
-  $$
+$$
   v_* (s) \leftarrow \max _{a \in A}\bigg\{{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_*(s')\bigg\} }
-  $$
+$$
   Value Iteration always return the optimal policy, as shown by the following theorem.
 
   Define the max-norm: ${||V||_\infty}=\max_s|V(s)|$
@@ -1075,14 +1075,14 @@ $$
   Value Iteration converges to the optimal state-value function ${\lim_{k\to\infty}V_k=V^*}$
 
   *Proof*:
-  $$
+$$
   ||V_{k+1}-V^*||_\infty =||T^*V_k-T^*V^*||_\infty\le  \\ \gamma||V_k-V^*||_\infty 
   \le  \ ... \ \le \gamma^{k+1}||V_0-V^*||_\infty \to \infty
-  $$
+$$
   *Theorem*  
-  $$
+$$
   ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
-  $$
+$$
 
 
   ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
@@ -1279,7 +1279,54 @@ $$
   - Computational problems with many dimensions 
   - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
-- ***Describe and compare Value Iteration and Policy Iteration algorithms.***
+- ***Describe and compare Value Iteration and Policy Iteration algorithms.***   
+  *(WIlliam Bonvini)*
+
+  Value iteration and Policy Iteration are two algorithms used to do control in Model-Based environments.
+
+  Value Iteration can be considered a particular case of Modified Policy Iteration.
+
+  ***Policy Iteration***
+
+  It's divided in two steps:
+
+  - Policy Evaluation 
+  - Policy Improvement
+
+  *Policy Evaluation* consists in evaluating a certain policy ${\pi}$ by iteratively applying the *Bellman Expectation Equation*
+  $$
+  V_{k+1}(s)\leftarrow \sum_{a\in A}\pi (a|s)\Bigg[R(s,a)+\gamma \sum_{s'\in S}P(s'|s,a)V_k(s') \Bigg]
+  $$
+  It means that the value function at the iteration ${k+1}$ is given by the immediate reward obtained following policy ${\pi}$ plus the discounted average total reward obtained from the successor state ${s'}$.  
+  The evaluation is completed (the value function converges to the true value function for that policy) when ${k \to \infty}$. 
+
+  *Policy Improvement* consists in coming up with a better policy ${\pi'}$ starting from a policy ${ \pi}$. This is achieved by acting greedily wrt to the value function evaluated in the first step of policy iteration.
+
+  ${\pi'(s)=\arg \max_{a \in A}}{Q^\pi(s,a)}$
+
+  By repeating evaluation and improvement we are certain of obtaining in the end the optimal policy ${\pi^*}$
+
+  ***Value Iteration***  
+  *Value Iteration* consists in applying iteratively the *Bellman Optimality Equation*
+  $$
+  V^*(s)=\max_{a \in A}{\bigg\{R(s,a)+\gamma \sum_{s' \in S}P(s'|s,a)V^*(s') \bigg\}}
+  $$
+  until the actual optimal value function is found.
+
+  The optimal value function is found when the old value function ${V_k}$ and the new one ${V_{k+1}}$ differ less than a small number ${\epsilon}$.  
+  Value iteration  is based on the principle of Optimality:  
+  A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$, ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,  
+  ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
+
+  This algorithm assures convergence to the optimal value function, and consequently to the optimal policy.
+
+  ***Differences***
+
+  - in Value Iteration we are not building a policy at each step, we are working directly in value space. in Policy Iteration there is an alternation between value and policy space.
+  - Intermediate value functions of Value Iteration may not correspond to any policy, while intermediate value functions of Policy Iteration do. What does this mean? It means that in VI, during the iteration, we could get an intermediate ${v}$,  which does not correspond to any ${v_\pi}$ for any ${\pi}$.
+  - We can say that Value iteration is equivalent to do Modified Policy Iteration with ${k=1}$.  Modified Policy Iteration is just Policy Iteration, but we don't wait the value function to converge to the true one, we stop the evaluation at ${k=const}$. 
+
+  (Sources: this document)
 
 - ***Which criteria would you consider for model selection in each one of the following settings:***
 
