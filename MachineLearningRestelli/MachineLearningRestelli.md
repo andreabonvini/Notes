@@ -1,6 +1,8 @@
-# Machine Learning
+# Machine Learning 
 
-*A series of notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
+`or: How I Learned to Stop Worrying and Love Restelli`
+
+*A series of extremely verbose and surely overkill notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
 `Feel free to modify the document in order to correct any mistakes / add additional material in order to favour a better understanding of the concepts`
 
@@ -415,7 +417,7 @@
   First of all, let's say what they are used for:  
   *SARSA* and *Q-Learning* are two algorithms used to do control using the model free method called *Temporal Difference*.   
   If you don't remember what a control task is, here you are:   
-  *Control is the task of obtaining an improved policy ${\pi'}$ starting from a policy ${\pi}$.*  
+  *Control is the task of obtaining an improved policy ${\pi'}$ starting from a policy ${\pi}​$.*  
   Now let's jump into the differences:  
   Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
   It implies that    
@@ -828,6 +830,47 @@ $$
   
 
 - ***Describe the Gaussian Processes model for regression problems***
+
+  (*Andrea Bonvini*)
+
+  `Prerequisites : Kernel Methods, SVMs`
+
+  The *radial basis function* kernel is a popular kernel function used in various kernelized learning algorithms. In particular, it is commonly used in support vector machine classification. The RBF kernel on two samples $\mathbf{x}$ and $\mathbf{x}'$, represented as feature vectors in some *input space*, is defined as:
+  $$
+  K(\mathbf{x},\mathbf{x}')=e^{-\frac{||\mathbf{x}-\mathbf{x}'||^2}{2\sigma^2}}
+  $$
+  where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean distance between two feature vectors, $\sigma$ is a free parameter. Since the value of the RBF kernel decreases with distance and ranges between $0$ (in the limit) and $1$ (when $\mathbf{x} =\mathbf{x}'$) , it has a ready interpretation as a similarity measure. It can be seen (*by expansion)* that the feature space of the kernel has an infinite number of dimensions.
+
+  From this definition it is possible to build a so-called *Radial Basis Function Network*, an artificial neural network that uses *radial basis functions* as activation functions. The output of the network is a linear combination of radial basis functions of the inputs and neuron parameters.
+
+  ![](images/RBFN.png)
+
+  The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
+  $$
+  \varphi(\mathbf{x})=\sum_{i=1}^Na_i\rho(||\mathbf{x}-\mathbf{c_i}||)
+  $$
+  where $N$  is the number of neurons in the hidden later, $\mathbf{c}_i$ is the *center vector* (hold on...I'll explain everything) for neuron $i$, and $a_i$ is the weight of neuron $i​$ in the linear output neuron. Functions that depend only on the distance from a center vector are radially symmetric about that vector, hence the name radial basis function.
+
+  As anticipated, the Gaussian basis function is commonly taken *Gaussian*
+  $$
+  \rho(||\mathbf{x}-\mathbf{c_i}||)=e^{-\frac{||\mathbf{x}-\mathbf{c}_i||^2}{2\sigma_i^2}}=e^{-\beta_i||\mathbf{x}-\mathbf{c}_i||^2}
+  $$
+  Obviously, the parameters $a_i$, $\mathbf{c}_i$ and $\beta_i$ are determined in a manner that optimizes the fit between $\varphi$ and the data.
+
+  Most of the times it is convenient to use *normalized* radial function as basis. Normalization is used in practice as it avoids having regions of input space where all basis functions take *small values*, which would necessarily lead to predictions in such regions that are either *small* or controlled purely by the *bias parameter*. In this case we have
+  $$
+  \varphi(\mathbf{x})=\sum_{i=1}^{N}a_i u(||\mathbf{x}-\mathbf{c}_i||) \\
+  u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}^N||\mathbf{x}-\mathbf{c}_j||}
+  $$
+  Here is a $1$-D example where $N=2$, just to give you an idea:
+
+  <img src="images/URB1.png" style="zoom:70%"/>
+
+  Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
+
+  <img src="images/URB2.png" style="zoom:70%"/>
+
+  Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
 - ***Describe the value iteration algorithm. Does the algorithm always return the optimal policy?***
 
@@ -1270,7 +1313,7 @@ $$
 
   - at each iteration ${k+1}$
   - for all states ${s \in S}$
-  - update ${V_{k+1}(s)}$ from ${V_k (s)}$1(s)  
+  - update ${V_{k+1}(s)}$ from ${V_k (s)}​$1(s)  
 
   After few iterations even if the true value function is not determined, the policy has usually already converged, because it depends on the shape of V, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy. The usage of this approximated evaluation combined with policy improvement is called *modified policy evaluation*.
 
@@ -1295,7 +1338,7 @@ $$
   $$
   V^{\pi'}(s)\ge V^\pi (s) \ \ \ , \ \ \ \forall s \in S
   $$
-  
+
 
   ( Sources: PMDS Notes ${\leftarrow}$ there are some mistakes though - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 

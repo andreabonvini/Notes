@@ -13,16 +13,16 @@ Advanced Signals and Data Processing in Medicine
   - $y(k) = x + v(k) \space$
 
     Where $x​$ is the signal we are interested in and $v​$ is a random noise. 
-    $x​$  and  ​$[Math Processing Error]v​$ are not necessarily linked by an additive relationship
+    $x​$  and  ​$v​$ are not necessarily linked by an additive relationship
 
-  - $[Math Processing Error]x$ and $[Math Processing Error]v$ are stationary stochastic processes.
+  - $x$ and $v$ are stationary stochastic processes.
 
-  - $[Math Processing Error]M$ (number of samples) must be sufficiently large ( $[Math Processing Error] M\to \infty $).
+  - $M$ (number of samples) must be sufficiently large ( $M\to \infty $).
 
   Given these hypothesis *Wiener* designed a LTI filter able to minimize the quadratic error.
 
-  The filter is non-recursive and $[Math Processing Error]h(i)$ will be the coefficients of the Wiener Filter.
-  Since we have to "clean" the $[Math Processing Error]y$ signal we must choose the right values of $[Math Processing Error]h(i)$ in order to reduce the effect of the noise. To do so we compute the derivative of the error function *w.r.t.* the $[Math Processing Error]h(i)$ coefficients and put it to $[Math Processing Error]0$ to find the minimum.
+  The filter is non-recursive and $h(i)$ will be the coefficients of the Wiener Filter.
+  Since we have to "clean" the $y$ signal we must choose the right values of $h(i)$ in order to reduce the effect of the noise. To do so we compute the derivative of the error function *w.r.t.* the $h(i)$ coefficients and put it to $0$ to find the minimum.
   $$
   \hat{x} = \sum_{i= 1}^{M}h(i)\cdot y(i) \\
   p_{e} = E[e^{2}] = E[(x-\hat{x})^{2}] = E[(x - \sum_{i= 1}^{M}h(i)\cdot y(i))^{2}] \\
@@ -140,7 +140,7 @@ Advanced Signals and Data Processing in Medicine
   $$
   \lambda_{max}^{-1} > \mu > 0
   $$
-  where $\lambda_{max}$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)$.
+  where $\lambda_{max}​$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)​$.
 
 - ***What is the Lyapunov Exponent?***
 
@@ -157,7 +157,7 @@ Advanced Signals and Data Processing in Medicine
 
   $\lambda ​$ is the Lyapunov Exponent
 
-  We can see that when $\lambda > 0$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 $ we don't have SDIC.
+  We can see that when $\lambda > 0​$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 ​$ we don't have SDIC.
 
 - ***Talk me about the Mane-Takens theorem***.
 
@@ -1043,7 +1043,7 @@ Advanced Signals and Data Processing in Medicine
 
   Why are we interested in this? Well, spike train is a series of events, so we can define the joint density of a spike train.
 
-  Joint probability density can be written as a product of conditional *Bernoulli* probabilities in terms of the conditional intensity function. At each moment in time we might have or not a spike. The probability of having a spike is $p$ and the probability of not having a spike is $1-p$ , in the following formulation $n_t$ is $1$ if a spike has been observed in our dataset and is $0$ otherwise:
+  Joint probability density can be written as a product of conditional *Bernoulli* probabilities in terms of the conditional intensity function. At each moment in time we might have or not a spike. The probability of having a spike is $p​$ and the probability of not having a spike is $1-p​$ , in the following formulation $n_t​$ is $1​$ if a spike has been observed in our dataset and is $0​$ otherwise:
   $$
   \prod_{j=1}^{k}Pr(n_t|H_t) = \prod_{j=1}^{k}\left[\lambda(t|H_t)\Delta\right]^{n_t}\left[1-\lambda(t|H_t)\Delta\right]^{1-n_t}
   $$
@@ -1145,6 +1145,8 @@ Advanced Signals and Data Processing in Medicine
 
   Instead in the first case we would have that not *all* the information goes to $Z$, but part of it goes to $Y$, so if we include the variable $X$ in the model we'd see that the prediction of $Y$ would be improved. (so considering $Z$ as the "noise" $W$ of before we'd observe a decrease in the variance of $Z$).
 
+  Another instance in which conditional Granger causality is valuable is when a single source drives two outputs with different time-delay. A bivariate analysis, but not  a multivariable analysis, would falsely infer a causal connection from the output with the shorter delay to the output with the longer delay. if $X$ is causing $Z$ and $Z$ is causing $Y$, there will be a longer delay between the information of $X$ reflected in $Y$; that delay is the key for the model to give all the variance to $Z$, because $Z$ will be predicted by $X$ earlier than $Y$ .
+
   We'll see later on that every *arrow* can be expressed as a *transfer function*.
 
   By the way *Granger causality* has some limitations since it makes two important assumptions about the data:
@@ -1152,10 +1154,18 @@ Advanced Signals and Data Processing in Medicine
   - It is covariance *stationary* (i.e. , the mean and variance of each time series do not change over time)
   - it can be adequately described by a *linear model*
 
+  Now we have to go beyond stationarity and linearity.  Historically one of the most popular ways that might use the definition of G-causality was models that were defined in the frequency domain. The easiest way to look at G-causality in the frequency domain is frequency transform our linear model already seen before. So it is important to define G-causality in the frequency domain and its power spectral density as a function of frequency (*remember:* the integral of the spectrum is the power spectrum, the amount of dynamics). By using *Fourier* methods it is possible to examine G-causality in the spectra domain. This can be very useful in neurophysiology signals, where frequency decompositions are often of interest. Intuitively, spectral G-causality from $X_1​$ to $X_2​$ measures the fraction of the total power at frequency $f​$ of $X_1​$ that is contributed by $X_2​$.
+
+  Two alternative measures which are closely related to spectral G-causality are *Partial Directed Coherence* and the *Directed Transfer Function*. So, the principal measures based on the Granger Causality principle are:
+
+  - *Granger Causality Index* (GCI)
+  - *Directed Transfer Function* (DTF)
+  - *Partial Directed Coherence* (PDC)
+
   Let's have the following example, a bivariate system which describes the interactions between R-R intervals and *systolic blood pressure* series which can be expressed in the following matrix form:
   $$
   Y(n) = \sum_{k=1}^{p}A[k]X[n-k]+W[n] \\
-  \mathbf{A}[K] = \left[\matrix{a_{11}[k] && a_{12}[k]\\a_{21}[k] && a_{22}[k]}\right]\\
+  \mathbf{A}[k] = \left[\matrix{a_{11}[k] && a_{12}[k]\\a_{21}[k] && a_{22}[k]}\right]\\
   X[n] = \left[\matrix{RR[n] \\SBP[n]}\right]\\
   \mathbf{W}[n] = \left[\matrix{w_{RR}[n] \\ w_{SBP}[n]}\right]
   $$
@@ -1177,6 +1187,8 @@ Advanced Signals and Data Processing in Medicine
 
   <img src="images/GGWW.PNG" style="zoom:45%"/>
 
+  Within this formulation we can infer, i.e. , that as big $h_{12}$ is, as much $w_{SBP}$ is influencing *RR* and the higher $h_{21}$ is the more $w_{RR}​$ is influencing *SBP*.
+
   From here we can compute the power spectrum
   $$
   \underline{S}(f) = \underline{H}^*(f)\ \underline{\Sigma}\ \underline{H}^T(f)\\
@@ -1184,9 +1196,13 @@ Advanced Signals and Data Processing in Medicine
   \left[\matrix{S_{RR}(f) && S_{CROSS}(f)\\S^*_{CROSS}(f) && S_{SBP}(f)}\right] = \left[\matrix{|h_{11}|^2\sigma_{RR}^2+|h_{12}|^2\sigma_{SBP}^2 && h_{11}\ ^*h_{21}\sigma_{RR}^2+h_{12}\ ^*h_{22}\sigma_{SBP}^2 \\
   h_{21}\ ^*h_{11}\sigma_{RR}^2+h_{22}\ ^*h_{12}\sigma_{SBP}^2 && |h_{21}|^2\sigma_{RR}^2+|h_{22}|^2\sigma_{SBP}^2}\right]
   $$
+  <img src="images/SC_NN.PNG" style="zoom:55%"/>
+
+  $S(f)$ is a matrix in which we have in the diagonal the two auto-spectra, spectra of each of the two variables, the cross-diagonal are the cross-spectra, they contain everything that belongs to the 2 variables together, so practically the mutual information between the two variables. If the matrix is diagonal, there is no cross-spectrum. The values obtained are expressed in terms of variance of *RR* and *SBP* and this is the particular case in which the two noises are hypothesized uncorrelated (see that the matrix $\Sigma$ is diagonal), the formulas would have been more complicated if the noises were correlated.
+
   Remember that the $h$s are just a combination of the initial $a$s parameters, all we did is just technical passages. All we have to estimate is the $a$s to minimize the variance of the noise (we obviously want it to be as low as possible). 
 
-  Then we can obtain the gain (which is how much information is transferred between SBP and RR) in two different ways:
+  We can obtain a measure of the gain (which is how much information is transferred between SBP and RR) in two different ways:
 
   as the square root of the ratio between the auto-spectrum of the output (RR) and the auto-spectrum of the input (SBP)
   $$
@@ -1196,16 +1212,78 @@ Advanced Signals and Data Processing in Medicine
   $$
   \alpha_0^{II}(f)=\frac{S_{CROSS}(f)}{S_{SBP}(f)}
   $$
-   The Cross-spectral quantification could also be expressed considering the subdivision of the contributions from the two noises, but the cross-spectrum is reflected in a more complex sum of cross-products of the $h$ terms.
+  The Cross-spectral quantification could also be expressed considering the subdivision of the contributions from the two noises, but the cross-spectrum is reflected in a more complex sum of cross-products of the $h$ terms.
 
    
   $$
   Coh(f) = \frac{S^2_{CROSS}(f)}{S_{SBP}(f)S_{RR}(f)}<1 \\
   {\alpha_o^{II}}^2(f) = \frac{S^2_{CROSS}(f)}{S_{SBP}^2(f)}<\frac{S_{SBP}(f)S_{RR}(f)}{S_{SBP}^2(f)}={\alpha_0^{I}}^{2}(f)
   $$
-  SS
+  The *Coherence* $Coh(f)$ has its maximum value in $1$. When it is $1​$, all the power of one variable depends on the other one.
 
-  SS
+  Looking again at this block diagram
+
+  <img src="images/SC_NN.PNG" style="zoom:55%"/>
+
+  We can define the *directional gains* as the contribution of the noise related to the input signal on the output signal,divided by the contribution of the same noise on the input signal, giving the same quantities obtained from consideration of the transfer functions:
+  $$
+  G_{1\to2}(f) = \left|\frac{h_{21}(f)}{h_{11}(f)}\right|=\left|\frac{A_{21}(f)}{1-A_{22}(f)}\right| \\
+  G_{2\to1}(f) = \left|\frac{h_{12}(f)}{h_{22}(f)}\right|=\left|\frac{A_{12}(f)}{1-A_{11}(f)}\right|
+  $$
+  Which can be rewritten in the following way:
+  $$
+  G_{1\to2}(f) =\sqrt{\frac{S_{SBP}(f)-|h_{22}(f)|^2\sigma_{SBP}^2}{S_{RR}(f)-|h_{12}(f)|^2\sigma_{SBP}^2}}\\
+  G_{2\to1}(f) =\sqrt{\frac{S_{RR}(f)-|h_{11}(f)|^2\sigma_{RR}^2}{S_{SBP}(f)-|h_{21}(f)|^2\sigma_{RR}^2}}
+  $$
+  The *directional gain* from a variable $j$ to $i$ is the square root of the ratio, in the frequency domain, of the two spectral content devoid of the information carried by the $i​$ variable.
+  $$
+  G_{j\to i}(f) =\sqrt{\frac{S_{ii}(f)-|h_{ii}(f)|^2\sigma_{ii}^2}{S_{jj}(f)-|h_{ji}(f)|^2\sigma_{ii}^2}}
+  $$
+  But how do we know if these gains reflect Granger causality?
+
+  - Granger Causality Index
+    $$
+    GCI_{Y\to X}=\ln\left(\frac{\sigma_{X|X}}{\sigma_{X|X+Y}}\right)
+    $$
+    The GCI shows the driving of channel $x$ by channel $y$ , is defined by the logarithm of the ratio of *residual variance* for one channel to the *residual variance* of the two-channel model.
+
+  - Partial Coherence
+
+    It is another index that defines Granger Causality and goes back to the original concept that Granger was talking about. So we include a third variable and then we can define a partial cross-spectrum that is the original cross-spectrum minus whatever linear information is included between $X$ and $Y$. So, the first extension of bivariate analysis was made by incorporating a third signal into the estimation of a new coherence measure, termed *partial coherence*.
+
+    ...
+
+    - Partial Cross-Spectrum
+      $$
+      S_{xy|z}(f) = S_{xy}(f)-\frac{S_{xz}(f)S_{yz}(f)}{S_{zz}(f)}
+      $$
+      ...
+
+    - Partial Coherence
+
+    $$
+    K_{xy|z}(f) = \frac{|S_{xy|z}(f)|^2}{|S_{xx|z}(f)||S_{yy|z}(f)|}
+    $$
+
+    The partial coherence can be represented as the fraction of coherence between $X$ and $Y$ that is not shared with $Z$. The less the coherence (considering $z$ ) the less we will have to consider directionality in which there is $z$. If we have a non-linear system, it could be that $x$ and $y$ have a partial coherence that is low, because they are connected in a non-linear way.  If three signals are fully coherent with each other, partialization of the coherent activity between any two signals with the remaining signal as the predictor would lead to zero coherence. In other words. if $Z$ contributes to the linear interdependence between $X$ and $Y$, then the partial coherence will be smaller than the ordinary coherence $K_{xy}(f)$ . However, it must be noted that partial coherence is based on the assumption of linearity, so any failure in its reduction might be also caused by nonlinear interaction between signals.
+
+  - *Directed Transfer Function*
+
+    It is related to the absolute value of the Transfer Function of $i$ to $j​$ in relationship to the sum of all the transfer functions.
+
+    It was introduced by *Kaminski and Blinowska* in the form:
+    $$
+    DTF^2_{j\to i}(f) = \frac{|H_{ij}(f)|^2}{\sum_{m=1}^{k}|H_{im}(f)|^2}
+    $$
+    DTF described causal influence of channel $j$ on channel $i$ at frequency $f$ 
+
+    The above equation defines a normalized version of DTF, which takes values from $0$ to $1$ producing a ratio between the inflow from channel $j$ to channel $i$ to all the inflows to channel $i​$.
+
+    DTF is the specific variance that describes the influence between these channels, linked to the sum of all the transfer functions. DTF is directly linked to the models that link directly the noises with the total variance expressed in every variable of outpu.
+
+    ....
+
+    ....
 
 - Filosofia della likelihood
 
@@ -1227,9 +1305,9 @@ Advanced Signals and Data Processing in Medicine
 
   - Find a line such that when the data is projected onto that line, it has the maximum variance. 
   - Find a new line, orthogonal to the ﬁrst one, that has maximum projected variance. 
-  - Repeat until $m$ lines have been identiﬁed and project the points in the data set on these lines. 
+  - Repeat until $m​$ lines have been identiﬁed and project the points in the data set on these lines. 
 
-  The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ the number of dimensions) : 
+  The precise steps of *PCA* are the following (remember that $\mathbf{X}​$ is an $n\times d​$ matrix where $n​$ denotes the number of samples and $d​$ the number of dimensions) : 
 
   - Compute the mean of the data
     $$
