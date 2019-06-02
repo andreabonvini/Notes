@@ -1,4 +1,4 @@
-# Machine Learning 
+Machine Learning 
 
 `or: How I Learned to Stop Worrying and Love Restelli`
 
@@ -872,7 +872,155 @@ $$
 
   Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
-- ***Describe the value iteration algorithm. Does the algorithm always return the optimal policy?***
+- ***Describe the value iteration algorithm. Does the algorithm always return the optimal policy?***   
+  *(William Bonvini)*
+
+  If you are looking for a concise answer go to the end.
+
+  Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, It's Model Based.
+
+  Value iteration is based on the Principle of Optimality:
+
+  If the first action I take is optimal and then I follow an optimal policy from whichever state I end up, the overall behavior is optimal.
+
+  ***Principle of Optimality***  
+  A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$, ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,  
+  ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
+
+  Ok, how to exploit this?  
+  If we know the solution to the subproblems ${v_* (s')}$, we can find ${v_* (s)}$ just by applying a one-step lookahead:
+  $$
+  v_* (s) \leftarrow \max _{a \in A}\bigg\{{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_*(s')\bigg\} }
+  $$
+  The idea of value iteration is to apply these update iteratively: we plug in to the right member of the equation the current value function (so, it's not optimal at first!), obtain a new value function, plug such new value function to the right member, obtain a new value function, and so on until we find the optimal value function.
+
+  Intuition: start with the final rewards and work backwards.  
+  Shortest Path Example:    
+  <img src="images/shortestpath.png" style="zoom:70%"/> 
+
+  This problem consists in finding the optimal value function for each cell. the goal of the game is to reach the terminal state (top-left corner), the possible actions are move left, up,right, down. Each actions' reward is ${-1}$. 
+
+  With value iteration we are able to find the optimal value function just by iterating on the Bellman's Optimality Equation.
+
+  We initialize all the values to ${0}$.
+
+  In ${ V_2}$  we have that 
+
+  ${[0,0]}$:
+  $$
+  V_* ([0,0]) \leftarrow \max _{a \in A}\bigg\{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a V_*(s') \bigg\}
+  $$
+
+  $$
+  V_* ([0,0]) \leftarrow 0+1 \sum_{s' \in S}P_{ss'}^a V_*(s')
+  $$
+
+  $$
+  V_* ([0,0]) \leftarrow 0+0
+  $$
+
+  ${[0,1]}$:
+
+  
+  $$
+  V_* ([0,1]) \leftarrow \max _{a \in A}\bigg\{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a V_*(s') \bigg\} 
+  \\
+  V_* ([0,1]) \leftarrow -1+1 \bigg(1\cdot0+0\cdot(-1)+0\cdot(-1)+0\cdot(-1)\bigg) 
+  \\
+  V_*([0,1])\leftarrow-1
+  $$
+  
+
+  ${[2,2]}$:
+  $$
+  V_*([2,2])\leftarrow -1+1\cdot\bigg(1\cdot(-1)+0\cdot(-1)+0\cdot(-1)+0\cdot(-1)\bigg)
+  \\
+  V_*([2,2])\leftarrow-2
+  $$
+  (In ${[2,2]}$ I chose randomly to perform one of the actions, they all give the same result. In ${[0,1]}$ I considered moving west since it's the most convenient choice).
+
+  I did a couple of examples for ${V_2}$, hopefully you can get the sense of the algorithm.
+
+  Let's take stock of the situation: value iteration is a method for solving MDPs, how do we do it? by applying iteratively the Bellman Optimality Equation, doing so we find the optimal value function.
+  $$
+  v_1 \to v_2 \to v_3 \to... \to v_*
+  $$
+  *What are the differences between policy iteration and value iteration?*
+
+  - in V.I. we are not building a policy at each step, we are working directly in value space. in P.I. there is an alternation between value and policy space.
+  - Intermediate value functions of V.I. may not correspond to any policy, while intermediate value functions of P.I. do. What does this mean? It means that in VI, during the iteration, we could get an intermediate ${v}$,  which does not correspond to any ${v_\pi}$ for any ${\pi}$.
+  - We can say that Value iteration is equivalent to do Modified Policy Iteration with ${k=1}$. 
+
+  *One last image to sum up:*  
+  <img src="images/value_iteration.png" style="zoom:70%"/>
+
+  *In a nutshell:* 
+
+  1. Take the current value function and plug it in the leaves. 
+  2. for each state (consider it the root of the tree):  
+     Such root
+     1.  Does a lookahead
+     2. Maximizes over all the things it might do
+     3. Takes an expectation over all the things the environment might do. 
+     4. Backs it up to get its new value.
+  3. Back to step 1 until you find the optimal policy
+
+  Important: Value Iteration assures to find the optimal value function, consequently it assures to find the optimal policy. 
+
+  How come?
+
+  Define the max-norm: ${||V||_\infty}=\max_s|V(s)|$
+
+  *Theorem*:
+
+  Value Iteration converges to the optimal state-value function ${\lim_{k\to\infty}V_k=V^*}$
+
+  *Proof*:
+  $$
+  ||V_{k+1}-V^*||_\infty =||T^*V_k-T^*V^*||_\infty\le \gamma||V_k-V^*||_\infty \\
+  \le  \ ... \ \le \gamma^{k+1}||V_0-V^*||_\infty \to \infty
+  $$
+  
+
+  *Theorem*  
+  $$
+  ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
+  $$
+  
+
+  ***Concise Answer***  
+
+  Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, It's Model Based.
+
+  The problem of ﬁnding the optimal policy ${\pi_*}$ is solved by iteratively applying the Bellman Optimality equation, without any explicit policy.  
+  In fact, intermediate value functions may not correspond to any policy.  
+
+  *Bellman's Optimality Equation*:
+  $$
+  v_* (s) \leftarrow \max _{a \in A}\bigg\{{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_*(s')\bigg\} }
+  $$
+  Value Iteration always return the optimal policy, as shown by the following theorem.
+
+  Define the max-norm: ${||V||_\infty}=\max_s|V(s)|$
+
+  *Theorem*:
+
+  Value Iteration converges to the optimal state-value function ${\lim_{k\to\infty}V_k=V^*}$
+
+  *Proof*:
+  $$
+  ||V_{k+1}-V^*||_\infty =||T^*V_k-T^*V^*||_\infty\le  \\ \gamma||V_k-V^*||_\infty 
+  \le  \ ... \ \le \gamma^{k+1}||V_0-V^*||_\infty \to \infty
+  $$
+  *Theorem*  
+  $$
+  ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
+  $$
+  
+
+  ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
+
+  
 
 - ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
 
@@ -1157,10 +1305,8 @@ $$
 
 - ***Describe which methods can be used to compute the value function $V^{\pi}$ of a policy $\pi$ in a discounted Markov Decision Process.***
 
-- ***Describe the supervised learning technique denominated logistic regression for classiﬁcation problems.***
-
 - ***Describe the policy iteration technique for control problems on Markov Decision Processes***  
-  *(WB*)   
+  *(William Bonvini*)   
   If you want a concise answer just go to the end.  
   premise: what is a control problem? is the task of finding the optimal value function, which translates into finding the optimal policy.  
   Policy Iteration is a dynamic programming policy optimization technique that can be decoupled in two phases:
@@ -1193,9 +1339,8 @@ $$
 
   
 
-  So let's understand exactly how to do such update:
-
-  ![](images/policy_evaluation1.png)
+  So let's understand exactly how to do such update:  
+  <img src="images/policy_evaluation1.png" style="zoom:50%"/>
 
   
 
@@ -1211,15 +1356,17 @@ $$
 
   This process is guaranteed to converge to the true value function ${V_\pi}$ (pay attention, it's not that it converges to the optimal value function, it might, but what I'm saying is that it converges to the value function of the policy you are considering!).
 
-  Let's make and example:  
-  ![](images/sgw1.png)
+  Let's make and example:   
+  <img src="images/sgw1.png" style="zoom:70%"/>
 
   This is called the Small Gridworld example.  
   There are two terminal states (the top left and bottom right squares). there are 14 non-terminal states. The reward is -1 until the terminal state is reached. 
-  For now consider only the left column of the following images:  
-  ![](images/sgw2.png)
+  For now consider only the left column of the following images:   
+  <img src="images/sgw2.PNG"   style="zoom:70%"/>
 
-  ![](images/sgw3.png)
+  
+
+  <img src="images/sgw3.png" style="zoom:70%"/>
 
   
 
