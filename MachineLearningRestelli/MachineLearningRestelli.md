@@ -1171,14 +1171,15 @@ $$
   Here it is:  
 
   One interesting thing about Policy Evaluation is that, by evaluating our policy, we could infer a new policy!  
-  We can do so just by looking to our neighbor states and see which of them contains a more convenient value.  
+  We can do so just by looking to our neighbor states and see which of them contain a more convenient value.  
   And there is more: after a few iterations of policy evaluation, even if the true value function has not been determined yet, the new policy has usually already converged, because it depends on the shape of ${V}$, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy.  
 
   In David Silver's example we are lucky because the first value function we evaluate gives us right away the optimal policy, but this is not always the case.   
 
   Ok, policy evaluation is done.
 
-  <u>*Policy Improvement*</u> consists in changing the policy according to the newly estimated values.  
+  <u>*Policy Improvement*</u>   
+  consists in changing the policy according to the newly estimated values.  
   For a given state ${s}$, would it be better to do an action  ${a \neq \pi(s)}$?  
   We can improve the policy by acting greedily:  
   $$
@@ -1376,7 +1377,7 @@ $$
 
   1. Use ${Q}$, not ${V}$
   2. evaluate and improve your policy *every time you run an episode*
-    3. use an ${\epsilon}$-greedy policy
+        3. use an ${\epsilon}$-greedy policy
   4. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy
 
   *I'll see you in another life when we are both cats*
