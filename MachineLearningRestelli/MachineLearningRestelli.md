@@ -1,4 +1,4 @@
-Machine Learning 
+## Machine Learning 
 
 `or: How I Learned to Stop Worrying and Love Restelli`
 
@@ -14,9 +14,7 @@ Machine Learning
 
   (*Andrea Bonvini*) 
 
-  { DISCLAIMER : this is a full derivation of the *SVMs* equations, for a more concise overview of *SVMs* you can refer to the [PoliMi Data Science community Notes](<https://polimidatascientists.it/notes.html>) }
-
-  { TO DO : add upper bound stuff }
+   `TO DO : add upper bound stuff` 
 
   Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
@@ -169,7 +167,7 @@ Machine Learning
 
   And obtain the *Dual Representation*
 
-  
+
   $$
   \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
@@ -803,7 +801,7 @@ $$
   - A **policy** ${\pi}$ is a distribution, a mapping, at any given point in time, from states to probabilities of selecting each possible action. It decides which action the agents selects, defining its behavior.    
     A more concise definition is the following:  
     A policy ${\pi}$ is a distribution over actions given the state:  
-    ${\pi(a|s)= \mathbb{P} [a|s]}$   
+    ${\pi(a|s)= \mathbb{P} [a|s]}​$   
 
   The difference between Off and On policy techniques is the following:  
   **On-policy learning** "learns on the job". The policy that I'm following is the policy that I'm learning about.   
@@ -835,7 +833,9 @@ $$
 
   `Prerequisites : Kernel Methods, SVMs`
 
-  The *radial basis function* kernel is a popular kernel function used in various kernelized learning algorithms. In particular, it is commonly used in support vector machine classification. The RBF kernel on two samples $\mathbf{x}$ and $\mathbf{x}'$, represented as feature vectors in some *input space*, is defined as:
+  `TO DO: I haven't asked the question yet`
+
+  The *radial basis function* kernel is a popular kernel function used in various kernelized learning algorithms. In particular, it is commonly used in support vector machine classification. The RBF kernel on two samples $\mathbf{x}​$ and $\mathbf{x}'​$, represented as feature vectors in some *input space*, is defined as:
   $$
   K(\mathbf{x},\mathbf{x}')=e^{-\frac{||\mathbf{x}-\mathbf{x}'||^2}{2\sigma^2}}
   $$
@@ -860,17 +860,84 @@ $$
   Most of the times it is convenient to use *normalized* radial function as basis. Normalization is used in practice as it avoids having regions of input space where all basis functions take *small values*, which would necessarily lead to predictions in such regions that are either *small* or controlled purely by the *bias parameter*. In this case we have
   $$
   \varphi(\mathbf{x})=\sum_{i=1}^{N}a_i u(||\mathbf{x}-\mathbf{c}_i||) \\
-  u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}^N||\mathbf{x}-\mathbf{c}_j||}
+  u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}^N\rho||\mathbf{x}-\mathbf{c}_j||}
   $$
   Here is a $1$-D example where $N=2$, just to give you an idea:
 
   <img src="images/URB1.png" style="zoom:70%"/>
 
-  Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
+  Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75​$ and $c_2=3.25​$.
 
   <img src="images/URB2.png" style="zoom:70%"/>
 
   Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
+
+  But how is this framework related to *regression*? $\to$ *Kernel Regression*!
+
+  Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
+
+  <img src="images/KR1.png" style="zoom:70%"/>
+
+  How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
+
+  This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points. Say we want to take the weighted average of three values: $3$,$4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$), take the sum, then divide by the sum of the weights:
+  $$
+  \frac{0.2\cdot3+0.4\cdot4+0.6\cdot5}{0.2+0.4+0.6}=\frac{5.2}{1.2}=4.33
+  $$
+  More generally, the weighted average is found as:
+
+  a
+  $$
+  \overline{y}=\frac{\sum_{i=1}^m(w_iy_i)}{\sum_{i=1}^mw_i}
+  $$
+  where $w_i$ is the weight to assign to value $y_i$ and $m$ is the number of values in the set.
+
+  In *Kernel Regression* in order to compute the weight values to use in our regression problem, we're going to use the *Gaussian Function*, which has the perfect behavior for computing our weight values! The function will produces its highest value when the distance between the data point and the query point is zero. For data points farther from the query, the weight value will fall off exponentially. 
+
+  To arrive at the final equation for Gaussian Kernel Regression, we’ll start with the equation for taking a weighted average and replace the weight values with our *Gaussian* kernel function.
+  $$
+  y^*=\frac{\sum_{i=1}^m(K(x^*,x_i)y_i)}{\sum_{i=1}^mK(x^*,x_i)}
+  $$
+  It is interesting to note that Gaussian Kernel Regression is equivalent to creating an RBF Network with the following properties:
+
+  - Every training example is stored as an RBF neuron center
+  - The $\beta$ coefficient for every neuron is set to the same value.
+  - There is one output node.
+  - The output weight for each RBF neuron is equal to the output value of its data point.
+  - The output of the RBFN must be normalized by dividing it by the sum of all of the RBF neuron activations.
+
+  Let's try to derive the result above more formally:
+
+  *Kernel Regression* is a non-parametric technique in statistics to estimate the *conditional expectation* of a *random variable*. The objective is to find a non-linear relation between a pair of random variables $\mathbf{X}$ and $\mathbf{Y}$. In any nonparametric regression, the conditional expectation of a variable $\mathbf{Y}$ relative to a variable $\mathbf{X}$ may be written:
+  $$
+  \mathbb{E}(Y|X) = m(X)
+  $$
+  where $m$ is an unknown function.
+
+  *Nadaraya* and *Watson*, both in 1964, proposed to estimate $m$ as a locally weighted average, using a kernel as a weighting function. The Nadaraya-Watson estimator is:
+  $$
+  \hat{m_h}(x) =\frac{\sum_{i=1}^nK_h(x-x_i)y_i}{\sum_{j=1}^nK_h(x-x_j)}
+  $$
+  where $K_h$ is a kernel with a bandwidth $h$ (which is related to the variance). The denominator is a weighting term with sum $1$.
+
+  *Derivation*:
+  $$
+  \mathbb{E}(Y|X=x) = \int{yf(y|x)dy}=\int y\frac{f(x,y)}{f(x)}dy
+  $$
+  Using the *kernel density estimation* (also termed the *Parzen–Rosenblatt* window method, is just a non parametric way to estimate the *pdf* of a random variable) for both the joint distribution $f(x,y)$ and $f(x)$ with a kernel $K$
+  $$
+  \hat{f}(x,y) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)\\
+  \hat{f}(x) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
+  $$
+  we get
+  $$
+  \hat{\mathbb{E}}(Y|X=x)=\int \frac{y\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)}{\sum_{j=1}^{n}K_h(x-x_j)}dy\\
+  =\frac{\sum_{i=1}^{n}K_h(x-x_i)\int yK_h(y-y_i)dy}{\sum_{j=1}^{n}K_h(x-x_j)}\\
+  =\frac{\sum_{i=1}^{n}K_h(x-x_i)y_i}{\sum_{j=1}^{n}K_h(x-x_j)}\\
+  $$
+  `Fun fact:  According to David Salsbrug , the algorithms used in kernel regression were independently developed and used in *Fuzzy Systems*: "Coming up with almost exactly the same computer algorithm, fuzzy systems and kernel density-based regressions appear to have been developed completely independently of one another.`
+
+  AAAAAAAAAAAAAA
 
 - ***Describe the value iteration algorithm. Does the algorithm always return the optimal policy?***   
   *(William Bonvini)*
@@ -921,7 +988,7 @@ $$
 
   ${[0,1]}$:
 
-  
+
   $$
   V_* ([0,1]) \leftarrow \max _{a \in A}\bigg\{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a V_*(s') \bigg\} 
   \\
@@ -929,7 +996,7 @@ $$
   \\
   V_*([0,1])\leftarrow-1
   $$
-  
+
 
   ${[2,2]}$:
   $$
@@ -980,13 +1047,13 @@ $$
   ||V_{k+1}-V^*||_\infty =||T^*V_k-T^*V^*||_\infty\le \gamma||V_k-V^*||_\infty \\
   \le  \ ... \ \le \gamma^{k+1}||V_0-V^*||_\infty \to \infty
   $$
-  
+
 
   *Theorem*  
   $$
   ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
   $$
-  
+
 
   ***Concise Answer***  
 
@@ -1016,7 +1083,7 @@ $$
   $$
   ||V_{i+1}-V_i||_\infty < \epsilon \implies ||V_{i+1}-V^*||_\infty < \frac{2\epsilon\gamma}{1-\gamma}
   $$
-  
+
 
   ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 
