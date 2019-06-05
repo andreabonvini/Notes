@@ -97,6 +97,8 @@ Legenda:
 
 
 
+<div style="page-break-after: always;"></div> 
+
 # 2 - Constraint Satisfaction Problems
 
 ### Definition
@@ -146,7 +148,7 @@ CSP constraints are represented by logical expressions involving the problem's v
       2. if the queue is empty I stop
 4. go back to step 2.
 
-
+<div style="page-break-after: always;"></div> 
 
 # 3 - Logic
 
@@ -551,21 +553,23 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
+<div style="page-break-after: always;"></div> 
 
 
 
+# 4 - ${\alpha}$-${\beta}$ Pruning
 
-# 4 - Alpha-Beta Pruning
-
-- alpha initial value = + infinity 
-- beta initial value = - infinity
-- v initial value = none.
-- alpha & beta are inherited by the daddy
-- v is inherited by the children
-- the first v is computed on the left leaf (depth first search)
+- ${\alpha}$ initial value = + infinity 
+- ${\beta}$ initial value = - infinity
+- ${v}$ initial value = none.
+- ${\alpha}$ & ${\beta}$ are inherited by the daddy
+- ${v}$ is inherited by the children
+- the first ${v}$ is computed on the left leaf (depth first search)
 - Pruning condition
-  - If the utility function v is bounded --> as soon as we find find a winning path (starting from the root!) for max we end the search there
-  - if the utility function v is not bounded --> if alpha >= beta we prune
+  - <u>If the utility function v is bounded</u>  
+    ${\to}$ as soon as we find find a winning path (starting from the root!) for max we end the search there
+  - <u>if the utility function ${v}$ is not bounded</u>   
+    ${\to  \alpha \ge \beta \implies prune}$
 
 
 
@@ -578,6 +582,8 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 
 
+
+<div style="page-break-after: always;"></div> 
 
 # 5 - Montecarlo Tree Search
 
@@ -655,7 +661,7 @@ this algorithm is Any Time: we can repeat these steps as long as we want and the
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 # 6 - Planning
 
@@ -879,7 +885,7 @@ $$
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 
 
@@ -910,7 +916,7 @@ $$
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 # 8 - Doubts
 
@@ -920,7 +926,7 @@ $$
 
   
 
-
+<div style="page-break-after: always;"></div> 
 
 # 9 - Theory Questions
 
@@ -934,6 +940,8 @@ $$
   Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
 
 
+
+<div style="page-break-after: always;"></div> 
 
 # References
 
