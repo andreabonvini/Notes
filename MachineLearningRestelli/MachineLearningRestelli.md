@@ -1186,7 +1186,7 @@ $$
   - It keeps an eligibility trace for every state ${s}$ (we'll explain them soon)
 
   - It updates value ${V(s)}$ for every state ${s}$ in proportion to the ${TD}$-error ${\delta_t}$ (one-step error!) and the eligibility trace ${e_t(s)}$  
-     
+    
     $$
     \\
     V(s) \leftarrow V(s)+\alpha \delta_te_t(s)
@@ -1283,7 +1283,7 @@ $$
   $$
   \delta_k+\gamma\delta_{k+1}+\gamma^2\delta_{k+2}+...+\gamma^{T-1-k}\delta_{T-1}
   $$
-    
+  
   Just by rearranging such total error  we understand that, for  ${\lambda=1}$, the sum of TD errors telescopes into ${MC}$ error.
   $$
   \delta_k+\gamma\delta_{k+1}+\gamma^2\delta_{k+2}+...+\gamma^{T-1-k}\delta_{T-1} \\
@@ -1452,7 +1452,8 @@ $$
 
   Value Iteration can be considered a particular case of Modified Policy Iteration.
 
-  ***Policy Iteration***
+  ***Policy Iteration***  
+  I'm talking about PI for Model Based Problems, in fact the improvement step is completely deterministic.
 
   It's divided in two steps:
 
