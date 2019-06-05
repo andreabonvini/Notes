@@ -2,6 +2,16 @@
 
 *A series of notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
 
+
+
+# Index
+
+[TOC]
+
+<div style="page-break-after: always;"></div> 
+
+<div style="page-break-after: always;"></div> 
+
 # 1 - Search Problems
 
 ### Definition of a Search Problem
