@@ -205,7 +205,8 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
 **Definitions**
 
 - *Model*
-  In Propositional Logic, a model is an assignment of truth values to all propositional symbols. 
+  In Propositional Logic, a model is an assignment of truth values to all propositional symbols.   
+  Let us consider the following example. If in our ${KB}$ we make use of the proposition symbols ${P1, P2,P3}$, a possible model is ${M1 =\{ P1 = False, P2 = False, P3 = True\}}$.  
 
 - *Satisfiability*
   a sentence is satisfiable if and only if there is a model that satisfies it. 
