@@ -795,9 +795,15 @@ Valid for both STRIPS and PDLL:
 
 - Backward Planning searches in the space of goals because the states of the search problem formulated by backward planning are goals of the planning problem
 
-- In Practice:
-  g' is found by copying g, deleting positive effects of the action, adding all the preconditions of A
-
+- In Practice:  
+  
+You can derive an action if and only if *at least* one of the predicates of the considered state is present in the effect of the considered action.  
+  g' is found by 
+  
+  - copying g
+  - deleting positive effects of the action that are present in the starting state
+  - adding all the preconditions of A
+  
 - Some goals g' will not be consistent , I would need a consistency check but usually it's not done. 
   Depth first search would suck! limited depth search would be ok, other searches as well.
 
