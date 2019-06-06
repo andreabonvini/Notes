@@ -1,6 +1,6 @@
 # Artificial Intelligence
 
-*A series of notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
+*A series of terribly-formatted notes on the Artificial Intelligence course as taught by Francesco Amigoni and Marcello Restelli during the first semester of the academic year 2018-2019 at Politecnico di Milano*
 
 
 
@@ -313,16 +313,16 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
 - *Monotonicity*
   A property of Propositional Logic that can be expressed in the following way:
 
-  $${if \space\space KB\models\alpha\space\space\space\space then \space\space KB  \cup{\beta}\models\alpha }$$
+  $${if \space\space KB\models\alpha\space\space\space\space then \space\space KB  \cup{\beta}\models\alpha }​$$
 
-  which means that if we expand the KB, we can have additional conclusions, but such expansion cannot invalidate a conclusion already inferred like ${\alpha}$.
+  which means that if we expand the KB, we can have additional conclusions, but such expansion cannot invalidate a conclusion already inferred like ${\alpha}​$.
   Monotonicity means that we can apply inference rules whenever suitable premises are found in the KB, regardless of what else is there.
 
 #### Resolution
 
 Resolution, as already said, is one of the many possible inference rules we can apply to our KB.
 Now we'll get deep into Resolution Inference Procedure.
-First of all, remember that resolution ==is not a complete inference rule==, for example, ${A \or B}$ is a logical consequence of ${A}$, because it is true whenever ${A}$ is true,but such consequence cannot be obtained from ${A}$ by resolution.  
+First of all, remember that resolution ==is not a complete inference procedure==, for example, ${A \or B}$ is a logical consequence of ${A}$, because it is true whenever ${A}$ is true, but such consequence cannot be obtained from ${A}$ by resolution.  
 However there is a specific way to exploit resolution, in which some form of completeness hold. if we want to check whether ${A\or B}$ is a logical consequence of ${A}$ we take ${A}$ as hypothesis (that is, we suppose ${A}$ to be true). ${A \or B}$ becomes our thesis, we negate it, and we conjunct the hypothesis with the negated thesis. Such conjunction is not satisfiable if and only if the hypothesis and the negated thesis can never be true at the same time, that is, the thesis is a logical consequence of the hypothesis.  
 When the search for the contradiction is performed by means of the resolution technique, we call it *refutation by resolution*.  
 When we say that resolution is ==refutation complete==, we mean that this procedure always reaches a breakpoint (we obtain the empty clause, or we obtain no new clauses by applying resolution to all possible pairs of clauses from the KB).
@@ -349,7 +349,7 @@ $$
 \phi_2
 $$
 
-2. put both \phi_1 and not\phi_2 in Conjunctive Normal Form (all subformulas divided by a logical AND)
+2. put both $\phi_1$ and $\neg\phi_2​$ in Conjunctive Normal Form (all sub-formulas divided by a logical AND)
 3. Enumerate all clauses
 4. compare them together, if a literal appears in both clauses and in only one of them it is negated we get rid of it and write a new clause 
    Examples:
@@ -358,8 +358,8 @@ $$
      3. ${B}$                          R (1,2) 
    - 1. ${\neg A \or \neg B}$
      2. ${A \or B}$ 
-     3. ${\neg B \or B}$               R(1,2)
-     4. ${\neg A \or A}$               R(1,2)
+     3. ${\neg B \or B}​$               R(1,2)
+     4. ${\neg A \or A}​$               R(1,2)
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
@@ -370,10 +370,10 @@ $$
   **Definition**
   "Pairs in which one of the two formulas is a literal should be preferred. The basic idea is that, as we are looking for the empty clause, we have better focus on clauses that are already small".
 
-  **Marco's quote**  
-  "Basta che ci sia sempre una clausola con un solo letterale.  
+  **Marco's quote** (*Marco è uscito con 110L dalla triennale, fidatevi di lui*) 
+  "*Basta che ci sia sempre una clausola con un solo letterale.  
   Non credo importi l'ordine.   
-  Io infatti vado sempre a sentimento cercando di scegliere quelle che mi fanno finire prima"
+  Io infatti vado sempre a sentimento cercando di scegliere quelle che mi fanno finire prima*"
 
   **Gne Procedure **  
   The order in which you compare the clauses can be random, though if you want to make sure to compare all the clauses with each other it's better to follow a procedure (sometimes it can be time consuming). The procedure followed during the correction is probably the following:  
@@ -385,11 +385,11 @@ $$
   This procedure can be misleading since if there were clauses with more than 2 literals, we should start comparing the one literals with the two-literals clauses, and 
 
   **Example**  
-  ![](C:/Users/Willi/Desktop/Notes/Artificial_Intelligence/images/unit_resolution_1.jpeg)
+  ![](images/unit_resolution_1.jpeg)
 
   **CounterExample**
 
-  # ![](C:/Users/Willi/Desktop/Notes/Artificial_Intelligence/images/unit_resolution_2.png)
+  # ![](images/unit_resolution_2.png)
 
   
 
@@ -490,7 +490,7 @@ $$
 \phi_1 |= \phi_2
 $$
 
-1. Lets draws 3 vertical lines and put in the middle one all the clauses in AND (phi_1 AND not phi_2)
+1. Lets draws 3 vertical lines and put in the middle one all the clauses in AND ($\phi_1$ AND not $ \phi_2$)
 
 2. giving the precedence to one-literals and then the pure literals (literals that appear just in one form (or all negated or all not negated)), insert them in the knowledge base in order of appearance (left section) specifying in the right section what you've done / observations (If you really need to...).
    Every time that I insert a literal in the knowledge base I exploit such information simplifying the clauses in the mid section (A=1 -> notA or B becomes B)
@@ -568,10 +568,10 @@ Forward Chaining is a *sound and complete* inference procedure
 
 
 
-# 4 - ${\alpha}$-${\beta}$ Pruning
+# 4 - $\alpha$-$\beta$ Pruning
 
-- ${\alpha}$ initial value = + infinity 
-- ${\beta}$ initial value = - infinity
+- ${\alpha}​$ initial value = + infinity 
+- ${\beta}​$ initial value = - infinity
 - ${v}$ initial value = none.
 - ${\alpha}$ & ${\beta}$ are inherited by the daddy
 - ${v}$ is inherited by the children
