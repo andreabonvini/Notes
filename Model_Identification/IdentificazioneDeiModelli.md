@@ -94,6 +94,17 @@ $$
 
 - Per i modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
 
+- In Kalman se $K(t)$ è uguale a  $1$ il predittore di Kalman coincide con quello di regime! (???)
+
+- Relazione tra Spettro e Funzione di Covarianza
+  $$
+  \Gamma_y(\omega)=\sum_{\tau=-\infty}^{\infty}\gamma_y(\tau)e^{-j\omega\tau}\\
+  \gamma_y(k)=\frac{1}{2\pi}\int_{-\pi}^{\pi}\Gamma_y(\omega)e^{j\omega k}d\omega\ \color{red}???
+  $$
+  
+
+- 
+
 ### Exam Questions
 
 - ***Si dia la definizione di un processo $MA(\infty)​$ e si discutano le condizioni affinchè tale processo sia stazionario e ben definito. Dimostrare la formula per il calcolo della funzione di covarianza di un processo $MA(\infty)​$. Spiegare infine perchè questi processi sono d'interesse nello studio dei processi $AR​$ e $ARMA​$.*** 
@@ -449,7 +460,7 @@ $$
 
   $u(t-d)$ is a signal completely known for $t=-\infty$ to $t=\infty$
 
-  Let $z(t) = y(t)-\frac{B(z)}{A(z)}u(t-d)​$ , then $z(t) = \frac{C(z)}{A(z)}e(t)​$ is an ARMA process.
+  Let $z(t) = y(t)-\frac{B(z)}{A(z)}u(t-d)$ , then $z(t) = \frac{C(z)}{A(z)}e(t)$ is an ARMA process.
 $$
   \frac{C(z)}{A(z)} = E(z)+z^{-k}\frac{F(z)}{A(z)}\ \ \ \ \ \text{k step division between $C(z)$ and $A(z)$}
 $$

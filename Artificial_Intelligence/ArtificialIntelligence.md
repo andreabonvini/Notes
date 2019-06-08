@@ -16,12 +16,12 @@
 
 ### Definition of a Search Problem
 
-- Set of states
-- Initial state
-- Actions
-- Result Function: ${Result(s,a)=s'}$
-- Costs
-- Goal test
+- *Define the states.*
+- *What is the initial state.*
+- *Actions Function :* $\mathcal{Actions}(s)$
+- *Result Function:* $\mathcal{Result(s,a)=s'}$
+- *Costs associated with each action.*
+- *Goal test.*
 
 ### Search Algorithms
 
@@ -196,7 +196,7 @@ It defines the allowable sentences in PL, which are:
 
 **Semantics of PL**
 
-the semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
+The semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
 
 **Inference in PL**
 
@@ -549,7 +549,7 @@ Forward Chaining is a *sound and complete* inference procedure
   consider rules in the "implication form", do not put them in CNF .  
   1. Start from your knowledge base which is composed only by the one literals that have been provided to you
   2. Apply Modus Ponens.  
-     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}$.
+     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}​$.
   3. If all the predicates on the right of the clauses (the effects) have been derived stop. You obtained all the sentences entailed by the KB.  
      else go back to step 2  
 
@@ -644,7 +644,7 @@ Q = sum of the results of the simulations starting from such node
 
      otherwise:
      you have to select a node using the following formula:
-     ![1549987628116](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1549987628116.png)
+     ![1549987628116](images\1549987628116.png)
      Consider the node with the maximum value of U.
      if such node is not fully expanded select it
      otherwise: 
@@ -797,9 +797,10 @@ Valid for both STRIPS and PDLL:
 
 - In Practice:  
   
+
 You can derive an action if and only if *at least* one of the predicates of the considered state is present in the effect of the considered action.  
   g' is found by 
-  
+
   - copying g
   - deleting positive effects of the action that are present in the starting state
   - adding all the preconditions of A
