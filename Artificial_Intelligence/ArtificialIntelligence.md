@@ -216,31 +216,30 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
   A set of sentences (called premises) *logically entail* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
 
 - *Logical Inference*
-  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is true we can expand our KB with such sentence.
+  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is implied by KB we can expand our KB with such sentence.
 
 - *Soundness of an inference rule*
   An inference rule *i* is said to be sound when all inferred/derived sentences are also entailed.
   $$
-  if\space\space\space\space (KB\space |-_i \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|=\space\alpha)
+  if\ \ \ \  (KB \vdash_i \alpha \ \and \ sound(i)=true)\ \ \ \  then \space\space\space\space (KB\ \models\ \alpha)
   $$
 
 - *Completeness of an inference rule*
   An inference rule *i* is said to be complete if it can derive/infer all entailed sentences.
-  $$
-  if\space\space\space\space (KB\space |= \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|-_i\space\alpha)
-  $$
+  
+- *Set of inference rules I*  
   We may have a set of inference rules *I* instead of a single rule *i*.
   $$
-  KB\space|-_I\space\alpha
+  KB\ \vdash _I\ \alpha
   $$
-  means that we obtain alpha from the sentences of KB after applying some of the rules in I a number of times.
-
+  means that we obtain $\alpha$ from the sentences of $KB$ after applying some of the rules in $I$ a number of times.
+  
 - *Soundness & Completeness together*
 
-  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether KB entails alpha or not, instead of constructing the truth table of all sentences in KB and alpha.
-  - if *I* is not sound, 
+  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether $KB \models \alpha$ or not, instead of constructing the truth table of all sentences in $KB$ and $\alpha$.
+  - if *i* is not sound, 
     even if we get ${KB \space \vdash_i \alpha}$, we cannot be sure that ${KB \models \alpha}$ 
-  - if *I* is not complete, 
+  - if *i* is not complete, 
     even if ${KB \models \alpha}$, we may not get to the result of having ${KB \vdash _i\alpha}$   
 
 - *Logical Equivalence*
@@ -549,7 +548,7 @@ Forward Chaining is a *sound and complete* inference procedure
   consider rules in the "implication form", do not put them in CNF .  
   1. Start from your knowledge base which is composed only by the one literals that have been provided to you
   2. Apply Modus Ponens.  
-     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}​$.
+     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}$.
   3. If all the predicates on the right of the clauses (the effects) have been derived stop. You obtained all the sentences entailed by the KB.  
      else go back to step 2  
 
@@ -895,14 +894,6 @@ $$
 
 
 
-
-
-
-
-
-
-
-
 <div style="page-break-after: always;"></div> 
 
 
@@ -922,7 +913,7 @@ $$
 - The Arc Consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
 
 - Factoring:
-  A v A = A
+  $A \or A = A$ 
 
 - Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
   Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
@@ -956,6 +947,11 @@ $$
   Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
 - **Consider using forward chaining for deriving the sentences entailed by your KB, can you list all the sentences entailed by such KB?**  
   Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
+- **What is the difference between "sentence $\alpha$ entails sentence $\beta$ " ($\alpha \models \beta$) and "sentence $\beta$ can be derived from sentence $\alpha$ by inference algorithm $i$"($\alpha \vdash_i \beta$)?**  
+  $\alpha \models \beta$ means that every model that satisfies $\alpha$ satisfies $\beta$ as well, $\alpha \vdash_i \beta$ means that $\beta$ can be obtained by applying $i$ to $\alpha$.  
+  The difference consists in the fact that the latter doesn't ensure that every model that satisfies $\alpha$ satisfies $\beta$ as well. In fact it could be that $i$ is not sound (sound means that $i$ derives only implied sentences) therefore $\beta$ wouldn't be implied.  
+  The two sentences would be equivalent if we specify that $\alpha \vdash_i \beta$ and that $i$ is sound. 
+- 
 
 
 
