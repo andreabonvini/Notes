@@ -16,12 +16,12 @@
 
 ### Definition of a Search Problem
 
-- Set of states
-- Initial state
-- Actions
-- Result Function: ${Result(s,a)=s'}$
-- Costs
-- Goal test
+- *Define the states.*
+- *What is the initial state.*
+- *Actions Function :* $\mathcal{Actions}(s)$
+- *Result Function:* $\mathcal{Result(s,a)=s'}$
+- *Costs associated with each action.*
+- *Goal test.*
 
 ### Search Algorithms
 
@@ -196,7 +196,7 @@ It defines the allowable sentences in PL, which are:
 
 **Semantics of PL**
 
-the semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
+The semantics defines the rules for determining the truth of a sentence  with respect to a particular model. The truth-value of complex sentences is established recursively, in accordance with the truth tables of the logical connectives (negation, conjunction, etc).
 
 **Inference in PL**
 
@@ -216,31 +216,30 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
   A set of sentences (called premises) *logically entail* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
 
 - *Logical Inference*
-  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is true we can expand our KB with such sentence.
+  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is implied by KB we can expand our KB with such sentence.
 
 - *Soundness of an inference rule*
   An inference rule *i* is said to be sound when all inferred/derived sentences are also entailed.
   $$
-  if\space\space\space\space (KB\space |-_i \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|=\space\alpha)
+  if\ \ \ \  (KB \vdash_i \alpha \ \and \ sound(i)=true)\ \ \ \  then \space\space\space\space (KB\ \models\ \alpha)
   $$
 
 - *Completeness of an inference rule*
   An inference rule *i* is said to be complete if it can derive/infer all entailed sentences.
-  $$
-  if\space\space\space\space (KB\space |= \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|-_i\space\alpha)
-  $$
+  
+- *Set of inference rules I*  
   We may have a set of inference rules *I* instead of a single rule *i*.
   $$
-  KB\space|-_I\space\alpha
+  KB\ \vdash _I\ \alpha
   $$
-  means that we obtain alpha from the sentences of KB after applying some of the rules in I a number of times.
-
+  means that we obtain $\alpha$ from the sentences of $KB$ after applying some of the rules in $I$ a number of times.
+  
 - *Soundness & Completeness together*
 
-  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether KB entails alpha or not, instead of constructing the truth table of all sentences in KB and alpha.
-  - if *I* is not sound, 
+  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether $KB \models \alpha$ or not, instead of constructing the truth table of all sentences in $KB$ and $\alpha$.
+  - if *i* is not sound, 
     even if we get ${KB \space \vdash_i \alpha}$, we cannot be sure that ${KB \models \alpha}$ 
-  - if *I* is not complete, 
+  - if *i* is not complete, 
     even if ${KB \models \alpha}$, we may not get to the result of having ${KB \vdash _i\alpha}$   
 
 - *Logical Equivalence*
@@ -313,9 +312,9 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
 - *Monotonicity*
   A property of Propositional Logic that can be expressed in the following way:
 
-  $${if \space\space KB\models\alpha\space\space\space\space then \space\space KB  \cup{\beta}\models\alpha }​$$
+  $${if \space\space KB\models\alpha\space\space\space\space then \space\space KB  \cup{\beta}\models\alpha }$$
 
-  which means that if we expand the KB, we can have additional conclusions, but such expansion cannot invalidate a conclusion already inferred like ${\alpha}​$.
+  which means that if we expand the KB, we can have additional conclusions, but such expansion cannot invalidate a conclusion already inferred like ${\alpha}$.
   Monotonicity means that we can apply inference rules whenever suitable premises are found in the KB, regardless of what else is there.
 
 #### Resolution
@@ -349,7 +348,7 @@ $$
 \phi_2
 $$
 
-2. put both $\phi_1$ and $\neg\phi_2​$ in Conjunctive Normal Form (all sub-formulas divided by a logical AND)
+2. put both $\phi_1$ and $\neg\phi_2$ in Conjunctive Normal Form (all sub-formulas divided by a logical AND)
 3. Enumerate all clauses
 4. compare them together, if a literal appears in both clauses and in only one of them it is negated we get rid of it and write a new clause 
    Examples:
@@ -358,8 +357,8 @@ $$
      3. ${B}$                          R (1,2) 
    - 1. ${\neg A \or \neg B}$
      2. ${A \or B}$ 
-     3. ${\neg B \or B}​$               R(1,2)
-     4. ${\neg A \or A}​$               R(1,2)
+     3. ${\neg B \or B}$               R(1,2)
+     4. ${\neg A \or A}$               R(1,2)
 5. We do not write the new clause if it has already been written
 6. the initial expression is true if in the end we obtain the empty clause
 
@@ -570,8 +569,8 @@ Forward Chaining is a *sound and complete* inference procedure
 
 # 4 - $\alpha$-$\beta$ Pruning
 
-- ${\alpha}​$ initial value = + infinity 
-- ${\beta}​$ initial value = - infinity
+- ${\alpha}$ initial value = + infinity 
+- ${\beta}$ initial value = - infinity
 - ${v}$ initial value = none.
 - ${\alpha}$ & ${\beta}$ are inherited by the daddy
 - ${v}$ is inherited by the children
@@ -644,7 +643,7 @@ Q = sum of the results of the simulations starting from such node
 
      otherwise:
      you have to select a node using the following formula:
-     ![1549987628116](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1549987628116.png)
+     ![1549987628116](images\1549987628116.png)
      Consider the node with the maximum value of U.
      if such node is not fully expanded select it
      otherwise: 
@@ -795,9 +794,16 @@ Valid for both STRIPS and PDLL:
 
 - Backward Planning searches in the space of goals because the states of the search problem formulated by backward planning are goals of the planning problem
 
-- In Practice:
-  g' is found by copying g, deleting positive effects of the action, adding all the preconditions of A
+- In Practice:  
+  
 
+You can derive an action if and only if *at least* one of the predicates of the considered state is present in the effect of the considered action.  
+  g' is found by 
+
+  - copying g
+  - deleting positive effects of the action that are present in the starting state
+  - adding all the preconditions of A
+  
 - Some goals g' will not be consistent , I would need a consistency check but usually it's not done. 
   Depth first search would suck! limited depth search would be ok, other searches as well.
 
@@ -888,14 +894,6 @@ $$
 
 
 
-
-
-
-
-
-
-
-
 <div style="page-break-after: always;"></div> 
 
 
@@ -915,7 +913,7 @@ $$
 - The Arc Consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
 
 - Factoring:
-  A v A = A
+  $A \or A = A$ 
 
 - Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
   Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
@@ -932,10 +930,10 @@ $$
 # 8 - Doubts
 
 - Unit Resolution, is there a pattern to be followed?
-
 - ai18feb16s - question 2 of exercise5: At least, how many nodes would have been generated by A* search strategy with the same heuristic function?
-
-  
+- a20feb15: didn't get the second distribution >.<  
+<img src="images/doubt1.png" style="zoom:100%">
+- Not a doubt but still: the last exercise of ai18feb16 on backward planning is painful AF, good exercise.
 
 <div style="page-break-after: always;"></div> 
 
@@ -949,6 +947,11 @@ $$
   Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
 - **Consider using forward chaining for deriving the sentences entailed by your KB, can you list all the sentences entailed by such KB?**  
   Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
+- **What is the difference between "sentence $\alpha$ entails sentence $\beta$ " ($\alpha \models \beta$) and "sentence $\beta$ can be derived from sentence $\alpha$ by inference algorithm $i$"($\alpha \vdash_i \beta$)?**  
+  $\alpha \models \beta$ means that every model that satisfies $\alpha$ satisfies $\beta$ as well, $\alpha \vdash_i \beta$ means that $\beta$ can be obtained by applying $i$ to $\alpha$.  
+  The difference consists in the fact that the latter doesn't ensure that every model that satisfies $\alpha$ satisfies $\beta$ as well. In fact it could be that $i$ is not sound (sound means that $i$ derives only implied sentences) therefore $\beta$ wouldn't be implied.  
+  The two sentences would be equivalent if we specify that $\alpha \vdash_i \beta$ and that $i$ is sound. 
+- 
 
 
 
