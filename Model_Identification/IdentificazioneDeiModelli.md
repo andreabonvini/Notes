@@ -92,16 +92,14 @@ $$
   - depolarize everything
   - check if both the numerator and the denominator are asymptotically stable
 
-- Per i modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
-
-- In Kalman se $K(t)$ è uguale a  $1$ il predittore di Kalman coincide con quello di regime! (???)
+- Per  modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
 
 - Relazione tra Spettro e Funzione di Covarianza
   $$
   \Gamma_y(\omega)=\sum_{\tau=-\infty}^{\infty}\gamma_y(\tau)e^{-j\omega\tau}\\
+  \Gamma_y(\omega)=\left|FDT\right|^2\cdot\mathbb{E}[e(t)^2]\\
   \gamma_y(k)=\frac{1}{2\pi}\int_{-\pi}^{\pi}\Gamma_y(\omega)e^{j\omega k}d\omega\ \color{red}???
   $$
-  
 
 - 
 
@@ -190,7 +188,7 @@ $$
 
   $MA(\infty)$ processes are very general, they almost cover the class of stationary stochastic processes (i.e. apart from few exceptions, all *s.s.p* can be written as $MA(\infty)$ ).
 
-  However, $MA(\infty)$ are difficult to handle since there are infinite coefficients and, moreover, the computation of the covariance function requires the computation of the sum of an infinite series (hard in general)
+  However, $MA(\infty)​$ are difficult to handle since there are infinite coefficients and, moreover, the computation of the covariance function requires the computation of the sum of an infinite series (hard in general)
 
 - ***Si discuta a riguardo della conergenza asintotica (al tendere del numero di dati all'infinito) dei parametri dei modelli identificati mediante il metodo PEM (Prediction Error Minimization) nell'ipotesi che i processi d'ingresso e di uscita siano stazionari e generati da un sistema lineare.***
 
@@ -482,4 +480,96 @@ $$
 
 
 
+- ***Dire che cosa si intende per spettro di un processo stocastico stazionario ed illustrarne le principali proprietà***
 
+  Dato un p.s.s. $y(t)$ si definisce *spettro* di $y(t)$ la seguente quantità:
+  $$
+  \Gamma_y(\omega) = \sum_{\tau=-\infty}^{\infty}\gamma_y(\tau)e^{-j\omega\tau}
+  $$
+  Ovvero la trasformata di Fourier della funzione di covarianza.
+
+  *Proprietà principali:*
+
+  - $\Gamma_y(\omega)$ è una funzione *reale* della variabile *reale* $\omega$ 
+    $$
+    Im(\Gamma_y(\omega)) = 0\ \ \forall{\omega}\in\mathcal{R}
+    $$
+
+  - $\Gamma_y(\omega)$ è una funzione *positiva*
+    $$
+    \Gamma_y(\omega)\ge0\ \ \forall{\omega}\in\mathcal{R}
+    $$
+
+  - $\Gamma_y(\omega)$ è una funzione *pari*
+    $$
+    \Gamma_y(\omega)=\Gamma_y(-\omega)\ \ \forall{\omega}\in\mathcal{R}
+    $$
+
+  - $\Gamma_y(\omega)$ è una funzione periodica di periodo $2\pi​$ 
+    $$
+    \Gamma_y(\omega)=\Gamma_y(\omega+k\cdot2\pi)\ \ \forall{\omega}\in\mathcal{R},\ \ \forall{k}\in\mathcal{Z}
+    $$
+    ( quindi è sufficiente tracciare la funzione su un perodo $[-\pi,\pi]$)
+
+- ***Dire che cosa si intende per predittore di Kalman di regime e si illustrino le ragioni per le quali si può essere interessati ad usare tale predittore al posto di quello ottimo di Kalman. Spiegare quali condizioni deve soddisfare $P(t)$ affinchè il predittore di regime sia ben definito e abbia buone prestazioni.***
+
+  Problema: se il sistema è tempo-invariante, è inteessante chiederci se esiste (e come è fatta) la soluzione di regime, ovvero:
+
+  - La sequenza $P(1),P(2),\dots,P(t)$ converge ad un valore di regime $\overline{P}$ ?
+  - Se $P(t)$ converge a $\overline{P}$, il corrispondente guadagno $\overline{K} = \left(F\overline{P}H^T+V_{12}\right)\left(H\overline{P}H^T+V_2\right)^{-1}$ rende il filtro *asintoticamente stabile* ?
+
+  Analizziamo la stabilità del filtro; si osserva che
+  $$
+  \hat{x}(t+1|t)=(F-\overline{K}H)\hat{x}(t|t-1)+\overline{K}y(t)
+  $$
+  dove $(F-\overline{K}H)​$ prende il nome di *matrice dinamica del filtro di Kalman*
+
+  Il predittore di Kalman *di regime* è asintoticamente stabile se e solo se tutti gli autovalori di $(F-\overline{K}H)​$ sono *strettamente* interni al cerchio di raggio unitario. 
+
+  Questo significa che il filtro di Kalman può essere asitoticamente stabile anche se il sistema non lo è ! ( $(F-\overline{K}H) \neq F$ )
+
+  La teoria del filtro di Kalman può essere applicata quindi anche a sistemi instabili (a differenza della teoria di *Kolmogorov-Wiener*)
+
+  Se il predittore di regime non è asintoticamente stabile *non* è quindi garantito che tale predittore si comporti asintoticamente come il predittore *ottimo*, in questo caso è quindi poco opportuno usare il predittore di regime.
+
+  Esistono due risultati teorici, noti come primo e secondo teorema di convergenza asintotica (“teoremi asintotici”), che ci consentono di dare condizioni *sufficienti* di convergenza. 
+
+  - *Primo Teorema di Convergenza*:
+
+    Se...
+
+    $V_{12}=0$
+
+    Il sistema $S$ è asintoticamente stabile ( ovvero se tutti gli autovalori di $F$ sono strettamente interni al cerchio di raggio unitario )
+
+    Allora...
+
+    La ARE ha una e una solo soluzione $\overline{P}\ge0$ (s.d.p.)
+
+    La DRE converge asintoticamente a $\overline{P}\ \ \forall{P_0}$
+
+    IL guadagno $\overline{K}$ corrispondente a $\overline{P}$ garantisce l'asintotica stabilità del filtro di Kalman (ovvero tutti gli autovalori della matrice $F-\overline{K}H$ sono strettamente interni al cerchio unitario)
+
+  - *Secondo Teorema di Convergenza*:
+
+    Se...
+
+    $V_{12}=0$
+
+    $(F,G)$ è Raggiungibile ($V_1 = GG^T$)
+
+    $(F,H)$ è Osservabile
+
+    Allora...
+
+    La ARE ha una e una solo soluzione $\overline{P}\ge0$ (d.p.)
+
+    La DRE converge asintoticamente a $\overline{P}\ \ \forall{P_0}$
+
+    IL guadagno $\overline{K}$ corrispondente a $\overline{P}$ garantisce l'asintotica stabilità del filtro di Kalman (ovvero tutti gli autovalori della matrice $F-\overline{K}H$ sono strettamente interni al cerchio unitario)
+
+  **Osservazione**: I teoremi di convergenza asintotica sono solo condizioni sufficienti. Quindi se le loro ipotesi non sono verificate non possiamo concludere nulla $\implies$ dobbiamo fare analisi diretta della DRE. 
+
+- ***Dire cosa si intende per rappresentazione canonica di un processo stazionario ARMA. Spiegare inoltre l'utilità della rappresentazione canonica per il calcolo del predittore di un processo ARMA***
+
+  
