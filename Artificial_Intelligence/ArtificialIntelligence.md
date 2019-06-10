@@ -216,31 +216,30 @@ Reasoning aims at getting new knowledge. New knowledge comes from getting new tr
   A set of sentences (called premises) *logically entail* a sentence (called a conclusion) if and only if every model that satisfies the premises also satisfies the conclusion.
 
 - *Logical Inference*
-  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is true we can expand our KB with such sentence.
+  The action of obtaining new sentences from other sentences by applying inference rules. If the new sentence is implied by KB we can expand our KB with such sentence.
 
 - *Soundness of an inference rule*
   An inference rule *i* is said to be sound when all inferred/derived sentences are also entailed.
   $$
-  if\space\space\space\space (KB\space |-_i \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|=\space\alpha)
+  if\ \ \ \  (KB \vdash_i \alpha \ \and \ sound(i)=true)\ \ \ \  then \space\space\space\space (KB\ \models\ \alpha)
   $$
 
 - *Completeness of an inference rule*
   An inference rule *i* is said to be complete if it can derive/infer all entailed sentences.
-  $$
-  if\space\space\space\space (KB\space |= \space\alpha)\space\space\space\space then \space\space\space\space (KB\space|-_i\space\alpha)
-  $$
+  
+- *Set of inference rules I*  
   We may have a set of inference rules *I* instead of a single rule *i*.
   $$
-  KB\space|-_I\space\alpha
+  KB\ \vdash _I\ \alpha
   $$
-  means that we obtain alpha from the sentences of KB after applying some of the rules in I a number of times.
-
+  means that we obtain $\alpha$ from the sentences of $KB$ after applying some of the rules in $I$ a number of times.
+  
 - *Soundness & Completeness together*
 
-  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether KB entails alpha or not, instead of constructing the truth table of all sentences in KB and alpha.
-  - if *I* is not sound, 
+  - If we have a sound and complete set of inference rules *I*, we may want to use it to check whether $KB \models \alpha$ or not, instead of constructing the truth table of all sentences in $KB$ and $\alpha$.
+  - if *i* is not sound, 
     even if we get ${KB \space \vdash_i \alpha}$, we cannot be sure that ${KB \models \alpha}$ 
-  - if *I* is not complete, 
+  - if *i* is not complete, 
     even if ${KB \models \alpha}$, we may not get to the result of having ${KB \vdash _i\alpha}$   
 
 - *Logical Equivalence*
@@ -549,7 +548,7 @@ Forward Chaining is a *sound and complete* inference procedure
   consider rules in the "implication form", do not put them in CNF .  
   1. Start from your knowledge base which is composed only by the one literals that have been provided to you
   2. Apply Modus Ponens.  
-     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}​$.
+     Write the modus ponens derivations in the form ${MP(Preconditions, Effects)}$.
   3. If all the predicates on the right of the clauses (the effects) have been derived stop. You obtained all the sentences entailed by the KB.  
      else go back to step 2  
 
@@ -598,79 +597,130 @@ Chess is zero sum because every game has payoff of either 0+1, 1+0,or 1/2 +1/2.
 
 # 5 - Montecarlo Tree Search
 
-Problem: the tree is deep in the search space: the time in order to find a solution would be exponential.
-What tries to do montecarlo? tries to find some approximate solutions to the problem.
-Let's try to solve the game of chess. it is very large and so far there is no solution to it right now, because it is too large.
-The problem of chess is that the payoff are available only at the end of the game so you need to finish the match in order to understand what is the outcome, but you have to compute a big number of matches and there is not enough time. what is the typical way of reducing the complexity? limiting the depth. let's fix 10 as height limit, but in the case of chess, 10 moves ahead are not enough surely. You have an agent and it needs to make a move, what he can try to do?, in this tree, where the payoffs are available only at the end I stop the search at some level and I put some fictitious payoffs at that level.
-At the beginning you have the initial situation, you start building the tree and after a while you stop. when you stop you have to put the payoff, but obviously you don't have it.so you ask yourself is it a good state or a bad state? 
+MCTS is a method for ﬁnding optimal solutions by randomly sampling the solution space and building a search tree accordingly. For example, it is used in games with very large configuration spaces. 
 
-the evaluation of such state will be obtained by simulating the game starting from that state and than for instance playing randomly. you reach a final state and you take the value of this Montecarlo simulation with two random players and you put it to that bad/good state we were talking about.
-The possible outcomes of this path are a lot obviously, are a distribution. if you repeat multiple times the simulation you will get different results. you will take the average of these results as an indicator of "how good is this state?"
+### Lecture's sum up
+
+*the following section is an informal description of MCTS, it consists in a partial transcription and re-adaptation of the lecture I attended in PoliMi*.
+
+Monte Carlo Tree Search is an algorithm used when the tree is deep in the search space:  
+the time in order to find a solution is exponential.
+What Does Monte Carlo try to do? It tries to find some approximate solutions to the problem.
+Let's try to solve the game of chess. it is very large and so far there is no solution to it right now, because it is too large.
+The problem of chess is that the payoff are available only at the end of the game so you need to finish the match in order to understand what is the outcome, but you have to compute a big number of matches and there is not enough time.  
+What is the typical way of reducing the complexity? limiting the depth.  
+let's fix 10 as height limit, but in the case of chess, 10 moves ahead are not enough surely. You have an agent and it needs to make a move, what can he try to do? In this tree, where the payoffs are available only at the end I stop the search at some level and I put some fictitious payoffs at that level.
+At the beginning you have the initial situation, you start building the tree and after a while you stop.  
+When you stop you have to put the payoff, but obviously you don't have it, so you ask yourself: is it a good state or a bad state? 
+
+The evaluation of such state will be obtained by simulating the game starting from that state and than for instance playing randomly.  
+You reach a final state and you take the value of this Montecarlo simulation with two random players and you put it to that bad/good state we were talking about.
+The possible outcomes of this path are a lot obviously, they are a distribution.  
+if you repeat multiple times the simulation you will get different results.  
+You will take the average of these results as an indicator of "how good is this state?"
 
 The assumption is that we can simulate this part of the game very quickly, otherwise it's not efficient.
 
 What is the problem of the average of the result computed?
-the result of this random evaluation should be computed avoiding to build the tree when I see there are some states where I will lose with very high possibility.
--->we need a kind of heuristic!
+The result of this random evaluation should be computed avoiding to build the tree when I see there are some states where I will lose with very high possibility.
+$\to$ we need a kind of heuristic!
 I want to stay toward the states that are better for me
-Exploration: try alternatives
-Exploitation: go toward the explorations that are more promising.
-We need to balance exploration and exploitation
-The key factor to balance is what is called Optimist F. Uncertainty (OFU):
-If you are very uncertain about something this uncertainty needs optimism. if you are very uncertain about the performance of a state give him a bonus, when you get more and more confident you reduce the bonus.
+
+- Exploration: try alternatives
+- Exploitation: go toward the states that are more promising.
+
+We need to balance exploration and exploitation.
+The key factor to balance is what is called *uncertainty*:
+If you are very uncertain about something ,this uncertainty needs optimism.  
+if you are very uncertain about the performance of a state give him a bonus, when you get more and more confident you reduce the bonus.
 
 So here we are, we have three info for each node.
 
-- Q
-- N
-- An upperbound that is a value computed through a function dependent from Q and N that tells how much this estimate is uncertain
+- $Q$  
+  The sum of all the rewards you obtained by passing from the given state
+
+- $N $ 
+  The number of times the given state has been visited during the simulations.
+
+- $U$:  
+  An upper bound: a value computed through a function dependent from Q and N that tells how much this estimate is uncertain
+  $$
+  U=\frac{Q}{N}+2\sqrt{\frac{2log(N_{parent})}{N}}
+  $$
+  
+
+### Algorithm
+
+First of all, what are we looking for?
+We just want to solve a planning problem.  
+Given a state we want to understand which action to take.
+$\to$ consider any state of the tree, for that state we want to answer what action to perform.
+
+The algorithm consists in the iteration of the following 4 steps:
+
+1. <u>***Selection***</u>
+
+   ***if*** the root is not fully expanded  
+   	$\to$  $\bigg\{$expand the root by adding one of its children (conventionally choose randomly) $\bigg\}$ 
+
+   ***else***    
+   	$\to$ $\bigg\{$select a node using the following formula:
+   $$
+   U=\frac{Q}{N}+2\sqrt{\frac{2log(N_{parent})}{N}}
+   $$
+   ​			Consider the node with the maximum value of U.
+   ​			***if*** such node is not fully expanded   
+   ​					$\to$ $\Big\{$select it $\Big\}$
+   ​			***else***   
+
+   ​					${\to}$ $\Big\{$compute the upperbound for its children and select the one children with the   
+   ​							highest upperbound.   
+   ​							***if*** there is a tie $\to$ select the left-most one, or the right-most if you are weird   
+   ​								(it's up to you, do whatever you want as long as it is not specified).
+
+   ​						 $\Big\}$
+
+   ​	 	$\bigg\}$
+
+   as long as you find fully expanded children iterate the upperbound computation and node selection obviously.
+
+2. <u>***Expansion***</u>
+
+   Expand the child selected and initialize its $Q$ and $N$ to zero.
+
+3. <u>***Simulation***</u>
+
+   Make up a random result for such child (win,lose, tie).
+
+4. <u>***Update or Backup***</u>
+
+   Update all $Qs$ and $Ns$ of the subject node and its ancestors.
+
+*this algorithm is Any Time: we can repeat these steps as long as we want and then stop.*
+
+A more concise definition of each step is offered here:
+
+1. <u>***Selection:***</u>  
+   A child selection policy is recursively applied to descend through the tree until the most urgent expandable node is reached (a node is expandable if it represents a nonterminal state and has unexpanded children)
+2. <u>***Expansion:***</u>  
+   One (or more) child nodes are added to expand the tree, according to the available actions
+3. <u>***Simulation:***</u>  
+   A simulation is run from the new node(s) according to the default policy to produce an outcome
+4. <u>***Backpropagation:***</u>  
+   The simulation result is “backed up” (i.e., backpropagated) through the selected nodes to update their statistics. 
 
 
 
-**Algorithm:**
-First, what are we looking for?
-We just want to solve a planning problem. Giving a state we want to understand which action to take.
-Ergo, consider any state of the tree, for that state we want to answer what action to perform.
+### Definitions
 
-Node information:
-N = number of Montecarlo simulation starting from this node.
-Q = sum of the results of the simulations starting from such node
-
-4 steps:
-
-1. Selection
-
-   - As long as the root is not fully expanded you keep on expanding the root.
-
-     otherwise:
-     you have to select a node using the following formula:
-     ![1549987628116](images\1549987628116.png)
-     Consider the node with the maximum value of U.
-     if such node is not fully expanded select it
-     otherwise: 
-     compute the upperbound for its children and select the one children with the highest upperbound. If there is a tie then select the left-most one, or the right-most if you are weird (it's up to you, do whatever you want as long as it is not specified).
-
-     
-
-2. Expansion
-
-   - expand the child selected and initialize its Q and N to zero.
-
-3. Simulation
-
-   - Make up a random result for such child (win,lose, tie).
-
-4. Update or Backup
-
-   - Update all Qs and Ns of the subject node and his ancestors.
-
-this algorithm is Any Time: we can repeat these steps as long as we want and then stop.
+- <u>***Tree policy***</u>  
+  Selects or creates a leaf node from the nodes already contained within the search tree (selection and expansion). 
+- <u>***Default policy***</u>   
+  Plays out the problem (game) from a given non-terminal state to produce a value estimate (simulation). 
 
 
 
-
-
-
+I suggest you to take a look at the Tic Tac Toe exercise offered in the course material, it helps in getting the concepts straights.
 
 <div style="page-break-after: always;"></div> 
 
@@ -895,14 +945,6 @@ $$
 
 
 
-
-
-
-
-
-
-
-
 <div style="page-break-after: always;"></div> 
 
 
@@ -922,7 +964,7 @@ $$
 - The Arc Consistency algorithm cannot be applied to the problem formulated in (1) because the constraints are not binary, and thus a constraint graph cannot be defined.
 
 - Factoring:
-  A v A = A
+  $A \or A = A$ 
 
 - Explain why depth-first search strategy is preferred over breadth-first search strategy in solving CSPs:
   Because all solutions are at depth n (= number of variables) and no cost is associated to solutions (path is irrelevant). 
@@ -950,12 +992,36 @@ $$
 
 - **Explain the differences between forward planning and backward planning for solving planning problems formulated in STRIPS.**   
   Forward planning formulates a search problem that starts from the initial state of the planning problem and applies all the applicable actions, in order to reach a state that satisfies the goal of the planning problem. Backward planning, instead, formulates a search problem that starts from the goal of the planning problem and applies all the regressions of the goal through relevant and consistent actions, in order to reach a state that is satisfied by the initial state of the planning problem. 
+  
 - **Why are forward planning and backward planning said to search in the space of states and in the space of goals, respectively?**    
   The states of the search problem formulated by forward planning are states of the planning problem. The states of the search problem formulated by backward planning are goals of the planning problem. 
+  
 - **Which one between forward planning and backward planning can generate inconsistent situations? Why? How can these inconsistencies be managed?**   
   Backward planning can generate states of the search problem (= goals of the planning problem) that are inconsistent (for example, they can contain On(A,B) and On(B,A) literals).  This situation can be managed by resorting to procedures that are external to the planning process. These procedures check the consistency of goals and allow to stop the search if a goal refers to inconsistent situations, because that goal cannot be satisfied.  
+  
 - **Consider using forward chaining for deriving the sentences entailed by your KB, can you list all the sentences entailed by such KB?**  
   Yes because forward chaining is a sound and complete inference procedure, so every derived sentence is correct (sound) and there are no sentences that can be derived other than the ones obtained by using the algorithm (complete).
+  
+- **What is the difference between "sentence $\alpha$ entails sentence $\beta$ " ($\alpha \models \beta$) and "sentence $\beta$ can be derived from sentence $\alpha$ by inference algorithm $i$"($\alpha \vdash_i \beta$)?**  
+  $\alpha \models \beta$ means that every model that satisfies $\alpha$ satisfies $\beta$ as well, $\alpha \vdash_i \beta$ means that $\beta$ can be obtained by applying $i$ to $\alpha$.  
+  The difference consists in the fact that the latter doesn't ensure that every model that satisfies $\alpha$ satisfies $\beta$ as well. In fact it could be that $i$ is not sound (sound means that $i$ derives only implied sentences) therefore $\beta$ wouldn't be implied.  
+  The two sentences would be equivalent if we specify that $\alpha \vdash_i \beta$ and that $i$ is sound. 
+  
+- **Clarify the main ideas underlying Monte Carlo Tree Search (MCTS): explain what MCTS is, what it is used for, and describe its main features. In particular, explain the meaning of the six technical terms reported in the figure below (which is often used to illustrate the general logic of MCTS).**  MCTS is a method for ﬁnding optimal solutions by randomly sampling the solution space and building a search tree accordingly. For example, it is used in games with very large configuration spaces. 
+
+  MCTS works by iterating four steps, as shown in the figure:   
+
+  - selection:   
+    a child selection policy is recursively applied to descend through the tree until the most urgent expandable node  is reached (a node is expandable if it represents a nonterminal state and has unexpanded children)
+  - expansion:   
+    one (or more) child nodes are added to expand the tree, according to the available actions
+  - simulation:   
+    a simulation is run from the new node(s) according to the default policy to produce an outcome
+  - backpropagation:   
+    the simulation result is “backed up” (i.e., backpropagated) through the selected nodes to update their statistics. 
+
+  Tree policy selects or creates a leaf node from the nodes already contained within the search tree (selection and expansion).   
+  Default policy plays out the problem (game) from a given non-terminal state to produce a value estimate (simulation). 
 
 
 
