@@ -2,9 +2,9 @@
 
 - ***What is the problem of binning?***
 
-  ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/BINNING.PNG)
+  ![](images/BINNING.PNG)
 
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PSTH.PNG)
+    ![](images/PSTH.PNG)
 
   If we use too large bins we lose resolution, if we use too small bins we lose structure. Too much resolution is less able to capture "common rules" (Trade-off)
 
@@ -40,22 +40,22 @@
   ```
 
 
-  $$
+$$
   h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t)}{P(X>t)\Delta t}
-  $$
+$$
   $P(X>t)$ is called the *survival function* and is just $1$ minus the cumulative distribution function (*CDF*):
-  $$
+$$
   P(X>t) = 1-F(t)=1-\int_{t_0}^tp(t)dt
-  $$
+$$
   The remaining part is the definition of the derivative of the *CDF*, which is just the *probability density function* (*PDF*) at time $t​$ 
-  $$
+$$
   \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t)}{\Delta t}= \lim_{\Delta t\to0}\frac{P(X<t+\Delta t)-P(X <t)}{\Delta t}=\\
   \lim_{\Delta t\to0}\frac{F(t+\Delta t)-F(t)}{\Delta t}=p(t)
-  $$
+$$
   So, finally we can rewrite the *hazard function* as:
-  $$
+$$
   h(t) = \frac{p(t)}{1-\int_{t_0}^tp(t)dt}
-  $$
+$$
 
 - ***The Conditional Intensity Function and ISI probability density***
 
@@ -64,11 +64,11 @@
   Firstly, some definitions:
 
   - $(\ 0,T\ ]$ denotes the *observation interval* 
-  - $0<u_1<u_2<\dots<u_{J-1}<u_J\le T​$ is a set of $J​$ spike time measurements
-  - $N(t)​$ is the number of spikes in $(\ 0,t\ ]​$
+  - $0<u_1<u_2<\dots<u_{J-1}<u_J\le T$ is a set of $J$ spike time measurements
+  - $N(t)$ is the number of spikes in $(\ 0,t\ ]$
   - $N_{0:t}$ is the event $\{\ 0<u_1<u_2<\dots<u_j\le t\ \cap N(t) = j\ \}$ where $j\le J$ 
 
-  The function $N_{0:t}​$ tracks the location and number of spikes in $(\ 0,t\ ]​$ and hence, contains all the information in the sequence of spike times.
+  The function $N_{0:t}$ tracks the location and number of spikes in $(\ 0,t\ ]$ and hence, contains all the information in the sequence of spike times.
 
   We define the *Condtional Intensity Function* for $t\in (\ 0,T\ ]$ as:
   $$
@@ -80,13 +80,13 @@
   $$
   \lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_0^tp(u|H_u)du}
   $$
-  Moreover it is possible to prove that the probability of having a spike in $[\ t,t+\Delta \ ]​$ given $H_t​$ and that there has been no spike in $(\ 0,t\ )​$ is
+  Moreover it is possible to prove that the probability of having a spike in $[\ t,t+\Delta \ ]$ given $H_t$ and that there has been no spike in $(\ 0,t\ )$ is
   $$
   Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta
   $$
   which is extremely important; this means that, for any time interval $[\ t,t+\Delta \ ]$ , $\lambda(t|H_t)\Delta$  
 
-  deﬁnes *the probability of a spike given the history up to time $t​$ .*
+  deﬁnes *the probability of a spike given the history up to time $t$ .*
 
   If the spike train is an *inhomogenous Poisson Process* then $\lambda (t|H_t) = \lambda(t)$ becomes the *Poisson rate function*
 
@@ -102,7 +102,7 @@
   $$
   e^{-\int_0^t\lambda(u|H_u)du} =1-\int_0^tp(u|H_u)du
   $$
-  and combining the equation above with $\lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_0^tp(u|H_u)du}​$ leads to
+  and combining the equation above with $\lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_0^tp(u|H_u)du}$ leads to
   $$
   p(t|H_t) = \lambda(t|H_t)e^{-\int_0^t\lambda(u|H_u)du}
   $$
@@ -110,13 +110,13 @@
 
 - ***Estimating the Likelihood***
 
-  Now, supposing to have a set of $n​$ events, if events are independent, the probability of their union of happening all together, is the product of the probability of having each of the events. If they are not independent, it means that one event is conditional to another event or more than one event. 
+  Now, supposing to have a set of $n$ events, if events are independent, the probability of their union of happening all together, is the product of the probability of having each of the events. If they are not independent, it means that one event is conditional to another event or more than one event. 
 
-  Given a set of $n​$ events $E_1,E_2,E_3,\dots,E_n​$
+  Given a set of $n$ events $E_1,E_2,E_3,\dots,E_n$
 
   it the events are independent
 
-  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=1}^{n}Pr(E_j)​$
+  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=1}^{n}Pr(E_j)$
 
   if they are not independent
 
@@ -130,7 +130,7 @@
 
   -----------------------------------------------------------
 
-  Given the *spike times* $0<u_1,u_2,u_3,\dots,u_k<T​$ 
+  Given the *spike times* $0<u_1,u_2,u_3,\dots,u_k<T$ 
 
   The joint distribution of the spikes is 
   $$
@@ -146,13 +146,13 @@
 
   *Derivation of the Joint Probability:*
 
-  Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0$ otherwise.
+  Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0​$ otherwise.
 
-  By construction of the partition we must have $\mu_j \in (\ t_{k_j-1},t_{k_j}\ ]\ \ ,\ j=1,\dots,J​$ (*remember that $J​$ is the total number of spikes we observed*) satisfying $k_1<k_2\dots<k_J​$. The remaining $K-J​$ intervals have no spikes.
+  By construction of the partition we must have $\mu_j \in (\ t_{k_j-1},t_{k_j}\ ]\ \ ,\ j=1,\dots,J$ (*remember that $J$ is the total number of spikes we observed*) satisfying $k_1<k_2\dots<k_J$. The remaining $K-J$ intervals have no spikes.
 
   <img src="images/PPF.jpg" style="zoom:45%"/>
 
-  *Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta$ 
+  *Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta​$ 
   $$
   \prod_{k=1}^{K}Pr(t_k|H_{t_k}) = \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{1-n_k}\\
   
@@ -218,8 +218,8 @@
   $$
   This is a *Generalized Linear Model with*
 
-  - Poisson Observations $\color{red}??​$
-  - Log-Link $\color{red}??​$
+  - Poisson Observations $\color{red}??$
+  - Log-Link $\color{red}??$
 
   $$
   \underset{\theta}{\text{argmax }}\mathcal{L}(\theta) = \underset{\theta}{\text{argmax }}\sum_{i=1}^{I}\left(n_i(\theta^{'}x_i)-e^{\theta^{'}x_i}\right)
@@ -249,13 +249,11 @@
     $$
     \mathcal{Data}_t=f(\mathcal{Signal}_t,\mathcal{Noise}_t)
     $$
-    
 
   - State Model
     $$
     \mathcal{Signal}_t=f(\mathcal{Signal}_{t-1}\ ,\ \mathcal{Noise}_t)
     $$
-    
 
   - FIltering
     $$
@@ -264,6 +262,8 @@
     
 
   A Linear State-Space Model can be summarized as
+
+  $\color{red}\text{Ma qui u(t) è il notro $n_t$ di prima? (0 o 1 a seconda del fatto che il neurone abbia sparato o meno)}$
   $$
   \begin{cases}
   \frac{dx(t)}{dt}=Ax(t)+\underset{\ \ \ \ \text{Input}}{B\underbrace{u(t)}}\ \ \ \ \text{State evolution}\\  \\
@@ -282,7 +282,45 @@
   $$
   where $T$ is the sampling time.
 
-  `TO DO: ADD PARTS DISCRETE TIME->PROBABILTY & Chapman-Kolmogorov eq. , etc...`
+  From deterministic to probabilistic:
+  $$
+  \begin{cases}
+  x_{k+1}=\mathcal{A}x_k+\mathcal{B}u_k\\
+  y_k = Cx_k+Du_k
+  \end{cases}\\
+  $$
+  *becomes*...
+  $$
+  Pr(x_{k+1}|x_k,x_{k-1},u_k)\\
+  Pr(y_k|x_k,x_{k-1},\dots,u_k)
+  $$
+  if *Markov*:
+  $$
+  Pr(x_{k+1}|x_k,u_k)\\
+  Pr(y_k|x_k,x_{k-1},\dots,u_k)
+  $$
+  Coming back to our GLM problem we'd have that:
+  $$
+  Pr(\mathbf{x_k}=[n_{k-K+1},n_{k-K+2},\dots,n_{k-1},\mathbf{1}]\ |\mathbf{x_{k-1}})\sim\lambda(n_k|H_k)\Delta\\
+  Pr(\mathbf{x_k}=[n_{k-K+1},n_{k-K+2},\dots,n_{k-1},\mathbf{0}]\ |\mathbf{x_{k-1}})\sim 1-\lambda(n_k|H_k)\Delta
+  $$
+  ***Recursive Solution:***
+
+  *Chapman-Kolmogorov Equation* (I think with *Markov* hipothesys)
+
+  (Prediction Step):
+  $$
+  \color{black}p(x_{k+1}|y_{1:k})=\int_{x_k}\color{green}\underset{\text{State Equation}}{p(x_{k+1}|x_k)}\color{red}p(x_k|y_{1:k})\color{black}dx_k
+  $$
+  (Update Step):
+  $$
+  \color{red}\underset{\text{Posterior Density}}{p(x_{k+1}|y_{1:k+1})}=\frac{\color{blue}\overset{\text{Observation Equation}}{p(y_{k+1}|x_{k+1})}\color{black}p(x_{k+1}|y_{1:k})}{\int_{x_{k+1}}p(y_{k+1}|x_{k+1})p(x_{k+1}|y_{1:k})dx_{k+1}}
+  $$
+  
+
+  $\color{purple}\text{What is y????}​$
+
+  
 
 - ***Once we find our model, is there a way to graphically measure the goodness-of-fit of our model?***
 
@@ -312,13 +350,13 @@
   - Compute the theoretical quantiles $b_j = \frac{j-\frac{1}{2}}{j}​$ for $j=1,\dots,J​$ 
   - Plot $b_j​$ *vs.* $\mu_j​$ with $95\%(99\%)​$ confidence intervals $b_j\pm\frac{1.36}{j^{1/2}}(b_j\pm\frac{1.63}{j^{1/2}})​$
 
-
+- ***Once we estimateed $\lambda$ , how could we simulate a Point Process?***
 
 - We want to find the best way to *estimate the stimulus from the response.*
 
   
 
-  We formulate the problem in terms of the probability distribution $p(T)$ of inter-spike intervals (*ISI*s), assuming that spikes are detected with arbitrary but finite temporal resolution.
+  We formulate the problem in terms of the probability distribution $p(T)​$ of inter-spike intervals (*ISI*s), assuming that spikes are detected with arbitrary but finite temporal resolution.
 
   -------------
 
@@ -336,7 +374,7 @@
 
   Nowe, given the following problem (a rat moving in some $2-D​$ space denoted by $x_1​$ and $x_2​$)
 
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PP.PNG" style="zoom:55%"/>
+    <img src="images/PP.PNG" style="zoom:55%"/>
 
   We'd like to infer the *stimulus* (position) by looking at the *response* (spiking) [Look here](<https://www.youtube.com/watch?v=lfNVv0A8QvI>)
 
@@ -361,7 +399,7 @@
   $$
     The formula above can be seen as a generalization of the canonical *Poisson* distribution
 
-  ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PoissonPlot.PNG)
+  ![](images/PoissonPlot.PNG)
   $$
   p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}\\
     p(k,\Delta) = \frac{e^{-(\lambda \Delta)}(\lambda \Delta)^k}{k!}
@@ -401,7 +439,7 @@
 
     *PDF* : $p(t)=\lambda e^{-\lambda x}$
 
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/exp.PNG)
+    ![](images/exp.PNG)
 
   - *Gamma*
 
@@ -417,7 +455,7 @@
     \text{or, equivalently...}\\
     p(x;k,\theta) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}
     $$
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/GAMMA1.PNG)
+    ![](images/GAMMA1.PNG)
 
     Where $\Gamma(\alpha)$ is the *gamma function* , which is an extension of the *factorial function*( $ \Gamma(n) = (n-1)!$ ) and is defined as follows:
     $$
@@ -429,13 +467,13 @@
     $$
     P(x;k,\theta) = \int_{0}^{x}f(u;k,\theta)du
     $$
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/GAMMA2.PNG)
+    ![](images/GAMMA2.PNG)
 
   - *Inverse Gaussian*
     $$
     p(x;\mu,\lambda) = \left[\frac{\lambda}{2\pi x^{3}}\right]^{\frac{1}{2}}e^{-\frac{\lambda(x-\mu)^2}{2\mu^{2}x}}\ \ \ \ \ \mu>0\ ,\ \lambda>0
     $$
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/IG.PNG" style="zoom:75%"/>
+    <img src="images/IG.PNG" style="zoom:75%"/>
 
     As λ tends to infinity, the inverse Gaussian distribution becomes more like a normal (Gaussian) distribution. 
 
@@ -445,7 +483,7 @@
     $$
     P(x;\mu,\lambda) = \frac{1}{x\sigma\sqrt{2\pi}}e^{-\frac{(\ln(x)-\mu)^{2}}{2\sigma^{2}}}
     $$
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/LN1.PNG" style="zoom:55%"/><img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/LN2.PNG" style="zoom:55%"/>
+    <img src="images/LN1.PNG" style="zoom:55%"/><img src="images/LN2.PNG" style="zoom:55%"/>
 
   Between these *pdf* we choose the *Inverse Gaussian*, why?
 
@@ -459,7 +497,7 @@
 
   Coming back to the ISI function let's see how each of these function are able to model the former:
 
-  <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/ISI1.PNG" style="zoom:45%"/><img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/ISI2.png" style="zoom:55%"/>
+  <img src="images/ISI1.PNG" style="zoom:45%"/><img src="images/ISI2.png" style="zoom:55%"/>
 
   Now, remember that we modeled the ISI pdf as an *Inhomogeneous Poisson Process*:
   $$
