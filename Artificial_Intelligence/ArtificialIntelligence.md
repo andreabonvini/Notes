@@ -761,30 +761,33 @@ In STRIPS, this means that all the predicates not listed in the representation o
 
 A state is represented by a set of literals that are:
 
-- *positive*
-- *grounded* 
+- *positive*  
+- *grounded*  
   they don't have any variable
-- *function free*
+- *function free*  
   there are no functions
+
+
 
 
 
 **Goal**
 
-- Goals are a set of states 
+- Goals are a set of states   
   [ C over A over B ]  or [ (A over B) and  C ]     --> both satisfy on(A,B)
 - A state S satisfies a goal G when the state S contains all the positive literals of G and does not contain any of the negative literals of G
-- PDLL
-  - Goals are represented by a set of literals that are function-free ${\to}$ variables and negative literals are allowed!
+- ***PDLL***
+  - *Goals are represented by a set of literals that are function-free ${\to}$   
+    variables and negative predicates are allowed!*
     e.g. 
     not On(A,B) 
     On(x,A)
   - PDLL extends STRIPS
-  - if you have a variable in a goal than this variable has an existence quantifier
+  - if you have a variable in a goal then this variable has an existence quantifier
     On(x,A) means Exists x |on(x,A) is true?
-- STRIPS 
-  - Goals are represented by a set of positive literals
-  - STRIPS doesn't allow negative goals and variables in goals
+- ***STRIPS*** 
+  - *Goals are represented by a set of positive literals*
+  - STRIPS doesn't allow negative predicates and variables in goals
 
 
 
@@ -873,15 +876,15 @@ You can derive an action if and only if *at least* one of the predicates of the 
 
 - Start from a planning problem and transform it into a satisfiability problem, which means in a very big propositional logic formula.
 - a situation is a picture of the world
-- situations are objects, 
+- situations are objects
 - reification: give names to objects
-- at(robot1,room6,s_3)   it's a fluent --> it is true for situation 3 but it can be false for s_4
+- at(robot1,room6,s_3)   it's fluent --> it is true for situation $x$ but it can be false for situation $y$
 - by convention the situation is the last argument of the thing.
 - so, you have logical formulas that are changing their truth values in time.
 - *<u>Result Action</u>*
   we define very special elements, one of this elements is a function that is called "Result"
   Result takes an action and a situation and returns a new situation:
-  Result( Movesnorth(Product), S_1) = S_2
+  Result( Movenorth(Product), S_1) = S_2
   A situation can be thought of as a state.
 - it's boring to express everything all the time. 
   we don't have the closed world assumption! 
@@ -897,13 +900,15 @@ $$
   the fact that I'm holding an object is fluent. Present as well. 
 
 - The preconditions are on the left side!
-  The effect is on the right side!
+  The effects are on the right side!
   the name of the action is on the right side as well.
-  left side: it's called the *<u>effect axiom</u>* : what is the effect of he action I'm performing
+  
+- <u>effect axiom</u>   
+  what is on the left side is called the *<u>effect axiom</u>* : what is the effect of the action I'm performing?
+  
+- every time that I have an $x$ and a $s$ such that the precondition is true and I'm performing the action of grabbing x then it is true. 
 
-- every time that I have an *x* and a *s* such that the precondition is true and I'm performing the action of grabbing x then it is true. 
-
-- another example of another effect axiom
+- another example of effect axiom
   $$
   \forall x \forall s \space \neg Holding(x,Result(Drop(x),s))
   $$
@@ -916,10 +921,10 @@ $$
   it consists in describing what is not changing:
 
 $$
-\forall x \forall c\forall s \space Color(x,c,s)\rightarrow Color(x,c,Result(Grab(x),s))If I grab an object x, its color c doesn't change.
+\forall x \forall c\forall s \space Color(x,c,s)\rightarrow Color(x,c,Result(Grab(x),s))
 $$
 
-​	If I grab an object x, its color c doesn't change.
+​	If I grab an object $x$, its color $c$ doesn't change.
 
 ​	Another way of writing it is with functions (this means that we can use functions in situation calculus)
 $$
@@ -1022,8 +1027,11 @@ $$
 
   Tree policy selects or creates a leaf node from the nodes already contained within the search tree (selection and expansion).   
   Default policy plays out the problem (game) from a given non-terminal state to produce a value estimate (simulation). 
+  
+- **What is the difference between PDLL and STRIPS?**
 
-
+  PDLL goals are function free, but allow variables and negative literals. STRIPS doesn't allow variables and negative predicates  
+  Curiosity: Both in PDLL and STRIPS negative predicates in the preconditions of actions are allowed!
 
 <div style="page-break-after: always;"></div> 
 
