@@ -61,7 +61,7 @@ $$
 
   The key to deriving the likelihood function for a parametric model of a neural spike train is deﬁning the joint probability density. The joint probability density of a neural spike train can be characterized in terms of the conditional intensity function. Therefore, we ﬁrst derive the conditional intensity function for a point process and review some of its properties. 
 
-  Firstly, some definitions:
+  Firstly, some definitions: 
 
   - $(\ 0,T\ ]$ denotes the *observation interval* 
   - $0<u_1<u_2<\dots<u_{J-1}<u_J\le T$ is a set of $J$ spike time measurements
@@ -316,7 +316,7 @@ $$
   $$
   \color{red}\underset{\text{Posterior Density}}{p(x_{k+1}|y_{1:k+1})}=\frac{\color{blue}\overset{\text{Observation Equation}}{p(y_{k+1}|x_{k+1})}\color{black}p(x_{k+1}|y_{1:k})}{\int_{x_{k+1}}p(y_{k+1}|x_{k+1})p(x_{k+1}|y_{1:k})dx_{k+1}}
   $$
-  
+
 
   $\color{purple}\text{What is y????}​$
 
@@ -503,5 +503,5 @@ $$
   $$
   p(t) = \lambda(t)e^{-\lambda(t)t}
   $$
-  
+
 

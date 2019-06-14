@@ -24,6 +24,13 @@ $$
 e(t)\sim WN(\ \mu\cdot a\ ,\ \sigma^2\cdot a^{2})
 $$
 
+- *Trick n°2*:
+  $$
+  \eta(t)\sim WN(\mu,\sigma^2)\\
+  k\cdot\eta(t)=e(t)\\
+  e(t)\sim WN(\ \mu\cdot k\ ,\ \sigma^2\cdot k^{2})
+  $$
+
 - *Filtro passa-tutto*:
 
 $$
@@ -92,25 +99,25 @@ $$
   - depolarize everything
   - check if both the numerator and the denominator are asymptotically stable
 
-- Per  modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
+- Per modelli $AR$ E $ARX$ la funzione di costo $J(a) = \frac{1}{N}\sum_{t=1}^{N}(y(t)-y(t|t-1;a))^2$ è quadratica.
 
 - Relazione tra Spettro e Funzione di Covarianza
   $$
   \Gamma_y(\omega)=\sum_{\tau=-\infty}^{\infty}\gamma_y(\tau)e^{-j\omega\tau}\\
   \Gamma_y(\omega)=\left|FDT\right|^2\cdot\mathbb{E}[e(t)^2]\\
-  \gamma_y(k)=\frac{1}{2\pi}\int_{-\pi}^{\pi}\Gamma_y(\omega)e^{j\omega k}d\omega\ \color{red}???
+  \gamma_y(\tau)=\frac{1}{2\pi}\int_{-\pi}^{\pi}\Gamma_y(\omega)e^{j\omega \tau}d\omega\ 
   $$
+  
 
-- 
 
 ### Exam Questions
 
-- ***Si dia la definizione di un processo $MA(\infty)​$ e si discutano le condizioni affinchè tale processo sia stazionario e ben definito. Dimostrare la formula per il calcolo della funzione di covarianza di un processo $MA(\infty)​$. Spiegare infine perchè questi processi sono d'interesse nello studio dei processi $AR​$ e $ARMA​$.*** 
+- ***Si dia la definizione di un processo $MA(\infty)$ e si discutano le condizioni affinchè tale processo sia stazionario e ben definito. Dimostrare la formula per il calcolo della funzione di covarianza di un processo $MA(\infty)$. Spiegare infine perchè questi processi sono d'interesse nello studio dei processi $AR$ e $ARMA$.*** 
   $$
   y(t) = c_0e(t)+c_1e(t-1)+\dots+c_ie(t-i)+\dots=\sum_{i=0}^{\infty}c_ie(t-i)\\
   e(t)\sim WN(0,\lambda^2)
   $$
-  Assumption to garantee that $y(t)$ is well defined:
+  Assumption to guarantee that $y(t)​$ is well defined:
   $$
   \sum_{i=0}^{\infty}c_i^2<\infty
   $$
@@ -571,5 +578,31 @@ $$
   **Osservazione**: I teoremi di convergenza asintotica sono solo condizioni sufficienti. Quindi se le loro ipotesi non sono verificate non possiamo concludere nulla $\implies$ dobbiamo fare analisi diretta della DRE. 
 
 - ***Dire cosa si intende per rappresentazione canonica di un processo stazionario ARMA. Spiegare inoltre l'utilità della rappresentazione canonica per il calcolo del predittore di un processo ARMA***
+
+- ***Sia $e(t)\sim WN(0,1) $. Dire, motivando brevemente la risposta, quali dei seguenti processi stocastici sono stazionari e quali invece non lo sono.***
+
+  - $y(t) = e(t) + e(t-1)$ 
+
+    - [ ] *stazionario*
+
+      sssss
+
+  - $y(t) = e(t^3)+e((t-1)^3)$ 
+
+    - [ ] *stazionario*
+
+      ffffffff
+
+  - $y(t) = e(t)+e(-t)$
+
+    - [ ] *stazionario*
+
+      fffffff
+
+  - $y(t) = (-1)^t(e(t)+e(t-1))$
+
+    - [ ] *stazionario*
+
+      ffffffffffff
 
   
