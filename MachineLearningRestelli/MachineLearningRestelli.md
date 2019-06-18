@@ -610,7 +610,7 @@ Considering a problem of two-class classiﬁcation, in logistic regression the p
 $$
 p(C_1|\phi) = \frac{1}{1+e^{-\mathbf{w}^T\phi}}=\sigma(\mathbf{w}^T\phi)
 $$
-![](C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sigmoid.png)
+![](images/sigmoid.png)
 
 and $p(C_2|\phi) = 1 - p(C_1|\phi)$ 
 
@@ -673,7 +673,7 @@ Formally, principal component analysis (PCA) is a statistical procedure that use
 
 To have a graphical intuition:
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/PCA.png" style="zoom:60%"/>
+<img src="C:/Users/Willi/Deimages/PCA.png" style="zoom:60%"/>
 
 It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -750,11 +750,11 @@ u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}
 $$
 Here is a $1$-D example where $N=2$, just to give you an idea:
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/URB1.png" style="zoom:70%"/>
+<img src="images/URB1.png" style="zoom:70%"/>
 
 Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/URB2.png" style="zoom:70%"/>
+<img src="images/URB2.png" style="zoom:70%"/>
 
 Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
@@ -762,7 +762,7 @@ But how is this framework related to *regression*? $\to$ *Kernel Regression*!
 
 Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/KR1.png" style="zoom:70%"/>
+<img src="images/KR1.png" style="zoom:70%"/>
 
 How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
 

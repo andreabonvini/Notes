@@ -21,10 +21,10 @@
   <img src="images/EcochG.jpg" style="zoom:55%"/>
 
   ***Electrocochleography*** (EcochG) is the name given to the recording of cochlear potentials.
-  Under local anaestethic, a thin needle electrode is placed through the tympanic membrane onto the promontory, near the round window niche.
+  Under local anesthetic, a thin needle electrode is placed through the tympanic membrane onto the promontory, near the round window niche.
 
 
-  Without any filtering, the cochlear potential is a composite response, which includes the *microphonic potential* (reflecting the hair cell receptor potential, mainly OHCs), and two slow components: the *compound action potential* (reflecting the auditory nerve activity) and the *summating potential*.
+ Without any filtering, the cochlear potential is a composite response, which includes the *microphonic potential* (reflecting the hair cell receptor potential, mainly OHCs), and two slow components: the *compound action potential* (reflecting the auditory nerve activity) and the *summating potential*.
 
   These different components are better visualized using appropriate filtering (see below).
 
@@ -33,7 +33,6 @@
   The compound action potential CAP is the result of synchronous activity of the auditory nerve fibers. The CAP amplitude is measured between N1 and P1. The summating potential (SP) reflects the continuous component of the sensory hair cells, mainly the IHCs.
 
   The cochlear microphonic CM, which closely resembles the sound stimulus, is a reflection of the alternating component, which mainly originates from the OHCs.
-
 
   So...
 
@@ -49,7 +48,7 @@
 
   ***Stimuli:***
 
-  Usually through loud speaker, sometimes through headphones. Can be acoustic clicks or tone bursts "*Condensation*" and "*Rarefaction*" click with different polarity , alternating polarity allows reduction of CM & artifacts (CAP and SP are independent of stimulus phase) Time window circa $10\ ms$, can be increased to circa $20\ ms$ with low frequency stimuli.
+  Usually through loud speaker, sometimes through headphones. Can be acoustic clicks or tone bursts "*Condensation*" and "*Rarefaction*" click with different polarity , alternating polarity allows reduction of CM & artifacts (CAP and SP are independent of stimulus phase). Time window circa $10\ ms$, can be increased to circa $20\ ms$ with low frequency stimuli.
 
   
 
@@ -59,11 +58,11 @@
 
   <img src="images/abr_setup.jpg" style="zoom:85%"/>
 
-  E' un potenziale evocato lontano, si presenta nei primi 10ms dopo la somministrazione di un suono transitorio. Viene misurato con $2$ elettrodi, uno posto al vertice e l’altro posto o sul mastoide o sul lobo dell’orecchio. Registra tipicamente $5$-$7$ picchi nell’onda del segnale. Il valore che si estrae è la latenza. Le differenti componenti dell’onda ABR sono generate dall’attività neurale seguendo la sequenza di strutture attivate presenti sul cammino del segnale uditivo neurale. Le ampiezze misurate sono nell’ordine delle centinaia di $nV$. Si può diminuire il tempo di latenza con delle cuffie non sovra-aurali ma inserite all’interno del condotto uditivo. Diminuendo l’intensità dello stimolo: aumenta il tempo di latenza, diminuisce l’ampiezza delle curve, viene modificata la forma delle curve. Se aumenta la frequenza di stimolazione: le onde diminuiscono in ampiezza e la latenza aumenta. L'ABR viene solitamente campionato a $512$ punti. Si può misurare l'ABR ipso laterale o contro laterale e le forme d’onda sono un po’ diverse.
+  E' un potenziale evocato lontano, si presenta nei primi 10ms dopo la somministrazione di un suono transitorio. Viene misurato con $2$ elettrodi, uno posto al vertice e l’altro posto o sul mastoide o sul lobo dell’orecchio. Registra tipicamente $5$-$7$ picchi nell’onda del segnale. Il valore che si estrae è la latenza. Le differenti componenti dell’onda ABR sono generate dall’attività neurale seguendo la sequenza di strutture attivate presenti sul cammino del segnale uditivo neurale. Le ampiezze misurate sono nell’ordine delle centinaia di $nV$. Si può diminuire il tempo di latenza con delle cuffie non sovra-aurali ma inserite all’interno del condotto uditivo. Diminuendo l’intensità dello stimolo: aumenta il tempo di latenza, diminuisce l’ampiezza delle curve, viene modificata la forma delle curve. Se aumenta la frequenza di stimolazione: le onde diminuiscono in ampiezza e la latenza aumenta. L'ABR viene solitamente campionato a $512​$ punti. Si può misurare l'ABR ipso laterale o contro laterale e le forme d’onda sono un po’ diverse.
 
 - ***Middle Latency Responses (MLR)***
 
-  The middle-latency response is often referred to as MLR or AMLR. AMLR stands for auditory middle-latency response. The MLR is derived from the medial geniculate body, inferior colliculus and the primary auditory cortex. The most important thing to keep in mind as we move into middle and late responses is that the patient cannot be asleep for this testing. As you move further up into the brain, the patient needs to stay awake and alert in order to maintain a response. The MLR is used to assess auditory cortical function, whether the person has function or does not have function. If there is an abnormality, you can determine which side is affected.
+  The middle-latency response is often referred to as MLR or AMLR. AMLR stands for auditory middle-latency response. The MLR is derived from the **medial geniculate body**, **inferior colliculus** and the **primary auditory cortex**. The most important thing to keep in mind as we move into middle and late responses is that the patient cannot be asleep for this testing. As you move further up into the brain, the patient needs to stay awake and alert in order to maintain a response. The MLR is used to assess auditory cortical function, whether the person has function or does not have function. If there is an abnormality, you can determine which side is affected.
 
   The MLR produces waveforms that are identifiable at or near threshold and may be useful in identifying low-frequency auditory sensitivity. However, the ABR latencies are more consistent between tests than with MLRs. MLR has larger amplitude than the ABR and is less dependent on neural synchrony. The latency of the response is unchanged whether the patient is asleep or awake, but the amplitude is highly affected. The amplitude is smaller if the patient is asleep, so arrange for the patient to be awake during testing. You definitely do not want the patient to be anesthetized or have light sedatives because this will eliminate the MLR response.
 
@@ -110,21 +109,21 @@ Stimuli are also standardized (pure tones at different frequencies); usually tes
 
 - ***Stevens's Power Law*** 
 
-  Loudness is proportional to some power of Intensity. $ L = kI^{a}$ 
+  Loudness is proportional to some power of Intensity. $ L = kI^{a}​$ 
 
 We have *two* different scales for loudness:
 *Phon* and *Sone*. 
 
 - ***Phon***
-  The unit phonis used to indicate an individual’s perception of loudness. By definition, 1 phon is equivalent to 1 deciBel at 1000 Hz (1 kHz).
+  The unit phon is used to indicate an individual’s perception of loudness. By definition, 1 phon is equivalent to 1 deciBel at 1000 Hz (1 kHz).
 
   <img src="images/isophonic.png" style="zoom:50%"/>
 
-  The figure above shows several equal loudness curves ***isophonic curves***. The curves were determined experimentally. Volunteers were subjected to a 1 kHz sound at 60 dB; this is a loudness of $60$ phon. Sounds with different frequencies were then played; the volunteer adjusted the decibel level until it was perceived to have the same loudness as it had at 1000 Hz. This was repeated for varying frequencies to generate the entire $60$-phon curve. To create an $80$-phon curve, subjects were exposed to 1 kHz sounds at 80 dB. For other frequencies, they adjusted the decibel level until it was perceived to be of equal loudness as the 1 kHz sound. This figure represents an average of the results for many individuals.
+  The figure above shows several equal loudness curves ***isophonic curves***. The curves were determined experimentally. Volunteers were subjected to a 1 kHz sound at 60 dB; this is a loudness of $60$ phon. Sounds with different frequencies were then played; the volunteer adjusted the decibel level until it was perceived to have the same loudness as it had at 1000 Hz. This was repeated for varying frequencies to generate the entire $60$-phon curve. To create an $80​$-phon curve, subjects were exposed to 1 kHz sounds at 80 dB. For other frequencies, they adjusted the decibel level until it was perceived to be of equal loudness as the 1 kHz sound. This figure represents an average of the results for many individuals.
 
 - ***Sone***
 
-  The *sone* scale is a third scale associated with the loudness of a sound. The sone scale is based on the observation that a $10$ phon increase in a sound level is most often perceived as a doubling of loudness. According to the sone scale, a $1$ sone sound is defined as a sound whose loudness is equal to $40$ phons. The following figure is generated based on these assumptions.
+  The *sone* scale is the second scale associated with the loudness of a sound. The sone scale is based on the observation that a $10$ phon increase in a sound level is most often perceived as a doubling of loudness. According to the sone scale, a $1$ sone sound is defined as a sound whose loudness is equal to $40$ phons. The following figure is generated based on these assumptions.
 
   $1$ sone : Loudness of a $1000$ $Hz$ tone at SPL (or SL) of $40dB​$. 
 
@@ -142,7 +141,7 @@ For simple/pure tones, pitch closely relates to ***frequency***. Similarly to lo
 
 The pitch of pure tones depends on ***intensity***. In general, increasing the intensity of pure tones decreases the pitch of low frequencies (approx. greater than $300Hz$), increases the pitch of high frequencies ( approx. less than $3000Hz​$), and has no noticeable effect at middle frequencies.
 
-Pitch also depends on ***duration***. A tone must last more than a minimum amount of time ($\sim 10-60\ ms$, depending on frequency and intensity) in order to sound more than a 'click' and convey a clear sense of pitch
+Pitch also depends on ***duration***. A tone must last more than a minimum amount of time ($\sim 10-60\ ms$, depending on frequency and intensity) in order to sound more than a 'click' and convey a clear sense of pitch.
 
 - ***Mel Scale***
 
@@ -163,7 +162,7 @@ Pitch also depends on ***duration***. A tone must last more than a minimum amoun
 
 - ***Distortion***
 
-  When two different tones at two different frequencies are presented(f1andf2) it is possible that the subjective sensation be of tones at a frequency that is a combination of f1 and f2.\newline
+  When two different tones at two different frequencies are presented ($f1$ and $f2$ ) it is possible that the subjective sensation be of tones at a frequency that is a combination of $f1$ and $f2$.
 
   Most common: $f2+f1$ , $f2-f1$
 
@@ -187,11 +186,11 @@ Pitch also depends on ***duration***. A tone must last more than a minimum amoun
 
 
 - ***Critical Band***
-  The actual length of the critical band corresponds, therefore, to a frequency difference value called ***critical bandwidth***. If the frequency difference between two simultaneous sine waves is within the critical bandwidth, the ear will not be able to resolve the two frequencies, while the waves will interact in a specific and musically important way:
+  The actual length of the critical band corresponds to a frequency difference value called ***critical bandwidth***. If the frequency difference between two simultaneous sine waves is within the critical bandwidth, the ear will not be able to resolve the two frequencies, while the waves will interact in a specific and musically important way:
 
   If the frequency difference is $<10-20 Hz​$ (approx.), the wave interaction will be perceived as a slow loudness fluctuation called ***beating***. 
 
-  If the frequency difference is $> 20 Hz$ (approx.) but smaller than the critical bandwidth, the interaction of the two simultaneous waves will be perceived as a change in the character of the combined sound referred to as ***roughness***
+  If the frequency difference is $> 20 Hz$ (approx.) but smaller than the critical bandwidth, the interaction of the two simultaneous waves will be perceived as a change in the character of the combined sound referred to as ***roughness***.
 
   ***Critical bandwidth*** may be defined as the frequency separation in Hz. between two simultaneous sine waves necessary for beats/roughness to disappear and for the resulting tones to sound clearly apart.
 
@@ -202,7 +201,7 @@ Pitch also depends on ***duration***. A tone must last more than a minimum amoun
 
   <img src="images/masking1.PNG" style="zoom:50%"/>
 
-  Gelfand provides a basic example.[1] Let us say that for a given individual, the sound of a cat scratching a post in an otherwise quiet environment is first audible at a level of $10$ $dB$ SPL. However, in the presence of a masking noise (for example, a vacuum cleaner that is running simultaneously) that same individual cannot detect the sound of the cat scratching unless the level of the scratching sound is at least 26 dB SPL. We would say that the unmasked threshold for that individual for the target sound (i.e., the cat scratching) is 10 dB SPL, while the masked threshold is $26$ $dB$ SPL. The amount of masking is simply the difference between these two thresholds: $16$ $dB​$.
+  Let us say that for a given individual, the sound of a cat scratching a post in an otherwise quiet environment is first audible at a level of $10$ $dB$ SPL. However, in the presence of a masking noise (for example, a vacuum cleaner that is running simultaneously) that same individual cannot detect the sound of the cat scratching unless the level of the scratching sound is at least 26 dB SPL. We would say that the unmasked threshold for that individual for the target sound (i.e., the cat scratching) is $10$ $dB$ SPL, while the masked threshold is $26$ $dB$ SPL. The amount of masking is simply the difference between these two thresholds: $16$ $dB​$.
 
   <img src="images/masking2.PNG" style="zoom:70%"/>
 
@@ -226,20 +225,22 @@ Pitch also depends on ***duration***. A tone must last more than a minimum amoun
 
   The common instrumental pitch range spans most this frequency range.
 
-  Frequencies above 10kHz give rise to pitch sensations that, although may be distinguishable from other pitch sensations, are hard to identify and cannot accurately portray direction of pitch change. 
+  Frequencies above $10kHz$ give rise to pitch sensations that, although may be distinguishable from other pitch sensations, are hard to identify and cannot accurately portray direction of pitch change. 
 
 #### Hearing Aids
 
 - ***$dB$ SPL vs $dB$ HL***
-  The decibel  ($dB$) is a logarithmic unit of measurement used to express the  magnitude of a sound relative to some reference level. Decibels in hearing level, or  $dB$ HL ,  is  commonly used in audiology because it refers to the decibel level on the audiometer. The reference level for dB HL is “0,” which is related to the average threshold in decibels sound pressure level (dB SPL) for the average, normal-hearing listener. In the following figure, the  solid  black  line  represents  the  average  auditory  threshold  in  dB  SPL  at  each  audio-metric frequency. Each threshold in dB SPL is equal to 0 dB HL on the audiometer for the corresponding frequency.  Decibels in sound pressure level, or  dB SPL , refers to the magnitude of the dis-placement of molecules in the air. The reference for dB SPL is$20$ $\mu Pa$ or $0.0002\ \text{dynes}/cm^2$ . Because it is easy to measure $dB$ SPL with a condenser or free-field microphone coupled to a sound level meter, sound measurements are often expressed in $dB$ SPL.
+  The decibel  ($dB$) is a logarithmic unit of measurement used to express the  magnitude of a sound relative to some reference level. Decibels in hearing level, or $dB$ HL ,  is  commonly used in audiology because it refers to the decibel level on the audiometer. The reference level for $dB$ HL is "$0$", which is related to the average threshold in decibels sound pressure level (dB SPL) for the average, normal-hearing listener. In the following figure, the  solid  black  line  represents  the  average  auditory  threshold in $dB$ SPL at  each audio-metric frequency. Each threshold in $dB$ SPL is equal to $0$ $dB$ HL on the audiometer for the corresponding frequency.  Decibels in sound pressure level, or  $dB$ SPL , refers to the magnitude of the displacement of molecules in the air. The reference for dB SPL is $20$ $\mu Pa$ or $0.0002\ \text{dynes}/cm^2$ . Because it is easy to measure $dB$ SPL with a condenser or free-field microphone coupled to a sound level meter, sound measurements are often expressed in $dB$ SPL.
+  $$
+  dB_{SPL} = 20\log_{10}\left(\frac{p}{p_0}\right)dB
+  $$
+  
 
   <img src="images/dbhl.PNG" style="zoom:60%"/>
 
 
 
 #### Cochlear implants and Implantable Hearing Devices (IHD)
-
-
 
 - ***Middle-Ear Implants*** (MEI) [Mechanical Stimulation (vibration)]
 
@@ -253,7 +254,7 @@ Pitch also depends on ***duration***. A tone must last more than a minimum amoun
 
 The ***most comfortable loudness*** (MCL) (typically called **C** or **M** level) level is the level at which the listener perceives pure-tones or speech as “*most comfortable*”. This may be measured during a hearing test by presenting sounds at different levels and asking the listener to identify the most comfortable level. The measurement can be useful for programming hearing aids. 
 
-***Neural Response Telemetry*** (also called neural response imaging –NRI) is the method by which one can measure responses from the auditory nerve. The implant array is used to deliver electrical pulses the elicit the compound action potential (CAP). The same electrode array is used also to measure the CAP and send back to the speech processor unit the CAP waveform. CAP elicited by electric stimulation, are called ***ECAP*** .
+***Neural Response Telemetry*** , also called neural response imaging (NRI), is the method by which one can measure responses from the auditory nerve. The implant array is used to deliver electrical pulses the elicit the compound action potential (CAP). The same electrode array is used also to measure the CAP and send back to the speech processor unit the CAP waveform. CAP elicited by electric stimulation, are called ***ECAP*** .
 
 *ECAP latency* (time between stimulus onset and N1 peak) = $200-400$ $\mu s$.
 
@@ -275,13 +276,13 @@ $t$NRI = $65\%​$ of C
 
   <img src="images/stim.png" style="zoom:35%"/>
 
-  Most  of  the  current  cochlear  implant  systems  use  intracochlear  and  extracochlear  electrodes.  Three different modes of current stimulation have been used in cochlear implant systems – *Monopolar*, *Bipolar* and *Common ground* 
+  Most of the current cochlear implant systems use intracochlear and extracochlear electrodes. Three different modes of current stimulation have been used in cochlear implant systems – *Monopolar*, *Bipolar* and *Common ground*.
 
-  In  ***monopolar***  stimulation,  current  is  passed  between  one  active  intracochlear  electrode  and  the  extracochlear  electrodes  (which  provide  the  return  current  path)  placed  either  as  a  ball  electrode  under  the  temporalis  muscle  (MP1)  or  a  plate  electrode  on  the  receiver  casing  (MP2)  (figure  2b).  When  both  of  these  extracochlear  electrodes  act  as  return  electrodes  in  parallel,  it  is  called  MP1+2  configuration. 
+  In ***monopolar*** stimulation, current is passed between one active intracochlear electrode and the  extracochlear electrodes (which  provide the  return  current  path) placed either as a ball electrode  under the temporalis muscle (MP1) or a plate electrode on the receiver casing (MP2). When both of these extracochlear electrodes act as return electrodes in parallel, it is called MP1+2 configuration. 
 
-  In ***bipolar*** stimulation, current flows between an active and a return electrode within  the  cochlea;  whereas  in  common  ground  stimulation,  current  flows  from  one  electrode within the cochlea to all other intracochlear electrodes.  
+  In ***bipolar*** stimulation, current flows between an active and a return electrode within  the  cochlea;  whereas in common ground stimulation, current flows from one electrode within the cochlea to all other intracochlear electrodes.
 
-  ***Common Ground*** is an important stimulation mode because it is used diagnostically to detect electrode anomalies, since each electrode is independently activated
+  ***Common Ground*** is an important stimulation mode because it is used diagnostically to detect electrode anomalies, since each electrode is independently activated.
 
   
 
@@ -300,8 +301,6 @@ $t$NRI = $65\%​$ of C
   <img src="images/EOG.png" style="zoom:45%"/>
 
 
-
-
 - ***Cortical Visual Evoked Potentials***
 
   <img src="images/pr.png" style="zoom:45%"/>
@@ -310,10 +309,10 @@ $t$NRI = $65\%​$ of C
 
   With pattern reversal VEPs examination, it is possible to verify the developing ***capability of perceiving patterns in newborns***, who obviously would not respond to psychophysical trials. 
 
-   P100 amplitude and latency can be explored by varying both chess dimension and contrast.
+  P100 amplitude and latency can be explored by varying both chess dimension and contrast.
 
-   The main obtainable clinical information relates to the existence/non-existence of a cortical response.
-   So..
+  The main obtainable clinical information relates to the existence/non-existence of a cortical response.
+  So..
 
   - ERG provides rough, objective information about the functional responsiveness of retina and receptors.
 
@@ -342,7 +341,9 @@ $t$NRI = $65\%​$ of C
 
   <img src="images/fa.png" style="zoom:45%"/>
 
-- ***Fluoroscein Angiography***
+  What is a barrier filter? look [here](<https://www.nightsea.com/articles/barrier-filter/>)
+
+- ***Fluorescein Angiography***
 
   <img src="images/fan.png" style="zoom:45%"/>
 
@@ -375,14 +376,14 @@ $t$NRI = $65\%​$ of C
 - ***Optical Coherence Tomography***
   ***Fundus*** imaging displays a flat image of the retina while ***Ophthalmic echography*** can only resolve the position in depth of the retina.
 
-  Neither of these methods can show the microscopic structure of retinal layers, which is \textit{of utmost importance in the clinical assessment of retinal degeneration pathologies}. 
+  Neither of these methods can show the *microscopic structure of retinal layers*, which is *of utmost importance in the clinical assessment of retinal degeneration pathologies.*
 
   <img src="images/oct.png" style="zoom:45%"/>
 
-
+  OCT is obtained by means of Michaelson Interferometer technique.
 
 - ***Michaelson Interferometer***
-  In physics, two wave sources are perfectly \textbf{coherent} if they have a constant phase difference and the same frequency, and the same waveform.
+  In physics, two wave sources are perfectly *coherent* if they have a constant phase difference and the same frequency, and the same waveform.
 
   <img src="images/int1.png" style="zoom:45%"/>
 
@@ -442,11 +443,9 @@ $t$NRI = $65\%​$ of C
 
   Refractive surgery has become very popular in recent years; however, some complications may result in rare cases, mainly due to healing of the cornea with an imperfect surface (irregular astigmatism), which blurs the vision of light spots in the dark.
 
-
-
 - ***Retinal Degeneration Pathologies***
 
-  Most retinal degeneration pathologies involve the \textbf{loss of receptors}.
+  Most retinal degeneration pathologies involve the loss of receptors.
 
   The gangliar cells (often with most retinal layers) and the subsequent visual pathways are preserved.
   Hence, a functional electrical stimulation of the retina could stimulate visual pathways.
@@ -709,7 +708,7 @@ $t$NRI = $65\%​$ of C
 
 - ***Kurtzweil Reading Machine. Explain it.***
 
-   The input to a KRM is also a digital image, captured by a small camera.
+  The input to a KRM is also a digital image, captured by a small camera.
 
   Optical Character Recognition (OCR) is used to recognize single characters; this was not a trivial problem in the 1970s, since it requires to solve a fairly difficult pattern recognition problem (performed by a computer).
   Vocabularies are used to recognize entire words (thus correcting misinterpretations of single characters).
@@ -791,9 +790,161 @@ $t$NRI = $65\%​$ of C
   (GUARDA DISEGNI, RICORDATI BENE COS'è UNA SHORT COHERENCE LENGTH LIGHT)
 
 - ***ARTICULATION FEATURES OF CONSONANT (PHONETIC)***
+
 - ***OAES DP AND I/O GRAPHS***
+
+   ![](images/DP1.PNG)
+
+   ![](images/DP2.PNG)
+
+   ![](images/DP3.PNG)
+
+   ![](images/DP4.PNG)
+
+   ![](images/DP5.PNG)
+
+   ![](images/DP6.PNG)
+
+   ![](images/DP7.PNG)
+
+- ***CEOAEs***
+
+   ![](images/CEO1.PNG)
+
+   ![](images/CEO3.png)
+
+   ![](images/CEO2.PNG)
+
+   ![](images/CEO4.PNG)
+
 - ***CARDIOID DYNAMIC DIR MIC***
+
 - ***Thermal effect laser with absorption/wavelength graph***
+
+   This principle (thermal effect) is used to reach deep structures like the retina. It exploits the high transmittance of the normal optic path to visible and near-infrared light and the high absorbance of fundus oculi, due to the presence of absorbing pigments like: 
+
+   - a) *oxyhemoglobin*
+   - b) *melanin*
+   - c) *xanthophyll*
+
+   ![](images/thereff.PNG)
+
+   Blue, green, and yellow are highly absorbed by vessels, while red affects mainly the pigmented epithelium, rich in melanin.  The duration of laser pulses is not critical. Conversely, the pulse energy (power multiplied by duration) must be calibrated. Calibrated lesions can be used both to selectively destroy vessels or to fix the retina to the choroid by scar tissue.
+
+- ***Diabetic Retinopathy treatment*** (always related to thermal effect)
+
+   Diabetic retinopathy causes an abnormal proliferation of vessels, which invade the macula, thus blurring this region most important for vision. 
+
+   ![](images/DiabRet.jpg)
+
+   The lesions caused by the laser pulses in the areas surrounding the macula permit to recover and preserve the central vision. The peripheral loss of receptors in the scars results in scotomas, which are not perceived, and in a partial loss of the far less important lateral vision. A scotoma is an area of partial alteration in the field of vision consisting of a partially diminished or entirely degenerated visual acuity that is surrounded by a field of normal – or relatively well-preserved – vision. 
+
+- ***Iridotomy for glaucoma treatment***
+
+    The iris is also rich of pigment (melanin) and can be similarly targeted in order to create small holes. This is a typical treatment of glaucoma (when drugs are not sufficient) in order to permit the depletion of the anterior chamber and avoid the excess of eye tone, which damages the retina. Laser trabeculoplasty is an alternative treatment of glaucoma: it modifies the trabecular tissue at the iris angle. Check [here](<https://www.youtube.com/watch?v=XL3p3aiRoBU>).
+
+- ***Treatment of Retinal rupture***
+
+   Limited ruptures in the lateral retina can later develop into severe retinal detachment. By surrounding the lesion with scars created by laser pulses, a barrier is formed which fixes the retina to the eye wall and prevents rupture extension.
+
+- ***Photomechanic effect***
+
+   The employment of very short (10-100 nsec) pulses with high power produced by Nd:YAG (neodymium-doped yttrium aluminum garnet) lasers (wavelength 532, 1064 nm) causes a relativistic mechanical effect sufficient to cause the rupture of membranes.
+
+   This phenomenon can also be conceived as optical-breakdown of molecules, due to the high amplitude of the electrical field oscillations in the electromagnetic wave.
+
+   A typical application is the rupture of a membrane (capsula) than can surround the artificial lens implanted after cataract surgery to substitute the removed opaque natural lens.
+
+- ***Photochemical effect***
+
+   Molecules like porphyrins can be activated by laser light and become highly cytotoxic, so that they can be injected in their inactive form without systemic damage and can be selectively activated into eye tumors for chemotherapeutic action.
+
+- ***What it Photorefractive Karatectomy (PRK)***
+
+   For the correction of small defects the surgeon operates directly on the corneal surface, without removing its epithelium (which subsequently is formed again). This approach is called Photorefractive Keratectomy (PRK). 
+
+- ***What is LASIK?***
+
+   in LASer In Situ Keratomileusis (LASIK) used for higher myopia grades, the corneal shaping is preceded by lifting a thin patch of corneal epithelium, which is laid again on the remodeled surface at the end.
+
+   ![](images/LASIK.PNG)
+
+- ***Pros and Cons of cortical implants***
+
+   Foerster (1929) and Krause and Schum (1931) were the first to report the perception of a spot of light, called phosphene, by a conscious patient under brain surgery when the occipital cortex was electrically stimulated.
+
+   Although a phosphene is rather an unspecific sensation, it is well localized in correspondence to the retinal coordinates mapped onto the cortex (or other stimulations sites) thanks to the retinotopic mapping of retina up to V1.
+
+   *Pros*: the retinotopy is well defined and the most important macular region is magnified over a large cortical area. 
+
+   *Cons*: important convergence has already taken place forming the hypercolumns, which are stimulated as a whole; so, the gain of more resolution by increasing the density of electrodes is prospectively limited to the number of hypercolumns.  A selective delivery of information relevant to the local orientation of borders should address the complex and highly variable pattern of orientation columns. However, these cons are relevant in the very far perspective of achieving high resolution stimulation, which is not the case, so far. Resolution by pure exploitation of V1 retinotopy will never overcome the number of hypercolumns, approximately 60’000, 20’000 in the macular region.
+
+-  ***Types of retinal implants***
+
+  - *Epiretinal*
+
+    The electrode array is attached to the inner retinal surface laying on the ganglion cells.  A problem specific to epiretinal implants is that of attaching them to the thin retinal membrane, without harming or tearing it. For this reason, the implanted eyes should be immobilized to prevent the inertial forces related to the implant mass. 
+
+  - *Subretinal*
+
+    The electrode array is inserted between the retina and the choroid. A problem specific to subretinal implants is the metabolic barrier they create between the retina and the choroid, which can impede retinal survival. A way to overcome this problem is to design holes in the implant. 
+
+  Design features to be decided for both types are: 
+
+  - *Image capture and transmission*
+
+    A possibility is to directly transduce illumination of the device elements (e.g., photodiodes) which convert it in a local stimulus (in subretinal prototypes). • Alternatively, the image is captured by a camera placed outside or inside the eye bulb, in place of the vitreous body. 
+
+  - *Energy*
+
+    The energy of illumination hitting an implant element is not sufficient to drive a stimulus above threshold. Extra energy can be delivered either by amplifying the signal from an external camera or by transmitting an energy signal (e.g., infrared light) to the implant. Alternatively, the size of elements should be fixed sufficiently large to capture enough light energy to produce an effective stimulus.
+
+  - *Position and density of elements*
+
+    A major problem is the high resolution required at the macular region, which is also the most delicate one. Placing the implant in lateral regions is not likely to be successful, since lateral vision cannot substitute macular vision. 
+
+  - *Biocompatibility*
+
+    This is a two way problem, since material should not harm the retinal cells we want activate, nor should be consumed by the very aggressive bio-chemical environment found in the eye.
+
+- ***OAEs***
+
+  OAEs are low level sounds generated by the cochlea.
+
+  OAEs are generated by active mechanisms due to Outer Hair Cells.
+
+  OAEs are the most sensitive objective indicator of 
+  cochlear anatomic/functional integrity *in vivo* .
+
+  Can be measured in normal hearing subjects.
+
+  Weak or totally absent in hearing impaired subjects, even in mild or moderate hearing losses (30-40 dB HL)
+
+  Are measured objectively and non-invasively 
+
+  Very high intra-subject test-retest repeatability
+
+  Very high inter-subject variability 
+
+  Highly nonlinear and non-stationary
+
+- ***OAEs classification***
+
+  - *Spontaneous* Otoacoustic Emissions (SOAE)
+
+  - *Evoked Otoacoustic Emissions* (EOAE)
+
+    - Stimulus Frequency Otoacoustic Emissions (SFOAE)
+
+    - Distortion Product Otoacoustic Emissions (DPOAE)
+
+    - Transient Evoked Otoacoustic Emissions (TEOAE) 
+
+      ° Click stimuli (CEOAE)
+
+      ° Tone Burst stimuli (TBOAE)
+
 - ***homunculus***
 - ***red blue green in fundus oculi***
 - ***near field vs far evoked potential***
+
