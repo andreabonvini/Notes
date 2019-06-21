@@ -26,11 +26,11 @@ Shannon showed that if we assume the entropy function should satisfy a set of re
 - $I(1) = 0$ (Events that always occur do not communicate information)
 - $I(p_1p_2) = I(p_1) + I(p_2)$ (Information due to independent events is *additive*)
 
-The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n​$ equiprobable outcomes and another has one of $m​$ equiprobable outcomes then there are $mn​$ possible outcomes of the joint event. This means that if $log_2(n)​$ bits are needed to encode the first value and $log_2(m)​$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)​$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
+The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n$ equiprobable outcomes and another has one of $m$ equiprobable outcomes then there are $mn$ possible outcomes of the joint event. This means that if $log_2(n)$ bits are needed to encode the first value and $log_2(m)$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)​$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
 $$
 I(p) = \log\left(\frac{1}{p}\right)
 $$
-The base of the logarithm can be any fixed real number greater than 1. ($2 \to bits​$, $3\to trits​$, etc...)
+The base of the logarithm can be any fixed real number greater than 1. ($2 \to bits$, $3\to trits$, etc...)
 
 Now, suppose we have a distribution where event $i$ can happen with probability $p_i$. Suppose we have sampled it $N$ times and outcome $i$ was, accordingly, seen $n_i =Np_i$ times. The total amount of information we have received is:
 $$
@@ -42,9 +42,9 @@ $$
 $$
 So the entropy of a source that emits a sequence of $N$ symbols that are independent and identically distributed ($iid$) is $N·I$ bits (per message of $N$ symbols). 
 
-Suppose $1000​$ bits ($0s​$ and $1s​$) are transmitted, If the value of each of these bits is known to the receiver (has a specific value with certainty) *ahead* of transmission, it is clear that no information is transmitted. If, however, each bit is independently equally likely to be $0​$ or $1​$, $1000​$ shannons of information (more often called bits) have been transmitted. Between these two extremes, information can be quantified as follows.
+Suppose $1000$ bits ($0s$ and $1s$) are transmitted, If the value of each of these bits is known to the receiver (has a specific value with certainty) *ahead* of transmission, it is clear that no information is transmitted. If, however, each bit is independently equally likely to be $0$ or $1$, $1000$ shannons of information (more often called bits) have been transmitted. Between these two extremes, information can be quantified as follows.
 
-If $X​$ is the set of all messages $\{ x_1,\dots,x_n\}​$ that $X​$ could be, and $p(x)​$ is the probability of some $x \in X​$ , then the entropy $H​$ of $X​$ is defined:
+If $X$ is the set of all messages $\{ x_1,\dots,x_n\}$ that $X$ could be, and $p(x)$ is the probability of some $x \in X$ , then the entropy $H$ of $X$ is defined:
 $$
 H(X) = E_x\left[I(x)\right]=-\sum_{x\in X}p(x)\log p(x)
 $$
@@ -52,9 +52,9 @@ The special case of information entropy for a random variable with two outcomes 
 $$
 H_b(p) = -p\log_2{p}-(1-p)\log_2(1-p)
 $$
-![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/BEG.png)
+![](images/BEG.png)
 
-Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
+Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y​$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
 $$
 H(X,Y) = E_{X,Y}\left[-\log p(x,y)\right] = -\sum_{x,y}p(x,y)\log p(x,y)
 $$
@@ -92,7 +92,7 @@ A basic property of the mutual information is that
 $$
 I(X;Y) = H(X)-H(X|Y)
 $$
-That is, knowing $Y​$, we can save an average of $I(X;Y)​$ bits in encoding $X​$ compared to not knowing $Y​$.
+That is, knowing $Y$, we can save an average of $I(X;Y)$ bits in encoding $X$ compared to not knowing $Y$.
 
 Mutual information is symmetric:
 $$
@@ -102,7 +102,7 @@ To have an intuitive understanding of what's going on:
 
 ------
 
-Remember that $H​$ can be seen as a measure of *uncertainty*!
+Remember that $H$ can be seen as a measure of *uncertainty*!
 
 $H(X)$ = The information stored in $X$
 
@@ -110,7 +110,7 @@ $H(X|Y)$ = The information stored in $X$ given that the value of $Y$ is known
 
 $H(X)-H(X|Y)$ = The information we know of $X$ without what we know of $X$ given $Y$, which is a measure of the dependence of $X$ and $Y$.
 
-If $X​$ and $Y​$ have no dependence, then we get $I(X;Y) = H(X)-H(X)=0​$.
+If $X$ and $Y$ have no dependence, then we get $I(X;Y) = H(X)-H(X)=0$.
 
 If they are fully dependent, we get $I(X;Y) = H(X)-0=H(X)$ or $I(X;Y)=H(Y)-0=H(Y)$
 
@@ -120,7 +120,7 @@ $I(X;Y)=H(X)-H(X|Y)$.
 
 ------
 
-![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)$.
+![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)​$.
 
 Let's define now the *entropy* in a continuous domain, we see that the sum is replaced with an integral:
 $$
@@ -132,9 +132,9 @@ We have $X \sim \mathcal{N}(0,\sigma^{2})$ with *probability density function*�
 $$
 h_a(x) = -\int\phi(x)\log_a\phi(x)dx = -\int\phi(x)\left(\log_a{\frac{1}{\sqrt{2\pi\sigma^{2}}}-\frac{x^2}{2\sigma^2}\log_ae}\right)dx\\=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}E_{\phi}\left[X^2\right]=\frac{1}{2}\log_a(2\pi\sigma^2)+\frac{\log_ae}{2\sigma^2}\sigma^2=\\\frac{1}{2}\log_a(2\pi e\sigma^2)
 $$
-Even if we had considered a mean $\mu \neq 0​$ the result would have been the same, $\mu​$ does not enter the final formula, so all Gaussians with a common $\sigma ​$ have the same entropy.
+Even if we had considered a mean $\mu \neq 0$ the result would have been the same, $\mu$ does not enter the final formula, so all Gaussians with a common $\sigma $ have the same entropy.
 
-We are going to prove that on the reals $\R​$, the maximum entropy distribution with a given mean and variance is the *Gaussian* distribution.
+We are going to prove that on the reals $\R$, the maximum entropy distribution with a given mean and variance is the *Gaussian* distribution.
 
 Let $g(x)$ be a *Gaussian PDF* (probability density function) with mean $\mu$ and variance $\sigma^2$ and $f(x)$ an arbitrary *PDF* with the same variance. Since differential entropy is translation invariant we can assume that $f(x)$ has the same mean of $\mu$ as $g(x)$
 
@@ -158,7 +158,7 @@ h(X_1,X_2,\dots,X_n)=\frac{1}{2}\log_a(2\pi e)^n|\mathbb{K}|
 $$
 Where $\mathbb{K}$ is the *covariance matrix*.
 
-The formulation above can be derived as before starting from the *pdf* of the multivariate (with $n$ different descrpitors) normal distribution, which is:
+The formulation above can be derived as before starting from the *pdf* of the multivariate (with $n$ different descriptors) normal distribution, which is:
 $$
 \phi(x)=\frac{1}{(2\pi)^{n/2}|\mathbb{K}|^{1/2}}e^{-\frac{1}{2}(x-\mu)^T\mathbb{K}^{-1}(x-\mu)}
 $$
@@ -178,7 +178,7 @@ The Conditional Differential Entropy of jointly distributed random variables $X,
 $$
 H(X|Y) = -\int f(x,y)\log_a f(x|y)dxdy = h(X,Y)-h(Y)
 $$
-The *Relative entropy* (Or Kullback-Leibler Distance between two densities $f(x)$ and $g(x)$ is defined as:
+The *Relative entropy* (Or Kullback-Leibler Distance between two densities $f(x)$ and $g(x)$ ) is defined as:
 $$
 \mathcal{D}(f||g)=\int f(x)\log_a\frac{f(x)}{g(x)}dx
 $$

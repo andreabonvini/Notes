@@ -22,15 +22,13 @@
 
 (*Andrea Bonvini*) 
 
- `TO DO : add upper bound stuff` 
-
 Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
 <img src="images/svm1.png" style="zoom:40%"/>
 
 With SVMs we force our *margin* to be at least *something* in order to accept it, by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
-Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just image a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
+Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just imagine a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
 
 - There's a minor technicality about the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ which is annoying , let's say I multiply the vector $\mathbf{w}$ by $1000000$ , I get the *same* hyperplane! So any formula that takes $\mathbf{w}$ and produces the margin will have to have built-in *scale-invariance*, we do that by normalizing $\mathbf{w}$ , requiring that for the nearest data point $\mathbf{x}_n$:
   $$
@@ -95,11 +93,11 @@ Let's now formulate the optimization problem:
 $$
 \underset{w}{\operatorname{argmax}}\frac{1}{||\mathbf{w}||}\\\text{subject to}\;\underset{n=1,2,\dots,N}{\operatorname{min}}|\mathbf{w}^T\mathbf{x}_n+b|=1
 $$
-Since this is not a *friendly* optimization problem (the constraint have a minimum and an absolute value in them, which are annoying) we are going to find an equivalent problem which is easier to solve. Our optimization problem can be rewritten as
+Since this is not a *friendly* optimization problem (the constraint is characterized by a minimum and an absolute, which are annoying) we are going to find an equivalent problem which is easier to solve. Our optimization problem can be rewritten as
 $$
 \underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
 $$
-where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to the sign of our prediction $(\mathbf{w}^T\mathbf{x}_n+b)$ . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down the right hyperplane $\mathbf{w}^T\mathbf{x}_n+b$  (by "*scaling down*" I simply mean multiplying it by a constant factor e.g. $\gamma < 1$ ) until it touches $1$ for some specific point $n​$ of the dataset.
+where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to its real target value ( remember that this is a *supervised learning* technique and we know the real target value of each sample) . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down $\mathbf{w}$ until $\mathbf{w}^T\mathbf{x}_n+b$ will touch $1$ for some specific point $n$ of the dataset. 
 
 So how can we solve this? This is a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the [*KKT*](<http://www.svms.org/kkt/>) (Karush–Kuhn–Tucker) conditions.
 
@@ -168,7 +166,7 @@ We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the m
 We now have to 
 $$
 \text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
-\text{s.t.}\\ \ t_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
+\text{s.t.}\\ \ y_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
 \xi_i\ge0\ ,\ \ \ \forall{i}
 $$
 $C$ is a coefficient that allows to treadeoff bias-variance and is chosen by *cross-validation*.
@@ -189,51 +187,45 @@ $$
 
   Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
 
-  And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? Kinda.
+And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? 
 
-  As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
+As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
 $$
   L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
 $$
-  This is called *Leave-One-Out Bound* because _______________ (<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf>) check here. The good thing is that it can be easily computed and we don't need to run SVM multiple times.
+This is called *Leave-One-Out Bound* (I don't know why, maybe it's written [here ](<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf> )). The good thing is that it can be easily computed and we don't need to run SVM multiple times.
 
-  The other error bound is blabla
+The other kind of bound is called *Margin bound*: a bound on the VC dimension which decreases with the margin. The larger the margin, the less the variance and so, the less the VC dimension. Unfortunately the bound is quite pessimistic 
 
-  
+ Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence, specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
 
-  Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence,specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
-
-  Remember our formulation for the *soft-margin SVM*:
+Remember our formulation for the *soft-margin SVM*:
 $$
-  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   s.t.\\
   0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
   \sum_{i=1}^ny_i\alpha_i=0
 $$
-  *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
+*SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
 $$
-  0\le\alpha_1,\alpha_2\le C\\
-  y_i\alpha_1+y_2\alpha_2=k
+0\le\alpha_1,\alpha_2\le C\\
+  y_1\alpha_1+y_2\alpha_2=k
 $$
-  and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration.
+and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{i=1}^ny_i\alpha_i=0$ ).
 
-  The algorithm proceeds as follows:
+The algorithm proceeds as follows:
 
   - Find a Lagrange multiplier $\alpha_1$ that violates the *KKT* conditions for the optimization problem.
   - Pick a second multiplier $\alpha_2$ and optimize the pair ($\alpha_1$,$\alpha_2$).
   - Repeat steps $1$ and $2$ until convergence.
 
-  When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
+When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
 
 <div style="page-break-after: always;"></div> 
 
 ### PAC & VC Dimension
 
-***Write just a very very little definition of PAC Learning, then deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of linear classiﬁers?***
-
-( *Andrea Bonvini*)
-
-`TODO: { add *Agnostic Learning* and finish *VC DIMENSION* }`
+***What do we mean as PAC-Learning and Agnostic-Learning?***
 
 First, some concepts you need to know:
 
@@ -246,115 +238,166 @@ First, some concepts you need to know:
 
   This cannot be performed by measuring the bias and the variance, but we can bound them.
 
-  Given:
+Given:
 
-  - Set of instances $\mathcal{X}$
-  - Set of hypotheses $\mathcal{H}$ (finite)
-  - Set of possible target concepts $C$. Each concept $c$ corresponds to a boolean function $c:\mathcal{X} \to\{0,1\}$ which can be viewed as belonging to a certain class or not
-  - Training instances generated by a fixed, unknown probability distribution $P$ over $X$. 
+- Set of instances $\mathcal{X}$
+- Set of hypotheses $\mathcal{H}$ (finite)
+- Set of possible target concepts $C$. Each concept $c$ corresponds to a boolean function $c:\mathcal{X} \to\{0,1\}$ which can be viewed as belonging to a certain class or not
+- Training instances generated by a fixed, unknown probability distribution $P$ over $X$. 
 
-  The learner observes a sequence $D$ of training examples $\langle x,c(x) \rangle$, for some target concept $c \in C$ and it must output a hypothesis $h$ estimating $c$.
+The learner observes a sequence $D$ of training examples $\langle x,c(x) \rangle$, for some target concept $c \in C$ and it must output a hypothesis $h$ estimating $c$.
 
-  $h$ is evaluated by its performance on subsequent instances drawn according to $P$
+$h$ is evaluated by its performance on subsequent instances drawn according to $P$
+$$
+L_{true} = Pr_{x \in P}[c(x) \neq h(x)]
+$$
+We want to bound $L_{true}$ given $L_{train}$, which is the percentage of misclassiﬁed training instances.
+
+Let's talk now about *Version Spaces* : The version space $VS_{\mathcal{H},\mathcal{D}}$ is the subset of hypothesis in $H$ consistent with the training data $D$ (in other words is the subset of $H$ where $L_{train} = 0$).
+
+![](images/VS1.PNG)
+
+How likely is the learner to pick a *bad hypothesis* ?
+
+![](images/th1.PNG)
+
+If you're interested in the proof:
+
+------
+
+![](images/PROOF.PNG)
+
+where $k$ is (probably) the number of hypothesis $h \in VS_{\mathcal{H},\mathcal{D}}$  
+
+------
+
+Now, we use a *Probably Approximately Correct (PAC) bound*:
+
+If we want this probability to be at most $\delta$ we can write
+$$
+|H|e^{-\epsilon N}\le \delta
+$$
+which means
+$$
+N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+and
+$$
+\epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+Note that if, *for example*, we consider $M$ boolean features, there are $|C| = 2^M$ distinct concepts and hence $|H| = 2^{2^M}$ (which is huuuge)
+
+If you wonder why let's suppose we have just $2$ boolean features ($A$ and $B$ ) , then we have $|H| = 2^{2^2} = 16$ distinct boolean functions :
+
+```
+A   B|  F0  F1  F2  F3  F4  F5  F6  F7
+0   0|  0   0   0   0   0   0   0   0
+0   1|  0   0   0   0   1   1   1   1
+1   0|  0   0   1   1   0   0   1   1
+1   1|  0   1   0   1   0   1   0   1
+
+A   B|  F8  F9  F10 F11 F12 F13 F14 F15
+0   0|  1   1   1   1   1   1   1   1
+0   1|  0   0   0   0   1   1   1   1
+1   0|  0   0   1   1   0   0   1   1
+1   1|  0   1   0   1   0   1   0   1
+
+function            symbol          name
+F0                  0               FALSE
+F1                  A ^ B           AND
+F2                  A ^ !B          A AND NOT B
+F3                  A               A
+F4                  !A ^ B          NOT A AND B
+F5                  B               B
+F6                  A xor B         XOR
+F7                  A v B           OR
+F8                  A nor B         NOR
+F9                  A XNOR B        XNOR
+F10                 !B              NOT B
+F11                 A v !B          A OR NOT B
+F12                 !A              NOT A
+F13                 !A v B          NOT A OR B
+F14                 A nand B        NAND
+F15                 1               TRUE
+```
+
+and so the bounds would have an *exponential* dependency on the number of features M !
+$$
+N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
+N \ge \frac{1}{\epsilon}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
+N \ge \frac{1}{\epsilon}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)\\
+\epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
+\epsilon \ge \frac{1}{N}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
+\epsilon \ge \frac{1}{N}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+which is bad news.
+
+Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
+
+Now, look at the bounds we defined earlier:
+$$
+N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
+\epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
+
+*Definition :*
+
+$C$ is ***PAC-learnable*** it there exists an algorithm $L$ such that for every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le 1$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$ 
+
+$C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ , $\frac{1}{\delta}$, $M$ and $size(c)$.
+
+Let's talk now about ***Agnostic Learning***...
+
+Usually the *train* error is not equal to zero, so the $VS$ is empty. In this case there is the need of bounding the gap between train and true errors.
+$$
+L_{true}(h) \le L_{train}(h) + \epsilon\\
+L_{true}(h) - L_{train}(h)\le \epsilon
+$$
+Firstly, some background:
+
+In probability theory , the *Hoeffding's inequality* provides an upper bound on the probability that the sum of bounded random variables deviates from its expected value by more than a certain amount. Formally speaking, for $N$ *i.i.d* coin flips $X_1,\dots,X_N$ where $X_i \in \{0,1\}$ and $0<\epsilon<1$ , we define the empirical mean
+$$
+\overline{X}=\frac{1}{N}(X_1+\dots+X_N)
+$$
+obtaining the following bound:
+$$
+Pr(\mathbb{E}[\overline{X}]-\overline{X}>\epsilon)<e^{-2N\epsilon^2}
+$$
+*Theorem:*
+
+![](images/AGN1.PNG)
+
+*PAC bound and Bias-Variance Tradeoff*
+
+![](images/AGN2.PNG)
+
+- For large $|H|$ 
+
+  - Low bias (assuming we can find a good $h$ )
+  - High variance (because bound is loser)
+
+- For small $|H|$
+
+  - High bias (is there a good $h$ ? )
+  - Low variance (tighter bound)
+
+- Given $\delta$, $\epsilon$ how large should $N$ be?
   $$
-  L_{true} = Pr_{x \in P}[c(x) \neq h(x)]
+  N\ge\frac{1}{2\epsilon^2}\left(\ln |H|+\ln\frac{1}{\delta}\right)
   $$
-  We want to bound $L_{true}$ given $L_{train}​$, which is the percentage of misclassiﬁed training instances.
 
-  Let's talk now about *Version Spaces* : The version space $VS_{\mathcal{H},\mathcal{D}}$ is the subset of hypothesis in $H$ consistent with the training data $D$ (in other words is the subset of $H$ where $L_{train} = 0$).
+`manca la parte che trovi su PMDS` 
 
-  ![](images/VS1.PNG)
+***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁers?***
 
-  How likely is the learner to pick a *bad hypothesis* ?
+( *Andrea Bonvini*)
 
-  ![](images/th1.PNG)
-
-  If you're interested in the proof:
-
-  -------------
-
-  ![](images/PROOF.PNG)
-
-  where $k$ is probably the number of hypothesis $h \in VS_{\mathcal{H},\mathcal{D}}$  
-
-  --------
-
-  Now, we use a *Probably Approximately Correct (PAC) bound*:
-
-  If we want this probability to be at most $\delta$ we can write
-  $$
-  |H|e^{-\epsilon N}\le \delta
-  $$
-  which means
-  $$
-  N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
-  $$
-  and
-  $$
-  \epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
-  $$
-  Note that if, *for example*, we consider $M$ boolean features, there are $|C| = 2^M$ distinct concepts and hence $|H| = 2^{2^M}$ (which is huuuge)
-
-  If you wonder why let's suppose we have just $2$ boolean features ($A$ and $B$ ) , then we have $|H| = 2^{2^2} = 16$ distinct boolean functions :
-
-  ```
-  A   B|  F0  F1  F2  F3  F4  F5  F6  F7
-  0   0|  0   0   0   0   0   0   0   0
-  0   1|  0   0   0   0   1   1   1   1
-  1   0|  0   0   1   1   0   0   1   1
-  1   1|  0   1   0   1   0   1   0   1
-  
-  A   B|  F8  F9  F10 F11 F12 F13 F14 F15
-  0   0|  1   1   1   1   1   1   1   1
-  0   1|  0   0   0   0   1   1   1   1
-  1   0|  0   0   1   1   0   0   1   1
-  1   1|  0   1   0   1   0   1   0   1
-  
-  function            symbol          name
-  F0                  0               FALSE
-  F1                  A ^ B           AND
-  F2                  A ^ !B          A AND NOT B
-  F3                  A               A
-  F4                  !A ^ B          NOT A AND B
-  F5                  B               B
-  F6                  A xor B         XOR
-  F7                  A v B           OR
-  F8                  A nor B         NOR
-  F9                  A XNOR B        XNOR
-  F10                 !B              NOT B
-  F11                 A v !B          A OR NOT B
-  F12                 !A              NOT A
-  F13                 !A v B          NOT A OR B
-  F14                 A nand B        NAND
-  F15                 1               TRUE
-  ```
-
-  and so the bounds have an *exponential* dependency on the number of features M !
-  $$
-  N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
-  N \ge \frac{1}{\epsilon}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
-  N \ge \frac{1}{\epsilon}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)\\
-  \epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)\\
-  \epsilon \ge \frac{1}{N}\left(\ln2^{2^M}+\ln\left(\frac{1}{\delta}\right)\right)\\
-  \epsilon \ge \frac{1}{N}\left(\underline{\underline{2^M}}\ln2+\ln\left(\frac{1}{\delta}\right)\right)
-  $$
-  which is bad news.
-
-  Instead of having an *exponential* dependency on $M$ we'd like to have a, *guess what?* , *polynomial* dependency!
-
-  Consider a class $C$ of possible target concepts deﬁned over a set of instances $X$ and a learner $L$ using hypothesis space $H$.
-
-  *Definition :*
-
-  $C​$ is ***PAC-learnable*** it there exists an algorithm $L​$ such that for every $c \in C​$ , for any distribution $P​$ , for any $\epsilon​$ such that $0\le\epsilon\le\frac{1}{2}​$ and $\delta​$ such that $0\le\delta\le 1​$, with probability at least $1-\delta​$, outputs an hypothesis $h\in H​$, such that $L_{true}(h) \le \epsilon​$, using a number of samples that is polynomial of $\frac{1}{\epsilon}​$ and $\frac{1}{\delta}​$ 
-
-  $C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$, $M$ and $size(c)$.
-
-  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+- We are always talking about *Classification*.
 
 - When counting the number of hypotheses, the entire input space is taken into consideration. In the case of a perceptron, each perceptron differs from another if they differ in at least one input point, and since the input is continuous, there are an infinite number of different perceptrons. (e.g. in a $2-D$ space you can draw an infinite number of different lines)
 
-  Instead of counting the number of hypotheses in the entire input space, we are going to restrict the count only to the sample: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
+  Instead of counting the number of hypotheses in the entire input space, we are going to restrict the count only to the samples: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
 
   A *hypothesis* is a function that maps an input from the entire *input space* to a result:
   $$
@@ -397,7 +440,7 @@ First, some concepts you need to know:
 
   <img src="images/perc.PNG" style="zoom:75%"/>
 
-  This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14​$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m​$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
+  This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
 
 The *VC* ( *Vapnik-Chervonenkis ) dimension* of a hypothesis set $\mathcal{H}$ , denoted by $d_{VC}(\mathcal{H})$ is the largest value of $N$ for which $m_{\mathcal{H}}(N)=2^N$  , in other words is "*the most points $\mathcal{H}$ can shatter* " 
 
@@ -418,6 +461,12 @@ The key observation here is that this statement is independent of:
 - The target function
 
 The only things that factor into this are the training examples, the hypothesis set, and the final hypothesis.
+
+The VC dimension for a linear classifier (i.e. a *line* in 2D, a *plane* in 3D etc...) is $d+1$ (a line can shatter at most $2+1=3$ points, a plane can shatter at most $3+1=4$ points etc...)
+
+Proof: [here](<http://wittawat.com/posts/vc_dimension_linear_classifier.html>)
+
+`READ THE SECTION ON PMDS TOO! `
 
 <div style="page-break-after: always;"></div> 
 
@@ -449,9 +498,9 @@ the cross-validation error rate for each value of ${\lambda}$.
 ​Finally, the model is re-fit using all of the available observations and the selected value of ${\lambda}$.  
 ​Restelli offers the following cost function notation:
 
-${L(w)=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }​$
+${L(\mathbf{w})=L_D(\mathbf{w})+\lambda L_W(\mathbf{w}) }$
 
-where ${L_D(\mathbf{w})}​$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}​$ is the model complexity term.
+where ${L_D(\mathbf{w})}$ is the error on data terms (e.g. RSS) and ${L_W(\mathbf{w})}$ is the model complexity term.
 
 By taking ${L(\mathbf{w})=\frac{1}{2} \mathbf{w}^T\mathbf{w}=\frac{1}{2}||\mathbf{w}||^2_2}$
 
@@ -557,6 +606,9 @@ What have we noticed then?
 
 ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
 *(William Bonvini)* 
+
+`INCOMPLETE: THIS JUST EXPLAIN THE BAYESIAN APPROACH (ALREADY SEEN IN SOFT COMPUTING MAXIMUM A POSTERIORI ESTIMATION)`
+
 I've already described Ridge Regression previously.
 
 *Comparison:*
@@ -571,7 +623,7 @@ Ridge Regression gives us a single point estimate for the output. However, if we
 The aim of Bayesian Linear Regression is not to find the single “best” value of the model parameters, but rather to determine the *posterior distribution* (*a probability distribution that represents your updated beliefs about the parameter after having seen the data*) for the model parameters.  
 Not only is the response generated from a probability distribution, but the model parameters are assumed to come from a distribution as well. The posterior probability of the model parameters is conditional upon the training inputs and outputs:
 $$
-P(\beta|y,X)=\frac{P(y|B,X)P(\beta|X)}{P(y|X)}
+P(\beta|y,X)=\frac{P(y|\beta,X)P(\beta|X)}{P(y|X)}
 $$
 Here, ${P(\beta |y,X)}$ is the posterior probability distribution of the model parameters given the inputs and outputs. This is equal to the likelihood of the data, ${P(y|\beta,X)}$, multiplied by the prior probability of the parameters and divided by a normalization constant. This is a simple expression of Bayes Theorem, the fundamental underpinning of Bayesian Inference:
 $$
@@ -585,7 +637,7 @@ Let's stop and think about what this means. In contrast to Ridge Regression , or
 Here we can observe the two primary benefits of Bayesian Linear Regression:
 
 1. **Priors**:   
-   if we have domain knowledge, or a guess for what the model parameters should be, we can include them in our model, unlike in the frequentist apporach which assumes everything there is to know about the parameters comes from the data. If we don't have any estimates ahead of time, we can use <u>non-informative priors</u> for the parameters such as a normal distribution.
+   if we have domain knowledge, or a guess for what the model parameters should be, we can include them in our model, unlike in the frequentist approach which assumes everything there is to know about the parameters comes from the data. If we don't have any estimates ahead of time, we can use <u>non-informative priors</u> for the parameters such as a normal distribution.
 2. **Posterior**:  
    The result of performing Bayesian Linear Regression is a distribution of possible model parameters based on the data and the prior.  
    This allows us to quantify our uncertainty about the model: if we have fewer data points, the posterior distribution will be more spread out.
@@ -593,6 +645,19 @@ Here we can observe the two primary benefits of Bayesian Linear Regression:
 The formulation of model parameters as distributions encapsulates the Bayesian worldview: we start out with an initial estimate, our prior, and as we gather more evidence, **our model becomes less wrong**. Bayesian reasoning is a natural extension of our intuition. Often, we have an initial hypothesis, and as we collect data that either supports or disproves our ideas, we change our model of the world (ideally this is how we would reason)!
 
 (Sources: [towardsdatascience - Introduction to Bayesian Linear Regression](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7) )  
+
+FORSE W_0 CHE DICE NELLE SLIDE SI RIFERISCE ALLA MEDIA A S_0 ALLA VARIANZA BOH
+
+AAAAA
+
+***We can derive Ridge Regression from Bayesian Linear Regression!***
+If we choose a prior distribution as follows:
+
+![](images/br1.png)
+
+![](images/br2.png)
+
+
 
 <div style="page-break-after: always;"></div> 
 
@@ -610,7 +675,7 @@ Considering a problem of two-class classiﬁcation, in logistic regression the p
 $$
 p(C_1|\phi) = \frac{1}{1+e^{-\mathbf{w}^T\phi}}=\sigma(\mathbf{w}^T\phi)
 $$
-![](C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sigmoid.png)
+![](images/sigmoid.png)
 
 and $p(C_2|\phi) = 1 - p(C_1|\phi)$ 
 
@@ -673,7 +738,7 @@ Formally, principal component analysis (PCA) is a statistical procedure that use
 
 To have a graphical intuition:
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/PCA.png" style="zoom:60%"/>
+<img src="images/PCA.png" style="zoom:60%"/>
 
 It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -729,7 +794,7 @@ where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean 
 
 From this definition it is possible to build a so-called *Radial Basis Function Network*, an artificial neural network that uses *radial basis functions* as activation functions. The output of the network is a linear combination of radial basis functions of the inputs and neuron parameters.
 
-![](C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/RBFN.png)
+![](images/RBFN.png)
 
 The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
 $$
@@ -750,11 +815,11 @@ u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}
 $$
 Here is a $1$-D example where $N=2$, just to give you an idea:
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/URB1.png" style="zoom:70%"/>
+<img src="images/URB1.png" style="zoom:70%"/>
 
 Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/URB2.png" style="zoom:70%"/>
+<img src="images/URB2.png" style="zoom:70%"/>
 
 Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
@@ -762,7 +827,7 @@ But how is this framework related to *regression*? $\to$ *Kernel Regression*!
 
 Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/KR1.png" style="zoom:70%"/>
+<img src="images/KR1.png" style="zoom:70%"/>
 
 How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
 
@@ -867,7 +932,7 @@ K_{nm} = \varphi(\mathbf{x_n})^T\varphi(\mathbf{x_m})=k(\mathbf{x}_n,\mathbf{x}_
 $$
 So, given $N$ vectors, the *Gram Matrix* is the matrix of all *inner products* 
 
-![](C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/GramMatrix.PNG)
+![](images/GramMatrix.PNG)
 
 If we substitute $\mathbf{w} = \Phi^T\mathbf{a}$ into $L_{\mathbf{w}}$ we get
 $$
@@ -905,7 +970,7 @@ The good thing is that instead of inverting an $M\times M$ matrix, we are invert
 
   New kernels can be constructed from simpler kernels as *building blocks*:
 
-  ![](C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/Kernels.PNG)
+  ![](images/Kernels.PNG)
 
 <div style="page-break-after: always;"></div> 
 
@@ -1021,7 +1086,7 @@ The question asks us to find the differences between MC-Prediction and TD-Predic
 
 *Monte-Carlo Update:*  
 The following updates are used *each time* an episode ends.  
-For each state ${s_t}​$ with return ${v_t}​$: 
+For each state ${s_t}$ with return ${v_t}$: 
 
 Stationary Case:
 $$
@@ -1036,11 +1101,11 @@ Non Stationary Case (we use a running mean: we forget old episodes thanks to ${\
 $$
 \color{blue}V(s_t)\leftarrow V(s_t)+ \alpha\bigg(\color{red}v_t\color{blue}-V(s_t)\bigg)
 $$
-${v_t}​$: the return we observed from ${s_t}​$ during the current episode:  
-${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}​$
+${v_t}$: the return we observed from ${s_t}$ during the current episode:  
+${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}$
 
-${N(s_t)}​$: the total number of times I visited state ${s_t}​$ along all episodes I've ever run.   
-Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}​$ we always go with the non-stationary update function.  
+${N(s_t)}$: the total number of times I visited state ${s_t}$ along all episodes I've ever run.   
+Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}$ we always go with the non-stationary update function.  
 (if you haven't understood this last part don't worry, it will be clearer once you study control techniques).
 
 ${}$
@@ -1052,7 +1117,7 @@ $$
 The one above is the simplest temporal-difference learning algorithm, called ${TD(0)}$. We'll use it as reference. The red colored part is called TD-target.
 
 In this case we are updating our value function towards the estimated return after one step:  
-Specifically, the estimate consists in two parts: the immediate reward ${r_{t+1}}​$ plus the discounted value of the next step ${\gamma V(S_{t+1})}​$. 
+Specifically, the estimate consists in two parts: the immediate reward ${r_{t+1}}$ plus the discounted value of the next step ${\gamma V(S_{t+1})}$. 
 
 **Gimme the differences!**
 
@@ -1207,7 +1272,7 @@ MC would still capture partially the Markov property if it was given a higher nu
 
 What is function approximation? well, in most cases we have tons and tons of states, and it's not very efficient to compute the value function of each single state, so with function approximation we mean that we compute an approximate value for some states' value function.
 
-it's bad to use function approximation in TD because, once you update the value of a certain ${s}​$, you need to update the linear equation that approximates the behavior of each value of ${V}​$ wrt to the states ${s' \neq s}​$.
+it's bad to use function approximation in TD because, once you update the value of a certain ${s}$, you need to update the linear equation that approximates the behavior of each value of ${V}$ wrt to the states ${s' \neq s}$.
 
 Ok, we are done, what follows is a concise summary of the differences between the two algorithms:
 
@@ -1259,7 +1324,7 @@ Let's first revise some concepts:
 - A **policy** ${\pi}$ is a distribution, a mapping, at any given point in time, from states to probabilities of selecting each possible action. It decides which action the agents selects, defining its behavior.    
   A more concise definition is the following:  
   A policy ${\pi}$ is a distribution over actions given the state:  
-  ${\pi(a|s)= \mathbb{P} [a|s]}​$   
+  ${\pi(a|s)= \mathbb{P} [a|s]}$   
 
 The difference between Off and On policy techniques is the following:  
 **On-policy learning** "learns on the job". The policy that I'm following is the policy that I'm learning about.   
@@ -1450,7 +1515,7 @@ First of all let's give some contest.
 ***TD(${ \lambda}$)***  
 It's a Temporal Difference algorithm that consists in averaging over ${n}$-steps returns over different ${n}$. This is done in a weighted way, using the value ${ \lambda}$.
 
-***Forward-View ${TD(\lambda) }​$***
+***Forward-View ${TD(\lambda) }$***
 
 Forward-View is an offline algorithm ${\to}$ needs to run the entire episode.  
 $$
@@ -1524,7 +1589,7 @@ e_t(s)=\gamma\lambda e_{t-1}(s)+ \mathbf{1}(s=s_t)
 V(s) \leftarrow V(s)+\alpha \delta_te_t(s)
 $$
 
-The pseudo-code for ${e_t(s)}$ says that ${e(t)}$ decays of a factor ${\gamma \lambda}$ when it's not visited, but, when it's visited, it does decay of that same factor and at the same time gets incremented by ${1}​$.
+The pseudo-code for ${e_t(s)}$ says that ${e(t)}$ decays of a factor ${\gamma \lambda}$ when it's not visited, but, when it's visited, it does decay of that same factor and at the same time gets incremented by ${1}$.
 
 The eligibility trace keeps track of which states have contributed, positively or negatively, to recent state valuations, by combining both *frequency heuristics* (assign credit to the most frequent states) and *recency heuristics* (assign credit to the most frequent states).  
 <img src="images/et1.png" style="zoom:70%"/>
@@ -1532,7 +1597,7 @@ The eligibility trace keeps track of which states have contributed, positively o
 ***What happens for ${\lambda=0}$ and ${\lambda=1}$?***
 
 *${\lambda=0}$*:  
-When ${ \lambda=0}​$, only the current state gets updated.  
+When ${ \lambda=0}$, only the current state gets updated.  
 $$
 e_t(s\neq s_t)= \gamma \cdot0\cdot e_{t-1}(s)+0=0 
 \\
@@ -1643,7 +1708,7 @@ The evaluation is completed (the value function converges to the true value func
 
 *Policy Improvement* consists in coming up with a better policy ${\pi'}$ starting from a policy ${ \pi}$. This is achieved by acting greedily wrt to the value function evaluated in the first step of policy iteration.
 
-${\pi'(s)=\arg \max_{a \in A}}{Q^\pi(s,a)}​$
+${\pi'(s)=\arg \max_{a \in A}}{Q^\pi(s,a)}$
 
 By repeating evaluation and improvement we are certain of obtaining in the end the optimal policy ${\pi^*}$
 
@@ -1810,16 +1875,16 @@ So, let's consider we just computed ${V_2}$, now we simply plug ${V_2}$ into the
 This process is guaranteed to converge to the true value function ${V_\pi}$ (pay attention, it's not that it converges to the optimal value function, it might, but what I'm saying is that it converges to the value function of the policy you are considering!).
 
 Let's make and example:   
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sgw1.png" style="zoom:70%"/>
+<img src="images/sgw1.png" style="zoom:70%"/>
 
 This is called the Small Gridworld example.  
 There are two terminal states (the top left and bottom right squares). there are 14 non-terminal states. The reward is -1 until the terminal state is reached. 
 For now consider only the left column of the following images:   
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sgw2.PNG"   style="zoom:70%"/>
+<img src="images/sgw2.PNG"   style="zoom:70%"/>
 
 
 
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sgw3.png" style="zoom:70%"/>
+<img src="images/sgw3.png" style="zoom:70%"/>
 
 
 
@@ -1951,7 +2016,7 @@ $$
 *(William Bonvini)*
 
 - Prediction:  
-  this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}​$ is given. 
+  this type of task consists in predicting the expected total reward from any given state assuming the function ${\pi(a|s)}$ is given. 
 - Control:  
   This type of task consists in finding the policy ${\pi(a|s)}$ that maximizes the expected total reward from any given state. In other words, some policy ${\pi}$ is given, and it finds the optimal policy ${\pi^*}$. 
 
@@ -2106,7 +2171,7 @@ This translates into the GLIE property (Greedy in the Limit with Infinite Explor
      $$
      \epsilon \leftarrow\frac{1}{k}
      $$
-     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}​$-greedy${(Q)}​$
+     ${ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \pi \leftarrow \epsilon}$-greedy${(Q)}$
 
 So what has changed from before? well, we are updating ${\epsilon}$ every time we run a new episode! Now it will become smaller and smaller each time we generate a new episode.  
 Theorem:  
@@ -2227,7 +2292,7 @@ So, let's sum up the solutions we adopted for MC control:
 
   - *How much pseudo-regret the $TS$ algorithm accumulated so far, assuming we started from uniform $Beta(1,1)$ priors?*
   - *Which one of the previous posteriors is the most peaked one?*
-  - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform ​$Beta(1,1)$ priors?*
+  - *What would $UCB1$ have chosen for the next round? Assume $Bernoulli$ rewards and that in the Bayesian setting we started from uniform $Beta(1,1)$ priors?*
 
 
 
