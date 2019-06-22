@@ -20,8 +20,6 @@
 
 ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
-(*Andrea Bonvini*) 
-
 Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
 <img src="images/svm1.png" style="zoom:40%"/>
@@ -197,7 +195,7 @@ This is called *Leave-One-Out Bound* (I don't know why, maybe it's written [here
 
 The other kind of bound is called *Margin bound*: a bound on the VC dimension which decreases with the margin. The larger the margin, the less the variance and so, the less the VC dimension. Unfortunately the bound is quite pessimistic 
 
- Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence, specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
+Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence, specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
 
 Remember our formulation for the *soft-margin SVM*:
 $$
@@ -223,7 +221,7 @@ When all the Lagrange multipliers satisfy the KKT conditions (within a user-defi
 
 <div style="page-break-after: always;"></div> 
 
-### PAC & VC Dimension
+### PAC Learning & VC Dimension
 
 ***What do we mean as PAC-Learning and Agnostic-Learning?***
 
@@ -389,9 +387,7 @@ $$
 
 `manca la parte che trovi su PMDS` 
 
-***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁers?***
-
-( *Andrea Bonvini*)
+***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
 
 - We are always talking about *Classification*.
 
@@ -607,7 +603,7 @@ What have we noticed then?
 ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
 *(William Bonvini)* 
 
-`INCOMPLETE: THIS JUST EXPLAIN THE BAYESIAN APPROACH (ALREADY SEEN IN SOFT COMPUTING MAXIMUM A POSTERIORI ESTIMATION)`
+`INCOMPLETE: THIS JUST EXPLAIN THE BAYESIAN APPROACH (ALREADY SEEN IN SOFT COMPUTING -> MAXIMUM A POSTERIORI ESTIMATION)`
 
 I've already described Ridge Regression previously.
 
@@ -646,9 +642,9 @@ The formulation of model parameters as distributions encapsulates the Bayesian w
 
 (Sources: [towardsdatascience - Introduction to Bayesian Linear Regression](https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7) )  
 
-FORSE W_0 CHE DICE NELLE SLIDE SI RIFERISCE ALLA MEDIA A S_0 ALLA VARIANZA BOH
+FORSE W_0 CHE DICE NELLE SLIDE SI RIFERISCE ALLA MEDIA E S_0 ALLA MATRICE DI COVARIANZA BOH
 
-AAAAA
+AAAAA GUARDA LA SLIDE CHE FA IL PARAGONE CON RIDGE!
 
 ***We can derive Ridge Regression from Bayesian Linear Regression!***
 If we choose a prior distribution as follows:
@@ -664,10 +660,6 @@ If we choose a prior distribution as follows:
 ### Logistic Regression
 
 ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
-
-(*Andrea Bonvini*) Source: PMDS
-
-`TO DO: COMPARISON WITH PERCEPTRON`
 
 Although the name might confuse, please note that it is a *classiﬁcation* algorithm.
 
@@ -722,15 +714,62 @@ Taking the gradient
 $$
 \nabla L_{\mathbf{w}_j}(\mathbf{w}_1,\dots,\mathbf{w}_K) =\sum_{n=1}^{N}(y_{nj}-t_{nj})\phi_n
 $$
-AAAA
+The *perceptron* is an example of *linear discriminant models*, it is an *online* linear classification algorithm.
+$$
+y(\mathbf{x})=f(\mathbf{w}^T\phi(\mathbf{x}))\\
+\text{where}\\
+
+f(a)=
+\begin{cases}
++1,\ \ a\ge0\\
+-1,\ \ a < 0
+\end{cases}
+$$
+Target values are $+1$ for $C_1$ and $-1$ for $C_2$.
+
+The algorithms finds the *separating hyperplane* by minimizing the distance of *misclassified points* to the *decision boundary*.
+
+Using the number of misclassified points as loss function is not effective since it is a *piecewise constant function*.
+
+We are seeking a vector $\mathbf{w}$ such that $\mathbf{w}^T\phi(\mathbf{x}_n)>0$ when $\mathbf{x}_n \in C_1$ and $\mathbf{w}^T\phi(\mathbf{x}_n)<0$ otherwise.
+
+The *perceptron criterion* assigns
+
+- zero error to correct classification
+- $\mathbf{w}^T\phi(\mathbf{x}_n)t_n$ to misclassified patterns $\mathbf{x}_n$ (it is proportional to the distance to the decision boundary)
+
+The *loss* function to be minimized is
+$$
+L_P(\mathbf{w}) =-\sum_{n\in \mathcal{M}}\mathbf{w}^T\phi(\mathbf{x}_n)t_n
+$$
+Minimization is performed using *stochastic gradient descent* :
+$$
+\mathbf{w}^{k+1}=\mathbf{w}^k-\alpha\nabla L_P(\mathbf{w})=\mathbf{w}^k+\alpha\phi(\mathbf{x}_n)t_n
+$$
+Since the perceptron function does not change if $\mathbf{w}$ is multiplied by a constant, the *learning rate $\alpha$ can be set to $1$*
+
+The effect of a single update is to *reduce the error* due to the *misclassified pattern*, this *does not imply* that the *loss* is reduced at each stage.
+
+*Theorem* (***Perceptron Convergence Theorem***)
+
+"If the training data set is *linearly separable* in the feature space $\phi$, then the perceptron learning algorithm is guaranteed to ﬁnd an exact solution in a ﬁnite number of steps."
+
+*Problems*:
+
+- The number of steps before convergence may be substantial.
+- We are not able to distinguish between *non-separable* problems and *slowly converging* ones.
+- If multiple solutions exist, the one found depends by the *initialization* of the parameters and the *order of presentation* of the data points.
+
+![](images/LRvsPer.PNG)
+
+*Please Note* : Here we used the *step function* instead of the *sign function* for the Perceptron!
+
 
 <div style="page-break-after: always;"></div> 
 
 ### PCA
 
 ***Describe the Principal Component Analysis technique***
-
-( *Andrea Bonvini* )
 
 *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}$ .
 
@@ -746,22 +785,22 @@ It is based on the principle of projecting the data onto the input subspace whic
 - Find a new line, orthogonal to the ﬁrst one, that has maximum projected variance. 
 - Repeat until $m$ lines have been identiﬁed and project the points in the data set on these lines. 
 
-The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ the number of dimensions) : 
+The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ is the dimensionality) : 
 
 - Compute the mean of the data
   $$
   \overline{\mathbf{x}} = \frac{1}{N}\sum_{n=1}^N\mathbf{x}_n
   $$
 
-- Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}$ )
+- Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}$)
 
 - Compute the covariance matrix $\mathbf{S} = \mathbf{X}^T\mathbf{X} = \frac{1}{N-1}\sum_{n=1}^{N}(\mathbf{x}_n-\overline{\mathbf{x}})^T(\mathbf{x}_n-\overline{\mathbf{x}})$
 
   - Eigenvector $\mathbf{e}_1$ with largest eigenvalue $\lambda_1$ is the *first principal component* 
-  - Eigenvector $\mathbf{e}_k$ with largest eigenvalue $\lambda_k$ is the *$k^{th}$ principal component* 
+  - Eigenvector $\mathbf{e}_k$ with $k^{th}$ largest eigenvalue $\lambda_k$ is the *$k^{th}$ principal component*
   - $\frac{\lambda_k}{\sum_i\lambda_i}$ is the proportion of variance captured by the $k^{th}$ principal component.
 
-Transforming the reduced dimensionality projection back into the original spaces gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts: 
+Transforming the reduced dimensionality projection back into the original spaces gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts:
 
 - Helps to reduce the computational complexity 
 - Can help supervised learning, because reduced dimensions allow simpler hypothesis spaces and less risk of overﬁtting 
@@ -778,125 +817,54 @@ But also some drawbacks:
 
 ### Gaussian Processes
 
-***Describe the Gaussian Processes model for regression problems***
+***Describe the Gaussian Processes model for regression problems*** (*kriging*)
 
-(*Andrea Bonvini*)
+In probability theory and statistics, a **Gaussian process** is a stochastic process (a collection of random variables indexed by time or space), such that every finite collection of those random variables has a multivariate normal distribution, i.e. every finite linear combination of them is normally distributed. The distribution of a Gaussian process is the joint distribution of all those (infinitely many) random variables, and as such, it is a distribution over functions with a continuous domain, e.g. time or space.
 
-`Prerequisites : Kernel Methods, SVMs`
+A machine-learning algorithm that involves a Gaussian process uses `lazy learning` and a measure of the similarity between points (the *kernel function*) to predict the value for an unseen point from training data. The prediction is not just an estimate for that point, but also has uncertainty information—it is a one-dimensional Gaussian distribution (which is the marginal distribution at that point).
 
-`TO DO: I haven't asked the question yet`
+`*lazy learning* is a learning method in which generalization of the training data is, in theory, delayed until a query is made to the system, as opposed to in *eager learning* , where the system tries to generalize the training data before receiving queries. The main advantage gained in employing a lazy learning method is that the target function will be approximated locally, such as in the k-nearest neighbor algorithm. Because the target function is approximated locally for each query to the system, lazy learning systems can simultaneously solve multiple problems and deal successfully with changes in the problem domain.`
 
-The *radial basis function* kernel is a popular kernel function used in various kernelized learning algorithms. In particular, it is commonly used in support vector machine classification. The RBF kernel on two samples $\mathbf{x}$ and $\mathbf{x}'$, represented as feature vectors in some *input space*, is defined as:
+*Slides Definition*:
+
+A *Gaussian Process* is defined as a probability distribution over functions $y(\mathbf{x})$ such that the set of values of $y(\mathbf{x})$ evaluated at an arbitrary set of points $\mathbf{x}_1,\dots,\mathbf{x}_n$ *jointly have a Gaussian distribution*. 
+
+The distribution is completely specified by the second-order statistics, the mean and the covariance:
+
+- Usually we do not have any prior information about the mean of $y(x)$, so we'll take it to be $0$.
+
+- The covariance is given by the *kernel function*
+  $$
+  \mathbb{E}[y(\mathbf{x}_n)y(\mathbf{x}_m)] = k(\mathbf{x}_n,\mathbf{x}_m)
+  $$
+
+Let's talk about *Gaussian Process Regression* (aka *Kriging*)
+
+Take into account the noise on the target
 $$
-K(\mathbf{x},\mathbf{x}')=e^{-\frac{||\mathbf{x}-\mathbf{x}'||^2}{2\sigma^2}}
+t_n = y(\mathbf{x_n})+\epsilon_n
 $$
-where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean distance between two feature vectors, $\sigma$ is a free parameter. Since the value of the RBF kernel decreases with distance and ranges between $0$ (in the limit) and $1$ (when $\mathbf{x} =\mathbf{x}'$) , it has a ready interpretation as a similarity measure. It can be seen (*by expansion)* that the feature space of the kernel has an infinite number of dimensions.
-
-From this definition it is possible to build a so-called *Radial Basis Function Network*, an artificial neural network that uses *radial basis functions* as activation functions. The output of the network is a linear combination of radial basis functions of the inputs and neuron parameters.
-
-![](images/RBFN.png)
-
-The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
+Random noise under a *Gaussian distribution*
 $$
-\varphi(\mathbf{x})=\sum_{i=1}^Na_i\rho(||\mathbf{x}-\mathbf{c_i}||)
+p(t_n|y(\mathbf{x}_n))=\mathcal{N}(t_n|y(\mathbf{x}_n),\sigma^2)
 $$
-where $N$  is the number of neurons in the hidden later, $\mathbf{c}_i$ is the *center vector* (hold on...I'll explain everything) for neuron $i$, and $a_i$ is the weight of neuron $i$ in the linear output neuron. Functions that depend only on the distance from a center vector are radially symmetric about that vector, hence the name radial basis function.
+Because the noise is *independent* on each data point, the joint distribution is still *Gaussian*:
+$$
+p(\mathbf{t}|\mathbf{y})=\mathcal{N}(\mathbf{t}|\mathbf{y},\sigma^2\mathbf{I}_N)
+$$
+Since $p(\mathbf{y}) = \mathcal{N}(\mathbf{y}|\mathbf{0},\mathbf{K})$ , we can compute the marginal distribution:
+$$
+p(\mathbf{t})=\int p(\mathbf{t}|\mathbf{y})p(\mathbf{y})d\mathbf{y}=\mathcal{N}(\mathbf{t}|\mathbf{0},\mathbf{C})
+$$
+where $C(\mathbf{x}_n,\mathbf{x}_m) = k(\mathbf{x}_n,\mathbf{x}_m)+\sigma^2\delta_{nm}$.
 
-As anticipated, the Gaussian basis function is commonly taken *Gaussian*
-$$
-\rho(||\mathbf{x}-\mathbf{c_i}||)=e^{-\frac{||\mathbf{x}-\mathbf{c}_i||^2}{2\sigma_i^2}}=e^{-\beta_i||\mathbf{x}-\mathbf{c}_i||^2}
-$$
-Obviously, the parameters $a_i$, $\mathbf{c}_i$ and $\beta_i$ are determined in a manner that optimizes the fit between $\varphi$ and the data.
-
-Most of the times it is convenient to use *normalized* radial function as basis. Normalization is used in practice as it avoids having regions of input space where all basis functions take *small values*, which would necessarily lead to predictions in such regions that are either *small* or controlled purely by the *bias parameter*. In this case we have
-$$
-\varphi(\mathbf{x})=\sum_{i=1}^{N}a_i u(||\mathbf{x}-\mathbf{c}_i||) \\
-u||\mathbf{x}-\mathbf{c}_i|| = \frac{\rho||\mathbf{x}-\mathbf{c}_i||}{\sum_{j=1}^N\rho||\mathbf{x}-\mathbf{c}_j||}
-$$
-Here is a $1$-D example where $N=2$, just to give you an idea:
-
-<img src="images/URB1.png" style="zoom:70%"/>
-
-Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
-
-<img src="images/URB2.png" style="zoom:70%"/>
-
-Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
-
-But how is this framework related to *regression*? $\to$ *Kernel Regression*!
-
-Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
-
-<img src="images/KR1.png" style="zoom:70%"/>
-
-How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
-
-This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points. Say we want to take the weighted average of three values: $3$,$4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$), take the sum, then divide by the sum of the weights:
-$$
-\frac{0.2\cdot3+0.4\cdot4+0.6\cdot5}{0.2+0.4+0.6}=\frac{5.2}{1.2}=4.33
-$$
-More generally, the weighted average is found as:
-
-a
-$$
-\overline{y}=\frac{\sum_{i=1}^m(w_iy_i)}{\sum_{i=1}^mw_i}
-$$
-where $w_i$ is the weight to assign to value $y_i$ and $m$ is the number of values in the set.
-
-In *Kernel Regression* in order to compute the weight values to use in our regression problem, we're going to use the *Gaussian Function*, which has the perfect behavior for computing our weight values! The function will produces its highest value when the distance between the data point and the query point is zero. For data points farther from the query, the weight value will fall off exponentially. 
-
-To arrive at the final equation for Gaussian Kernel Regression, we’ll start with the equation for taking a weighted average and replace the weight values with our *Gaussian* kernel function.
-$$
-y^*=\frac{\sum_{i=1}^m(K(x^*,x_i)y_i)}{\sum_{i=1}^mK(x^*,x_i)}
-$$
-It is interesting to note that Gaussian Kernel Regression is equivalent to creating an RBF Network with the following properties:
-
-- Every training example is stored as an RBF neuron center
-- The $\beta$ coefficient for every neuron is set to the same value.
-- There is one output node.
-- The output weight for each RBF neuron is equal to the output value of its data point.
-- The output of the RBFN must be normalized by dividing it by the sum of all of the RBF neuron activations.
-
-Let's try to derive the result above more formally:
-
-*Kernel Regression* is a non-parametric technique in statistics to estimate the *conditional expectation* of a *random variable*. The objective is to find a non-linear relation between a pair of random variables $\mathbf{X}$ and $\mathbf{Y}$. In any nonparametric regression, the conditional expectation of a variable $\mathbf{Y}$ relative to a variable $\mathbf{X}$ may be written:
-$$
-\mathbb{E}(Y|X) = m(X)
-$$
-where $m$ is an unknown function.
-
-*Nadaraya* and *Watson*, both in 1964, proposed to estimate $m$ as a locally weighted average, using a kernel as a weighting function. The Nadaraya-Watson estimator is:
-$$
-\hat{m_h}(x) =\frac{\sum_{i=1}^nK_h(x-x_i)y_i}{\sum_{j=1}^nK_h(x-x_j)}
-$$
-where $K_h$ is a kernel with a bandwidth $h$ (which is related to the variance). The denominator is a weighting term with sum $1$.
-
-*Derivation*:
-$$
-\mathbb{E}(Y|X=x) = \int{yf(y|x)dy}=\int y\frac{f(x,y)}{f(x)}dy
-$$
-Using the *kernel density estimation* (also termed the *Parzen–Rosenblatt* window method, is just a non parametric way to estimate the *pdf* of a random variable) for both the joint distribution $f(x,y)$ and $f(x)$ with a kernel $K$
-$$
-\hat{f}(x,y) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)\\
-\hat{f}(x) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
-$$
-we get
-$$
-\hat{\mathbb{E}}(Y|X=x)=\int \frac{y\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)}{\sum_{j=1}^{n}K_h(x-x_j)}dy\\
-=\frac{\sum_{i=1}^{n}K_h(x-x_i)\int yK_h(y-y_i)dy}{\sum_{j=1}^{n}K_h(x-x_j)}\\
-=\frac{\sum_{i=1}^{n}K_h(x-x_i)y_i}{\sum_{j=1}^{n}K_h(x-x_j)}\\
-$$
-`Fun fact:  According to David Salsbrug , the algorithms used in kernel regression were independently developed and used in *Fuzzy Systems*: "Coming up with almost exactly the same computer algorithm, fuzzy systems and kernel density-based regressions appear to have been developed completely independently of one another.`
-
-AAAAAAAAAAAAAA
+Since the two *Gaussians* are *independent* their covariances simply *add*.
 
 <div style="page-break-after: always;"></div> 
 
 ### Kernels
 
 ***Describe the purpose of using kernels in Machine Learning techniques. How can you construct a valid Kernel? Provide an example of a ML method using kernels and describe the speciﬁc advantage of using them for this method.***
-
-*(Andrea Bonvini)*
 
 Traditionally, theory and algorithms of machine learning and statistics have been very well developed for the linear case. Real world data analysis problems, on the other hand, often require nonlinear methods to detect the kind of dependencies that allow successful prediction of properties of interest. By using a positive definite kernel, one can sometimes have the best of both worlds. The kernel corresponds to a dot product in a (*usually high-dimensional, possibly infinite*) feature space. In this space, our estimation methods are linear, but as long as we can formulate everything in terms of kernel evaluations, we never explicitly have to compute in the high dimensional feature space! (This is called the *Kernel Trick*)
 
@@ -971,6 +939,107 @@ The good thing is that instead of inverting an $M\times M$ matrix, we are invert
   New kernels can be constructed from simpler kernels as *building blocks*:
 
   ![](images/Kernels.PNG)
+
+***What is Kernel Regression?***
+
+The *radial basis function* kernel is a popular kernel function used in various kernelized learning algorithms. In particular, it is commonly used in support vector machine classification. The RBF kernel on two samples $\mathbf{x}$ and $\mathbf{x}'$, represented as feature vectors in some *input space*, is defined as:
+$$
+K(\mathbf{x},\mathbf{x}')=e^{-\frac{||\mathbf{x}-\mathbf{x}'||^2}{2\sigma^2}}
+$$
+where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean distance between two feature vectors, $\sigma$ is a free parameter. Since the value of the RBF kernel decreases with distance and ranges between $0$ (in the limit) and $1$ (when $\mathbf{x} =\mathbf{x}'$) , it has a ready interpretation as a similarity measure. It can be seen (*by expansion)* that the feature space of the kernel has an infinite number of dimensions.
+
+But how is this framework related to *regression*? $\to$ *Kernel Regression*!
+
+Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
+
+<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/KR1.png" style="zoom:70%"/>
+
+How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
+
+This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points. Say we want to take the weighted average of three values: $3$, $4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$) , take the sum, then divide by the sum of the weights:
+$$
+\frac{0.2\cdot3+0.4\cdot4+0.6\cdot5}{0.2+0.4+0.6}=\frac{5.2}{1.2}=4.33
+$$
+More generally, the weighted average is found as:
+$$
+\overline{y}=\frac{\sum_{i=1}^m(w_iy_i)}{\sum_{i=1}^mw_i}
+$$
+where $w_i$ is the weight to assign to value $y_i$ and $m$ is the number of values in the set.
+
+In *Kernel Regression* in order to compute the weight values to use in our regression problem, we're going to use the *Gaussian Function*, which has the perfect behavior for computing our weight values! The function will produces its highest value when the distance between the data point and the query point is zero. For data points farther from the query, the weight value will fall off exponentially. 
+
+To arrive at the final equation for Gaussian Kernel Regression, we’ll start with the equation for taking a weighted average and replace the weight values with our *Gaussian* kernel function.
+$$
+y^*=\frac{\sum_{i=1}^m(K(x^*,x_i)y_i)}{\sum_{i=1}^mK(x^*,x_i)}
+$$
+It is interesting to note that Gaussian Kernel Regression is equivalent to creating an RBF Network with the following properties:
+
+- Every training example is stored as an RBF neuron center
+- The $\beta$ coefficient ( the *first* set of weights) for every neuron is set to the same value.
+- There is one output node.
+- The output weight for each RBF neuron is equal to the output value ( $y_i$ ) of its data point.
+- The output of the RBFN must be normalized by dividing it by the sum of all of the RBF neuron activations.
+
+
+
+![](C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/RBFN.png)
+
+The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
+$$
+\varphi(\mathbf{x})=\sum_{i=1}^Ny_i\rho(||\mathbf{x}-\mathbf{x}_i||)
+$$
+
+$$
+\rho(||\mathbf{x}-\mathbf{x}_i||)=e^{-\frac{||\mathbf{x}-\mathbf{x}_i||^2}{2\sigma_i^2}}=e^{-\beta_i||\mathbf{x}-\mathbf{x}_i||^2}
+$$
+
+Most of the times it is convenient to use *normalized* radial function as basis. Normalization is used in practice as it avoids having regions of input space where all basis functions take *small values*, which would necessarily lead to predictions in such regions that are either *small* or controlled purely by the *bias parameter*. In this case we have
+$$
+\varphi(\mathbf{x})=\sum_{i=1}^{N}y_i u(||\mathbf{x}-\mathbf{x}_i||) \\
+u||\mathbf{x}-\mathbf{x}_i|| = \frac{\rho||\mathbf{x}-\mathbf{x}_i||}{\sum_{j=1}^N\rho||\mathbf{x}-\mathbf{x}_j||}
+$$
+Here is a $1$-D example, just to give you an idea:
+
+`Here we use` $c_1$ `and` $c_2$ `as *centroids*, it makes sense that we don't want always to average over *all* the samples of our dataset, instead we can choose some *relevant* points (that I call *centroids* ) in our formulation by performing, for example, some local averaging...That was kinda what we did in fuzzy systems![Soft-Computing](apart from the fact that we didn't use gaussians as Membership Functions). According to David Salsbrug: "Coming up with almost exactly the same computer algorithm, fuzzy systems and kernel density-based regressions appear to have been developed completely independently of one another.`
+
+<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB1.png" style="zoom:70%"/>
+
+Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
+
+<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB2.png" style="zoom:70%"/>
+
+Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
+
+Let's try to derive the *kernel regression* formulation more formally:
+
+*Kernel Regression* is a non-parametric technique in statistics to estimate the *conditional expectation* of a *random variable*. The objective is to find a non-linear relation between a pair of random variables $\mathbf{X}$ and $\mathbf{Y}$. In any nonparametric regression, the conditional expectation of a variable $\mathbf{Y}$ relative to a variable $\mathbf{X}$ may be written:
+$$
+\mathbb{E}(Y|X) = m(X)
+$$
+where $m$ is an unknown function.
+
+*Nadaraya* and *Watson*, both in 1964, proposed to estimate $m$ as a locally weighted average, using a kernel as a weighting function. The Nadaraya-Watson estimator is:
+$$
+\hat{m_h}(x) =\frac{\sum_{i=1}^nK_h(x-x_i)y_i}{\sum_{j=1}^nK_h(x-x_j)}
+$$
+where $K_h$ is a kernel with a bandwidth $h$ (which is related to the variance). The denominator is a weighting term with sum $1$.
+
+*Derivation*:
+$$
+\mathbb{E}(Y|X=x) = \int{yf(y|x)dy}=\int y\frac{f(x,y)}{f(x)}dy
+$$
+Using the *kernel density estimation* (also termed the *Parzen–Rosenblatt* window method, it is just a non parametric way to estimate the *pdf* of a random variable) for both the joint distribution $f(x,y)$ and $f(x)$ with a kernel $K$
+$$
+\hat{f}(x,y) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)\\
+\hat{f}(x) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
+$$
+we get
+$$
+\hat{\mathbb{E}}(Y|X=x)=\int \frac{y\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)}{\sum_{j=1}^{n}K_h(x-x_j)}dy\\
+=\frac{\sum_{i=1}^{n}K_h(x-x_i)\int yK_h(y-y_i)dy}{\sum_{j=1}^{n}K_h(x-x_j)}\\
+=\frac{\sum_{i=1}^{n}K_h(x-x_i)y_i}{\sum_{j=1}^{n}K_h(x-x_j)}\\
+$$
+
 
 <div style="page-break-after: always;"></div> 
 
@@ -1366,7 +1435,7 @@ Value iteration is based on the Principle of Optimality:
 If the first action I take is optimal and then I follow an optimal policy from whichever state I end up, the overall behavior is optimal.
 
 ***Principle of Optimality***  
-A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$, ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,  
+A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$ , ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,
 ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
 
 Ok, how to exploit this?  
@@ -1858,7 +1927,7 @@ We do it by using *synchronous backups*:
 
 
 So let's understand exactly how to do such update:  
-<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/policy_evaluation1.png" style="zoom:50%"/>
+<img src="images/policy_evaluation1.png" style="zoom:50%"/>
 
 
 

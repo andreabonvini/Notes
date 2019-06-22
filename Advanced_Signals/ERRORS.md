@@ -12,7 +12,6 @@
   Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda\color{red}(s)\color{black})^k}{k!}e^{-\lambda\color{red}(s)}\;\;\;\;\;for\;k=1,2,...
   $$
   
-
 - ***Slide 5 Pag.22***
 
   ![](images/error1.PNG)
