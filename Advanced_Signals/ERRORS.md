@@ -1,6 +1,6 @@
 - ***Slide 2 Pag.30***
 
-  ![](images/error3.png)
+  ![](images/error3.PNG)
   $$
   \mathcal{D}(f||g)=\int \color{red}f(x)\color{black}\log_a\frac{f(x)}{g(x)}dx
   $$
@@ -14,7 +14,7 @@
   
 - ***Slide 5 Pag.22***
 
-  ![](images/error1.PNG)
+  ![](images/error1.png)
   $$
   p(N_{0:T})= \prod_{j=1}^{J}\lambda(u_j|\color{red}H_{u_{j}}\color{black})e^{-\int_{0}^T\lambda(u|H_{u})du}\\
   $$
