@@ -158,8 +158,7 @@ In TD learning, you start thinking that everything's fine, but ,when you see the
 
 You asked for a second example? no? sorry:  
 
-Another driving example.  
-We need to predict how much time we need to reach home from our office.  
+Another driving example. We need to predict how much time we need to reach home from our office.  
 "Elapsed time" is the time passed, "Predicted Time to Go" is the time we are predicting to need in order to get home, "Predicted Total Time" is the total time, starting from our office, we predict to need to get home.  
 So: the "Elapsed Time" from a state ${i}$ to a state ${j}$ is our reward: from the office to the car we get 5 minutes of reward, from the car to the exit of the highway we get 15 minutes of reward. "Predicted time to go" is our value function. The sum of the total elapsed time and the "Predicted Time to Go" give us the total predicted time.  
 (But wait, why is the reward positive? shouldn't it be negative? yes, but it's just an example, easier to deal with positive values).
@@ -389,7 +388,7 @@ ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma \max_{a' \
 
 If you are looking for a concise answer go to the end.
 
-Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, It's Model Based.
+Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, it's Model Based.
 
 Value iteration is based on the Principle of Optimality:
 
@@ -1213,4 +1212,12 @@ So, let's sum up the solutions we adopted for MC control:
 ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
 
 
+
+
+
+## Interesting Articles
+
+- [Model Based Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-reinforcement-learning-complete-guide-towardsagi-ceea325c5d53)
+- [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)
+- [Q-Learning (and Policy Gradients)](https://medium.com/deep-math-machine-learning-ai/ch-13-deep-reinforcement-learning-deep-q-learning-and-policy-gradients-towards-agi-a2a0b611617e)
 
