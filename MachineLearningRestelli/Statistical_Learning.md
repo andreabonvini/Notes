@@ -8,13 +8,15 @@
 
 [TOC]
 
+<div style="page-break-after: always;"></div> 
+
 # Statistical Learning
 
 ### Support Vector Machines
 
 ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
-Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+The Support Vector Machines techniques aims to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
 
 <img src="images/svm1.png" style="zoom:40%"/>
 
@@ -214,7 +216,6 @@ The algorithm proceeds as follows:
 When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
 
 <div style="page-break-after: always;"></div> 
-
 ### PAC Learning & VC Dimension
 
 ***What do we mean as PAC-Learning and Agnostic-Learning?***
@@ -459,7 +460,6 @@ Proof: [here](<http://wittawat.com/posts/vc_dimension_linear_classifier.html>)
 `READ THE SECTION ON PMDS TOO! `
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge Regression
 
 **Describe the supervised learning technique called ridge regression for regression problems.**  
@@ -512,7 +512,6 @@ making predictions less sensitive to the Training Data.
 (Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge vs Lasso
 
 ***Describe and compare the ridge regression and the LASSO algorithms.***    
@@ -591,7 +590,6 @@ What have we noticed then?
 (Sources: [PoliMi Data Scientists Notes - Machine Learning](https://polimidatascientists.it/notes.html)   ;   [Bloomberg - Lasso, Ridge, and Elastic Net](https://www.youtube.com/watch?v=KIoz_aa1ed4&t=934s)	)  
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge Regression vs Bayesian Linear Regression
 
 ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
@@ -647,10 +645,7 @@ If we choose a prior distribution as follows:
 
 ![](images/br2.png)
 
-
-
 <div style="page-break-after: always;"></div> 
-
 ### Logistic Regression
 
 ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
@@ -762,7 +757,6 @@ The effect of a single update is to *reduce the error* due to the *misclassified
 
 
 <div style="page-break-after: always;"></div> 
-
 ### PCA
 
 ***Describe the Principal Component Analysis technique***
@@ -810,7 +804,6 @@ But also some drawbacks:
 - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
 <div style="page-break-after: always;"></div> 
-
 ### Gaussian Processes
 
 ***Describe the Gaussian Processes model for regression problems*** (*kriging*)
@@ -857,7 +850,6 @@ where $C(\mathbf{x}_n,\mathbf{x}_m) = k(\mathbf{x}_n,\mathbf{x}_m)+\sigma^2\delt
 Since the two *Gaussians* are *independent* their covariances simply *add*.
 
 <div style="page-break-after: always;"></div> 
-
 ### Kernels
 
 ***Describe the purpose of using kernels in Machine Learning techniques. How can you construct a valid Kernel? Provide an example of a ML method using kernels and describe the speciﬁc advantage of using them for this method.***
@@ -1036,7 +1028,7 @@ $$
 =\frac{\sum_{i=1}^{n}K_h(x-x_i)y_i}{\sum_{j=1}^{n}K_h(x-x_j)}\\
 $$
 
-
+<div style="page-break-after: always;"></div> 
 
 # Interesting Articles
 
