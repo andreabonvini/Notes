@@ -1152,10 +1152,6 @@ Complete algorithm for SARSA:
 
 <img src="images/sarsaalgo.png" style="zoom:50%">
 
-
-
-
-
 ***Q-Learning***  
 
 Consider being in state ${S_t}$ and selecting our next action following our behavioral policy: ${A_{t+1}\sim \bar{\pi}(\cdot |S_t)}$.  
