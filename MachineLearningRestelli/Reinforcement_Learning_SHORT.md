@@ -10,7 +10,7 @@
   $$
    $\pi$ is greedy (there is a max) and $\overline{\pi}$ is $\epsilon$-greedy.
 
-  SARSA is an example of on-policy learning, so it learns the optimal policy based on the actions performed following igit pullts own policy. It samples $A_{t+1}$ from its own policy.
+  SARSA is an example of on-policy learning, so it learns the optimal policy based on the actions performed following its own policy. It samples $A_{t+1}$ from its own policy.
 
   *SARSA Update Function*:
   $$
@@ -20,4 +20,3 @@
 
   - If $\epsilon\neq 0$ SARSA performs better online
   - if $\epsilon\to 0$ gradually both converge to the optimal policy.
-
