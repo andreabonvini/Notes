@@ -165,13 +165,14 @@ $$
 $$
 The method described so far is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happen that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
 
-We introduce *slack variables* $\xi_i$ , this way we allow to *violate* the margin constraint but we add a *penalty* expressed by the distance of the misclassified samples from the hyperplane (samples correctly classified have $\xi_i=0$).
+We introduce *slack variables* $\xi_n$ , this way we allow to *violate* the margin constraint but we add a *penalty* expressed by the distance of the misclassified samples from the hyperplane (samples correctly classified have $\xi_n=0$).
 
 We now have to 
 $$
-\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
-\text{s.t.}\\ \ y_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
-\xi_i\ge0\ ,\ \ \ \forall{i}
+\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_n \xi_n \\
+\text{s.t.}\\ 
+\ y_n(\mathbf{w}^Tx_n+b)\ge1-\xi_n\ ,\ \ \ \forall{n}\\
+\xi_n\ge0\ ,\ \ \ \forall{n}
 $$
 $C$ is a coefficient that allows to trade-off bias-variance and is chosen by *cross-validation*.
 
@@ -180,14 +181,14 @@ And obtain the *Dual Representation*
 $$
 \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
-  0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
-  \sum_{n=1}^N\alpha_n t_n = 0
+  0\le\alpha_n\le C\ \ \ \ \ \forall{n}\\
+  \sum_{n=1}^N\alpha_n y_n = 0
 $$
-Support vectors are points associated with $\alpha_n > 0$
+if $\alpha_n\le0$ the point $x_n$ is just correctly classified.
 
-if $\alpha_n<C$ the points lies *on the margin*
+if $0<\alpha_n<C$ the points lies *on the margin*. They are indeed Support Vectors.
 
-if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_i \le 1$) or *misclassified* ($\xi_i>1$)  
+if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_n \le 1$) or *misclassified* ($\xi_n>1$)  
 
 Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
 
@@ -207,15 +208,15 @@ Remember our formulation for the *soft-margin SVM*:
 $$
 \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   s.t.\\
-  0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
-  \sum_{i=1}^ny_i\alpha_i=0
+  0\le\alpha_n\le C\ \ \ \ \text{for}\ n =1,2,\dots,N\\
+  \sum_{n=1}^Ny_n\alpha_n=0
 $$
 *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
 $$
 0\le\alpha_1,\alpha_2\le C\\
   y_1\alpha_1+y_2\alpha_2=k
 $$
-and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{i=1}^ny_i\alpha_i=0$ ).
+and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{n=1}^Ny_n\alpha_n=0$ ).
 
 The algorithm proceeds as follows:
 
@@ -925,7 +926,7 @@ The good thing is that instead of inverting an $M\times M$ matrix, we are invert
 
  But *how* can we build a valid *kernel*?
 
- We have manly two ways to do it:
+ We have mainly two ways to do it:
 
 - *By construction*: we choose a feature space mapping $ \varphi (\mathbf{x})$ and use it to ﬁnd the corresponding kernel. (I'd call this method *by hand*)
 
@@ -947,13 +948,15 @@ where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean 
 
 But how is this framework related to *regression*? $\to$ *Kernel Regression*!
 
-Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
+Before we dive into the actual regression algorithm, let’s look at the approach from a high level.  
+Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/KR1.png" style="zoom:70%"/>
+<img src="images/KR1.png" style="zoom:70%"/>
 
-How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
+How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ get more weight than points farther away.
 
-This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points. Say we want to take the weighted average of three values: $3$, $4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$) , take the sum, then divide by the sum of the weights:
+This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points.  
+Say we want to take the weighted average of three values: $3$, $4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$) , take the sum, then divide by the sum of the weights:
 $$
 \frac{0.2\cdot3+0.4\cdot4+0.6\cdot5}{0.2+0.4+0.6}=\frac{5.2}{1.2}=4.33
 $$
@@ -979,7 +982,7 @@ It is interesting to note that Gaussian Kernel Regression is equivalent to creat
 
 
 
-![](C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/RBFN.png)
+![](images/RBFN.png)
 
 The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
 $$
@@ -999,11 +1002,11 @@ Here is a $1$-D example, just to give you an idea:
 
 `Here we use` $c_1$ `and` $c_2$ `as *centroids*, it makes sense that we don't want always to average over *all* the samples of our dataset, instead we can choose some *relevant* points (that I call *centroids* ) in our formulation by performing, for example, some local averaging...That was kinda what we did in fuzzy systems![Soft-Computing](apart from the fact that we didn't use gaussians as Membership Functions). According to David Salsbrug: "Coming up with almost exactly the same computer algorithm, fuzzy systems and kernel density-based regressions appear to have been developed completely independently of one another.`
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB1.png" style="zoom:70%"/>
+<img src="images/URB1.png" style="zoom:70%"/>
 
 Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB2.png" style="zoom:70%"/>
+<img src="images/URB2.png" style="zoom:70%"/>
 
 Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
