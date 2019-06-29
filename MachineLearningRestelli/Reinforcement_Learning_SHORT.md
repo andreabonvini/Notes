@@ -37,6 +37,56 @@ The two algorithms can perform differently in given situations, for example, in 
 
 
 
+### Montecarlo vs Temporal Difference
+
+***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
+
+if you want to briefly answer the question you could probably just say the following:
+
+MC update equation:
+$$
+
+\color{blue}V(s_t)\leftarrow V(s_t)+ \alpha\bigg(\color{red}v_t\color{blue}-V(s_t)\bigg)
+$$
+${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}$
+
+TD(0) update equation:
+$$
+\color{blue} V(s_t)\leftarrow V(s_t)+\alpha \bigg(\color{red}r_{t+1}+\gamma V(s_{t+1})\color{blue}-V(s_t)\bigg)
+$$
+
+- MC
+  - high variance, zero bias
+  - good convergence properties
+  - converges even with function approximation
+  - Not very sensitive to initial value
+  - Very simple to understand and use
+  - learns only from complete sequences
+  - works only for episodic environments
+  - Usually more effective in non-Markov environments
+- TD
+  - low variance, some bias
+  - ${TD(0)}$ converges to ${V_\pi(s)}$
+  - doesn't always converge with function approximation
+  - more sensitive to the initial value
+  - learns even from incomplete sequences
+  - works for both episodic and continuing environments
+  - Usually more effective in Markov environments
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ### UCB1 Algorithm

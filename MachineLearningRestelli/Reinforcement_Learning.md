@@ -690,8 +690,6 @@ ${N(s_t)}$: the total number of times I visited state ${s_t}$ along all episodes
 Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}$ we always go with the non-stationary update function.  
 (if you haven't understood this last part don't worry, it will be clearer once you study control techniques).
 
-${}$
-
 *TD-Update*  
 $$
 \color{blue} V(s_t)\leftarrow V(s_t)+\alpha \bigg(\color{red}r_{t+1}+\gamma V(s_{t+1})\color{blue}-V(s_t)\bigg)
