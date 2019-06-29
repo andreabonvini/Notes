@@ -1200,11 +1200,70 @@ Complete algorithm for Q-Learning:
 (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
 <div style="page-break-after: always;"></div> 
-### UCB1 Algorithm {TODO}
+### UCB1 Algorithm 
 
 ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
 
+This is a complete derivation of the algorithm, refer to the document *Reinforcement_Learning_SHORT* for a concise answer.
+UCB1 is an algorithm to solve stochastic MAB problems via a frequentist approach.  
+Frequentist means that the rewards associated with each action are unknown parameters, and that we select an arm through a policy based on the observation history.  
+The more we are uncertain on a specific choice, the more we want the algorithm to explore that option.
 
+In UCB1, what we do is instead of using the empiric estimate of each reward associated with an action $(\hat{R}(a_i))$, we consider an upper bound $U(a_i)$ over the expected value of $R(a_i)$.  
+More formally, we need to compute an upper bound:
+$$
+U(a_i):= \hat{R}_t(a_i)+B_t(a_i)\ge R(a_i)
+$$
+Let's call $N_t(a_i)$ the number of times I've performed action $a_i$ during my history.
+
+Small $N_t(a_i)$ implies a large $U(a_i)$ which means that  the estimated value $\hat{R}_t(a_i)$ is ***uncertain***.  
+Large $N_t(a_i)$ implies a small $U(a_i)$, which means that the estimate value $\hat{R}_t(a_i)$ is ***accurate***.
+
+Let's now introduce briefly the *Hoeffding Inequality Bound* says that:  
+Let $X_1,...,X_t$ be i.i.d. random variables with support in $[0,1]$ and identical mean $\mathbb{E}[X_i]=:X$ and let $\bar{X}_t=\frac{\sum_{t=1}^tX_i}{t}$ be the sample mean. then:  
+$$
+\mathbb{P}(X>\bar{X}_t+u)\le e^{-2tu^2}
+$$
+
+
+We'll now apply the *Hoeffding Inequality Bound* to the upperbound corresponding to each arm.  
+$$
+\mathbb{P}(R(a_i)>\bar{R}_t(a_i)+B_t(a_i))\le e^{-2N_t(a_i)B_t(a_i)^2}
+$$
+Now let's compute such upperbound:
+$$
+e^{-2N_t(a_i)B_t(a_i)^2}=p
+$$
+
+$$
+B_t(a_i)=\sqrt{\frac{-\log p}{2N_t(a_i)}}
+$$
+
+Let's reduce $p$ over time $\to p=t^{-4}$
+$$
+B_t(a_i)=\sqrt{\frac{2\log t}{N_t(a_i)}}
+$$
+Now we can talk about the algorithm:
+
+***UCB1 Algorithm***
+
+For each time step $t$:
+
+1. Compute $\hat{R}_t(a_i)=\frac{\sum_{i=1}^tr_{i,t}\mathbf{1}\{a_i=a_{it}\}}{N_t(a_i)} \ \forall a_i $
+2. Compute $B_t(a_i)=\sqrt{\frac{2\log t}{N_t(a_i)}} \ \forall a_i$
+3. Play arm $a_{it}=\arg \max_{a_i\in A}{\bigg(\hat{R}_t(a_i)+B_t(a_i)\bigg)}$
+
+*Theorem*:
+
+*At finite time $T$, the expected total regret of the UCB1 algorithm applied to a stochastic MAB problem is*
+$$
+L_t\le8\log{T}\sum_{i|\Delta_i>0}\frac{1}{\Delta_i}+\bigg(1+\frac{\pi^2}{3}\bigg)\sum_{i|\Delta_i>0}\Delta_i
+$$
+where $\Delta_i=R^*-R(a_i)$, and $R^*$ is the reward obtained by performing the best action.
+
+ The first term of the sum signifies that we expect to play any suboptimal machine about a logarithmic number of times, roughly scaled by how hard it is to distinguish from the optimal machine. That is, if ![\Delta_i](https://s0.wp.com/latex.php?latex=%5CDelta_i&bg=ffffff&fg=36312d&s=0) is small we will require more tries to know that action ![i](https://s0.wp.com/latex.php?latex=i&bg=ffffff&fg=36312d&s=0) is suboptimal, and hence we will incur more regret. The second term represents a small constant number (the ![1 + \pi^2 / 3](https://s0.wp.com/latex.php?latex=1+%2B+%5Cpi%5E2+%2F+3&bg=ffffff&fg=36312d&s=0) part) that caps the number of times we’ll play suboptimal machines in excess of the first term due to unlikely events occurring. So the first term is like our expected losses, and the second is our risk.
+
+(Source: Restelli's Slides - [JeremyKun](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/)
 
 <div style="page-break-after: always;"></div> 
 # Interesting Articles
