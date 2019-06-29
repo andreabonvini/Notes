@@ -8,13 +8,15 @@
 
 [TOC]
 
+<div style="page-break-after: always;"></div> 
+
 # Statistical Learning
 
 ### Support Vector Machines
 
 ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems. Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
-Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+The Support Vector Machines techniques aims to build a binary classifier by finding an hyperplane which is able to separate the data with the largest *margin* possible. 
 
 <img src="images/svm1.png" style="zoom:40%"/>
 
@@ -71,7 +73,7 @@ Well, $\mathbf{w}^T\mathbf{x}+b$ is just the value of the equation of the plane.
 $$
 distance = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n+b\;|
 $$
-But wait...what is $|\;\mathbf{w}^T\mathbf{x}_n+b\;|$ ? It is the constraint the we defined at the beginning of our derivation!
+But wait...what is $|\;\mathbf{w}^T\mathbf{x}_n+b\;|$ ? It is the constraint that we defined at the beginning of our derivation!
 $$
 |\mathbf{w}^T\mathbf{x}_n+b|=1
 $$
@@ -87,7 +89,9 @@ $$
 $$
 Since this is not a *friendly* optimization problem (the constraint is characterized by a minimum and an absolute, which are annoying) we are going to find an equivalent problem which is easier to solve. Our optimization problem can be rewritten as
 $$
-\underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
+\underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}
+\\
+\text{subject to} \ \ \ \  y_n \cdot(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
 $$
 where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to its real target value ( remember that this is a *supervised learning* technique and we know the real target value of each sample) . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down $\mathbf{w}$ until $\mathbf{w}^T\mathbf{x}_n+b$ will touch $1$ for some specific point $n$ of the dataset. 
 
@@ -108,9 +112,9 @@ $$
 $$
 And list the other *KKT* conditions:
 $$
-y_i(\mathbf{w}^T\mathbf{x}_i+b)-1\ge0\;\;\;\;\;\;\forall{i}\\
-\alpha_i\ge0\;\;\;\;\;\;\;\forall{i}\\
-\alpha_i(y_i(\mathbf{w}^T\mathbf{x}_i+b)-1)=0\;\;\;\;\;\;\forall{i}
+y_n(\mathbf{w}^T\mathbf{x}_n+b)-1\ge0\;\;\;\;\;\;\forall{n}\\
+\alpha_n\ge0\;\;\;\;\;\;\;\forall{n}\\
+\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)=0\;\;\;\;\;\;\forall{n}
 $$
 *Alert* :  the last condition is called the KKT *dual complementary condition* and will be key for showing that the SVM has only a small number of "support vectors", and will also give us our convergence test when we'll talk about the *SMO* algorithm. 
 
@@ -132,7 +136,10 @@ We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mat
 
 How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the ones associated with the so-called *support vectors* ! ( which are just samples from our dataset )  
+They are called *support* vectors because they are the vectors that determine the width of the *margin* , this can be noted by observing the last *KKT* condition  
+$\big\{\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)=0\;\;\;\forall{n}\big\}$,   
+in fact either a constraint is active, and hence the point is a support vector, or its multiplier is zero. 
 
 Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
 $$
@@ -141,49 +148,55 @@ y_n(\mathbf{w}^T\mathbf{x}_{n\in\text{SV}}+b)=1
 $$
 where $\mathbf{x}_{n\in\text{SV}}$ is any *support vector*. (you'd find the *same* $b$ for every support vector)
 
-But the coolest thing about *SVMs* is that we can rewrite our *objective functions* as follows:
+But the coolest thing about *SVMs* is that we can rewrite our *objective functions*.  
+From
 $$
-\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)
+\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m
+$$
+to
+$$
+\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n,\mathbf{x}_m)
 $$
 We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
 
 Finally we end up with the following equation for classifying *new points*:
 $$
-y(\mathbf{x}) = sign\left(\sum_{n=1}^{N}\alpha_n t_n k(\mathbf{x},\mathbf{x}_n)+b\right)
+\hat{y}(\mathbf{x}) = sign\left(\sum_{n=1}^{N}\alpha_n y_n k(\mathbf{x},\mathbf{x}_n)+b\right)
 $$
-The method described until here is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happens that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
+The method described so far is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happen that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
 
-We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the margin constraint but we add a *penalty*.
+We introduce *slack variables* $\xi_n$ , this way we allow to *violate* the margin constraint but we add a *penalty* expressed by the distance of the misclassified samples from the hyperplane (samples correctly classified have $\xi_n=0$).
 
 We now have to 
 $$
-\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
-\text{s.t.}\\ \ y_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
-\xi_i\ge0\ ,\ \ \ \forall{i}
+\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_n \xi_n \\
+\text{s.t.}\\ 
+\ y_n(\mathbf{w}^Tx_n+b)\ge1-\xi_n\ ,\ \ \ \forall{n}\\
+\xi_n\ge0\ ,\ \ \ \forall{n}
 $$
-$C$ is a coefficient that allows to treadeoff bias-variance and is chosen by *cross-validation*.
+$C$ is a coefficient that allows to trade-off bias-variance and is chosen by *cross-validation*.
 
 And obtain the *Dual Representation*
 
 $$
-  \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+\text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
-  0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
-  \sum_{n=1}^N\alpha_n t_n = 0
+  0\le\alpha_n\le C\ \ \ \ \ \forall{n}\\
+  \sum_{n=1}^N\alpha_n y_n = 0
 $$
-  Support vectors are points associated with $\alpha_n > 0$
+if $\alpha_n\le0$ the point $x_n$ is just correctly classified.
 
-  if $\alpha_n<C$ the points lies *on the margin*
+if $0<\alpha_n<C$ the points lies *on the margin*. They are indeed Support Vectors.
 
-  if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_i \le 1$) or *misclassified* ($\xi_i>1$)  
+if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_n \le 1$) or *misclassified* ($\xi_n>1$)  
 
-  Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
+Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
 
 And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? 
 
 As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
 $$
-  L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
+L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
 $$
 This is called *Leave-One-Out Bound* (I don't know why, maybe it's written [here ](<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf> )). The good thing is that it can be easily computed and we don't need to run SVM multiple times.
 
@@ -195,15 +208,15 @@ Remember our formulation for the *soft-margin SVM*:
 $$
 \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   s.t.\\
-  0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
-  \sum_{i=1}^ny_i\alpha_i=0
+  0\le\alpha_n\le C\ \ \ \ \text{for}\ n =1,2,\dots,N\\
+  \sum_{n=1}^Ny_n\alpha_n=0
 $$
 *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
 $$
 0\le\alpha_1,\alpha_2\le C\\
   y_1\alpha_1+y_2\alpha_2=k
 $$
-and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{i=1}^ny_i\alpha_i=0$ ).
+and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{n=1}^Ny_n\alpha_n=0$ ).
 
 The algorithm proceeds as follows:
 
@@ -214,8 +227,7 @@ The algorithm proceeds as follows:
 When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
 
 <div style="page-break-after: always;"></div> 
-
-### PAC Learning & VC Dimension
+### PAC Learning and Agnostic Learning
 
 ***What do we mean as PAC-Learning and Agnostic-Learning?***
 
@@ -228,12 +240,12 @@ First, some concepts you need to know:
   - Because with a large hypothesis space the training error is a bad estimate of the prediction error, hence we would like to infer something about the generalization error from the training samples. 
   - When the learner doesn’t have access to enough samples, hence we would like to estimate how many samples are enough.
 
-  This cannot be performed by measuring the bias and the variance, but we can bound them.
+This cannot be performed by measuring the bias and the variance, but we can bound them.
 
 Given:
 
-- Set of instances $\mathcal{X}$
-- Set of hypotheses $\mathcal{H}$ (finite)
+- Set of instances $\mathcal{X}$ 
+- Set of hypothesis $\mathcal{H}$ (finite)
 - Set of possible target concepts $C$. Each concept $c$ corresponds to a boolean function $c:\mathcal{X} \to\{0,1\}$ which can be viewed as belonging to a certain class or not
 - Training instances generated by a fixed, unknown probability distribution $P$ over $X$. 
 
@@ -381,13 +393,17 @@ $$
 
 `manca la parte che trovi su PMDS` 
 
-***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
+<div style="page-break-after: always;"></div> 
+
+### VC Dimension
+
+**Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
 
 - We are always talking about *Classification*.
 
-- When counting the number of hypotheses, the entire input space is taken into consideration. In the case of a perceptron, each perceptron differs from another if they differ in at least one input point, and since the input is continuous, there are an infinite number of different perceptrons. (e.g. in a $2-D$ space you can draw an infinite number of different lines)
+- When counting the number of hypothesis, the entire input space is taken into consideration. In the case of a perceptron, each perceptron differs from another if they differ in at least one input point, and since the input is continuous, there are an infinite number of different perceptrons. (e.g. in a 2D space you can draw an infinite number of different lines)
 
-  Instead of counting the number of hypotheses in the entire input space, we are going to restrict the count only to the samples: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
+  Instead of counting the number of hypothesis in the entire input space, we are going to restrict the count only to the samples: a *finite* set of input points. Then, simply count the number of the possible *dichotomies*. A dichotomy is like a mini-hypothesis, it’s a *configuration of labels* on the sample’s input points.
 
   A *hypothesis* is a function that maps an input from the entire *input space* to a result:
   $$
@@ -420,7 +436,7 @@ $$
   $$
   m_{\mathcal{H}}(N)=\underset{\mathbf{x}_1,\dots,\mathbf{x}_N\in\mathcal{X}}{max}|\mathcal{H}(\mathbf{x}_1,\dots,\mathbf{x}_N)|
   $$
-  This translates to choosing any $N$ points and laying them out in *any* fashion in the input space. Determining $m$ is equivalent to looking for such a layout of the $N$ points that yields the *most* dichotomies. 
+  This translates into choosing any $N$ points and laying them out in *any* fashion in the input space. Determining $m$ is equivalent to looking for such a layout of the $N$ points that yields the *most* dichotomies. 
 
   The growth function satisfies:
   $$
@@ -430,15 +446,13 @@ $$
 
   <img src="images/perc.PNG" style="zoom:75%"/>
 
-  This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that that for perceptrons, $m$ can’t be the maximum possible because it would imply that perceptrons are as strong as can possibly be.
+  This is where the perceptron breaks down because it *cannot* separate that configuration, and so $m_{\mathcal{H}}(4)=14$ because two configurations—this one and the one in which the left/right points are blue and top/bottom are red—cannot be represented. For this reason, we have to expect that for perceptrons, $m$ can’t be $2^4$.
 
 The *VC* ( *Vapnik-Chervonenkis ) dimension* of a hypothesis set $\mathcal{H}$ , denoted by $d_{VC}(\mathcal{H})$ is the largest value of $N$ for which $m_{\mathcal{H}}(N)=2^N$  , in other words is "*the most points $\mathcal{H}$ can shatter* " 
 
 We can say that the *VC* dimension is one of many measures that characterize the expressive power, or capacity, of a hypothesis class. 
 
-You can think of the VC dimension as "how many points can this model class memorize?" (a ton? $\to$ BAD! not so many? $\to$ GOOD!)
-
-----
+You can think of the VC dimension as "how many points can this model class memorize/shatter?" (a ton? $\to$ BAD! not so many? $\to$ GOOD!).  
 
 With respect to learning, the effect of the VC dimension is that if the VC dimension is finite, then the hypothesis will generalize:
 $$
@@ -459,11 +473,9 @@ Proof: [here](<http://wittawat.com/posts/vc_dimension_linear_classifier.html>)
 `READ THE SECTION ON PMDS TOO! `
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge Regression
 
-**Describe the supervised learning technique called ridge regression for regression problems.**  
-(*William Bonvini*)  
+**Describe the supervised learning technique called ridge regression for regression problems.**    
 Ridge Regression is a regularization technique that aims to reduce model complexity and prevent over-fitting which may result from simple linear regression.  
 In ridge regression, the cost function is altered by adding a penalty equivalent to the square of the magnitude of the coefficients.  
 $$
@@ -512,11 +524,9 @@ making predictions less sensitive to the Training Data.
 (Source: [statquests explanation](https://www.youtube.com/watch?v=Q81RR3yKn30))
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge vs Lasso
 
 ***Describe and compare the ridge regression and the LASSO algorithms.***    
-*(William Bonvini)*
 
 Before diving into the definitions, let's define what is Regularization: it's a technique which makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data. 
 
@@ -591,11 +601,9 @@ What have we noticed then?
 (Sources: [PoliMi Data Scientists Notes - Machine Learning](https://polimidatascientists.it/notes.html)   ;   [Bloomberg - Lasso, Ridge, and Elastic Net](https://www.youtube.com/watch?v=KIoz_aa1ed4&t=934s)	)  
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge Regression vs Bayesian Linear Regression
 
 ***Describe the ridge regression algorithm and compare it with the Bayesian linear regression approach.***
-*(William Bonvini)* 
 
 `INCOMPLETE: THIS JUST EXPLAIN THE BAYESIAN APPROACH (ALREADY SEEN IN SOFT COMPUTING -> MAXIMUM A POSTERIORI ESTIMATION)`
 
@@ -647,10 +655,7 @@ If we choose a prior distribution as follows:
 
 ![](images/br2.png)
 
-
-
 <div style="page-break-after: always;"></div> 
-
 ### Logistic Regression
 
 ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
@@ -762,7 +767,6 @@ The effect of a single update is to *reduce the error* due to the *misclassified
 
 
 <div style="page-break-after: always;"></div> 
-
 ### PCA
 
 ***Describe the Principal Component Analysis technique***
@@ -810,7 +814,6 @@ But also some drawbacks:
 - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
 <div style="page-break-after: always;"></div> 
-
 ### Gaussian Processes
 
 ***Describe the Gaussian Processes model for regression problems*** (*kriging*)
@@ -857,7 +860,6 @@ where $C(\mathbf{x}_n,\mathbf{x}_m) = k(\mathbf{x}_n,\mathbf{x}_m)+\sigma^2\delt
 Since the two *Gaussians* are *independent* their covariances simply *add*.
 
 <div style="page-break-after: always;"></div> 
-
 ### Kernels
 
 ***Describe the purpose of using kernels in Machine Learning techniques. How can you construct a valid Kernel? Provide an example of a ML method using kernels and describe the speciﬁc advantage of using them for this method.***
@@ -924,7 +926,7 @@ The good thing is that instead of inverting an $M\times M$ matrix, we are invert
 
  But *how* can we build a valid *kernel*?
 
- We have manly two ways to do it:
+ We have mainly two ways to do it:
 
 - *By construction*: we choose a feature space mapping $ \varphi (\mathbf{x})$ and use it to ﬁnd the corresponding kernel. (I'd call this method *by hand*)
 
@@ -946,13 +948,15 @@ where $||\mathbf{x}-\mathbf{x}'||^2$ may be recognized as the squared Euclidean 
 
 But how is this framework related to *regression*? $\to$ *Kernel Regression*!
 
-Before we dive into the actual regression algorithm, let’s look at the approach from a high level. Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
+Before we dive into the actual regression algorithm, let’s look at the approach from a high level.  
+Let’s say you have the following scatter plot, and you want to approximate the $y$ value at $x = 60$. We’ll call this our "query point".
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/KR1.png" style="zoom:70%"/>
+<img src="images/KR1.png" style="zoom:70%"/>
 
-How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ got more weight than points farther away.
+How would you go about it? One way would be to look at the data points near $x = 60$, say from $x = 58$ to $x = 62$, and average their $y$ values. Even better would be to somehow weight the values based on their distance from our query point, so that points closer to $x = 60$ get more weight than points farther away.
 
-This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points. Say we want to take the weighted average of three values: $3$, $4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$) , take the sum, then divide by the sum of the weights:
+This is precisely what *Gaussian Kernel Regression* does, it takes a weighted average of the surrounding points.  
+Say we want to take the weighted average of three values: $3$, $4$ and $5$. To do this, we multiply each value by its weight (I've chosen some arbitrary weights: $0.2$,$0.4$ and $0.6$) , take the sum, then divide by the sum of the weights:
 $$
 \frac{0.2\cdot3+0.4\cdot4+0.6\cdot5}{0.2+0.4+0.6}=\frac{5.2}{1.2}=4.33
 $$
@@ -978,7 +982,7 @@ It is interesting to note that Gaussian Kernel Regression is equivalent to creat
 
 
 
-![](C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/RBFN.png)
+![](images/RBFN.png)
 
 The input can be modeled as a vector of real numbers $\mathbf{x}\in \mathbb{R}^n$. The output of the network is then a scalar function of the input vector, $\varphi:\R^n\to\R$ and is given by
 $$
@@ -998,11 +1002,11 @@ Here is a $1$-D example, just to give you an idea:
 
 `Here we use` $c_1$ `and` $c_2$ `as *centroids*, it makes sense that we don't want always to average over *all* the samples of our dataset, instead we can choose some *relevant* points (that I call *centroids* ) in our formulation by performing, for example, some local averaging...That was kinda what we did in fuzzy systems![Soft-Computing](apart from the fact that we didn't use gaussians as Membership Functions). According to David Salsbrug: "Coming up with almost exactly the same computer algorithm, fuzzy systems and kernel density-based regressions appear to have been developed completely independently of one another.`
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB1.png" style="zoom:70%"/>
+<img src="images/URB1.png" style="zoom:70%"/>
 
 Two unnormalized radial basis functions in one input dimension. The basis function centers are located at $c_1=0.75$ and $c_2=3.25$.
 
-<img src="C:/Users/andre/Desktop/Github/Notes/MachineLearningRestelli/images/URB2.png" style="zoom:70%"/>
+<img src="images/URB2.png" style="zoom:70%"/>
 
 Two normalized radial basis functions in one input dimension. The basis function centers are the same as before, in this specific case the activation functions become *sigmoids*!
 
@@ -1036,7 +1040,7 @@ $$
 =\frac{\sum_{i=1}^{n}K_h(x-x_i)y_i}{\sum_{j=1}^{n}K_h(x-x_j)}\\
 $$
 
-
+<div style="page-break-after: always;"></div> 
 
 # Interesting Articles
 

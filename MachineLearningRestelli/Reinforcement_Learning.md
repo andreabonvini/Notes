@@ -11,7 +11,6 @@
 [TOC]
 
 <div style="page-break-after: always;"></div> 
-
 # Q & A
 
 ### Methods to compute the value function in DMDP
@@ -97,7 +96,6 @@ if ${\lambda = 1}$ we obtain Monte Carlo learning.
 (Sources: this document)
 
 <div style="page-break-after: always;"></div> 
-
 ### Policy Iteration
 
 ***Describe the policy iteration technique for control problems on Markov Decision Processes***  
@@ -176,7 +174,6 @@ If we keep on iterating, we end up with the true value function ${(k=\infty)}$ a
 Ok, policy evaluation is done.
 
 <div style="page-break-after: always;"></div> 
-
 ***Policy Improvement***
 
 Now let's talk about the column on the right:  
@@ -211,7 +208,6 @@ V^{\pi'}(s)\ge V^\pi (s) \ \ \ , \ \ \ \forall s \in S
 $$
 
 <div style="page-break-after: always;"></div> 
-
 ***Let's put it all together and optimize***
 
 <u>*policy iteration*</u>
@@ -283,7 +279,6 @@ $$
   ( Sources: PMDS Notes ${\leftarrow}$ there are some mistakes though - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 
 <div style="page-break-after: always;"></div> 
-
 ### Value Iteration
 
 ***Describe the value iteration algorithm. Does the algorithm always return the optimal policy?***   
@@ -314,7 +309,6 @@ Shortest Path Example:
 This problem consists in finding the optimal value function for each cell. the goal of the game is to reach the terminal state (top-left corner), the possible actions are move left, up,right, down. Each actions' reward is ${-1}$. 
 
 <div style="page-break-after: always;"></div> 
-
 With value iteration we are able to find the optimal value function just by iterating on the Bellman's Optimality Equation.
 
 We initialize all the values to ${0}$.
@@ -363,7 +357,6 @@ $$
 - We can say that Value Iteration is equivalent to do Modified Policy Iteration with ${k=1}$. 
 
 <div style="page-break-after: always;"></div> 
-
 *One last image to sum up:*  
 <img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/value_iteration.png" style="zoom:40%"/>
 
@@ -399,7 +392,6 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
 ***Concise Answer***  
 
 Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, It's Model Based.
@@ -431,7 +423,6 @@ $$
   ( Sources: PMDS Notes - [Deep Mind Dynamic Programming](https://www.youtube.com/watch?v=Nd1-UUMVfz4&t=142s) )
 
   <div style="page-break-after: always;"></div> 
-
 ### Value Iteration vs Policy Iteration
 
 ***Describe and compare Value Iteration and Policy Iteration algorithms.***   
@@ -476,7 +467,6 @@ ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
 This algorithm assures convergence to the optimal value function, and consequently to the optimal policy.
 
 <div style="page-break-after: always;"></div> 
-
 ***Differences***
 
 - in Value Iteration we are not building a policy at each step, we are working directly in value space. in Policy Iteration there is an alternation between value and policy space.
@@ -486,7 +476,6 @@ This algorithm assures convergence to the optimal value function, and consequent
 (Sources: this document)
 
 <div style="page-break-after: always;"></div> 
-
 ### Prediction vs Control
 
 ***Describe the two problems tackled by Reinforcement Learning (RL): prediction and control. Describe how the Monte Carlo RL technique can be used to solve these two problems.***   
@@ -529,7 +518,6 @@ So what have we done?
    Just think of it as saying that ${V}$ is exactly the same ${V}$ as before but incremented/decremented of a small quantity weighted by ${\frac{1}{N(s_t)}}$.  Or google *incremental mean* to get such equation starting from the generic equation of the *arithmetic mean*. 
 
 <div style="page-break-after: always;"></div> 
-
 ***Control in Monte Carlo***
 
 {DISCLAIMER: I derived MC Control step by step, if you want you can jump to *GLIE Monte Carlo Control* for the short answer}  
@@ -564,7 +552,6 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
 Greedy Policy Improvement over ${Q(s,a)}$ is *model-free*
 $$
 \pi'(s)=arg \max_{a \in A}Q(s,a) 
@@ -671,7 +658,6 @@ So, let's sum up the solutions we adopted for MC control:
 (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
 <div style="page-break-after: always;"></div> 
-
 ### Monte Carlo vs Temporal Difference
 
 ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***  
@@ -716,7 +702,6 @@ In this case we are updating our value function towards the estimated return aft
 Specifically, the estimate consists in two parts: the immediate reward ${r_{t+1}}$ plus the discounted value of the next step ${\gamma V(S_{t+1})}$. 
 
 <div style="page-break-after: always;"></div> 
-
 ***So what are the differences between MC and TD?***
 
 Ok, here you are:  
@@ -771,7 +756,6 @@ ${V(eh)\leftarrow 15 + \bigg(10+1\cdot 10-(15)\bigg)=20}$		(Elapsed Time = 20)
 The sum of each ${V(S_t)}$ with the relative elapsed time always sums up to the total predicted time in state ${S_{t+1}}$.
 
 <div style="page-break-after: always;"></div> 
-
 **Complete/Incomplete - Episodic/Continuing environments**
 
 - TD can learn *before* knowing the final outcome, it learns online, step by step. (online means that it learns on the go, doesn't wait the episode to be over)
@@ -832,7 +816,6 @@ We notice that TD does better than MC, doesn't matter how many episodes we run.
 We even notice that MC is noisier (more variance).
 
 <div style="page-break-after: always;"></div> 
-
 **Markov / non-Markov Environments**  
 
 Last but non least: which of them takes advantage of the Markov property? (*the future is independent of the past given the present*). the short answer is: TD does, MC does not.
@@ -887,7 +870,6 @@ it's bad to use function approximation in TD because, once you update the value 
 Ok, we are done, what follows is a concise summary of the differences between the two algorithms:
 
 <div style="page-break-after: always;"></div> 
-
 **Concise Summary**
 
 if you want to briefly answer the question you could probably just say the following:
@@ -921,7 +903,6 @@ if you want to briefly answer the question you could probably just say the follo
 (  Sources: David Silver's Slides;  [David Silver's RL Lecture 04](https://www.youtube.com/watch?v=PnHCvfgC_ZA&t=1702s)  ) 
 
 <div style="page-break-after: always;"></div> 
-
 ### On-Policy vs Off-Policy
 
 ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***   
@@ -945,7 +926,7 @@ ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha (\color{red} R_{t+1}+\gamma Q(S_{t+1},A
 Off policies learn from observing humans or other agents.  
 They re-use experience generated from old policies ${\pi_1,\pi_2,...,\pi_{t-1}}$ in order to generate the new target policy ${\pi}$.
 
-the best known example of why off-policy learning is used is the one regarding the exploration-exploitation tradeoff. We can follow and exploratory policy  and at the same time learn about the optimal policy.  
+the best known example of why off-policy learning is used is the one regarding the exploration-exploitation tradeoff. We can follow an exploratory policy and at the same time learn about the optimal policy.  
 Another interesting use of off-policy learning is wanting to learn about multiple policies while following one: there might be many different behaviors we want to figure out.
 
 An example of off-policy technique is *Q-Learning*.  
@@ -956,7 +937,6 @@ ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma \max_{a' \
 (Sources: PMDS Notes and [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) )
 
 <div style="page-break-after: always;"></div> 
-
 ### Eligibility Traces
 
 ***Describe what are eligibility traces and how they are used in the TD(λ) algorithm. Explain what happens when λ = 0 and when λ = 1.***   
@@ -1116,7 +1096,6 @@ $$
 (Sources: David Silver's Slides on Prediction - Restelli's Slides on Finite MDPs)
 
 <div style="page-break-after: always;"></div> 
-
 ### Q-Learning vs SARSA
 
 ***Describe the diﬀerences existing between the Q-learning and SARSA algorithms***  
@@ -1128,20 +1107,21 @@ Now let's jump into the differences:
 Q-Learning is an example of off-policy learning, while SARSA is an example of on-policy learning.   
 It implies that    
 
-- Q-learning uses a target policy (greedy) to choose the best next action ${a'}$ while following the behavior policy (${\epsilon}$-greedy)  (off-policy).  =={TODO: clearify}==
-  ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)}$   
+- Q-learning uses a target policy $\pi$  (which is greedy) to choose the best next action ${a'}$ while following a behavior policy  $\bar{\pi}$ (which is ${\epsilon}$-greedy). this means off-policy.
+  ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)} $   
 
   
 
-- SARSA learns the Q-value based on the action performed following its own policy (on-policy)  
+- SARSA learns the optimal Q-value based on the actions performed following its own policy. this means on-policy. 
   ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha (\color{red} R+\gamma Q(S_{t+1},A_{t+1}) \color{black} -Q(S_t,A_t))}$   
 
 If you want to get a full understanding of both algorithms, here you are:
 
 ***SARSA Algorithm***  
 
-  <img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sarsa1.jpg" style="zoom:30%"/>It's called SARSA because the agent starts in ${S}$, performs action ${A}$ following its own policy. 
+  <img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/sarsa1.jpg" style="zoom:30%"/>
 
+It's called SARSA because the agent starts in ${S}$, performs action ${A}$ following its own policy.   
 Afterwards, we are going to randomly sample from our environment to see what reward ${R}$ we receive and that state ${S'}$ we end up in.  
 then we are going to sample again from our policy to generate ${A'}$.  
 So basically, SARSA, indicates a particular update pattern we can use.  
@@ -1165,6 +1145,12 @@ $$
   \pi(s,a)=\begin{cases}\frac{\epsilon}{m}+1-\epsilon  \ \ \ \ if \ \    a^*=arg\max_{a\in A} Q(s,a) \\
   \frac{\epsilon}{m} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ otherwise\end{cases} 
 $$
+
+
+
+Complete algorithm for SARSA:
+
+<img src="images/sarsaalgo.png" style="zoom:50%">
 
 ***Q-Learning***  
 
@@ -1207,10 +1193,13 @@ old red colored component with the new one, we obtain the Q-update equation for 
 $$
 Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha \big( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t)\big)
 $$
+Complete algorithm for Q-Learning:
+
+<img src="images/qlearningalgo.png" style="zoom:50%">
+
 (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
 <div style="page-break-after: always;"></div> 
-
 ### UCB1 Algorithm {TODO}
 
 ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
@@ -1218,7 +1207,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 # Interesting Articles
 
 - [Model Based Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-reinforcement-learning-complete-guide-towardsagi-ceea325c5d53)
