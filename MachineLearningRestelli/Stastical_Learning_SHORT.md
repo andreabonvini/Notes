@@ -1,8 +1,8 @@
 - ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
 
-  A Support Vector Machine (SVM) performs classification by finding the hyperplane that maximizes the margin between two classes. The vectors (cases) that define the hyperplane are the support vectors.
+  A Support Vector Machine (SVM) performs classification by finding the hyperplane that maximizes the margin between two classes.
 
-  We define the hyperplane as $\mathbf{w}^T\mathbf{x} = 0$, it is possible to prove that, by observing that $\mathbf{w} \perp \text{hyperplane}$ and by adding the normalization constraint   $|\mathbf{w}^T\mathbf{x}_n|=1$ ( where $\mathbf{x}_n$ is the nearest point to the hyperplane) the distance from the hyperplane to $\mathbf{x}_n$ is:
+  We define the hyperplane as $\mathbf{w}^T\mathbf{x} +b= 0$, it is possible to prove that, by observing that $\mathbf{w} \perp \text{hyperplane}$ and by adding the normalization constraint   $|\mathbf{w}^T\mathbf{x}_n+b|=1$ ( where $\mathbf{x}_n$ is the nearest point to the hyperplane, the set of this points corresponds to the *support vectors* ) the distance from the hyperplane to $\mathbf{x}_n$ is:
   $$
   \text{distance} = \frac{1}{||\mathbf{w}||}
   $$
@@ -14,7 +14,7 @@
   $$
   Where $y_n$ is the target value associated with sample $n$.
 
-  It is possible to formulate this problem as a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the *KKT* (Karush–Kuhn–Tucker) conditions. After that, we can solve the problem by means of *quadratic programming*.
+  This is a constraint optimization problem with inequality constraints, we have to derive the *Lagrangian* and apply the *KKT* (Karush–Kuhn–Tucker) conditions. After that, we can solve the problem by means of *quadratic programming*.
 
   Finally we end up with the following equation for classifying *new points*:
   $$
@@ -22,20 +22,26 @@
   $$
   where $\alpha_n$ are the *Lagrangian Multipliers*.
 
-  The method described until here is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happens that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them. We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the margin constraint but we add a *penalty*.
+  An interesting observation is derived from the last KKT condition :
+  $$
+  \alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)=0\;\;\;\;\;\;\forall{n}
+  $$
+  We can observe that either a constraint is active, and hence the point is a support vector, or its multiplier is zero. (if a point is not a support vector its multiplier is $0$)
+
+  The method described so far is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happens that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them. We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the margin constraint but we add a *penalty*.
 
   *Primal*:
   $$
-  \text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
-  \text{s.t.}\\ \ y_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
-  \xi_i\ge0\ ,\ \ \ \forall{i}
+  \text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_n \xi_n \\
+  \text{s.t.}\\ \ y_n(\mathbf{w}^Tx_n+b)\ge1-\xi_n\ ,\ \ \ \forall{n}\\
+  \xi_n\ge0\ ,\ \ \ \forall{n}
   $$
   *Dual:*
   $$
   \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
     \text{s.t.}\\
-    0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
-    \sum_{n=1}^N\alpha_n t_n = 0
+    0\le\alpha_n\le C\ \ \ \ \ \forall{n}\\
+    \sum_{n=1}^N\alpha_n y_n = 0
   $$
    The *dual formulation* allows us to use *kernels* $k(\mathbf{x}_n\mathbf{x}_m)$
 
@@ -47,18 +53,25 @@
 
   When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
 
+  `Nota aggiuntiva`
+
+  In the soft-margin formulation the last KKT condition is
+  $$
+  \alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1+\xi_n)=0\;\;\;\;\;\;\forall{n}
+  $$
+
 - ***Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
 
   Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence, specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
 
   Remember our formulation for the *soft-margin SVM*:
   $$
-  \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+  \text{Maximize}\ \ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
     s.t.\\
-    0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
-    \sum_{i=1}^ny_i\alpha_i=0
+    0\le\alpha_n\le C\ \ \ \ \text{for}\ n =1,2,\dots,N\\
+    \sum_{n=1}^Ny_n\alpha_n=0
   $$
-  *SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
+  *SMO* breaks this problem into a series of smaller possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{n}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
   $$
   0\le\alpha_1,\alpha_2\le C\\
     y_1\alpha_1+y_2\alpha_2=k
@@ -71,7 +84,7 @@
   - Pick a second multiplier $\alpha_2$ and optimize the pair ($\alpha_1$,$\alpha_2$).
   - Repeat steps $1$ and $2$ until convergence.
 
-  When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
+  When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{N(N-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
 
   As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
   $$

@@ -656,7 +656,7 @@ If we choose a prior distribution as follows:
 ![](images/br2.png)
 
 <div style="page-break-after: always;"></div> 
-### Logistic Regression
+### Logistic Regression 
 
 ***Describe the logistic regression algorithm and compare it with the perceptron algorithm.***
 
