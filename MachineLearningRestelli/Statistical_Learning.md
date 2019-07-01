@@ -9,7 +9,6 @@
 [TOC]
 
 <div style="page-break-after: always;"></div> 
-
 # Statistical Learning
 
 ### Support Vector Machines
@@ -394,7 +393,6 @@ $$
 `manca la parte che trovi su PMDS` 
 
 <div style="page-break-after: always;"></div> 
-
 ### VC Dimension
 
 **Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
@@ -528,7 +526,7 @@ making predictions less sensitive to the Training Data.
 
 ***Describe and compare the ridge regression and the LASSO algorithms.***    
 
-Before diving into the definitions, let's define what is Regularization: it's a technique which makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data. 
+Before diving into the definitions let's define what is Regularization: it's a technique that makes slight modifications to the learning algorithm such that the model avoids overfitting, so performing better on unseen data. 
 
 Ridge Regression is a Regularization Technique which consists in adding to the Linear Regression Loss Function a penalty term called L2 regularization element:  
 
@@ -541,7 +539,7 @@ ${{L(\mathbf{w})=\frac{1}{2}\sum_{i=1}^N(t_i-\mathbf{w}^T\phi(\mathbf{x}_i))^2+\
 The main difference between Ridge and Lasso Regression is that Ridge Regression can only shrink to weights of the features close to 0 while Lasso Regression can shrink them all the way to 0.   
 This is due to the fact that Ridge Regression squares the features weights, while Lasso Regression considers the absolute value of such weights.  
 
-This means that Lasso Regression can exclude useless features from the lost function, so being better than Ridge Regression at reducing the variance in models that contain a lot of useless features. In contrast, Ridge Regression tends to do a little better when most features are useful.  
+This means that Lasso Regression can exclude useless features from the loss function, so being better than Ridge Regression at reducing the variance in models that contain a lot of useless features. In contrast, Ridge Regression tends to do a little better when most features are useful.  
 
 You may ask yourself why Lasso is able to shrink some weights exactly to zero, while Ridge doesn't.  
 The following example may be explanatory:  
@@ -773,7 +771,7 @@ The effect of a single update is to *reduce the error* due to the *misclassified
 
 *PCA* is an unsupervised learning method which aims to *reduce* the dimensionality of an input space $\mathcal{X}$ .
 
-Formally, principal component analysis (PCA) is a statistical procedure that uses an *orthogonal transformation* to convert a set of observations of possibly correlated variables into a set of values of *linearly uncorrelated* variables called *principal components*.
+Formally, Principal Component Analysis (PCA) is a statistical procedure that uses an *orthogonal transformation* to convert a set of observations with possibly correlated variables into a set of elements with *linearly uncorrelated* variables called *principal components*.
 
 To have a graphical intuition:
 
@@ -1041,7 +1039,6 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
 # Interesting Articles
 
 - [Polynomial Regression](https://towardsdatascience.com/polynomial-regression-bbe8b9d97491)
