@@ -1,10 +1,10 @@
-# Machine Learning - Reinforcement Learning
+# **Machine** Learning - Reinforcement Learning
 
 `or: How I Learned to Stop Worrying and Love Restelli`
 
 *A series of extremely verbose and surely overkill notes on the "Machine Learning" course as taught by Marcello Restelli and Francesco Trovò during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
-`Feel free to modify the document to correct any mistakes / add additional material in order to favour a better understanding of the concepts`
+`Feel free to modify the document to correct any mistake / add additional material in order to favour a better understanding of the concepts`
 
 *Edited by: William Bonvini*
 
@@ -17,8 +17,8 @@
 
 ***Describe which methods can be used to compute the value function $V^{\pi}$ of a policy $\pi$ in a discounted Markov Decision Process.***   
 
-The question is asking what are the methods o do prediction in Reinforcement Learning.  
-We have to distinguished between Model-Based environments and Model-Free environments.
+The question is asking what are the methods to do prediction in a discounted MDP.  
+We have to distinguish between Model-Based environments and Model-Free environments.
 
 ***Model-Based***  
 Model-Based means that you are given all the dynamics of the system: the transition matrix, and the rewards for each state action pair.
@@ -49,6 +49,8 @@ There are mainly two algorithms to do prediction in Model-Free problems:
 
 - Monte Carlo
 - Temporal Difference
+
+<div style="page-break-after: always;"></div> 
 
 <u>*Monte Carlo*</u>
 
@@ -93,7 +95,7 @@ in ${TD(0)}$ we estimate the new return by doing just a one-step lookahead, but 
 
 if ${\lambda = 1}$ we obtain Monte Carlo learning.
 
-(Sources: this document)
+(Source: this document)
 
 <div style="page-break-after: always;"></div> 
 ### Policy Iteration
@@ -126,8 +128,7 @@ We do it by using *synchronous backups*:
 
 - at each iteration ${k+1}$
 - for all states ${s \in S}$
-- update ${V_{k+1}(s)}$ from ${V_k(s')}$
-- where ${s'}$ is a successor state of ${s}$
+- update ${V_{k+1}(s)}$ from ${V_k(s')}$ ,  where ${s'}$ is a successor state of ${s}$
 
 So let's understand exactly how to do such update:  
 <img src="images/policy_evaluation1.png" style="zoom:30%"/>
@@ -251,7 +252,7 @@ We use synchronous backups:
 
 - at each iteration ${k+1}$
 - for all states ${s \in S}$
-- update ${V_{k+1}(s)}$ from ${V_k (s)}$1(s)  
+- update ${V_{k+1}(s)}$ from ${V_k(s')}$ ,  where ${s'}$ is a successor state of ${s}$
 
 After few iterations even if the true value function is not determined, the policy has usually already converged, because it depends on the shape of V, not on its absolute value. So, instead of using the closed form solution, which is expensive, applying the iteration for a few steps allows to have a bad approximation of the value function, but a good estimation of the policy. The usage of this approximated evaluation combined with policy improvement is called *modified policy evaluation*.
 
@@ -285,14 +286,14 @@ $$
 
 If you are looking for a concise answer go to the end.
 
-Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, it's Model Based.
+Value iteration is the most popular dynamic programming algorithm applied in model based scenarios. 
 
-Value iteration is based on the Principle of Optimality:
+Value iteration is based on the principle of Optimality:
 
 If the first action I take is optimal and then I follow an optimal policy from whichever state I end up, the overall behavior is optimal.
 
 ***Principle of Optimality***  
-A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$ , ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,
+A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$ , ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,   
 ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
 
 Ok, how to exploit this?  
@@ -300,13 +301,15 @@ If we know the solution to the subproblems ${v_* (s')}$, we can find ${v_* (s)}$
 $$
 v_* (s) \leftarrow \max _{a \in A}\bigg\{{R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_*(s')\bigg\} }
 $$
-The idea of value iteration is to apply these update iteratively: we plug in to the right member of the equation the current value function (so, it's not optimal at first!), obtain a new value function, plug such new value function to the right member, obtain a new value function, and so on until we find the optimal value function.
+The idea of value iteration is to apply these update iteratively:  
+we plug into the right member of the equation the current value function (so, it's not optimal at first!), obtain a new value function, plug such new value function to the right member, obtain a new value function, and so on until we find the optimal value function.
 
 Intuition: start with the final rewards and work backwards.  
 Shortest Path Example:    
 <img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/shortestpath.png" style="zoom:40%"/> 
 
-This problem consists in finding the optimal value function for each cell. the goal of the game is to reach the terminal state (top-left corner), the possible actions are move left, up,right, down. Each actions' reward is ${-1}$. 
+This problem consists in finding the optimal value function for each cell. the goal of the game is to reach the terminal state (top-left corner), the possible actions are move left, up,right, down.  
+Each actions' reward is ${-1}$. 
 
 <div style="page-break-after: always;"></div> 
 With value iteration we are able to find the optimal value function just by iterating on the Bellman's Optimality Equation.
@@ -394,7 +397,7 @@ $$
 <div style="page-break-after: always;"></div> 
 ***Concise Answer***  
 
-Value iteration is the most popular dynamic programming algorithm applied to RL. Since we are talking about Dynamic Programming, It's Model Based.
+Value iteration is the most popular dynamic programming algorithm applied in model based scenarios.
 
 The problem of ﬁnding the optimal policy ${\pi_*}$ is solved by iteratively applying the Bellman Optimality equation, without any explicit policy.  
 In fact, intermediate value functions may not correspond to any policy.  
@@ -432,7 +435,6 @@ Value iteration and Policy Iteration are two algorithms used to do control in Mo
 Value Iteration can be considered a particular case of Modified Policy Iteration.
 
 ***Policy Iteration***  
-I'm talking about PI for Model Based Problems, in fact the improvement step is completely deterministic.
 
 It's divided in two steps:
 
@@ -460,9 +462,8 @@ $$
 until the actual optimal value function is found.
 
 The optimal value function is found when the old value function ${V_k}$ and the new one ${V_{k+1}}$ differ less than a small number ${\epsilon}$.  
-Value iteration  is based on the principle of Optimality:  
-A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$, ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,  
-${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
+Value iteration is based on the principle of Optimality:  
+A policy ${\pi(a|s)}$ achieves the optimal value from state ${s}$, ${v_\pi (s)=v_* (s)}$, if and only if, for any state ${s'}$ reachable from ${s}$,  ${\pi}$ achieves the optimal value from state ${s'}$, ${v_\pi (s')=v_*(s')}$.
 
 This algorithm assures convergence to the optimal value function, and consequently to the optimal policy.
 
@@ -486,7 +487,7 @@ This algorithm assures convergence to the optimal value function, and consequent
   This type of task consists in finding the policy ${\pi(a|s)}$ that maximizes the expected total reward from any given state. In other words, some policy ${\pi}$ is given, and it finds the optimal policy ${\pi^*}$. 
 
 Monte Carlo is Model Free RL technique.  
-Model Free means that we don't have complete knowledge of the environment, for example, namely, we don't know the transition matrix ${P}$ and the rewards ${r}$ associated with each state-action pair.  
+Model Free means that we don't have complete knowledge of the environment, namely, we don't know the transition matrix ${P}$ and the rewards ${r}$ associated with each state-action pair.  
 
 ***Prediction In Monte Carlo***  
 The way Monte Carlo estimates the state-value function for a given policy from experience is simply by averaging the returns observed after visits to that state. As more returns are observed, the average should converge to the expected value. 
@@ -545,6 +546,9 @@ There are actually two problems with this  approach: we can't use ${V}$ and we c
 we want to be model free, but how can we me model free if we are using the state-value function ${V}$?   
 We'd still need a model of the MDP to figure out how to act greedily wrt to ${V}$. We'd only know the values of the estimated return of each state, and we want to know what action is the best to be taken, so we would have to imagine in which state ${s'}$ we would go for each possible action. But wait, we don't know the transition matrix ${P}$!  
 The solution consists in using ${Q}$. action-value functions ${(Q)}$ allow us to do control in a model free setting.  
+$$
+Q(s_t,a_t)\leftarrow Qs(s_t,a_t)+\frac{1}{N(s_t,a_t)}\bigg(v_t-Q(s_t,a_t)\bigg)
+$$
 sum up:  
 Greedy Policy Improvement over ${V(s)}$ *requires model* of MDP (can't be used in model free setting)
 $$
@@ -596,12 +600,13 @@ So once again, here we are with our new approach:
 
   <img src="images/policy_it_4.png" style="zoom:30%"/>
 
-**No, we are not done yet, there's still one little problem to solve**    We almost have the full picture. One last step:    
+**No, we are not done yet, there's still one little problem to solve**    
+We almost have the full picture. One last step:    
 How can we really guarantee that we find the best possible policy? what we really want to find is ${\pi^*}$, the optimal policy. Such policy is greedy by definition, it tells us what action to take (with no doubts) in state ${s}$.  
-So what we want to do is to explore in order to  make sure we are not missing out on anything, but at a certain point, asymptotically, we want to stop exploring, and just exploiting.  
+So what we want to do is to explore in order to make sure we are not missing out on anything, but at a certain point, asymptotically, we want to stop exploring, and just exploiting.  
 This translates into the GLIE property (Greedy in the Limit with Infinite Exploration):
 
-- All state-action pairs are explored **infinitely** many tymes:  
+- All state-action pairs are explored **infinitely** many times:  
   $$
   \lim_{k\to\infty}N_k(s,a)=\infty
   $$
@@ -614,7 +619,7 @@ This translates into the GLIE property (Greedy in the Limit with Infinite Explor
   \mathbf{0} \ \ \ \ otherwise
   \end{cases}
   $$
-  (if you haven't read PoliMi slides don't bother reading: on Restelli's slides there is a mistake: there's written ${Q_k(s',a')}$ but that ${s'}$ should be ${s}$. )
+  (on Restelli's slides there is a mistake: there's written ${Q_k(s',a')}$ but that ${s'}$ should be ${s}$. )
 
   Now we are ready to actually answer the question: what is used in Monte Carlo Control?
   Here it is:  
@@ -645,15 +650,14 @@ Theorem:
 $$
   Q(s,a)\to q^*(s,a)
 $$
-Well, GLIE MC is our first full solution. We can throw this into any MDP and it will find the right solution!   
+Well, GLIE MC is our first full solution.  
+We can throw this into any MDP and it will find the right solution!   
 So, let's sum up the solutions we adopted for MC control:
 
 1. Use ${Q}$, not ${V}$
 2. evaluate and improve your policy *every time you run an episode*
    3. use an ${\epsilon}$-greedy policy
 3. the value of ${\epsilon}$ should decay at every iteration in order to guarantee to find the optimal policy
-
-*I'll see you in another life when we are both cats*
 
 (Sources:  [David Silver's Lesson 5 on RL ](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=630s) -  Restelli's Slides  -  [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4)  )
 
@@ -689,8 +693,6 @@ ${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}$
 ${N(s_t)}$: the total number of times I visited state ${s_t}$ along all episodes I've ever run.   
 Usually, in real world scenarios, we deal with non-stationary setups: we don't want to remember everything about the past. This is the case in RL as well, because during the control task we keep on updating our policy and get better and better evaluations of our states, so we want to get rid of the contribute of old evaluations  ${\to}$ we always go with the non-stationary update function.  
 (if you haven't understood this last part don't worry, it will be clearer once you study control techniques).
-
-${}$
 
 *TD-Update*  
 $$
@@ -874,23 +876,27 @@ Ok, we are done, what follows is a concise summary of the differences between th
 
 if you want to briefly answer the question you could probably just say the following:
 
-- MC
-  - high variance, zero bias
+- *MC*
+  - **high variance, zero bias**
   - good convergence properties
   - converges even with function approximation
   - Not very sensitive to initial value
   - Very simple to understand and use
-  - learns only from complete sequences
-  - works only for episodic environments
-  - Usually more effective in non-Markov environments
-- TD
-  - low variance, some bias
+  - learns only from **complete** sequences
+  - works only **offline**, must wait the end of an episode to be run
+  - Must be run only for **episodic** environments
+  - usually more effective in non-Markov environments $\to$ **does not exploit Markov property**
+  - usually **less efficient** than TD because of higher variance.
+- *TD*
+  - **low variance, some bias**
   - ${TD(0)}$ converges to ${V_\pi(s)}$
-  - doesn't always converge with function appriximation
+  - doesn't always converge with function approximation
   - more sensitive to the initial value
-  - learns even from incomplete sequences
-  - works for both episodic and continuing environments
-  - Usually more effective in Markov environments
+  - learns even from **incomplete** sequences
+  - can learn **online**, after every step
+  - works for both **episodic** and c**ontinuing** environments (not necessary to know the final outcome)
+  - usually more effective in Markov environments $\to$ **exploits Markov property**
+  - usually **more efficient** than MC because of lower variance.
 
 
 
@@ -1126,14 +1132,13 @@ Afterwards, we are going to randomly sample from our environment to see what rew
 then we are going to sample again from our policy to generate ${A'}$.  
 So basically, SARSA, indicates a particular update pattern we can use.  
 *Updating ${Q}$ functions with SARSA*:  
-Now let's study out update function:
 ${Q(S,A)\leftarrow Q(S,A)+\alpha (\color{red} R+\gamma Q(S',A') \color{black} -Q(S,A))}$
 
 We move our ${Q}$ value a little bit in the direction of our TD target (the red colored part) minus the ${Q}$ value of where we started.  
 This update is done after every transition from a nonterminal state ${s}$. If ${s'}$ is terminal, then ${Q(s',a')}$ is zero.
 
 *Policy Improvement/ Control with SARSA*:  
-Ok, so far we did prediction: we updated our ${Q}$ function using the formula above. Implicitly we did Policy Evaluation. How do we do Policy Improvement when we apply SARSA?
+Ok, so far we just evaluated our ${Q}$ function. Implicitly we did Policy Evaluation. How do we do Policy Improvement when we apply SARSA?
 
 we simply use an ${\epsilon}$- greedy policy improvement:  
 
@@ -1200,11 +1205,70 @@ Complete algorithm for Q-Learning:
 (Sources: [Model Free Algorithms](https://medium.com/deep-math-machine-learning-ai/ch-12-1-model-free-reinforcement-learning-algorithms-monte-carlo-sarsa-q-learning-65267cb8d1b4) - [Deep Mind Model Free Control](https://www.youtube.com/watch?v=0g4j2k_Ggc4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=5) )
 
 <div style="page-break-after: always;"></div> 
-### UCB1 Algorithm {TODO}
+### UCB1 Algorithm 
 
 ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
 
+This is a complete derivation of the algorithm, refer to the document *Reinforcement_Learning_SHORT* for a concise answer.  
+UCB1 is an algorithm to solve stochastic MAB problems via a frequentist approach.  
+Frequentist means that the rewards associated with each action are unknown parameters, and that we select an arm through a policy based on the observation history.  
+The more we are uncertain on a specific choice, the more we want the algorithm to explore that option.
 
+In UCB1, what we do is instead of using the empirical estimate of each reward associated with an action $(\hat{R}(a_i))$, we consider an upper bound $U(a_i)$ over the expected value of $R(a_i)$.  
+More formally, we need to compute an upper bound:
+$$
+U(a_i):= \hat{R}_t(a_i)+B_t(a_i)\ge R(a_i)
+$$
+Let's call $N_t(a_i)$ the number of times I've performed action $a_i$ during my history.
+
+Small $N_t(a_i)$ implies a large $U(a_i)$ which means that  the estimated value $\hat{R}_t(a_i)$ is ***uncertain***.  
+Large $N_t(a_i)$ implies a small $U(a_i)$, which means that the estimate value $\hat{R}_t(a_i)$ is ***accurate***.
+
+Let's now introduce briefly the *Hoeffding Inequality Bound* says that:  
+Let $X_1,...,X_t$ be i.i.d. random variables with support in $[0,1]$ and identical mean $\mathbb{E}[X_i]=:X$ and let $\bar{X}_t=\frac{\sum_{t=1}^tX_i}{t}$ be the sample mean. then:  
+$$
+\mathbb{P}(X>\bar{X}_t+u)\le e^{-2tu^2}
+$$
+
+
+We'll now apply the *Hoeffding Inequality Bound* to the upperbound corresponding to each arm.  
+$$
+\mathbb{P}(R(a_i)>\bar{R}_t(a_i)+B_t(a_i))\le e^{-2N_t(a_i)B_t(a_i)^2}
+$$
+Now let's compute such upperbound:
+$$
+e^{-2N_t(a_i)B_t(a_i)^2}=p
+$$
+
+$$
+B_t(a_i)=\sqrt{\frac{-\log p}{2N_t(a_i)}}
+$$
+
+Let's reduce $p$ over time $\to p=t^{-4}$
+$$
+B_t(a_i)=\sqrt{\frac{2\log t}{N_t(a_i)}}
+$$
+Now we can talk about the algorithm:
+
+***UCB1 Algorithm***
+
+For each time step $t$:
+
+1. Compute $\hat{R}_t(a_i)=\frac{\sum_{i=1}^tr_{i,t}\mathbf{1}\{a_i=a_{it}\}}{N_t(a_i)} \ \forall a_i $
+2. Compute $B_t(a_i)=\sqrt{\frac{2\log t}{N_t(a_i)}} \ \forall a_i$
+3. Play arm $a_{it}=\arg \max_{a_i\in A}{\bigg(\hat{R}_t(a_i)+B_t(a_i)\bigg)}$
+
+*Theorem*:
+
+*At finite time $T$, the expected total regret of the UCB1 algorithm applied to a stochastic MAB problem is*
+$$
+L_t\le8\log{T}\sum_{i|\Delta_i>0}\frac{1}{\Delta_i}+\bigg(1+\frac{\pi^2}{3}\bigg)\sum_{i|\Delta_i>0}\Delta_i
+$$
+where $\Delta_i=R^*-R(a_i)$, and $R^*$ is the reward obtained by performing the best action.
+
+The first term of the sum signifies that we expect to play any suboptimal machine about a logarithmic number of times, roughly scaled by how hard it is to distinguish from the optimal machine. That is, if ![\Delta_i](https://s0.wp.com/latex.php?latex=%5CDelta_i&bg=ffffff&fg=36312d&s=0) is small we will require more tries to know that action ![i](https://s0.wp.com/latex.php?latex=i&bg=ffffff&fg=36312d&s=0) is suboptimal, and hence we will incur more regret. The second term represents a small constant number (the ![1 + \pi^2 / 3](https://s0.wp.com/latex.php?latex=1+%2B+%5Cpi%5E2+%2F+3&bg=ffffff&fg=36312d&s=0) part) that caps the number of times we’ll play suboptimal machines in excess of the first term due to unlikely events occurring. So the first term is like our expected losses, and the second is our risk.
+
+(Source: Restelli's Slides - [JeremyKun](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/) )
 
 <div style="page-break-after: always;"></div> 
 # Interesting Articles
