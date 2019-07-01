@@ -47,7 +47,7 @@ Formally, principal component analysis (PCA) is a statistical procedure that use
 
 To have a graphical intuition:
 
-<img src="images/PCA.png" style="zoom:60%"/>
+<img src="C:/Users/Willi/Desktop/Notes/MachineLearningRestelli/images/PCA.png" style="zoom:60%"/>
 
 It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
@@ -228,13 +228,3 @@ The only things that factor into this are the training examples, the hypothesis 
 
 The VC dimension for a linear classifier (i.e. a *line* in 2D, a *plane* in 3D etc...) is $d+1$ (a line can shatter at most $2+1=3$ points, a plane can shatter at most $3+1=4$ points etc...)
 
-`NOTA AGGIUNTIVA`
-
-How many randomly drawn examples sufﬁce to guarantee error of at most $\epsilon$  with probability at least (1−$\delta$)? 
-$$
-N\ge\frac{1}{\epsilon}\left(4\log\left(\frac{2}{\delta}\right)+8VC(H)\log_2\left(\frac{13}{\epsilon}\right)\right)
-$$
-*PAC BOUND using VC dimension*:
-$$
-L_{true}(h)\le L_{train}(h)+\sqrt{\frac{VC(H)\left(\ln\frac{2N}{VC(H)}+1\right)+\ln\frac{4}{\delta}}{N}}
-$$

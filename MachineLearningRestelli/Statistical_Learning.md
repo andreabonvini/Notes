@@ -395,7 +395,7 @@ $$
 <div style="page-break-after: always;"></div> 
 ### VC Dimension
 
-**Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
+***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. Deﬁne the VC dimension of a hypothesis space. What is the VC dimension of a linear classiﬁer?***
 
 - We are always talking about *Classification*.
 
@@ -468,7 +468,15 @@ The VC dimension for a linear classifier (i.e. a *line* in 2D, a *plane* in 3D e
 
 Proof: [here](<http://wittawat.com/posts/vc_dimension_linear_classifier.html>)
 
-`READ THE SECTION ON PMDS TOO! `
+How many randomly drawn examples sufﬁce to guarantee error of at most $\epsilon$  with probability at least (1−$\delta$)? 
+$$
+N\ge\frac{1}{\epsilon}\left(4\log\left(\frac{2}{\delta}\right)+8VC(H)\log_2\left(\frac{13}{\epsilon}\right)\right)
+$$
+*PAC BOUND using VC dimension*:
+$$
+L_{true}(h)\le L_{train}(h)+\sqrt{\frac{VC(H)\left(\ln\frac{2N}{VC(H)}+1\right)+\ln\frac{4}{\delta}}{N}}
+$$
+
 
 <div style="page-break-after: always;"></div> 
 ### Ridge Regression

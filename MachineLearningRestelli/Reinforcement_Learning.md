@@ -450,7 +450,7 @@ The evaluation is completed (the value function converges to the true value func
 
 *Policy Improvement* consists in coming up with a better policy ${\pi'}$ starting from a policy ${ \pi}$. This is achieved by acting greedily wrt to the value function evaluated in the first step of policy iteration.
 
-${\pi'(s)=\arg \max_{a \in A}}{Q^\pi(s,a)}$
+${\pi'(s)=\underset{a \in A}{\text{argmax}}}\ {Q^\pi(s,a)}$
 
 By repeating evaluation and improvement we are certain of obtaining in the end the optimal policy ${\pi^*}$
 
