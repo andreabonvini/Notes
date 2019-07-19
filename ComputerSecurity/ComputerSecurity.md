@@ -22,7 +22,7 @@
 
   - ***Reflected***
 
-    User input is directly returned by the web application in a response (e.g. error message,search result) which includes some or all of the input provided by the user un the request, *without being stored*  and made safe to render in the web browser.
+    User input is directly returned by the web application in a response (e.g. error message,search result) which includes some or all of the input provided by the user in the request, *without being stored*  and made safe to render in the web browser.
 
     ```
     <?php
@@ -74,8 +74,31 @@
 
   <https://www.ilsoftware.it/articoli.asp?tag=ARP-cos-e-e-cosa-sono-gli-attacchi-poisoning_18690>
 
-  
+- ***Rootkit***
 
+  A rootkit is a program or, more often, a collection of software tools that gives a threat actor remote access to and control over a computer or other system.
+
+  Different types:
+
+  - User-Land:
+
+    Easer to build, but often incomplete
+
+    Easier to detect (cross layer examination, use of non-trojaned tools)
+
+  - Kernel-Space:
+
+    More difficult to build, but can hide artifacts completely.
+
+    Can only be detected via post-mortem analysis.
+
+    You can get rid of it by reinstalling the OS or substating the hard-drive.
+
+  - BIOS
+
+    Devi bruciare il computer.
+
+  
 
 
 
