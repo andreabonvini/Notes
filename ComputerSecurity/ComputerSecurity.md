@@ -74,13 +74,102 @@
 
   <https://www.ilsoftware.it/articoli.asp?tag=ARP-cos-e-e-cosa-sono-gli-attacchi-poisoning_18690>
 
-- ***ICMP (Internet Control Message Protocol)***
-
-  It is a protocol able to notify errors and failures without executing any correction
+  
 
 
 
-## Dubbi
 
-- 5/2/18 Es. $2$ (SQL injection) Es. $3$ (Firewalls)
--  
+## HowToCrackEx3
+
+- ***Kind of attacks:***
+
+  - $\color{red}\text{SMURF attack}$ `(DDOS)`:
+
+    An attacker spoof an IP address (this can be done through HTTP, not HTTPS).
+
+    The attacker send an ICMP request with the spoofed IP address, then the router broadcast the request and any host present in the domain generates an ICMP reply with the victim's address as destination. $\to$ This results in a *distributed denial of service (DDOS)*
+
+    `an ICMP request is a protocol able to notify errors and failures without executing any correction`
+
+    How to prevent this shit?
+
+    - Configure individual hosts and routers to not respond to ICMP requests or broadcasts
+    - Configure routers to not forward packets directed to broadcast addresses. 
+
+  -  $\color{red}\text{Ping of Death}$ `(DOS)`:
+
+    A ping of death is a type of attack on a computer system that involves sending a malformed ping to a computer.
+
+    The maximum size of an IP packet may be as large as 65,535 bytes. Like other large but well-formed packets, a ping of death is fragmented into groups of 8 octets before transmission. However, when the target computer reassembles the malformed packet, a buffer overflow can occur, causing a system crash and potentially allowing the injection of malicious code.
+
+    How to prevent this shit?
+
+    - In general can be mitigated adding controls during the process of reassembly.
+    - Upgrade the operating system to a non-vulnerable version.
+    - Use a firewall that drops such anomalous packets.
+
+  - $\color{red}\text{ARP spoofing (or poisoning)}$ `(e.g. Man in the Middle)`
+
+    `The Address Resolution Protocol (ARP) is a communication protocol used for discovering the link layer address, such as a MAC address, associated with a given internet layer address, typically an IPv4 address` 
+
+    ARP spoofing is a technique by which an attacker sends (spoofed) ARP messages onto a local area network. Generally, the aim is to associate the attacker's MAC address with the IP address of another host such as the default gateway, causing any traffic meant for that IP address to be sent to the attacker instead.
+
+    *ARP request* : 
+
+    ​	$\text{"where is 192.168.0.1 ?"}$	 
+
+    *ARP reply* : 
+
+    ​	$\text{"192.168.0.1  is at b4:e9:b0:c9:81:03"}$
+
+    First come, first trusted !
+
+    An attacker can forge replies easily in UDP or ICMP packets...TCP/IP BOH
+
+    How to prevent this shit?
+
+    - Application level : HTTPS (trusted certificate)
+    - Network level : use $\text{802.1x}$ (authenticates clients connected)
+
+    How to detect ARP spoofing?
+
+    - Router level : Notice multiple ARP responses with different MAC addresses (to prevent this attack it is possible to block responses with the IP of the sensible target (e.g. the router) but a different MAC address w.r.t. the real ones)
+    - Gateway level : Notice ARP response with IP of the gateway 
+
+  - $\color{red}\text{DHCP poisoning}$ `(e.g. Man in the Middle, Traffic interception, Traffic redirection)`
+
+    `DHCP (Dynamic Host Configuration Protocol) is a protocol used to provide quick, automatic, and central management for the distribution of IP addresses within a network. DHCP is also used to configure the proper subnet mask, default gateway, and DNS server information on the device.`
+
+    DHCP does not support authentication, so every client *must* blindly believe any DHCP offer that it receives, thus an attacker can race and win against the real DHCP server. In this way the attacker can intercept the request, be the first to answer, and craft a DHCP response setting the *IP address*, the *DNS address* and the *default gateway* of the victim client. 
+
+  - $\color{red}\text{TCP/IP}$
+
+    TCP/IP is the main protocol which provides reliable ordered and error-checked delivery of data. It uses sequence numbers for reordering packets, in particular a *semi-random* INITIAL SEQUENCE NUMBER (ISN) is chosen.
+
+    An attacker able to guess the ISN can perform the free-way handshake (SYN $\to$ SYN+ACK $\to$ ACK ) without the need to pose as a Man In The Middle.
+
+    In order to reduce the time available to the attacker to guess the ISN it is possible to use TCP-syn cookies.
+
+  - $\color{red}\text{DNS cache poisoning}$
+
+    DNS translates domain names to the numerical IP addresses. It is based on UDP and messages are *not authenticated*.
+
+    In this kind of attack the IP address is *spoofed* FOR SURE (the attacker want to save his ass I think) ,the MAC address *could* be spoofed.
+
+    The purpose of this attack is to divert any traffic directed to an URL to another server, likely an attacker-controlled machine. The actual purpose could be to manipulate the information on the URL or to capture personal information (e.g. credential, cookies credit cards etc...)
+
+    ![](images/im1.JPG)
+
+    How to prevent this shit?
+
+    - If you are `the administrator of a website e.g www.polimi.it`, use HTTPS (assuming that the attacker is not able to perform DNS spoofing for the network that the certification authority uses to connect to www.polimi.it in order to verify the domain for issuing the certificate. if the attacker can do this, they can obtain a valid certificate for www.polimi.it and mount the same attack)
+
+    - If you are `the administrator of the DNS server used by the network e.g. 10.79.3.0/24` 
+
+      If we assume that the attacker can’t sniff the traffic to\from the DNS server (thus sniffing the query ID): use a random query ID and increase the space of query IDs to prevent guessing the ID in a reasonable time. In general: the server could detect duplicate responses with different A entries and raise an alarm, or detect response with different query IDs and raise an alarm. Notice that if, upon attack detection, the DNS server returns an error, this will transform the attack to a denial of service attack. 
+
+    - If you are `the network administrator of the network e.g. 10.79.3.0/24 `,
+
+      Given that the DNS server is outside the network, the network administrator could reject known spoofed packets (all packets coming from inside the network with an IP address that doesn’t belong to the network). This mitigation is effective ONLY for attackers physically present on the network 10.79.3.0/24, and can’t do anything for spoofed packets that come from outside the administrator-controlled network (e.g., from the Internet). 
+
+       

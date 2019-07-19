@@ -12,8 +12,8 @@
 
   - $y(k) = x + v(k) \space$
 
-    Where $x​$ is the signal we are interested in and $v​$ is a random noise. 
-    $x​$  and  ​$v​$ are not necessarily linked by an additive relationship
+    Where $x$ is the signal we are interested in and $v$ is a random noise. 
+    $x$  and  $v$ are not necessarily linked by an additive relationship
 
   - $x$ and $v$ are stationary stochastic processes.
 
@@ -86,7 +86,7 @@
   $$
   \bold{\epsilon^{2}}(j) = \bold{d}^{2}(j) -2\bold{d}(j)\bold{X}^T(j)\bold{W}(j) + \bold{W}^T(j)\bold{X}(j)\bold{X}^T(j)\bold{W}(j)
   $$
-  The mean-square error, the expected value of  $\bold{\epsilon^{2}}(j)​$ is
+  The mean-squared error, the expected value of  $\bold{\epsilon^{2}}(j)$ is
   $$
   E[\bold{\epsilon^{2}}(j)] = \bold{d}^{2}(j) -2\bold{\Phi}(x,d)\bold{W}(j) + \bold{W}^T(j)\bold{\Phi}(x,x)\bold{W}(j)
   $$
@@ -147,7 +147,7 @@
   $$
   \lambda_{max}^{-1} > \mu > 0
   $$
-  where $\lambda_{max}​$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)​$.
+  where $\lambda_{max}$ is the largest eigenvalue of the correlation matrix $\bold{\Phi}(x,x)$.
 
 - ***What is the Lyapunov Exponent?***
 
@@ -162,9 +162,9 @@
   For many systems this is an exponential function of time:
   $D(t) =D_{0}e^{\lambda t} $
 
-  $\lambda ​$ is the Lyapunov Exponent
+  $\lambda $ is the Lyapunov Exponent
 
-  We can see that when $\lambda > 0​$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 ​$ we don't have SDIC.
+  We can see that when $\lambda > 0$ we have SDIC (Sensitive Dependency on Initial Conditions) and when $\lambda < 0 $ we don't have SDIC.
 
 - ***Talk me about the Mane-Takens theorem***.
 
@@ -172,7 +172,7 @@
 
   Source:[A Really Friendly Guide For Wavelets](https://www.cs.unm.edu/~williams/cs530/arfgtw.pdf)
 
-  It is well known from Fourier theory that a signal can be expressed as the sum of a, possibly infinite, series of sines and cosines. This sum is also referred to as a Fourier expansion. The big disadvantage of a Fourier expansion however is that it has only frequency resolution and no time resolution. This means that although we might be able to determine all the frequencies present in a signal, we do not know when they are present. To overcome this problem  several solutions have been developed which are more or less able to represent a signal in the time and frequency domain at the same time.
+  It is well known from Fourier theory that a signal can be expressed as the sum of a, possibly infinite, series of sines and cosines. This sum is also referred to as a Fourier expansion. The big disadvantage of a Fourier expansion however is that it has only frequency resolution and no time resolution. This means that although we might be able to determine all the frequencies present in a signal, we do not know when they are present. To overcome this problem several solutions have been developed which are more or less able to represent a signal in the time and frequency domain at the same time.
 
   The idea behind these time-frequency joint representations is to cut the signal of interest into several parts and then analyze the parts separately. It is clear that analyzing a signal this way will give more information about the when and where of different frequency components, but it leads to a fundamental problem as well: how to cut the signal?
   Suppose that we want to know exactly all the frequency components present at a certain moment in time. We cut out only this very short time window using a *Dirac pulse*, transform it to the frequency domain and … something is very wrong.
@@ -229,7 +229,7 @@
 
   The *Fast Wavelet Transform* is a mathematical algorithm designed to turn a waveform or signal in the time domain into a sequence of coefficients based on an orthogonal basis of small finite waves, or wavelets. The transform can be easily extended to multidimensional signals, such as images, where the time domain is replaced with the space domain. This algorithm was introduced in 1989 by *Stéphane Mallat*. 
 
-  Given a signal $s$ of length $N$, the $DWT$ consists of $log_{2}N$ stages at most. Starting from $s$, the first step produces two sets of coefficients: approximation coefficients $cA_1$ and detail coefficients $cD_1$. These vectors are obtained by convolving $s$ with the low-pass filter $Lo\_D$ for approximation and with the high-pass filter $Hi\_D$ for detail, followed by dyadic decimation.
+  Given a signal $s$ of length $N$, the $FWT$ consists of $log_{2}N$ stages at most. Starting from $s$, the first step produces two sets of coefficients: approximation coefficients $cA_1$ and detail coefficients $cD_1$. These vectors are obtained by convolving $s$ with the low-pass filter $Lo\_D$ for approximation and with the high-pass filter $Hi\_D$ for detail, followed by dyadic decimation.
 
   More precisely, the first step is:
 
@@ -237,7 +237,7 @@
 
   
 
-  the length of each filter is equal to $2n$. if $N = length(s)$, the signal $F$ and $G$ are of length $N + 2n -1$  and the coefficients $cA_1$ and $cD_1$ are of length $floor(\frac{N−1}{2})+n​$.
+  the length of each filter is equal to $2n$. if $N = length(s)$, the signal $F$ and $G$ are of length $N + 2n -1$  and the coefficients $cA_1$ and $cD_1$ are of length $floor(\frac{N−1}{2})+n$.
 
   ```python
   # e.g. we convolve a filter of dimension 2*2 (expressed as "++++" ) (n = 2)
@@ -258,9 +258,9 @@
   # if we downsample it the samples become 4.
   ```
 
-  The next step splits the approximation coefficients $cA_1$ in two parts using the same scheme, replacing $s$ by $cA_1$, and producing $cA_2$ and $cD_2​$, and so on.
+  The next step splits the approximation coefficients $cA_1$ in two parts using the same scheme, replacing $s$ by $cA_1$, and producing $cA_2$ and $cD_2$, and so on.
 
-  The wavelet decomposition of the signal $s$ analyzed at level $j$ has the following structure: $[cA_j, cD_j, ..., cD_1]​$.
+  The wavelet decomposition of the signal $s$ analyzed at level $j$ has the following structure: $[cA_j, cD_j, ..., cD_1]$.
 
   This structure contains, for $j = 3$, the terminal nodes of the following tree:
 
@@ -278,7 +278,7 @@
   $$
   g[L-1-n] = (-1)^n\cdot h[n]
   $$
-  where $L​$ is the number of samples. Starting from $j = 1​$, the *Mallat* algorithm decompose the signal in two equal sub-bands, each of which is equal to half the spectrum of the former signal.  The further subdivisions in sub-bands can be obtained by fixing the two filters $g[n]​$ and $h[n]​$  and compressing the signal exiting from the same filters.
+  where $L$ is the number of samples. Starting from $j = 1$, the *Mallat* algorithm decompose the signal in two equal sub-bands, each of which is equal to half the spectrum of the former signal.  The further subdivisions in sub-bands can be obtained by fixing the two filters $g[n]$ and $h[n]$  and compressing the signal exiting from the same filters.
 
   In the image below we can sees an example of the two functions $g[n]$ and $h[n]$.
 
@@ -293,6 +293,8 @@
   Four-Level DWT of the EEG trace at the top of the figure using the matched Mayer spindle wavelet. The four detail functions on the right correspond to the frequency bands associated with the *beta* (16-32 Hz), *alpha* (8-16 Hz), *theta* (4-8 Hz) and *high delta* (2-4 Hz) regimes. The A4 low resolution signals on the left corresponds to the frequency band associated with the *low delta* regime (0-2 Hz). Each of the remaining three low resolution signals on the left illustrate the effect of successively adding each detail function into the next lower low resolution signal to reconstruct the ERP at the top left of the figure. Good frequency selectivity by the matched Meyer spindle wavelet in the *alpha* band is evident in the figure.
 
 - **Talk me about parametric methods and AR models**
+
+  
 
 - ***What is the  STFT*?**
 
@@ -312,13 +314,13 @@
 
   The *STFT* is, therefore, made up of those spectral components relative to a portion of the signal around the time instant $t$.
 
-  In order to preserve energy and to get the energy distribution in the time-frequency plane, the window $w^{*}(\tau-t)​$ should be normalized to unitary energy.
+  In order to preserve energy and to get the energy distribution in the time-frequency plane, the window $w^{*}(\tau-t)$ should be normalized to unitary energy.
 
   The *STFT* is a linear operator with properties similar to those of the *FT* :
 
    - *Invariance for time shifting apart from the phase factor:*
 
-     $ \tilde{x}(t) = x(t-t_0) \implies STFT_{\tilde{x},w}(t,f) = STFT_{x,w}(t-t_{0},f)e^{-j2\pi t_0f} ​$
+     $ \tilde{x}(t) = x(t-t_0) \implies STFT_{\tilde{x},w}(t,f) = STFT_{x,w}(t-t_{0},f)e^{-j2\pi t_0f} $
 
    - *Invariance for frequency shifting:*
 
@@ -328,19 +330,19 @@
   $$
   STFT_{x,w}(t,f) = \int_{-\infty}^{\infty}\left[ x(\tau)e^{-j2\pi ft}\right]w(\tau-t)d\tau
   $$
-  Otherwise, the *STFT* can be considered as a band-pass filter. filtering the signal $x(t)$ around the frequency $f$, obtained by convolution with the function $w(-t)e^{j2\pi ft}$, followed by a shift in frequency by $-f$ .
+  Otherwise, the *STFT* can be considered as a band-pass filter. Filtering the signal $x(t)$ around the frequency $f$, obtained by convolution with the function $w(-t)e^{j2\pi ft}$, followed by a shift in frequency by $-f$ .
   $$
   STFT_{x,w}(t,f) = e^{-j2\pi tf}\int_{-\infty}^{\infty} x(\tau)\left[w(\tau-t)e^{-j2\pi f(\tau-t)}\right]d\tau
   $$
-  It should be noted that the filter impulse response is merely given by the window function modulated at the frequency $f​$.
+  It should be noted that the filter impulse response is merely given by the window function modulated at the frequency $f$.
 
-  In addition, the convolution between $x(t)​$ and $w(-t)e^{j2\pi ft} ​$ can be written as an inverse transform of the product $X(v)W^{*}(v-f)​$, where $W(f)​$ is the transform of the window function $w(t)​$:
+  In addition, the convolution between $x(t)$ and $w(-t)e^{j2\pi ft} $ can be written as an inverse transform of the product $X(v)W^{*}(v-f)$, where $W(f)$ is the transform of the window function $w(t)$:
   $$
   STFT_{x,w}(t,f) = e^{-j2\pi tf}\int_{-\infty}^{\infty} X(v)W^{*}(v-f)e^{j2\pi tv}dv
   $$
   (*Remember that convolution in time domain corresponds to multiplication in frequency domain*)
 
-  This expression reinforces the interpretation of the *STFT* as a *filter bank*. Indeed, the product $X(v)W^{*}(v-f)$ represents the transform of the output of a filter with a frequency response given by $W^{*}(v-f)$, which is a band-pass filter centered at frequency $f$ , obtained by shifting the frequency of the response of the low-pass ($\color{red}\text{band-pass?}$) filter $W(v)​$.
+  This expression reinforces the interpretation of the *STFT* as a *filter bank*. Indeed, the product $X(v)W^{*}(v-f)$ represents the transform of the output of a filter with a frequency response given by $W^{*}(v-f)$, which is a band-pass filter centered at frequency $f$ , obtained by shifting the frequency of the response of the low-pass filter $W(v)$.
 
   ![](images/STFT2.PNG)
 
@@ -362,7 +364,7 @@
 
   ![](images/STFT5.PNG)
 
-  The example in the next figure shows the time-frequency representation relative to a series of $RR$ intervals with high variability of respiratory component. The three-dimensional view allows us to grasp the small details of nonstationary oscillatory phenomena. The series in this case has been analyzed with the $STFT$ using a relatively narrow window. The good temporal resolution obtained allows us to assess the power of the respiratory component of origin ($0.3-0.4 \;Hz​$) and its evolution over time. 
+  The example in the next figure shows the time-frequency representation relative to a series of $RR$ intervals with high variability of respiratory component. The three-dimensional view allows us to grasp the small details of nonstationary oscillatory phenomena. The series in this case has been analyzed with the $STFT$ using a relatively narrow window. The good temporal resolution obtained allows us to assess the power of the respiratory component of origin ($0.3-0.4 \;Hz$) and its evolution over time. 
 
   ![](images/STFT6.PNG)
 
@@ -393,15 +395,15 @@
   \int{TFR_x(t,\omega)d\omega = |x(t)|^2} \\
   \int{TFR_x(t,\omega)dt = |X(\omega)|^2}
   $$
-  Thus, for every instant $t$ , the integral of the distribution over all the frequency should be equal to the instantaneous power, whereas, for every angular frequency ω, the integral over time should equal the power spectral density of the signal. As a consequence of the marginals, the total energy is obtained by integration of the $TFR$ over the whole $t-f​$ plane: 
+  Thus, for every instant $t$ , the integral of the distribution over all the frequency should be equal to the instantaneous power, whereas, for every angular frequency ω, the integral over time should equal the power spectral density of the signal. As a consequence of the marginals, the total energy is obtained by integration of the $TFR$ over the whole $t-f$ plane: 
   $$
   E_x = \int\int TFR_x(t,\omega)d\omega dt
   $$
-  As the energy is a quadratic function of the signal, the $TFR(t,\omega)​$ is expected to be quadratic.   An interesting way to define energetic $TFR​$ starts from the definition of a time-varying spectrum (Page, 1952). Using the relationship that links power spectral density and TFR imposed by marginals, we derive a simple definition of a TFR:
+  As the energy is a quadratic function of the signal, the $TFR(t,\omega)$ is expected to be quadratic.   An interesting way to define energetic $TFR$ starts from the definition of a time-varying spectrum (Page, 1952). Using the relationship that links power spectral density and TFR imposed by marginals, we derive a simple definition of a TFR:
   $$
   TFR(t,\omega) = \frac{\partial}{\partial t}|X_t(\omega)|^2
   $$
-  The subscript $t​$ indicates that the quantity is a function of time and, thus, $|X_t(\omega)|^2​$is a time-varying spectrum. The latter can be derived by generalization of the relationship between the power spectrum of a signal and its autocorrelation function $R_t(\tau)​$:
+  The subscript $t$ indicates that the quantity is a function of time and, thus, $|X_t(\omega)|^2$is a time-varying spectrum. The latter can be derived by generalization of the relationship between the power spectrum of a signal and its autocorrelation function $R_t(\tau)$:
   $$
   |X_t(\omega)|^2 = \frac{1}{2\pi}\int R_t(\tau)e^{-j\omega \tau}d\tau
   $$
@@ -447,7 +449,9 @@
 
   ![](images/WV3.png)
 
-  It is worth noting that the interference terms may be located in time intervals where no signal is present, for example between $t_1$ and $t_2$ in Figure 10.2, showing signal contributions in an area where no activity is expected (like a mirage in the desert),  Interferences are located in the concavity of the distribution and are related to the interaction between past and future signal frequencies. 
+  It is worth noting that the interference terms may be located in time intervals where no signal is present, for example between $t_1$ and $t_2$ in the figure above, showing signal contributions in an area where no activity is expected (like a mirage in the desert).
+
+  In the figure below interferences are located in the concavity of the distribution and are related to the interaction between past and future signal frequencies. 
 
   ![](images/WV4.PNG)
 
@@ -495,9 +499,9 @@
   $$
   C_{xx}(\theta,\tau) = \phi(\theta,\tau)A(\theta,\tau)
   $$
-  where $\phi(\theta,\tau)​$ is the two-dimensional Fourier transform of $\Psi​$ . 
+  where $\phi(\theta,\tau)$ is the two-dimensional Fourier transform of $\Psi$ . 
 
-  From this equation the effect of the *kernel* can be immediately appreciated; it weights the points of the $\theta - \tau​$ plane. Therefore, in order to perform an efficient reduction of cross terms, the function $\phi(\theta,\tau)​$ should have higher values close to the origin than far from it. Thus $\phi(\theta,\tau)​$ should be the transfer function of a two-dimensional low-pass filter, to get an idea just look at the grey zones in figures $(c)\space,\space (d) \space,\space (e)\space​$ and $\space (f)​$ below .
+  From this equation the effect of the *kernel* can be immediately appreciated; it weights the points of the $\theta - \tau$ plane. Therefore, in order to perform an efficient reduction of cross terms, the function $\phi(\theta,\tau)$ should have higher values close to the origin than far from it. Thus $\phi(\theta,\tau)$ should be the transfer function of a two-dimensional low-pass filter, to get an idea just look at the grey zones in figures $(c)\space,\space (d) \space,\space (e)\space$ and $\space (f)$ below .
 
   ![](images/CC4.PNG)
 
@@ -513,7 +517,7 @@
 
   $(e)$ SPWV (*Smoothed Pseudo Wigner-Ville*)			$\phi(\theta,\tau) = \eta(\frac{\tau}{2})\eta^{*}(-\frac{\tau}{2})G(\theta)$
 
-  $(f)​$ generic *time-frequency* filter.
+  $(f)$ generic *time-frequency* filter.
 
 - **Applications of Quadratic TFR**
 
@@ -525,7 +529,112 @@
 
 - **Talk me about Time-Variant methods**
 
+  The parametric approach to the estimation of power spectral density assumes that the time series under analysis is the output of a given process whose parameters are, however, unknown. Sometimes, some a priori information about the process is available, or it is possible to take into account some hypothesis on the generation mechanism of the series, and this can lead to a more targeted selection of the model structure to be used. The parametric spectral approach is a procedure that can be summarized in three steps: 
+
+  - Choice of the correct model for the description of the data .
+  - Estimation of the model parameters based on the recorded data.
+  - Calculation of the power spectral density (PSD) through proper equations (according to the selected model) into which the parameters of the estimated model are inserted . 
+
+  In practice, however, *linear models with rational transfer functions are most frequently used*; in fact, they can reliably describe a wide range of different signals. Among them, the autoregressive ($AR$) models are preferred for their all-pole transfer function;  in fact, their identification is reduced to the solution of a linear equation system. 
+  $$
+  y(t)=a_1y(t-1)+a_2y(t-2)+\dots+a_py(t-p)+e(t)
+  $$
+  ![](images/TV1.JPG)
+
+  ![](images/TV2.jpg)
+
+  The described method provides an estimation based on a known sequence of data, and when a new value is made available (for example, because a new sample of the signal has been acquired), the whole identification procedure should be restarted. This could lead to considerable problems, for example, in real-time applications. It could be useful in such cases to maintain the already obtained information and evaluate only the innovation that the new sample provides to the model, using recursive methodologies. In the literature, different methods for recursive parametric identification do exist. They allow one to update the set of autoregressive parameters each time a new sample is made available, and find application in real-time processing systems. As better explained in the following, the use of proper forgetting factors makes the updating dependent mainly on the more recent data, allowing the model to track changes in the signal each time the hypothesis of stationarity is not verified. We can then obtain time-variant AR models from which we have spectral estimations that vary in time according to the dynamic changes of the signal. Adaptive spectral estimation algorithms belong to two main categories: approaches based on the approximation of a gradient (these include the well-known least-mean squares or LMS algorithm) and recursive estimation of least squares algorithms (recursive least squares, RLS). `During class we only talked about RLS (which is the most interesting and most used in literature)`.
+
+  Firstly, let's revisit the solution of the least squares identification for AR linear models.
+  $$
+  y(t) = a_1y(t-1)+a_2y(t-2)+\dots+a_py(t-p)+w(t)\\
   
+  \mathbf{a}=\left[ a_1,a_2,\dots,a_p\right]^T\\
+  
+  \mathbf{\phi(t)}=\left[y(t-1),y(t-2),\dots,y(t-p)\right]^T\\
+  
+  y(t)=\mathbf{\phi(t)}^T\mathbf{a}+w(t)\\
+  
+  \hat{y}(t)=\mathbf{\phi(t)}^T\mathbf{a}\\
+  
+  \varepsilon(t)=y(t)-\hat{y}(t)=y(t)-\mathbf{\phi(t)}^T\mathbf{a}\\
+  
+  J_N=\frac{1}{N}\sum_{t=1}^N\varepsilon_{\mathbf{a}}^2(t)\\
+  \color{blue}\hat{\mathbf{a}}=\left[\sum_{t=1}^N\mathbf{\phi(t)}\mathbf{\phi(t)^T}\right]^{-1}\sum_{t=1}^N\mathbf{\phi(t)}y(t)=S(N)^{-1}Q(N)
+  $$
+  Where $\mathbf{S(N)}$ is the autocorrelation matrix. Note that $\mathbf{Q(N)}$ is just a vector.
+
+  In the nonstationary case, the minimum to be reached is continuously moving and the algorithm needs to track it. This is possible when the input data are slowly varying in respect to the convergence speed of the algorithm. In such a case, the estimation of S and Q also needs to be updated for each new sample added to the known sequence. There is, however, the possibility of updating these quantities recursively, according to these relations: 
+  $$
+  \mathbf{Q(t)}=\mathbf{Q(t-1)}+\varphi(t)\varphi(t)\\
+  
+  \mathbf{S(t)}=\mathbf{S(t-1)}+\varphi(t)\varphi(t)^T\\
+  
+  \color{red}\text{ma che dimensionalità ha phi(t)*phi(t)???}
+  $$
+  It is then possible to obtain the following formulation 
+  $$
+  \cases{
+  \mathbf{\hat{a}}(t) = \mathbf{\hat{a}}(t-1)+\mathbf{K}(t)\varepsilon(t)\\
+  \mathbf{K}(t)=\mathbf{S}(t)^{-1}\varphi(t)\\
+  \varepsilon(t) = y(t)-\varphi(t)^T\mathbf{\hat{a}}(t-1)\\
+  \mathbf{S}(t) = \mathbf{S}(t-1)+\varphi(t)\varphi(t)^T
+  }
+  $$
+  In such a case, the parameter vector $\mathbf{\hat{a}}(t)$ is given by the sum of the same parameters obtained at the previous time instant $(t - 1)$ and of a correction term that is proportional to the estimation error $\varepsilon(t)$ weighed according to a gain vector $\mathbf{K}(t)$. Further, thanks to the matrix inversion lemma, the algorithm is made more efficient, as it is possible to directly update the matrix $\mathbf{P}(t) = \mathbf{S}(t)^{-1}$ without inversions at each iteration:
+  $$
+  \cases{
+  \mathbf{\hat{a}}(t) = \mathbf{\hat{a}}(t-1)+\mathbf{K}(t)\varepsilon(t)\\
+  \mathbf{K}(t)=\frac{\mathbf{P}(t)^{-1}\varphi(t)}{1+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\\
+  \varepsilon(t) = y(t)-\varphi(t)^T\mathbf{\hat{a}}(t-1)\\
+  \mathbf{P}(t) = \mathbf{P}(t-1)-\frac{\mathbf{P}(t-1)\varphi(t)\varphi(t)^T\mathbf{P}(t-1)}{1+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}
+  }
+  $$
+  If the samples of the signal come from a nonstationary process, we can introduce into the recursive formulation, a forgetting factor, $\lambda$, that modifies the figure of merit $J$ according to the following relation 
+  $$
+  J=\frac{1}{t}\sum_{i=1}^{t}\lambda^{t-i}\varepsilon(t)^2
+  $$
+  The forgetting factor (which assumes values $\lambda \ll 1$), exponentially weights the samples of the prediction error in the calculation of $J$, then gives importance to the more recent values in the definition of the updating while the oldest ones are progressively forgotten with a time constant, $T= 1/(1 - \lambda)$, that can be interpreted as the "memory length" of the algorithm. 
+
+  We end up with the following formulation:
+  $$
+  \color{blue}\cases{
+  \mathbf{\hat{a}}(t) = \mathbf{\hat{a}}(t-1)+\mathbf{K}(t)\varepsilon(t)\\\ \\
+  
+  \mathbf{K}(t)=\frac{\mathbf{P}(t)^{-1}\varphi(t)}{\lambda+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\\\ \\
+  
+  \varepsilon(t) = y(t)-\varphi(t)^T\mathbf{\hat{a}}(t-1)\\\ \\
+  
+  \mathbf{P}(t) = \frac{1}{\lambda}\left[\mathbf{P}(t-1)-\frac{\mathbf{P}(t-1)\varphi(t)\varphi(t)^T\mathbf{P}(t-1)}{\lambda+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\right]
+  }
+  $$
+  *RLS*'s performance is strongly dependent on the choice of the forgetting factor $\lambda$. Of course, the choice of the optimal forgetting factor is a critical point in the use of the time-varying models. In fact, high values of $\lambda$ may lead to inability to reliably track the fast dynamics of the signal, whereas too low values may make the algorithm too sensitive to the casual variations due to the noise. For these reasons, in the literature different formulations of the forgetting factor have been proposed that attempt to finding an optimal balance between the convergence speed and noise rejection. 
+
+  - *Varying forgetting factor*
+
+    The prediction error contains relevant information about the goodness of the estimation. In fact, if its variance is small, the model is properly fitted to the data and the dynamic of the signal variation is slower than the adaptation of the algorithm. Thus, we can think of using a higher forgetting factor for making the estimation more reliable from a statistical point of view. If, on the contrary, the noise variance is high, the model is still converging, or the dynamics of the signal changes are faster than the adaptation capability of the algorithm. In such conditions, it could be useful to decrease the value of the forgetting factor in order to allow a faster convergence.
+
+    *Based on these considerations, Fortescue and Ydstie (1981) proposed the use of a varying forgetting factor able to self-adapt to the signal characteristics, increasing when the signal is slowly varying, and decreasing when transitions are fast.*
+
+  - *Whale forgetting factor*
+
+    From the approximate analysis of the estimation error (Lorito, 1993), it is possible to calculate how casual noise in the input data can affect the estimation error of the parameters. This relation is described by the transfer function that in case of the exponential forgetting factor (EF) has the following expression: 
+    $$
+    G^{EF}(z)=\frac{1-\lambda}{1-\lambda z^{-1}}
+    $$
+    This is a low-pass filter with only one pole in $z = \lambda$, on which the properties of speed, adaptation, and noise rejection depend. The compromise between noise sensitivity and adaptation speed can be made less restrictive if we increase the degrees of freedom of the filter, for example, by increasing the number of the coefficients of its transfer function. With a higher number of poles, in fact, it is possible to modulate the shape of the impulse response and then the sensitivity to the noise and the adaptation speed. A solution adopted in literature uses a second-order transfer function: 
+    $$
+    G^{WF}(z)=\frac{1-a_1-a_2}{1-a_1z^{-1}-a_2z^{-2}}where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle).
+    $$
+    where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle). 
+
+  ![](images/FORF.PNG)
+
+  
+
+- ***Time variant methods applications***
+
+  The methods of time-variant autoregressive spectral estimation have remarkable advantages that make them suitable to many different applications. Among them the most diffused are in the field of the studies of heart rate variability and, from a more general point of view, beat-to-beat variability signals related to the cardiovascular and cardiorespiratory systems. Many studies that can be found in the literature mainly deal with the autonomic nervous system during myocardial ischemia episodes, both spontaneous and drug induced, with the response to autonomic tests, with monitoring of patients in intensive care, and with the autonomic response to drug infusion, stress tests, and transition among different sleep stages. In neurology, these methods are mainly applied to the dynamic variations of the EEG signal, for example, during anesthesia induction, cases of brain damage, transitions toward epileptic seizures, study of desynchronization and synchronization of the different EEG rhythms during the execution of motor tasks, etc...
 
 - **Brief overview of TF methods:**
 
