@@ -47,7 +47,7 @@ ${v_t=G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_T}$
 $$
 \color{blue} V(s_t)\leftarrow V(s_t)+\alpha \bigg(\color{red}r_{t+1}+\gamma V(s_{t+1})\color{blue}-V(s_t)\bigg)
 $$
-The main difference between these algorithms is that **Monte Carlo** has **lower bias** and **higher variance**, while **TD** has **higher bias** but **lower variance**. This is due to the fact that **MC** return depends on **many** random actions, transitions, and rewards, while **TD**, the one-step version, depends only on **one** random actions, transition, reward (obviously if we considered the 2-step version we would have had more random variables and so on).  
+The main difference between these algorithms is that **Monte Carlo** has **lower bias** and **higher variance**, while **TD** has **higher bias** but **lower variance**. This is due to the fact that **MC** return depends on **many** random actions, transitions, and rewards, while **TD**, the one-step version, depends only on **one** random action, transition, reward (obviously if we considered the 2-step version we would have had more random variables and so on).  
 Since TD is much lower variance, it is **more efficient**.
 
 One other important difference is that **MC** does **not** exploit the **Markov property**, while **TD** **does**. This is due to the fact that TD's value function update depends on the estimate of the return from neighbor states, while MC does not. 
@@ -79,15 +79,15 @@ ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha (\color{red} R_{t+1}+\gamma Q(S_{t+1},A
 Off policies learn from observing humans or other agents.  
 They re-use experience generated from old policies ${\pi_1,\pi_2,...,\pi_{t-1}}$ in order to generate the new target policy ${\pi}$.
 
-the best known example of why off-policy learning is used is the one regarding the exploration-exploitation tradeoff. We can follow an exploratory policy and at the same time learn about the optimal policy.  
+The best known example of why off-policy learning is used is the one regarding the exploration-exploitation tradeoff. We can follow an exploratory policy and at the same time learn about the optimal policy.  
 Another interesting use of off-policy learning is wanting to learn about multiple policies while following one: there might be many different behaviors we want to figure out.
 
-If with an off-policy algorithm we adopt for the behavioral policy an $\epsilon$-greedy policy (which is always the case) and $\epsilon$ is constant, we do learn the optimal policy. Obviously we do so even if $\epsilon$ decreases over time.
-
-An example of off-policy technique is *Q-Learning*.  
+An example of off-policy technique is *Q-Learning*. 
 
 *Q-Learning* update function (off-policy)  :  
 ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma \max_{a' \in A}  Q(S_{t+1},a') \color{black} - Q(S_t,A_t))}$  
+
+
 
 <div style="page-break-after: always;"></div> 
 
