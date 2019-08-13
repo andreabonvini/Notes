@@ -1,6 +1,6 @@
 ### Support Vector Machines
 
-Our goal is to build a binary classifier by finding an hyperplane which is able to separate the data with the biggest *margin* possible. 
+The Support Vector Machines techniques aims to build a binary classifier by finding an hyperplane which is able to separate the data with the largest *margin* possible. 
 
 <img src="images/svm1.png" style="zoom:40%"/>
 
@@ -57,7 +57,7 @@ Well, $\mathbf{w}^T\mathbf{x}+b$ is just the value of the equation of the plane.
 $$
 distance = \frac{1}{||\mathbf{w}||}|\;\mathbf{w}^T\mathbf{x}_n+b\;|
 $$
-But wait...what is $|\;\mathbf{w}^T\mathbf{x}_n+b\;|$ ? It is the constraint the we defined at the beginning of our derivation!
+But wait...what is $|\;\mathbf{w}^T\mathbf{x}_n+b\;|$ ? It is the constraint that we defined at the beginning of our derivation!
 $$
 |\mathbf{w}^T\mathbf{x}_n+b|=1
 $$
@@ -71,7 +71,9 @@ $$
 $$
 Since this is not a *friendly* optimization problem (the constraint is characterized by a minimum and an absolute, which are annoying) we are going to find an equivalent problem which is easier to solve. Our optimization problem can be rewritten as
 $$
-\underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}\\y_n(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
+\underset{w}{\operatorname{argmin}}\frac{1}{2}\mathbf{w}^T\mathbf{w}
+\\
+\text{subject to} \ \ \ \  y_n \cdot(\mathbf{w}^T\mathbf{x}_n+b)\ge1 \;\;\;\;\text{for $n = 1,2,\dots,N$}
 $$
 where $y_n$ is a variable that we introduce that will be equal to either $+1$ or $-1$ accordingly to its real target value ( remember that this is a *supervised learning* technique and we know the real target value of each sample) . One could argue that the new constraint is actually different from the former one, since maybe the $\mathbf{w}$ that we'll find will allow the constraint to be *strictly* greater than $1$ for every possible point in our dataset [ $y_n(\mathbf{w}^T\mathbf{x}_n+b)> 1 \;\;\forall{n}$ ] while we'd like it to be *exactly* equal to $1$ for *at least* one value of $n$. But that's actually not true! Since we're trying to minimize $\frac{1}{2}\mathbf{w}^T\mathbf{w}$ our algorithm will try to scale down $\mathbf{w}$ until $\mathbf{w}^T\mathbf{x}_n+b$ will touch $1$ for some specific point $n$ of the dataset. 
 
@@ -92,9 +94,9 @@ $$
 $$
 And list the other *KKT* conditions:
 $$
-y_i(\mathbf{w}^T\mathbf{x}_i+b)-1\ge0\;\;\;\;\;\;\forall{i}\\
-\alpha_i\ge0\;\;\;\;\;\;\;\forall{i}\\
-\alpha_i(y_i(\mathbf{w}^T\mathbf{x}_i+b)-1)=0\;\;\;\;\;\;\forall{i}
+y_n(\mathbf{w}^T\mathbf{x}_n+b)-1\ge0\;\;\;\;\;\;\forall{n}\\
+\alpha_n\ge0\;\;\;\;\;\;\;\forall{n}\\
+\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)=0\;\;\;\;\;\;\forall{n}
 $$
 *Alert* :  the last condition is called the KKT *dual complementary condition* and will be key for showing that the SVM has only a small number of "support vectors", and will also give us our convergence test when we'll talk about the *SMO* algorithm. 
 
@@ -116,7 +118,10 @@ We can notice that the old constraint $\mathbf{w}=\sum_{n=1}^{N}\alpha_n y_n\mat
 
 How do we find the solution? we throw this objective (which btw happens to be a *convex* function) to a *quadratic programming* package.
 
-Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the *support vectors* ! (i.e. the vectors that determines the width of the *margin*) , this can be noted by observing the last *KKT* condition, in fact either a constraint is active , and hence the point is a support vector, or its multiplier is zero. 
+Once the *quadratic programming* package gives us back the solution we find out that a whole bunch of $\alpha$ are just $0$ !  All the $\alpha$ which are not $0$ are the ones associated with the so-called *support vectors* ! ( which are just samples from our dataset )  
+They are called *support* vectors because they are the vectors that determine the width of the *margin* , this can be noted by observing the last *KKT* condition  
+$\big\{\alpha_n(y_n(\mathbf{w}^T\mathbf{x}_n+b)-1)=0\;\;\;\forall{n}\big\}$,   
+in fact either a constraint is active, and hence the point is a support vector, or its multiplier is zero. 
 
 Now that we solved the problem we can get both $\mathbf{w}$  and $b$.
 $$
@@ -125,73 +130,55 @@ y_n(\mathbf{w}^T\mathbf{x}_{n\in\text{SV}}+b)=1
 $$
 where $\mathbf{x}_{n\in\text{SV}}$ is any *support vector*. (you'd find the *same* $b$ for every support vector)
 
-But the coolest thing about *SVMs* is that we can rewrite our *objective functions* as follows:
+But the coolest thing about *SVMs* is that we can rewrite our *objective functions*.  
+From
 $$
-\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)
+\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_m\mathbf{x}_n^T\mathbf{x}_m
 $$
-We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
+to
+$$
+\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n,\mathbf{x}_m)
+$$
+We can use *kernels* !
 
 Finally we end up with the following equation for classifying *new points*:
 $$
-y(\mathbf{x}) = sign\left(\sum_{n=1}^{N}\alpha_n t_n k(\mathbf{x},\mathbf{x}_n)+b\right)
+\hat{y}(\mathbf{x}) = sign\left(\sum_{n=1}^{N}\alpha_n y_n k(\mathbf{x},\mathbf{x}_n)+b\right)
 $$
-The method described until here is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happens that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
+The method described so far is called *hard-margin SVM* since the margin has to be satisfied strictly, it can happen that the points are not *linearly separable* in *any* way, or we just want to handle *noisy data* to avoid overfitting, so now we're going to briefly define another version of it, which is called *soft-margin SVM* that allows for few errors and penalizes for them.
 
-We introduce *slack variables* $\xi_i$ , in this way we allow to *violate* the margin constraint but we add a *penalty*.
+We introduce *slack variables* $\xi_n$ , this way we allow to *violate* the margin constraint but we add a *penalty* expressed by the distance of the misclassified samples from the hyperplane (samples correctly classified have $\xi_n=0$).
 
 We now have to 
 $$
-\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_i \xi_i \\
-\text{s.t.}\\ \ y_i(\mathbf{w}^Tx_i+b)\ge1-\xi_i\ ,\ \ \ \forall{i}\\
-\xi_i\ge0\ ,\ \ \ \forall{i}
+\text{Minimize}\ \ ||\mathbf{w}||_2^2+C\sum_n \xi_n \\
+\text{s.t.}\\ 
+\ y_n(\mathbf{w}^Tx_n+b)\ge1-\xi_n\ ,\ \ \ \forall{n}\\
+\xi_n\ge0\ ,\ \ \ \forall{n}
 $$
-$C$ is a coefficient that allows to treadeoff bias-variance and is chosen by *cross-validation*.
+$C$ is a coefficient that allows to trade-off bias-variance and is chosen by *cross-validation*.
 
 And obtain the *Dual Representation*
 $$
-  \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
+\text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
-  0\le\alpha_n\le C\ \ \ \ \ \forall{i}\\
-  \sum_{n=1}^N\alpha_n t_n = 0
+  0\le\alpha_n\le C\ \ \ \ \ \forall{n}\\
+  \sum_{n=1}^N\alpha_n y_n = 0
 $$
-  Support vectors are points associated with $\alpha_n > 0$
+if $\alpha_n\le0$ the point $x_n$ is just correctly classified.
 
-  if $\alpha_n<C$ the points lies *on the margin*
+if $0<\alpha_n<C$ the points lies *on the margin*. They are indeed Support Vectors.
 
-  if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_i \le 1$) or *misclassified* ($\xi_i>1$)  
+if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_n \le 1$) or *misclassified* ($\xi_n>1$)  
 
-  Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
+Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
 
 And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? 
 
 As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
 $$
-  L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
+L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
 $$
 This is called *Leave-One-Out Bound* (I don't know why, maybe it's written [here ](<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf> )). The good thing is that it can be easily computed and we don't need to run SVM multiple times.
 
 The other kind of bound is called *Margin bound*: a bound on the VC dimension which decreases with the margin. The larger the margin, the less the variance and so, the less the VC dimension. Unfortunately the bound is quite pessimistic 
-
- Sometimes for computational reasons, when we solve a problem characterized by a huge dataset, it is not possible to compute *all* the support vectors with generic quadratic programming solvers (the number of constraints depends on the number of samples), hence, specialized optimization algorithms are often used. One example is *Sequential Minimal Optimization (SMO)*:
-
-Remember our formulation for the *soft-margin SVM*:
-$$
-\mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
-  s.t.\\
-  0\le\alpha_i\le C\ \ \ \ \text{for}\ i =1,2,\dots,n\\
-  \sum_{i=1}^ny_i\alpha_i=0
-$$
-*SMO* breaks this problem into a series of smallest possible sub-problems, which are then solved analytically. Because of the linear equality constraint involving the Lagrange multipliers $\alpha _{i}$ , the smallest possible problem involves two such multipliers. Then, for any two multipliers $\alpha_1$ and $\alpha_2$ the constraints are reduced to:
-$$
-0\le\alpha_1,\alpha_2\le C\\
-  y_1\alpha_1+y_2\alpha_2=k
-$$
-and this reduced problem can be solved analytically: one needs to find a minimum of a one-dimensional quadratic function. $k$ is the negative of the sum over the rest of terms in the equality constraint, which is fixed in each iteration ( we do this because we want that $\sum_{i=1}^ny_i\alpha_i=0$ ).
-
-The algorithm proceeds as follows:
-
-- Find a Lagrange multiplier $\alpha_1$ that violates the *KKT* conditions for the optimization problem.
-- Pick a second multiplier $\alpha_2$ and optimize the pair ($\alpha_1$,$\alpha_2$).
-- Repeat steps $1$ and $2$ until convergence.
-
-When all the Lagrange multipliers satisfy the KKT conditions (within a user-defined tolerance), the problem has been solved. Although this algorithm is guaranteed to converge, heuristics are used to choose the pair of multipliers so as to accelerate the rate of convergence. This is critical for large data sets since there are $\frac{n(n-1)}{2}$  possible choices for $\alpha_i$ and $\alpha_j$ .
