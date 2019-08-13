@@ -5,7 +5,6 @@
 
 
 <div style="page-break-after: always;"></div> 
-
 ### Ridge vs Lasso
 
 Ridge regression and Lasso regression are two variations of linear regression. The difference consists in the fact that they add a term to the residual sum of squares that penalizes weights from getting high values. In fact high values for weights translates into overfitting, since we would get a non-smooth regression curve.
@@ -14,7 +13,7 @@ Ridge Regression's loss function:
 
 ${L(\mathbf{w})=\frac{1}{2}\sum_{i=1}^N(t_i-\mathbf{w}^T\phi(\mathbf{x}_i))^2+\frac{\lambda}{2}||\mathbf{w}||^2_2} $ 
 
-The loss function is quadratic wrt to $\mathbf{w}$ so there exist a closed form solution for finding the weights if $\phi^T\phi$ is full rank.  
+The loss function is quadratic wrt to $\mathbf{w}$ so there exists surely a closed form solution for finding the weights because $\phi^T\phi+\lambda I$ is surely invertible (thanks to $\lambda I$).
 $$
 \hat{\mathbf{w}}=\bigg(\mathbf{\phi}^T\mathbf{\phi}+\lambda \mathbf{I}\bigg)^{-1}\mathbf{\phi}^T\mathbf{t}
 $$
@@ -36,7 +35,6 @@ Moreover Ridge loss function can be obtained by adopting a Bayesian approach and
 
 
 <div style="page-break-after: always;"></div> 
-
 ### PCA
 
 ***Describe the Principal Component Analysis technique***
@@ -51,8 +49,8 @@ To have a graphical intuition:
 
 It is based on the principle of projecting the data onto the input subspace which accounts for most of the variance: 
 
-- Find a line such that when the data is projected onto that line, it has the maximum variance. 
-- Find a new line, orthogonal to the ﬁrst one, that has maximum projected variance. 
+- Find a line such that when the data is projected onto that line it explains the most variance. 
+- Find a new line, orthogonal to the ﬁrst one, that explains maximum projected variance. 
 - Repeat until $m$ lines have been identiﬁed and project the points in the data set on these lines. 
 
 The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $n\times d$ matrix where $n$ denotes the number of samples and $d$ is the dimensionality) : 
@@ -62,7 +60,7 @@ The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $
   \overline{\mathbf{x}} = \frac{1}{N}\sum_{n=1}^N\mathbf{x}_n
   $$
 
-- Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}$)
+- Bring the data to zero-mean (by subtracting $\overline{\mathbf{x}}$ ).
 
 - Compute the covariance matrix $\mathbf{S} = \mathbf{X}^T\mathbf{X} = \frac{1}{N-1}\sum_{n=1}^{N}(\mathbf{x}_n-\overline{\mathbf{x}})^T(\mathbf{x}_n-\overline{\mathbf{x}})$
 
@@ -70,7 +68,7 @@ The precise steps of *PCA* are the following (remember that $\mathbf{X}$ is an $
   - Eigenvector $\mathbf{e}_k$ with $k^{th}$ largest eigenvalue $\lambda_k$ is the *$k^{th}$ principal component*
   - $\frac{\lambda_k}{\sum_i\lambda_i}$ is the proportion of variance captured by the $k^{th}$ principal component.
 
-Transforming the reduced dimensionality projection back into the original spaces gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts:
+Transforming the reduced dimensionality projection back into the original space gives a reduced dimensionality reconstruction of the data, that will have some error. This error can be small and often acceptable given the other beneﬁts of dimensionality reduction. PCA has multiple beneﬁts:
 
 - Helps to reduce the computational complexity 
 - Can help supervised learning, because reduced dimensions allow simpler hypothesis spaces and less risk of overﬁtting 
@@ -79,12 +77,11 @@ Transforming the reduced dimensionality projection back into the original spaces
 But also some drawbacks:
 
 - Fails when data consists of multiple clusters
-- The directions of greatest variance may not be the most informative
+- The direction of greatest variance may not be the most informative
 - Computational problems with many dimensions 
 - PCA computes linear combination of features, but data often lies on a nonlinear manifold. Suppose that the data is distributed on two dimensions as a circumference: it can be actually represented by one dimension, but PCA is not able to capture it.
 
 <div style="page-break-after: always;"></div> 
-
 ### Support Vector Machines
 
 ***Describe the supervised learning technique denominated Support Vector Machines for classiﬁcation problems.***
@@ -151,7 +148,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 ### Algorithm for Support Vector Machines
 
 ***Which algorithm can we use to train an SVM? Provide an upper bound to the generalization error of an SVM.***
@@ -189,7 +185,6 @@ This is called *Leave-One-Out Bound*. The good thing is that it can be easily co
 The other kind of bound is called *Margin bound*: a bound on the VC dimension which decreases with the margin. The larger the margin, the less the variance and so, the less the VC dimension. Unfortunately the bound is quite pessimistic .
 
 <div style="page-break-after: always;"></div> 
-
 ### VC Dimension
 
 ***Deﬁne the VC dimension and describe the importance and usefulness of VC dimension in machine learning. What is the VC dimension of a linear classiﬁer?***
@@ -227,4 +222,75 @@ The key observation here is that this statement is not dependent on:
 The only things that factor into this are the training examples, the hypothesis set, and the final hypothesis.
 
 The VC dimension for a linear classifier (i.e. a *line* in 2D, a *plane* in 3D etc...) is $d+1$ (a line can shatter at most $2+1=3$ points, a plane can shatter at most $3+1=4$ points etc...)
+
+
+
+### PAC and Agnostic Learning
+
+***What do we mean as PAC-learning and Agnostic-learning?***
+
+{DISCLAIMER - We invented this question, maybe it appeared in exams previous of 2017, we didn't check. It's just to have an idea of what they are}
+
+We are talking about classification.  
+Overfitting happens because
+
+- with a large hypothesis space the training error is a bad estimate of the prediction error
+- When there are not enough samples
+
+Let's introduce some terms:
+
+- Set of instances $\mathcal{X}$ 
+- Set of hypothesis $\mathcal{H}$ (finite)
+- Set of possible target concepts $C$.  
+  Each concept $c$ corresponds to a boolean function $c:\mathcal{X} \to\{0,1\}$ which can be viewed as belonging to a certain class or not
+- Training instances generated by a fixed, unknown probability distribution $P$ over $X$. 
+
+Theorem:
+$$
+Pr(\exists h\in H:L_{train}=0\and L_{true}\ge \epsilon)\le|H|e^{-\epsilon N}
+$$
+If we want this probability to be at most $\delta$ we can write
+$$
+|H|e^{-\epsilon N}\le \delta
+$$
+which means
+$$
+N \ge \frac{1}{\epsilon}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+(So,imposing $\epsilon$, we need at least such number of samples)
+
+and
+$$
+\epsilon \ge \frac{1}{N}\left(\ln|H|+\ln\left(\frac{1}{\delta}\right)\right)
+$$
+(So, imposing $N$, we'll have at least such error on $L_{true}$).
+
+
+
+$C$ is ***PAC-learnable*** if there exists an algorithm $L$ such that for every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le 1$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$.
+
+$C$ is ***efficiently PAC-learnable*** by a learner $L$ using $H$ if and only if every $c \in C$ , for any distribution $P$ , for any $\epsilon$ such that $0\le\epsilon\le\frac{1}{2}$ and $\delta$ such that $0\le\delta\le \frac{1}{2}$, with probability at least $1-\delta$, outputs an hypothesis $h\in H$, such that $L_{true}(h) \le \epsilon$, using a number of samples that is polynomial of $\frac{1}{\epsilon}$ , $\frac{1}{\delta}$, $M$ and $size(c)$.
+
+
+
+***Agnostic Learning***
+
+*PAC bound and Bias-Variance Tradeoff:*
+
+![](images/AGN2.PNG)
+
+- For large $|H|$ 
+
+  - Low bias (assuming we can find a good $h$ )
+  - High variance (because bound is loser)
+
+- For small $|H|$
+
+  - High bias (is there a good $h$ ? )
+  - Low variance (tighter bound)
+
+- Given $\delta$, $\epsilon$ how large should $N$ be? (computed by imposing $L_{train}=0$ and $L_{true}\le \epsilon$)
+  $$
+  N\ge\frac{1}{2\epsilon^2}\left(\ln |H|+\ln\frac{1}{\delta}\right)
+  $$
 
