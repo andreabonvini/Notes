@@ -2,8 +2,6 @@
 
 *A series of notes on the "Computer Security" course as taught by Stefano Zanero during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
 
-[TOC]
-
 ### Ass-Savers
 
 - ***Buffer-overflow***
@@ -24,7 +22,7 @@
 
   - ***Reflected***
 
-    User input is directly returned by the web application in a response (e.g. error message,search result) which includes some or all of the input provided by the user in the request, *without being stored*  and made safe to render in the web browser.
+    User input is directly returned by the web application in a response (e.g. error message,search result) which includes some or all of the input provided by the user in the request, *without being stored* and made safe to render in the web browser.
 
     ```
     <?php
@@ -58,11 +56,15 @@
 
   *Key concept*: malicious requests (e.g. crafted links) are routed to the vulnerable web application through the victim's browser: web sites can not distinguish if the requests coming from authenticated users have been originated by an explicit user interaction or not.
 
+  `To solve this problem, include a CSRF token with every legitimate request, and check that cookie[’csrftoken’] == param[’csrftoken’].The CSRF stems from the fact that the web application authenticates the user only with “ambient credentials” (cookies, which are sent automatically with every request) also to perform a state-changing action (buy a book in this case); this way, whatsonbook is not able to authenticate whether the request was voluntarily initiated by the user or not. A solution is to require for every state-changing action a further secret token (e.g., automatically inserted as a hidden field in the bank’s form, ...) and checking its validity before performing the operation. This way, to buy a book, it is necessary to read the content of a request to whatsonbook’s servers, and not just to blindly perform a request. As the same origin policy does not allow a website to read the response of an arbitrary request to a different origin, the attackers would not be able to read the secret CSRF`
+
+  if you still have doubts check [here](https://stackoverflow.com/questions/5207160/what-is-a-csrf-token-what-is-its-importance-and-how-does-it-work)
+
 - ***What is a prepared statement?***
 
   A prepared statement is a feature used to execute the same (or similar) SQL statements repeatedly with high efficiency.
 
-  Basically it's just template.
+  Basically it's just a template.
 
   Prepared statements basically work like this:
 
@@ -100,7 +102,54 @@
 
     Devi bruciare il computer.
 
-  
+- ***SQL Injection***
+
+	There must be a data flow from a user-controlled HTTP variable (e.g., parameter, cookie, or other header fields) to a SQL query, without appropriate filtering and validation. If this happens, the SQL structure of the query can be modified.
+
+- ***Blind SQL Injection***
+
+	In a blind injection the data retrieved by the modified SQL query is not displayed back to the attacker. This can still be exploited: changes can be blindly executed in the database, or by using side-effects of queries the attacker can guess the answers.
+
+- ***Virus***
+
+	self-propagate by infecting other files, usually executables (but also documents with macros, boot loader code). They are not programs (i.e., not executables).
+
+- ***Worm***
+
+	programs that self-propagate, even remotely, often by exploiting host vulnerabilities, or by social engineering (e.g., mail worms).
+
+- ***Trojan***
+
+	apparently benign program that hide a malicious functionality and allow remote control
+
+- ***Polymorphism***
+
+	change layout (shape) with each infection
+
+	payload is encrypted (~ packing)
+
+	- using different key for each infection
+
+	- makes static string analysis practically impossible
+	- of course, AV could detect encryption routine
+
+	`Encryption is the most common method to hide code. With encryption, the main body of the code (also called its payload) is encrypted and will appear meaningless. For the code to function as before, a decryption function is added to the code. When the code is *executed* this function reads the payload and decrypts it before executing it in turn.`
+
+	`Encryption alone is not polymorphism. To gain polymorphic behavior, the encryptor/decryptor pair are mutated with each copy of the code. This allows different versions of some code which all function the same.`
+
+- ***Metamorphism***
+
+	create different "versions" of code that look different but have the same semantics (i.e., do the same)
+
+### Format strings
+
+![](images/fs1.png)
+
+![](images/fs2.png)
+
+![](images/fs3.png)
+
+![](images/fs4.png)
 
 
 
