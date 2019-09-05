@@ -50,7 +50,7 @@
     malicious crafted URL : http://example.com/test.html#<script>alert('XSS')</script>
     ```
 
-- ***Cross-Site Request Forgery (CSRF)*** $\color{red}\text{DUBBIO!}$ $5/2/2018$
+- ***Cross-Site Request Forgery (CSRF)***  $5/2/2018$
 
   Forces an user to execute a wanted action (state-changing action) on a web application in which it is authenticated (e.g. with cookies)
 
@@ -140,6 +140,61 @@
 - ***Metamorphism***
 
 	create different "versions" of code that look different but have the same semantics (i.e., do the same)
+	
+- ***What is, in general, the goal of a DoS attack? What are the differences between a DoS attack and a distributed DDoS attack? Is, given enough resources, a DDoS attack always feasible? Why?***
+
+	A DoS attack is an attempt to overload an online service (website) with traffic. The goal is to disrupt the website or network in order to stop legitimate users from accessing the service.
+
+	The DoS attack is usually launched from a single machine, as opposed to a DDoS attack which is launched from multiple machines.
+
+	DDoS is generally always feasible, given enough resources (i.e., the attacker can just rent a botnet for a few hours).
+	
+	Per gli attacchi Dos: `UDP->BRUTTO, TCP->BELLO`
+	
+	`*Move the protocol to TCP instead of UDP as a transport protocol. Due to the three-way handshake, TCP is immune to the amplification issue.*`
+	
+- ***What is an antivirus? Which are the strategies through which it detects malware? State their names and give a brief explanation of how they work.***
+
+	Antivirus software is a program or set of programs that are designed to prevent, search for, detect, and remove software viruses, and other malicious software like worms, trojans, adware, and more.
+
+	Strategies:
+
+	- *Ex-Post* workflow
+		- suspicious executable reported by "someone" 
+
+		- automatically analyzed 
+
+		- manually analyzed 
+
+		- antivirus signature developed 
+	- *Static Analysis* 
+		- Parse the executable code
+		- PROs and CONs
+			- +Code coverage, dormant code
+			- -Obfuscation(metamorphism, encryption,packing)
+
+	- * *Dynamic Analysis* 
+
+		- Observe the runtime behavior of the executable
+		- PROs and CONs
+			- -Code coverage, dormant code
+			- +Obfuscation(metamorphism, encryption,packing)
+
+- ***What are the techniques used by malware to evade detection? State their names and give a brief explanation of how they work.***
+
+	Metamorphism and Polymorphism.
+
+- ***Consider mobile malware developed for the Android platform. Can an antivirus for Android be as effective as an antivirus developed for a legacy operating system (e.g., Windows, or Linux) in the task of detecting a malware already running in the system? Why?***
+
+	No, because Mobile security model (single user, multi app) is different from traditional security models (multi user). In the Mobile security model AVs are apps. Apps cannot interfere with each other.
+
+	How can AVs check for malicious apps if they cannot access the entire system?
+
+	- run check upon installation
+	- list of package names of malicious apps
+
+	- list of MD5s of malicious apps
+	- limit scan to the SD card (world readable)
 
 ### Format strings
 
@@ -157,7 +212,7 @@
 
 - ***Kind of attacks:***
 
-  - $\color{red}\text{SMURF attack}$ `(DDOS)`:
+  - $\color{red}{SMURF\ attack}$ `(DDOS)`:
 
     An attacker spoof an IP address (this can be done through HTTP, not HTTPS).
 
@@ -170,7 +225,7 @@
     - Configure individual hosts and routers to not respond to ICMP requests or broadcasts
     - Configure routers to not forward packets directed to broadcast addresses. 
 
-  -  $\color{red}\text{Ping of Death}$ `(DOS)`:
+  -  $\color{red}{Ping\ of\ Death}$ `(DOS)`:
 
     A ping of death is a type of attack on a computer system that involves sending a malformed ping to a computer.
 
@@ -182,7 +237,7 @@
     - Upgrade the operating system to a non-vulnerable version.
     - Use a firewall that drops such anomalous packets.
 
-  - $\color{red}\text{ARP spoofing (or poisoning)}$ `(e.g. Man in the Middle)`
+  - $\color{red}{ARP\ spoofing\ (or\ poisoning)}$ `(e.g. Man in the Middle)`
 
     `The Address Resolution Protocol (ARP) is a communication protocol used for discovering the link layer address, such as a MAC address, associated with a given internet layer address, typically an IPv4 address` 
 
@@ -210,13 +265,13 @@
     - Router level : Notice multiple ARP responses with different MAC addresses (to prevent this attack it is possible to block responses with the IP of the sensible target (e.g. the router) but a different MAC address w.r.t. the real ones)
     - Gateway level : Notice ARP response with IP of the gateway 
 
-  - $\color{red}\text{DHCP poisoning}$ `(e.g. Man in the Middle, Traffic interception, Traffic redirection)`
+  - $\color{red}{DHCP\ poisoning}$ `(e.g. Man in the Middle, Traffic interception, Traffic redirection)`
 
     `DHCP (Dynamic Host Configuration Protocol) is a protocol used to provide quick, automatic, and central management for the distribution of IP addresses within a network. DHCP is also used to configure the proper subnet mask, default gateway, and DNS server information on the device.`
 
     DHCP does not support authentication, so every client *must* blindly believe any DHCP offer that it receives, thus an attacker can race and win against the real DHCP server. In this way the attacker can intercept the request, be the first to answer, and craft a DHCP response setting the *IP address*, the *DNS address* and the *default gateway* of the victim client. 
 
-  - $\color{red}\text{TCP/IP}$
+  - $\color{red}{TCP/IP}$
 
     TCP/IP is the main protocol which provides reliable ordered and error-checked delivery of data. It uses sequence numbers for reordering packets, in particular a *semi-random* INITIAL SEQUENCE NUMBER (ISN) is chosen.
 
@@ -224,7 +279,7 @@
 
     In order to reduce the time available to the attacker to guess the ISN it is possible to use TCP-syn cookies.
 
-  - $\color{red}\text{DNS cache poisoning}$
+  - $\color{red}{DNS\ cache\ poisoning}$
 
     DNS translates domain names to the numerical IP addresses. It is based on UDP and messages are *not authenticated*.
 
