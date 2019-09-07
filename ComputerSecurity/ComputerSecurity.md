@@ -214,6 +214,8 @@ a salt is random data that is used as an additional input to a one-way function 
 
 ![](images/fs1.png)
 
+AAA! A QUANTO PARE SE `FIRST_PART = SECOND_PART` CI TROVIAMO NEL `GENERIC CASE 2` (TDE 01/07/19)
+
 ![](images/fs2.png)
 
 ![](images/fs3.png)
