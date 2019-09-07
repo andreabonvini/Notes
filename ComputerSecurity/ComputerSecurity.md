@@ -18,6 +18,14 @@
 
 ### Definitions
 
+- ***ASLR***  
+  it's a security mechanism used for avoiding exploitation of Buffer Overflow vulnerabilities.  
+  It means Address Space Layout Randomization.  
+  It consists in repositioning the stack, among other things, at each execution at random; impossible to guess return addresses correctly 
+- ***Canary***  
+  it's security mechanism used for avoiding exploitation of Buffer Overflow vulnerabilities.  
+  It works by placing a small integer, the value of which is randomly chosen at program start, in memory just before the stack return pointer.
+
 - ***Cross-Site-Scripting***
 
   - ***Reflected***
@@ -60,6 +68,12 @@
 
   if you still have doubts check [here](https://stackoverflow.com/questions/5207160/what-is-a-csrf-token-what-is-its-importance-and-how-does-it-work)
 
+- ***What is a Rainbow Table?***  
+It is a precomputed table for reversing hash functions, usually for passwords that are stored hashed.
+  
+- ***What is a salt?***  
+a salt is random data that is used as an additional input to a one-way function that "hashes" data, a password or passphrase. Salts are used to safeguard passwords in storage (it prevents the usage of rainbow tables).
+  
 - ***What is a prepared statement?***
 
   A prepared statement is a feature used to execute the same (or similar) SQL statements repeatedly with high efficiency.
