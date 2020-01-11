@@ -1,10 +1,18 @@
 ### Advanced Signals and Data Processing in Medicine
 
-*A series of notes on the "Advanced SIgnals and Data Processing in Medicine" course as taught by Sergio Cerutti and Riccardo Barbieri during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
+*A series of notes on the "Advanced Signals and Data Processing in Medicine" course as taught by Sergio Cerutti and Riccardo Barbieri during the second semester of the academic year 2018-2019 at Politecnico di Milano.*
+
+## Scaletta
+
+- Wiener Filter : Qual è la novità? Ipotesi, Equazioni e esempi di utilizzo
+- Kalman Filter: Passaggio da Wiener a Kalman, Ipotesi, 3 blocchi, Equazioni e esempi di utilizzo
+- Adaptive Filter: Che cambia rispetto a Kalman? Equazioni e esempi di utilizzo
 
 ## Exam Questions *Cerutti*
 
 - ***Talk me about the Wiener filter (in both frequency and time domains) and its applications.***
+
+  Typical deterministic filters are designed for a desired frequency response. However, the design of the Wiener filter takes a different approach. One is assumed to have knowledge of the spectral properties of the original signal and the noise, and one seeks the linear time-invariant filter whose output would come as close to the original signal as possible.
 
   The *Wiener Filter* is a non-recursive filter used to produce an estimate of a desired or target random process by linear time-invariant filtering of an observed noisy process, assuming known *stationary* signal and noise spectra, and additive noise. The Wiener filter minimizes the mean square error between the estimated random process and the desired process.
 
@@ -45,13 +53,13 @@
   $$
   And reach the *Wiener-Hopf* equation:
   $$
-  \color{red}\sum_{i}^{M}h(i) \cdot p_y(i,j) = p_{xy}(j) \\
+  \color{red}{\sum_{i}^{M}h(i) \cdot p_y(i,j) = p_{xy}(j)} \\
   h(i) = Unknown \\
   p_y(i,j) = Known \\
   p_{xy}(j) = Known \\\ \\
   \text{From here it follows that...}\\\ \\
   p_{e} = E[(x-\hat{x})^{2}] = E[(x - \sum_{i= 1}^{M}h(i)\cdot y(i))^{2}]\\
-  \color{red}\text{Come diavolo si ricava la formula qui sotto?}\\
+  \color{red}{\text{Come diavolo si ricava la formula qui sotto?}}\\
   p_e = E[x^{2}] - \sum_{i=1}^{M}h(i) \cdot E[x \cdot y(i) ] = E[x^{2}] - \sum_{i=1}^{M} h(i) \cdot p_{xy}(i)
   $$
   In *matricial form*:
@@ -63,6 +71,131 @@
   \end{cases}
   $$
   The *Wiener Filter* is *optimal* among the time-invariant linear filters but, obviously, if the hypothesis are not fulfilled is *sub-optimal*.
+
+  If the spectra of the signal and of the noise are both *rational* we *wiener flter* in the frequency domain corresponds to:
+  $$
+  H(\omega)=\frac{\Phi_{XX}(\omega)}{\Phi_{XX}(\omega)+\Phi_{NN}(\omega)}
+  $$
+  Qui viene indicato che, la risposta in frequenza del filtro di Wiener,è data dalle trasformate di Fourier della funzione di correlazione, che rappresentano quindi quindi delle densità di potenza del nostro spettro.
+
+  Applicazioni del filtro di Wiener:
+
+  ![](images/wf1.png)
+
+  ![](images/wf5.png)
+
+  ![](images/wf2.png)
+
+  ![](images/wf3.png)
+
+  ![](images/wf4.png)
+
+  ![](images/wf6.PNG)
+
+- ***Talk me about the Kalman filter***
+
+  ![](images/kalman1.png)
+
+  - ***Modello di generazione del segnale***, che deve essere progettato come un modello stocastico che genera il mio segnale. Per semplicità, considereremo sempre i modelli ARMA,o AR,o MA. ARMA famiglia molto numerosa e generale. Noi siamo però interessati principalmente ai segnali biologici. Come ci comportiamo nel caso in cui il nostro segnale biologico sia deterministico ? ECG, ad esempio, è un segnale molto deterministico, avremo quindi segnali biologici a cui questo approccio si presterà meno, mentre altri a cui si presterà di piu. Nel caso particolare in cui volessimo applicare questo approccio a segnali deterministici, aggiungiamo un rumore bianco al segnale originale per stocasticizzarlo. Il modello di generazione ha quindi un segnale di ingresso che è un rumore bianco, che in uscita da il segnale x. L’ipotesi forte che il modello di generazione del segnale sia descrivibile con un modello stocastico, altrimenti non si possiamo applicare il filtro di Kalman.
+  - ***Il blocco di misura***, che tiene conto della misura che stiamo compiendo quando registriamo un segnale biologico. Questa interazione di misura determina una funzione di trasferimento : C, e un rumore v(k). Su questo rumore la teoria di Kalman da un vincolo : deve essere *bianco*.
+  - ***Filtro di Kalman*** : Il segnale y entra dentro nel terzo blocco del filtro di Kalman,in funzione di tutti i parametri del primo e del secondo blocco.
+
+  AAAAA
+
+  La particolarità del filtro di Kalman è che considera lo stato non conoscibile (non misurabile) direttamente ee noi possiamo misurare solo un'uscita però conosciamo la legge di evoluzione dello stato.
+
+  Intanto il filtro di Kalman è stocastico perché considera i rumori che entrano nello stato come w() e nel blocco di misurazione come segnali stocastici e incorrelati con lo stato che è x (y è la misurazione).
+
+  Quello che fa è stimare $x$ ricorsivamente conoscendo il modello di evoluzione che sostanzialmente è $v()$ mi sa.
+
+  IL concetto di modello stocastico viene dal fatto che c'è un rumore bianco nel modello di generazione del segnale e poi hai un rumore bianco anche in fase di misura. è ragionevole sta roba? in un contesto biologico ha senso dato che, per il teorema centrale del limite, la presenza di tanti segnali che interferiscono l'un l'altro sommandosi danno vita a una distribuzione associabile a un white noise
+
+  Quali sono i parametri che mi indicano che il funzionamento del filtro sta andando bene?
+
+  il K si calcola dal P che è la osluzione dell'eq di riccati e la varianza blabla e se la varianza ha un asintotopossimao considerare il filtro di kalman a regime e considerare i suoi risultati attendibili.
+
+  Artefatto mioelettrico?
+
+  Test di Anderson? Calcolo dell'autocorrelazione del rumore.
+
+- ***Per misurare i parametri di long-term correlation su un segnale che algoritmi si usano?***
+
+	Esponente di Hurst, osservare un segnale su scale diverse, distribuzioni della serie scalata e della serie originale, self-similarity. 1/F PSD Beta, beta = 1 e H=0.5. ERRORE NELLE SLIDE->BETA=0 è WHITE NOISE MA IN REALTà SAREBBE PINK NOISE BLABLA. I DATI DI BORSA che hanno H tra 0.5 e 1 significa che c'è una long-term correlation e quindi c'è una persistenza nell'andamento di quel titolo.
+
+	rescaled range analysis-> se dividiamo il segnale in batch e caloliamo R/S boh
+
+- ***Cos'è e come si misura la dimensione frattale di un segnale***
+
+	I segnali biologici sono complessi, variabili e imprevedibili.
+
+	Non è detto che i sistemi frattali siano caotici, ma è vero che tutti i sistemi caotici hanno una geometria frattale.
+
+	Prima di definire questa dimensione è necessario parlare del modello delle uscite ritardate : si suppone che ci sia un modello che genera un segnale, questo modello non è conosciurto a priori, ne tantomeno la dimensionalità del suo stao, si suppone quindi che la dinamica del segnale osservato segua la traiettoria di un attrattore e che quest'ultimo possa essere rappresentato attraverso il metodo delle cosiddette coordinate ritardate, ovvero vogliamo trovare $\tau$ (embedding lag) e $m$ (embedding dimension, il numero di uscite ritardate che vogliamo rappresentare)
+
+	![](images/embdim.png)
+
+	(A sinistra vediamo il segnale originale nella sua vera, ma sconosciuta, dimensione. A destra la rappresentazione nella embedding dimension)
+
+	Quindi, dobbiamo solo campionare il segnale con tempo di campionamento $\tau$ e rappresentarne la dinamica in questo spazio $m$-dimensionale.
+
+	Come scelgo il giusto $m$ ? In primo luogo NON vogliamo che la rappresentazione dello stato si SOVRAPPONGA nel tempo (non vogliamo ambiguità nella sua rappresentazione), si usa il `metodo dei falsi vicini`: se nella rappresentazione dove $m=k$ ritrovo due punti vicini e, dopo aver posto $m=k+1$ e aver nuovamente rappresentato i due punti precedenti, noto che questi non sono più vicini, i due punti in questione si chiamano `falsi vicini`. Formalmente parlando si osserva la distanza di OGNI punto rispetto a TUTTI gli altri, si fa un grafico dove si  osserva l'andamento della *percentuale* di `falsi vicini` all'aumentare di $m$, a un certo punto questa percentuale rimarrà pressochè costante.
+
+	![](images/fngraph.png)
+
+	Per scegliere la giusta embedding dimension $m$ è opportuno definire il *Teorema di Mane-Takens*.
+
+	*Teorema di Mane-Takens*:
+
+	Se assumiamo che $\mathcal{A}$ sia un attratto di dimensione (*box-counting*) $d$ , $m$ è una embedding dimension se $m>2d$. Questa è la *condizione sufficiente* ma spesso è più utile/facile trovare una embedding dimension $d<m\le2d$
+
+	Per quanto riguarda $\tau$ abbiamo due opzioni:
+
+	- Consideriamo il primo *zero* della funzione di *autocorrelazione*. Ma non è molto consigliato dato che in questo caso si considera una funzione che sfrutta le componenti lineari del segnale per andare a indagare una dinamica non lineare.
+	- Consideriamo il lag $\tau$ corrispondente al primo minimo della funzione di *mutua informazione*.
+
+	Parliamo ora di *dimensione frattale*, esistono tre modi per calcolare la dimensione frattale:
+
+	- Box Counting
+
+	- Dimensione di correlazione
+
+	- Dimensione di Lyapunov
+
+	Partiamo dalla dimensione di `Box Counting` $d_B$:
+
+	Consideriamo, in questo spazio di embedding, degli ipercubi di dimensione $\epsilon$ e andiamo a contare il numero di ipercubi $N(\epsilon)$ che contengono almeno un punto della traiettoria del segnale, formalmente osserviamo che:
+	$$
+	N(\epsilon)=\gamma\left(\frac{1}{\epsilon}\right)^{d_B}
+	$$
+	e ricaviamo, fissando $\gamma=1$ e facendo il logaritmo:
+	$$
+	d_B =\lim_{\epsilon\to0}\frac{\log N(\epsilon)}{\log(1/\epsilon)}
+	$$
+	Più questa dimensione è alta più il nostro segnale è *complesso* (NON caotico!)
+
+	Molti degli aspetti fisiologici sono legati al concetto di frattalità e tanto più il soggetto è in buone condizioni di salute tanto più questa dimensione risulta alta, questa dimensione infatti può essere utile, per esempio, per andare a discriminare tra un soggetto sano e uno con caratteristiche patologiche. 
+
+	`Dimensione di correlazione`:
+
+	sssss
+
+	`Dimensione di Lyapunov:`
+
+	aaaaaaa
+
+- ***Le $4$ M (4 diversi approci)***:
+
+  - *Multi-Modal*
+
+  - *Multi-Scala*:
+
+    In questo esempio l'osservazione che è stata fatta è quella macroscopica in cui si vedeva che una persona affetta dalla cosiddetta sindrome del QT-lungo era più propensa ad andare incontro a una morte improvvisa 17:50. Si è scoperto che il QT-lungo è dovuto a un gene a cui manca una bse azotata e per cui non si codifica per una proteina che andava a sminchiare una roba dei canali del sodio
+
+    multiscala perchè si parla di geni->basi azotate-> sequenza di amminoacidi->proteine
+
+  - *Multi-Variato*
+
+  - *Multi-ejkj*
 
 - ***What is the Adaptive filter?***
 
@@ -560,7 +693,7 @@
   \varepsilon(t)=y(t)-\hat{y}(t)=y(t)-\mathbf{\phi(t)}^T\mathbf{a}\\
   
   J_N=\frac{1}{N}\sum_{t=1}^N\varepsilon_{\mathbf{a}}^2(t)\\
-  \color{blue}\hat{\mathbf{a}}=\left[\sum_{t=1}^N\mathbf{\phi(t)}\mathbf{\phi(t)^T}\right]^{-1}\sum_{t=1}^N\mathbf{\phi(t)}y(t)=S(N)^{-1}Q(N)
+  \color{blue}{\hat{\mathbf{a}}}=\left[\sum_{t=1}^N\mathbf{\phi(t)}\mathbf{\phi(t)^T}\right]^{-1}\sum_{t=1}^N\mathbf{\phi(t)}y(t)=S(N)^{-1}Q(N)
   $$
   Where $\mathbf{S(N)}$ is the autocorrelation matrix. Note that $\mathbf{Q(N)}$ is just a vector.
 
@@ -570,7 +703,7 @@
   
   \mathbf{S(t)}=\mathbf{S(t-1)}+\varphi(t)\varphi(t)^T\\
   
-  \color{red}\text{ma che dimensionalità ha phi(t)*phi(t)???}
+  \color{red}{\text{ma che dimensionalità ha phi(t)*phi(t)???}}
   $$
   It is then possible to obtain the following formulation 
   $$
@@ -598,39 +731,39 @@
 
   We end up with the following formulation:
   $$
-  \color{blue}\cases{
+  \color{blue}{\cases{
   \mathbf{\hat{a}}(t) = \mathbf{\hat{a}}(t-1)+\mathbf{K}(t)\varepsilon(t)\\\ \\
   
   \mathbf{K}(t)=\frac{\mathbf{P}(t)^{-1}\varphi(t)}{\lambda+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\\\ \\
   
   \varepsilon(t) = y(t)-\varphi(t)^T\mathbf{\hat{a}}(t-1)\\\ \\
   
-  \mathbf{P}(t) = \frac{1}{\lambda}\left[\mathbf{P}(t-1)-\frac{\mathbf{P}(t-1)\varphi(t)\varphi(t)^T\mathbf{P}(t-1)}{\lambda+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\right]
-  }
+  \mathbf{P}(t) = \frac{1}{\lambda}\left[\mathbf{P}(t-1)-\frac{\mathbf{P}(t-1)\varphi(t)\varphi(t)^T\mathbf{P}(t-1)}{\lambda+\varphi(t)^T\mathbf{P}(t-1)\varphi(t)}\right]}}
   $$
   *RLS*'s performance is strongly dependent on the choice of the forgetting factor $\lambda$. Of course, the choice of the optimal forgetting factor is a critical point in the use of the time-varying models. In fact, high values of $\lambda$ may lead to inability to reliably track the fast dynamics of the signal, whereas too low values may make the algorithm too sensitive to the casual variations due to the noise. For these reasons, in the literature different formulations of the forgetting factor have been proposed that attempt to finding an optimal balance between the convergence speed and noise rejection. 
-
-  - *Varying forgetting factor*
-
-    The prediction error contains relevant information about the goodness of the estimation. In fact, if its variance is small, the model is properly fitted to the data and the dynamic of the signal variation is slower than the adaptation of the algorithm. Thus, we can think of using a higher forgetting factor for making the estimation more reliable from a statistical point of view. If, on the contrary, the noise variance is high, the model is still converging, or the dynamics of the signal changes are faster than the adaptation capability of the algorithm. In such conditions, it could be useful to decrease the value of the forgetting factor in order to allow a faster convergence.
-
-    *Based on these considerations, Fortescue and Ydstie (1981) proposed the use of a varying forgetting factor able to self-adapt to the signal characteristics, increasing when the signal is slowly varying, and decreasing when transitions are fast.*
-
-  - *Whale forgetting factor*
-
-    From the approximate analysis of the estimation error (Lorito, 1993), it is possible to calculate how casual noise in the input data can affect the estimation error of the parameters. This relation is described by the transfer function that in case of the exponential forgetting factor (EF) has the following expression: 
-    $$
-    G^{EF}(z)=\frac{1-\lambda}{1-\lambda z^{-1}}
-    $$
-    This is a low-pass filter with only one pole in $z = \lambda$, on which the properties of speed, adaptation, and noise rejection depend. The compromise between noise sensitivity and adaptation speed can be made less restrictive if we increase the degrees of freedom of the filter, for example, by increasing the number of the coefficients of its transfer function. With a higher number of poles, in fact, it is possible to modulate the shape of the impulse response and then the sensitivity to the noise and the adaptation speed. A solution adopted in literature uses a second-order transfer function: 
-    $$
-    G^{WF}(z)=\frac{1-a_1-a_2}{1-a_1z^{-1}-a_2z^{-2}}where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle).
-    $$
-    where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle). 
-
-  ![](images/FORF.PNG)
-
   
+- *Varying forgetting factor*
+  
+  The prediction error contains relevant information about the goodness of the estimation. In fact, if its variance is small, the model is properly fitted to the data and the dynamic of the signal variation is slower than the adaptation of the algorithm. Thus, we can think of using a higher forgetting factor for making the estimation more reliable from a statistical point of view. If, on the contrary, the noise variance is high, the model is still converging, or the dynamics of the signal changes are faster than the adaptation capability of the algorithm. In such conditions, it could be useful to decrease the value of the forgetting factor in order to allow a faster convergence.
+  
+  *Based on these considerations, Fortescue and Ydstie (1981) proposed the use of a varying forgetting factor able to self-adapt to the signal characteristics, increasing when the signal is slowly varying, and decreasing when transitions are fast.*
+  
+- *Whale forgetting factor*
+  
+  From the approximate analysis of the estimation error (Lorito, 1993), it is possible to calculate how casual noise in the input data can affect the estimation error of the parameters. This relation is described by the transfer function that in case of the exponential forgetting factor (EF) has the following expression: 
+  $$
+    G^{EF}(z)=\frac{1-\lambda}{1-\lambda z^{-1}}
+  $$
+    This is a low-pass filter with only one pole in $z = \lambda$, on which the properties of speed, adaptation, and noise rejection depend. The compromise between noise sensitivity and adaptation speed can be made less restrictive if we increase the degrees of freedom of the filter, for example, by increasing the number of the coefficients of its transfer function. With a higher number of poles, in fact, it is possible to modulate the shape of the impulse response and then the sensitivity to the noise and the adaptation speed. A solution adopted in literature uses a second-order transfer function: 
+  $$
+    G^{WF}(z)=\frac{1-a_1-a_2}{1-a_1z^{-1}-a_2z^{-2}}where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle).
+  $$
+    where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle). 
+  
+
+![](images/FORF.PNG)
+
+
 
 - ***Time variant methods applications***
 
@@ -654,7 +787,7 @@
 
     allow a good time and frequency resolution, but the performance is highly dependent on the morphology of the forgetting factor.
 
-- **What is  a Spectrogram? and a Scalogram?**
+- **What is a Spectrogram? and a Scalogram?**
 
 - ***What is the Hurst exponent?***
 

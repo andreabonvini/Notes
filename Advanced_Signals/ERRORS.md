@@ -2,21 +2,21 @@
 
   ![](images/error3.PNG)
   $$
-  \mathcal{D}(f||g)=\int \color{red}f(x)\color{black}\log_a\frac{f(x)}{g(x)}dx
+  \mathcal{D}(f||g)=\int \color{red}{f(x)}\color{black}\log_a\frac{f(x)}{g(x)}dx
   $$
 
 - ***Slide 4 Pag.31***
 
   ![](images/error5.png)
   $$
-  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda\color{red}(s)\color{black})^k}{k!}e^{-\lambda\color{red}(s)}\;\;\;\;\;for\;k=1,2,...
+  Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda\color{red}{(s)}\color{black})^k}{k!}e^{-\lambda\color{red}{(s)}}\;\;\;\;\;for\;k=1,2,...
   $$
   
 - ***Slide 5 Pag.22***
 
   ![](images/error1.png)
   $$
-  p(N_{0:T})= \prod_{j=1}^{J}\lambda(u_j|\color{red}H_{u_{j}}\color{black})e^{-\int_{0}^T\lambda(u|H_{u})du}\\
+  p(N_{0:T})= \prod_{j=1}^{J}\lambda(u_j|\color{red}{H_{u_{j}}}\color{black})e^{-\int_{0}^T\lambda(u|H_{u})du}\\
   $$
 
 
@@ -24,7 +24,7 @@
 
   ![](images/error2.PNG)
   $$
-  \underset{\theta}{\text{argmax }}\mathcal{L}(\theta) = \underset{\theta}{\text{argmax }}\sum_{i=1}^{I}\left(\color{red}n_i(\theta^{'}x_i)\color{black}-e^{\theta^{'}x_i}\right)
+  \underset{\theta}{\text{argmax }}\mathcal{L}(\theta) = \underset{\theta}{\text{argmax }}\sum_{i=1}^{I}\left(\color{red}{n_i(\theta^{'}x_i)}\color{black}-e^{\theta^{'}x_i}\right)
   $$
 
 - **Slide 12 Pag.23**

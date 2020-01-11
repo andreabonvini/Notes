@@ -3,7 +3,6 @@
 [TOC]
 
 <div style="page-break-after: always;"></div> 
-
 ### Q-Learning vs SARSA
 
 ***Describe the differences existing between the Q-Learning and SARSA algorithm***
@@ -30,7 +29,6 @@ The two algorithms can perform differently in given situations, for example, in 
 - if $\epsilon\to 0$ gradually both converge to the optimal policy.
 
 <div style="page-break-after: always;"></div> 
-
 ### Montecarlo vs Temporal Difference
 
 ***Describe the diﬀerences existing between the Montecarlo and the Temporal Diﬀerence methods in the model-free estimation of a value function for a given policy.***
@@ -59,7 +57,6 @@ Other less important differences are that MC is less sensitive to **value initia
 They both have good convergence properties but Monte Carlo requires a lot of episodes in order to converge.
 
 <div style="page-break-after: always;"></div> 
-
 ### On-Policy vs Off-Policy
 
 ***Describe the diﬀerence between on-policy and oﬀ-policy reinforcement learning techniques. Make an example of an on-policy algorithm and an example of an oﬀ-policy algorithm.***   
@@ -90,7 +87,6 @@ ${Q(S_t,A_t)\leftarrow Q(S_t,A_t)+ \alpha( \color{red} R_{t+1}+\gamma \max_{a' \
 
 
 <div style="page-break-after: always;"></div> 
-
 ### UCB1 Algorithm
 
 ***Describe the UCB1 algorithm. Is it a deterministic or a stochastic algorithm?***
@@ -129,4 +125,5 @@ Since the choice of the arm to be pulled is deterministic, it's a deterministic 
 
 
 
+### MC EV vs FV
 

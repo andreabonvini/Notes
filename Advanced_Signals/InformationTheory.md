@@ -17,7 +17,7 @@ We are looking for a general formula $H(p_1,p_2,...,p_n)$ that can characterize 
 - $ H(p_1=\frac{1}{n},p_2=\frac{1}{n},...,p_n=\frac{1}{n})$ should be the maximum among all values of $H$ with a fixed $n$.
 - $ H(p_1=0,p_2=1,...,p_n=0)= 0$ should be the minimum (no uncertainty).
 
-But to develop a general formula for arbitrary ${p_{i}}​$ seems impossible! That's why Shannon is so smart. He did it! How we derive it? (For now we abandon the notation $H​$ in favor of $I​$ ,we'll then define $H​$ as the expected value of $I​$)
+But to develop a general formula for arbitrary ${p_{i}}$ seems impossible! That's why Shannon is so smart. He did it! How we derive it? (For now we abandon the notation $H$ in favor of $I$ ,we'll then define $H$ as the expected value of $I$)
 
 Shannon showed that if we assume the entropy function should satisfy a set of reasonable properties then there is only one possible expression for it. These conditions are:
 
@@ -26,7 +26,7 @@ Shannon showed that if we assume the entropy function should satisfy a set of re
 - $I(1) = 0$ (Events that always occur do not communicate information)
 - $I(p_1p_2) = I(p_1) + I(p_2)$ (Information due to independent events is *additive*)
 
-The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n$ equiprobable outcomes and another has one of $m$ equiprobable outcomes then there are $mn$ possible outcomes of the joint event. This means that if $log_2(n)$ bits are needed to encode the first value and $log_2(m)$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)​$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
+The last is a crucial property. It states that joint probability of independent sources of information communicates as much information as the two individual events separately. Particularly, if the first event can yield one of $n$ equiprobable outcomes and another has one of $m$ equiprobable outcomes then there are $mn$ possible outcomes of the joint event. This means that if $log_2(n)$ bits are needed to encode the first value and $log_2(m)$to encode the second, one needs $log_2(mn) = log_2(m) + log_2(n)$ to encode both. Shannon discovered that the proper choice of function to quantify Information, preserving this additivity, is ***logarithmic*** ! i.e.
 $$
 I(p) = \log\left(\frac{1}{p}\right)
 $$
@@ -54,7 +54,7 @@ H_b(p) = -p\log_2{p}-(1-p)\log_2(1-p)
 $$
 ![](images/BEG.png)
 
-Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y​$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
+Let's talk now about *Cross Entropy*... The joint entropy of two discrete random variables $X$ and $Y$ is merely the entropy of their pairing: $(X,Y)$. This implies that if $X$ and $Y$ are *independent*, then their joint entropy is the sum of their individual entropies (remember: *Probability Multiply* $ \to $ *Entropies Add* ). For example, if $(X,Y)$ represents the position of a chess piece ($X$ is the row and $Y$ the column), then the *joint entropy*  of the row of the piece and the column of the piece will be the entropy of the position of the piece.
 $$
 H(X,Y) = E_{X,Y}\left[-\log p(x,y)\right] = -\sum_{x,y}p(x,y)\log p(x,y)
 $$
@@ -120,7 +120,7 @@ $I(X;Y)=H(X)-H(X|Y)$.
 
 ------
 
-![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)​$.
+![](images/VennMI.png)The figure above is the Venn diagram showing additive and subtractive relationships various information measures associated with correlated variables $X$ and $Y$. The area contained by both circles is the *joint entropy* $H(X,Y)$. The circle on the left (red and violet) is the individual entropy $H(X)$ , with the red being the *conditional entropy* $H(X|Y) $. The circle on the right (blue and violet) is $H(Y)$, with the blue being $H(Y|X)$. The violet is the *mutual information* $I(X;Y)$.
 
 Let's define now the *entropy* in a continuous domain, we see that the sum is replaced with an integral:
 $$
@@ -140,7 +140,7 @@ Let $g(x)$ be a *Gaussian PDF* (probability density function) with mean $\mu$ an
 
 Consider the [Kullback–Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) (also called *Relative entropy*, is a measure of how one probability distribution is different from a second, reference probability distribution.) between the two distributions:
 
-![](/images/maxen.PNG)
+![](images/maxen.PNG)
 
 But why are we so interested in maximizing the entropy?
 

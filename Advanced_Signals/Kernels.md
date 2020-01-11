@@ -75,5 +75,3 @@ The good thing is that instead of inverting an $M\times M$ matrix, we are invert
   ![](images/Kernels.PNG)
 
 <div style="page-break-after: always;"></div> 
-
-# 

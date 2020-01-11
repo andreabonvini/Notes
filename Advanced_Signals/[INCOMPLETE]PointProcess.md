@@ -26,7 +26,7 @@
 
   The *ISIH* below is the result of of maintaining retinal neurons under constant light and environmental conditions. The spontaneous spiking activity of these neurons is recorded.
 
-   <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/ISI1.PNG" style="zoom:50%"/>
+   <img src="images/ISI1.PNG" style="zoom:50%"/>
 
   The ISIH is more powerful than the PSTH because it allows to extrapolate concepts independently from the stimulus , so if we want to go beyond the specific stimulus we have to build histograms where *time* is absolute ( *ISIH* ). This is extremely useful because we know that neurons are encoding in frequency and the *ISIH* is telling us something about it. The ISI Probability Density Function is the ISI normalized by the total number of spikes.
 
@@ -34,7 +34,7 @@
 
   Given the following problem (a rat moving in some $2-D$ space denoted by $x_1$ and $x_2$)
 
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PP.PNG" style="zoom:55%"/>
+    <img src="images/PP.PNG" style="zoom:55%"/>
 
   We'd like to infer the *stimulus* (position) by looking at the *response* (spiking) [Look here](<https://www.youtube.com/watch?v=lfNVv0A8QvI>)
 
@@ -48,18 +48,18 @@
 
   - by the timing of the spikes
   - by the waiting times between spikes, using a counting process
-  - as a set of $1s$ and $0s​$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
+  - as a set of $1s$ and $0s$, very similar to binary code, in this case *time* has to be discretized enough to ensure that in each window only one event has the possibility of occurring, that is to say one time bin can only contain one event. 
 
    A *temporal point process* is a stochastic time-series of binary events that occurs in continuous time. 
 
-  One of the simplest types of neural-spiking models is the *Poisson Process* (a *Poisson Process* is a model for a series of discrete events where the average time between events is known, but the exact timing of events is random. The arrival of an event is independent of the event before (waiting time between events is memoryless). The *rate function* of a Poisson Process is $\lambda​$  ($Number\;of\;spikes/second​$) , in other words $\lambda​$ is the mean of spikes occurrences in the time *unit*. 
+  One of the simplest types of neural-spiking models is the *Poisson Process* (a *Poisson Process* is a model for a series of discrete events where the average time between events is known, but the exact timing of events is random. The arrival of an event is independent of the event before (waiting time between events is memoryless). The *rate function* of a Poisson Process is $\lambda$  ($Number\;of\;spikes/second$) , in other words $\lambda$ is the mean of spikes occurrences in the time *unit*. 
   $$
   Pr(spike\;in\,[t,t+\Delta]) \sim \lambda\Delta\\
     Pr(k\;spikes\;in\;[t,t+s])=\frac{(\lambda(s))^k}{k!}e^{-\lambda(s)}\;\;\;\;\;for\;k=1,2,...\\
   $$
     The formula above can be seen as a generalization of the canonical *Poisson* distribution
 
-  ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/PoissonPlot.PNG)
+  ![](images/PoissonPlot.PNG)
   $$
   p(k) = \frac{e^{-\lambda'}\lambda'^k}{k!}\\
     p(k,\Delta) = \frac{e^{-(\lambda \Delta)}(\lambda \Delta)^k}{k!}
@@ -83,7 +83,7 @@
 
   So we have to build a more accurate model of the neural spiking activity.
 
-  To address *history dependence*, a conditional intensity function is used to represent the probability of a neuron spiking, conditioned on its own history.  The *conditional intensity function* expresses the instantaneous firing probability ($\color{red}\text{!!! It is not a probability! Isn't it? !!!}$) and implicitly defines a complete probability model for the point process. It defines a *probability per unit time*. 
+  To address *history dependence*, a conditional intensity function is used to represent the probability of a neuron spiking, conditioned on its own history.  The *conditional intensity function* expresses the instantaneous firing probability ($\color{red}{\text{!!! It is not a probability! Isn't it? !!!}}$) and implicitly defines a complete probability model for the point process. It defines a *probability per unit time*. 
 
   If this unit time is taken small enough to ensure that only one spike could occur in that time window, then our conditional intensity function completely specifies the *probability that a given neuron will fire at a certain time*.
 
@@ -99,7 +99,7 @@
 
     *PDF* : $p(t)=\lambda e^{-\lambda x}$
 
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/exp.PNG)
+    ![](images/exp.PNG)
 
   - *Gamma*
 
@@ -115,7 +115,7 @@
     \text{or, equivalently...}\\
     p(x;k,\theta) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}
     $$
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/GAMMA1.PNG)
+    ![](images/GAMMA1.PNG)
 
     Where $\Gamma(\alpha)$ is the *gamma function* , which is an extension of the *factorial function*( $ \Gamma(n) = (n-1)!$ ) and is defined as follows:
     $$
@@ -127,13 +127,13 @@
     $$
     P(x;k,\theta) = \int_{0}^{x}f(u;k,\theta)du
     $$
-    ![](C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/GAMMA2.PNG)
+    ![](images/GAMMA2.PNG)
 
   - *Inverse Gaussian*
     $$
     p(x;\mu,\lambda) = \left[\frac{\lambda}{2\pi x^{3}}\right]^{\frac{1}{2}}e^{-\frac{\lambda(x-\mu)^2}{2\mu^{2}x}}\ \ \ \ \ \mu>0\ ,\ \lambda>0
     $$
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/IG.PNG" style="zoom:75%"/>
+    <img src="images/IG.PNG" style="zoom:75%"/>
 
     As $\lambda$ tends to infinity, the inverse Gaussian distribution becomes more like a normal (Gaussian) distribution. 
 
@@ -143,7 +143,7 @@
     $$
     P(x;\mu,\lambda) = \frac{1}{x\sigma\sqrt{2\pi}}e^{-\frac{(\ln(x)-\mu)^{2}}{2\sigma^{2}}}
     $$
-    <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/LN1.PNG" style="zoom:55%"/><img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/LN2.PNG" style="zoom:55%"/>
+    <img src="images/LN1.PNG" style="zoom:55%"/><img src="images/LN2.PNG" style="zoom:55%"/>
 
   Between these *pdf* we choose the *Inverse Gaussian*, why?
 
@@ -157,7 +157,7 @@
 
   Coming back to the ISI function let's see how each of these function are able to model the former:
 
-  <img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/ISI1.PNG" style="zoom:45%"/><img src="C:/Users/andre/Desktop/Github/Notes/Advanced_Signals/images/ISI2.png" style="zoom:55%"/>
+  <img src="images/ISI1.PNG" style="zoom:45%"/><img src="images/ISI2.png" style="zoom:55%"/>
 
   
 
@@ -171,9 +171,9 @@
   $$
   h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t|X>t)}{\Delta t}
   $$
-  We are conditioning on $X>t​$ because we want to condition our probability on the fact that the event *hasn't occurred yet*.
+  We are conditioning on $X>t$ because we want to condition our probability on the fact that the event *hasn't occurred yet*.
 
-  It's important to note that $h(t)​$ doesn't represent a probability, it can assume values bigger than $1​$.
+  It's important to note that $h(t)$ doesn't represent a probability, it can assume values bigger than $1$.
 
   Is there a way to rewrite $h(t)$ in a different way?
   $$
@@ -198,7 +198,7 @@ $$
 $$
   P(X>t) = 1-F(t)=1-\int_{t_0}^tp(t)dt
 $$
-  The remaining part is the definition of the derivative of the *CDF*, which is just the *probability density function* (*PDF*) at time $t​$ 
+  The remaining part is the definition of the derivative of the *CDF*, which is just the *probability density function* (*PDF*) at time $t$ 
 $$
   \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t)}{\Delta t}= \lim_{\Delta t\to0}\frac{P(X<t+\Delta t)-P(X <t)}{\Delta t}=\\
   \lim_{\Delta t\to0}\frac{F(t+\Delta t)-F(t)}{\Delta t}=p(t)
@@ -273,7 +273,7 @@ $$
 
   $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=2}^{n}Pr(E_j|E_1,\dots E_{j-1})Pr(E_1)$
 
-  which comes from (e.g. for $4​$ events) :
+  which comes from (e.g. for $4$ events) :
   $$
   {\displaystyle {\begin{aligned}\mathrm {P} (E_{4}\cap E_{3}\cap E_{2}\cap E_{1})&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\cap E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\mid E_{1})\cdot \mathrm {P} (E_{1})\end{aligned}}}
   $$
@@ -297,13 +297,13 @@ $$
 
   *Derivation of the Joint Probability:*
 
-  Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0​$ otherwise.
+  Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0$ otherwise.
 
   By construction of the partition we must have $\mu_j \in (\ t_{k_j-1},t_{k_j}\ ]\ \ ,\ j=1,\dots,J$ (*remember that $J$ is the total number of spikes we observed*) satisfying $k_1<k_2\dots<k_J$. The remaining $K-J$ intervals have no spikes.
 
   <img src="images/PPF.jpg" style="zoom:45%"/>
 
-  *Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta​$ 
+  *Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta$ 
   $$
   \prod_{k=1}^{K}Pr(t_k|H_{t_k}) = \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{1-n_k}\\
   
@@ -365,7 +365,7 @@ $$
 
   The *simplest case* is to model the log of the *CIF* by a linear regression
   $$
-  \log \lambda(i|H_i) = \mu+\underset{\color{red}\text{Stimulus}}{\underbrace{\sum_{j=0}^{J}\alpha_js_{i-j}}}+\underset{\color{red}\text{History}}{\underbrace{\sum_{k=1}^{K}\beta_k n_{i-k}}}=\theta^{'}x_i
+  \log \lambda(i|H_i) = \mu+\underset{\color{red}{\text{Stimulus}}}{\underbrace{\sum_{j=0}^{J}\alpha_js_{i-j}}}+\underset{\color{red}\text{History}}{\underbrace{\sum_{k=1}^{K}\beta_k n_{i-k}}}=\theta^{'}x_i
   $$
   This is a *Generalized Linear Model with*
 
@@ -384,7 +384,7 @@ $$
     $$
     y_i\sim\mathcal{N}(c_i\sigma^2)
     $$
-    mean = linear function of covariates $c_i = \theta^{'}x_i​$ 
+    mean = linear function of covariates $c_i = \theta^{'}x_i$ 
 
   - *Poisson GLM*
     $$
@@ -414,7 +414,7 @@ $$
 
   A Linear State-Space Model can be summarized as
 
-  $\color{red}\text{Ma qui u(t) è il notro $n_t$ di prima? (0 o 1 a seconda del fatto che il neurone abbia sparato o meno)}​$
+  $\color{red}\text{Ma qui u(t) è il notro $n_t$ di prima? (0 o 1 a seconda del fatto che il neurone abbia sparato o meno)}$
   $$
   \begin{cases}
   \frac{dx(t)}{dt}=Ax(t)+\underset{\ \ \ \ \text{Input}}{B\underbrace{u(t)}}\ \ \ \ \text{State evolution}\\  \\
@@ -461,7 +461,7 @@ $$
 
   (Prediction Step):
   $$
-  \color{black}p(x_{k+1}|y_{1:k})=\int_{x_k}\color{green}\underset{\text{State Equation}}{p(x_{k+1}|x_k)}\color{red}p(x_k|y_{1:k})\color{black}dx_k
+  \color{black}p(x_{k+1}|y_{1:k})=\int_{x_k}\color{green}{\underset{\text{State Equation}}{p(x_{k+1}|x_k)}}\color{red}{p(x_k|y_{1:k})}\color{black}{dx_k}
   $$
   (Update Step):
   $$
@@ -476,9 +476,9 @@ $$
 
   For the *Time Rescaling Theorem* we know that: 
 
-  "*Any set of observations from a point process that has a conditional intensity function can be transformed into a sequence of independent exponential random variables with a rate of $1​$.*" 
+  "*Any set of observations from a point process that has a conditional intensity function can be transformed into a sequence of independent exponential random variables with a rate of $1$.*" 
 
-  So, given the *spike times* $0<t_1,t_2,t_3,\dots,t_k<T​$ 
+  So, given the *spike times* $0<t_1,t_2,t_3,\dots,t_k<T$ 
 
   we define the transformed variables $z_j$ as
   $$
@@ -495,20 +495,20 @@ $$
   To construct the KS plot:
 
   - Order the observations (empirical quantiles) $\mu_j = \mu_{(j)}$ for $j=1,\dots,J$ 
-  - Compute the theoretical quantiles $b_j = \frac{j-\frac{1}{2}}{j}​$ for $j=1,\dots,J​$ 
+  - Compute the theoretical quantiles $b_j = \frac{j-\frac{1}{2}}{j}$ for $j=1,\dots,J$ 
   - Plot $b_j$ *vs.* $\mu_j$ with $95\%(99\%)$ confidence intervals $b_j\pm\frac{1.36}{j^{1/2}}(b_j\pm\frac{1.63}{j^{1/2}})$
 
   ![](images/ksplot.PNG)
 
   If the model is correct, then the rescaled ISIs are independent, identically distributed random variables whose KS plot should produce a 45°
 
-- ***Once we estimated $\lambda​$ , how could we simulate a Point Process?***
+- ***Once we estimated $\lambda$ , how could we simulate a Point Process?***
 
-  -  $(1)$ Set ​$u_0=0$ and ​$k=1$ 
-  -  $(2)$ Draw ​$\tau_k$ ad an exponential random variable with mean ​$1$
-  -  $(3)​$ Find $u_k​$ as the solution of $\tau_k =\int_{u_{k-1}}^{u_k}\lambda(u|u_1,u_2,\dots,u_{k-1})du​$
+  -  $(1)$ Set $u_0=0$ and $k=1$ 
+  -  $(2)$ Draw $\tau_k$ ad an exponential random variable with mean $1$
+  -  $(3)$ Find $u_k$ as the solution of $\tau_k =\int_{u_{k-1}}^{u_k}\lambda(u|u_1,u_2,\dots,u_{k-1})du$
   -  $(4)$ If $u_k>T$ then stop
-  -  $(5)$ $k = k+1​$
+  -  $(5)$ $k = k+1$
   -  $(6)$ Go to $(2)$
 
   

@@ -24,7 +24,7 @@
   It consists in repositioning the stack, among other things, at each execution at random; impossible to guess return addresses correctly 
 - ***Canary***  
   it's security mechanism used for avoiding exploitation of Buffer Overflow vulnerabilities.  
-  It works by placing a small integer, the value of which is randomly chosen at program start, in memory just before the stack return pointer.
+  It works by placing a small integer, the value of which is randomly chosen at program start, in memory before the EiP.
 
 - ***Cross-Site-Scripting***
 
@@ -134,7 +134,7 @@ a salt is random data that is used as an additional input to a one-way function 
 
 - ***Trojan***
 
-	apparently benign program that hide a malicious functionality and allow remote control
+	apparently benign program that hides a malicious functionality and allow remote control
 
 - ***Polymorphism***
 
@@ -285,7 +285,7 @@ AAA! A QUANTO PARE SE `FIRST_PART = SECOND_PART` CI TROVIAMO NEL `GENERIC CASE 2
 
     `DHCP (Dynamic Host Configuration Protocol) is a protocol used to provide quick, automatic, and central management for the distribution of IP addresses within a network. DHCP is also used to configure the proper subnet mask, default gateway, and DNS server information on the device.`
 
-    DHCP does not support authentication, so every client *must* blindly believe any DHCP offer that it receives, thus an attacker can race and win against the real DHCP server. In this way the attacker can intercept the request, be the first to answer, and craft a DHCP response setting the *IP address*, the *DNS address* and the *default gateway* of the victim client. 
+    DHCP does not support authentication, so every client *must* blindly believe any DHCP offer that it receives, thus an attacker can race and win against the real DHCP server. In this way the attacker can intercept the request, be the first to answer, and craft a DHCP response setting the *IP address*, the *DNS address* and the *default gateway* of the victim client.
 
   - $\color{red}{TCP/IP}$
 
@@ -294,6 +294,12 @@ AAA! A QUANTO PARE SE `FIRST_PART = SECOND_PART` CI TROVIAMO NEL `GENERIC CASE 2
     An attacker able to guess the ISN can perform the free-way handshake (SYN $\to$ SYN+ACK $\to$ ACK ) without the need to pose as a Man In The Middle.
 
     In order to reduce the time available to the attacker to guess the ISN it is possible to use TCP-syn cookies.
+
+    ![](images/tcp1.png)
+
+    ![](images/tcp2.png)
+
+    ![](images/tcp3.png)
 
   - $\color{red}{DNS\ cache\ poisoning}$
 
@@ -312,9 +318,9 @@ AAA! A QUANTO PARE SE `FIRST_PART = SECOND_PART` CI TROVIAMO NEL `GENERIC CASE 2
     - If you are `the administrator of the DNS server used by the network e.g. 10.79.3.0/24` 
 
       If we assume that the attacker can’t sniff the traffic to\from the DNS server (thus sniffing the query ID): use a random query ID and increase the space of query IDs to prevent guessing the ID in a reasonable time. In general: the server could detect duplicate responses with different A entries and raise an alarm, or detect response with different query IDs and raise an alarm. Notice that if, upon attack detection, the DNS server returns an error, this will transform the attack to a denial of service attack. 
-
+  
     - If you are `the network administrator of the network e.g. 10.79.3.0/24 `,
-
+  
       Given that the DNS server is outside the network, the network administrator could reject known spoofed packets (all packets coming from inside the network with an IP address that doesn’t belong to the network). This mitigation is effective ONLY for attackers physically present on the network 10.79.3.0/24, and can’t do anything for spoofed packets that come from outside the administrator-controlled network (e.g., from the Internet). 
-
+  
        
