@@ -2,22 +2,22 @@
 
 The Support Vector Machines techniques aims to build a binary classifier by finding an hyperplane which is able to separate the data with the largest *margin* possible. 
 
-<img src="images/svm1.png" style="zoom:40%"/>
+<img src="../../MachineLearningRestelli/images/svm1.png" style="zoom:40%"/>
 
 With SVMs we force our *margin* to be at least *something* in order to accept it, by doing that we restrict the number of possible dichotomies, and therefore if we're able to separate the points with a fat dichotomy (*margin*) then that fat dichotomy will have a smaller *VC* dimension then we'd have without any restriction. Let's do that.
 
 Let be $\mathbf{x}_n$ the nearest data point to the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ (just imagine a *line* in a $2$-D space for simplicity), before finding the distance we just have to state two observations:
 
 - There's a minor technicality about the *hyperplane* $\mathbf{w}^T\mathbf{x} = 0$ which is annoying , let's say I multiply the vector $\mathbf{w}$ by $1000000$ , I get the *same* hyperplane! So any formula that takes $\mathbf{w}$ and produces the margin will have to have built-in *scale-invariance*, we do that by normalizing $\mathbf{w}$ , requiring that for the nearest data point $\mathbf{x}_n$:
-  $$
-  |\mathbf{w}^T\mathbf{x}_n|=1
-  $$
-  ( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
+	$$
+	|\mathbf{w}^T\mathbf{x}_n|=1
+	$$
+	( So I just scale $\mathbf{w}$ up and down in order to fulfill the condition stated above, we just do it because it's *mathematically convenient*! By the way remember that $1$ does *not* represent the Euclidean distance)
 
 - When you solve for the margin, the $w_1$ to $w_d$ will play a completely different role from the role of $w_0$ , so it is no longer convenient to have them on the same vector. We  pull out $w_0$ from $\mathbf{w}$ and rename $w_0$ with $b$ (for *bias*).
-  $$
-  \mathbf{w} = (w_1,\dots,w_d)\\w_0=b
-  $$
+	$$
+	\mathbf{w} = (w_1,\dots,w_d)\\w_0=b
+	$$
 
 So now our notation is changed:
 
@@ -35,7 +35,7 @@ And of course $\mathbf{w}^T\mathbf{x}'' +b - (\mathbf{w}^T\mathbf{x}' +b)=\mathb
 
 Since $\mathbf{x}''-\mathbf{x}'$ is a vector which lays on the *hyperplane* , we deduce that $\mathbf{w}$ is orthogonal to the *hyperplane*.
 
-<img src="images/svm2.png" style="zoom:60%"/>
+<img src="../../MachineLearningRestelli/images/svm2.png" style="zoom:60%"/>
 
 Then the distance from $\mathbf{x}_n$ to the *hyperplane* can be expressed as a dot product between $\mathbf{x}_n-\mathbf{x}$ (where $\mathbf{x}$ is any point belonging to the plane) and the unit vector $\hat{\mathbf{w}}$ , where $\hat{\mathbf{w}} = \frac{\mathbf{w}}{||\mathbf{w}||}$ ( the distance is just the projection of $\mathbf{x}_n-\mathbf{x}$ in the direction of $\hat{\mathbf{w}}$ ! )
 $$
@@ -43,7 +43,7 @@ distance = |\;\hat{\mathbf{w}}^T(\mathbf{x}_n-\mathbf{x})\;|
 $$
 (We take the absolute value since we don't know if $\mathbf{w}$ is facing $\mathbf{x}_n$ or is facing the other direction )
 
-<img src="images/svm3.PNG" style="zoom:70%"/>
+<img src="../../MachineLearningRestelli/images/svm3.PNG" style="zoom:70%"/>
 
 We'll now try to simplify our notion of *distance*.
 $$
@@ -139,7 +139,7 @@ to
 $$
 \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n,\mathbf{x}_m)
 $$
-We can use *kernels* !
+We can use *kernels* !! (if you don't know what I'm talking about read the *kernel* related question present somewhere in this document)
 
 Finally we end up with the following equation for classifying *new points*:
 $$
@@ -159,6 +159,7 @@ $$
 $C$ is a coefficient that allows to trade-off bias-variance and is chosen by *cross-validation*.
 
 And obtain the *Dual Representation*
+
 $$
 \text{Maximize}\ \ \ \mathcal{L}(\mathbf{\alpha}) =\sum_{n=1}^{N}\alpha_n-\frac{1}{2}\sum_{n=1}^{N}\sum_{m=1}^{M}y_n y_m\alpha_n\alpha_mk(\mathbf{x}_n\mathbf{x}_m)\\
   \text{s.t.}\\
@@ -172,13 +173,3 @@ if $0<\alpha_n<C$ the points lies *on the margin*. They are indeed Support Vecto
 if $\alpha_n = C$ the point lies *inside the margin*, and it can be either *correctly classified* ($\xi_n \le 1$) or *misclassified* ($\xi_n>1$)  
 
 Fun fact: When $C$ is large, larger slacks penalize the objective function of SVM’s more than when $C$ is small. As $C$ approaches infinity, this means that having any slack variable set to non-zero would have infinite penalty. Consequently, as $C$ approaches infinity, all slack variables are set to $0$ and we end up with a hard-margin SVM classifier.
-
-And what about generalization? Can we compute an *Error* bound in order to see if our model is overfitting? 
-
-As *Vapnik* said: "In the support-vectors learning algorithm the complexity of the construction does not depend on the dimensionality of the feature space, but on the number of support vectors." So it's reasonable to define an upper bound of the error as:
-$$
-L_h\le\frac{\mathbb{E}[\text{number of support vectors}]}{N}
-$$
-This is called *Leave-One-Out Bound* (I don't know why, maybe it's written [here ](<https://ocw.mit.edu/courses/mathematics/18-465-topics-in-statistics-statistical-learning-theory-spring-2007/lecture-notes/l4.pdf> )). The good thing is that it can be easily computed and we don't need to run SVM multiple times.
-
-The other kind of bound is called *Margin bound*: a bound on the VC dimension which decreases with the margin. The larger the margin, the less the variance and so, the less the VC dimension. Unfortunately the bound is quite pessimistic 
