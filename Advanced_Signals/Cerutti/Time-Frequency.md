@@ -140,7 +140,7 @@ The problem here is that cutting the signal corresponds to a convolution between
 	$$
 	where $s$ is the scale factor, $\tau$ is the translation factor and $s^{-\frac{1}{2}}$ is for energy normalisation across the different scales.
 
-	Differently for STFT, *we use longer windows to investigate lower frequencies and shorter windows to investigate higher frequencies*!
+	Differently from STFT, *we use longer windows to investigate lower frequencies and shorter windows to investigate higher frequencies*!
 
 	<img src="/Users/z051m4/Desktop/University/Cerutti/images/wttri.png" style="zoom:23%" />
 
@@ -162,10 +162,10 @@ The problem here is that cutting the signal corresponds to a convolution between
 
 - *Discrete Wavelet Transform*
 
-	Now that we know what the wavelet transform is, we would like to make it practical. However, the wavelet transform as described so far still has three properties that make it difficult to use directly in the form of *(1)*. The first is the redundancy of the *CWT*. In *(1)* the wavelet transform is calculated by continuously shifting a continuously scalable function over a signal and calculating the correlation between the two. It will be clear that these scaled functions will be nowhere near an orthogonal basis and the obtained wavelet coefficients will therefore be highly redundant. For most practical applications we would like to remove this redundancy.
+	Now that we know what the wavelet transform is, we would like to make it practical. However, the wavelet transform as described so far still has three properties that make it difficult to use directly in the form of *(8)*. The first is the redundancy of the *CWT*. In *(8)* the wavelet transform is calculated by continuously shifting a continuously scalable function over a signal and calculating the correlation between the two. It will be clear that these scaled functions will be nowhere near an orthogonal basis and the obtained wavelet coefficients will therefore be highly redundant. For most practical applications we would like to remove this redundancy.
 
 	Even without the redundancy of the CWT we still have an infinite number of wavelets in the wavelet  transform and we would like to see this number reduced to a more manageable count. This is the second problem we have.
-	The third problem is that for most functions the wavelet transforms have no analytical solutions and they can be calculated only numerically or by an optical analog computer. Fast algorithms are needed to be able to exploit the power of the wavelet transform and it is in fact the existence of these fast algorithms *(like the Mallat's one, see question below)* that have put wavelet transforms where they are today.  Discrete wavelets are not continuously scalable and translatable but can only be scaled and translated in discrete steps.
+	The third problem is that for most functions the wavelet transforms have no analytical solutions and they can be calculated only numerically or by an optical analog computer. Fast algorithms are needed to be able to exploit the power of the wavelet transform and it is in fact the existence of these fast algorithms *(like the Mallat's one, see below)* that have put wavelet transforms where they are today.  Discrete wavelets are not continuously scalable and translatable but can only be scaled and translated in discrete steps.
 	$$
 	\Psi_{j,k}(t) = \frac{1}{\sqrt{s_0^j}}\Psi\left(\frac{t-k\tau_0s_0^j}{s_0^j}\right) \\
 	$$
@@ -232,7 +232,7 @@ The index $k$ determines the position in time of the filter *w.r.t.* the signal.
 
 Note that in the equations below we have that $j$ is the level of the decomposition, so we at each step we *spread* the *wavelets* $h$ and $g$ by a factor equal to $2^{j/2}$ (we *spread* it because at each step we are interested in lower frequencies, i.e. we need a longer window in order to detect them) and we implicitly consider just half of the samples (*downsampling*) at each decomposition step ( $t$ is multiplied by $2^j$ ) .
 
-We apply the *downsampling* operation cause of the *Shannon's* theorem, if at the beginning we had a band of  $0\to500$ Hz we needed a *samplig frequency* of $1000$ Hz, once we have a band of $0\to250$ Hz we'll be ok with a samplig frequency of $500$ Hz.
+We apply the *downsampling* operation cause of the *Shannon's* theorem, if at the beginning we had a band of  $0\to500$ Hz we needed a *samplig frequency* of $1000$ Hz, once we have a band of $0\to250$ Hz we'll be ok with a sampling frequency of $500$ Hz.
 
 -----
 
@@ -260,7 +260,7 @@ Four-Level DWT of the EEG trace at the top of the figure using the matched Mayer
 
 Traditionally, the techniques used for signal processing are realized in either the time or frequency domain. For instance, the Fourier Transform (FT) decomposes a signal into it’s frequency components; However, *information in time is lost.*
 
-One solution is to adopt Short-Time-Fourier-Transform (STFT) that get frequency components of local time intervals of *fixed duration* (SEE THE ENVELOPE IN THE LEFT SIDE OF THE LEFT IMAGE BELOW!). But if you want to analyze signals that contain *non-periodic and fast transients features* (i.e. high frequency content for short duration), you have to use *Wavelet Transform* (WT).
+One solution is to adopt Short-Time-Fourier-Transform (STFT) that get frequency components of local time intervals of *fixed duration*. But if you want to analyze signals that contain *non-periodic and fast transients features* (i.e. high frequency content for short duration), you have to use *Wavelet Transform* (WT).
 
 <img src="/Users/z051m4/Desktop/University/Cerutti/images/STFT_windows.png" style="zoom:23%" /><img src="/Users/z051m4/Desktop/University/Cerutti/images/WT_windows.png" style="zoom:25%" />
 
@@ -324,13 +324,13 @@ is known as the *Wigner-Ville (WV) distribution* .
 
 (From now on we'll use the term $W_{xx}(t,f)$ instead of $TFR(t,\omega)$)
 
-This distribution was originally introduced by *Wigner* (1932) in the field of quantum mechanics and successively applied to signal analysis by *Ville* (1948). It plays a fundamental role among the quadratic time-frequency distributions and it is a fundamental part of the *Cohen class* ( *we'll talk about that in the next question*).
+This distribution was originally introduced by *Wigner* (1932) in the field of quantum mechanics and successively applied to signal analysis by *Ville* (1948). It plays a fundamental role among the quadratic time-frequency distributions and it is a fundamental part of the *Cohen class* ( *we'll talk about that later*).
 
 For a *linear chirp* (a signal whose instantaneous frequency varies linearly with time according to $ f_x(t) =f_0 + \alpha t $ ) it can be shown that 
 $$
 W_{xx}(t,f) = \delta[t,f-f_x(t)]
 $$
-(Dimostration at page 237 of the book)
+(Dimostration at page $237$ of *Cerutti*'s book)
 
 and the *WV* is a line in the $t-f$ plane, concentrated at any instant around the instantaneous frequency of the signal. From a practical point of view, this property shows that the representation is able to correctly localize (jointly in *time* and *frequency*) a sinusoidal component whose properties are varying with time.
 
@@ -388,7 +388,7 @@ The question is...*which tools* should be used to project the $TFR$ with the des
 $$
 A_{xx}(\theta,\tau) = \int x\left(t + \frac{\tau}{2}\right)x^*\left(t - \frac{\tau}{2}\right)e^{j\theta t}dt
 $$
-It is worth noting the structural analogy with the $WV$, with the difference that integration is performed over time. The $AF$ is the projection of $W_{xx}$ in the plane $\theta - \tau$ (known as the *correlative domain* ).
+There's a structural analogy with the $WV$, with the difference that integration is performed over time. The $AF$ is the projection of $W_{xx}$ in the plane $\theta - \tau$ (known as the *correlative domain* ).
 
 In fact we have that
 $$
@@ -539,11 +539,12 @@ $$
 	G^{WF}(z)=\frac{1-a_1-a_2}{1-a_1z^{-1}-a_2z^{-2}}
 	$$
 
-
-	where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle). 
+where the coefficients are chosen in order to guarantee the filter stability (poles inside the unitary circle). 
 
 
 ![](images/FORF.PNG)
+
+
 
 Simulated example in order to better understand the role of the forgetting factor:
 
