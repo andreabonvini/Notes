@@ -87,7 +87,7 @@
 
   If this unit time is taken small enough to ensure that only one spike could occur in that time window, then our conditional intensity function completely specifies the *probability that a given neuron will fire at a certain time*.
 
-- ***How could we represent this Conditional Intensity Function?***
+- ***How could we represent this Conditional Intensity Function(ma ne siamo proprio sicuri?)?***
 
   Through a *renewal process*. A *renewal process* is an idealized stochastic model for events that occur randomly in time (generically called renewals or arrivals). The basic mathematical assumption is that the times between the successive arrivals are independent and identically distributed. Renewal processes have a very rich and interesting mathematical structure and can be used as a foundation for building more realistic models. Moreover, renewal processes are often found embedded in other stochastic processes, most notably Markov chains.
 
@@ -159,201 +159,72 @@
 
   <img src="images/ISI1.PNG" style="zoom:45%"/><img src="images/ISI2.png" style="zoom:55%"/>
 
-  
 
-- ***Hazard Function in the Context of Survival Anaysis***
+------
 
-  In *Survival Analysis* we are interested in understanding the *risk* of an event happening at a particular point in time, where time is a continuous variable.
+The likelihood of a neural spike train, like that of any statistical model, is deﬁned by ﬁnding the joint probability density of the data. We show that the joint probability of any point process is easy to derive from the conditional intensity function. 
 
-  For example, let's consider the event *firing of a neuron*, we define the time of firing as $X$, and time in general as $t$.
+Joint probability density can be written as a product of conditional *Bernoulli* probabilities in terms of the conditional intensity function. At each moment in time we might have or not a spike. This *joint probability* is extremely important! It is the measure that we will use to choose a model in respect to another model.
 
-  The *hazard function*, which is a function of time, is defined as:
-  $$
-  h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t|X>t)}{\Delta t}
-  $$
-  We are conditioning on $X>t$ because we want to condition our probability on the fact that the event *hasn't occurred yet*.
+*Derivation of the Joint Probability:*
 
-  It's important to note that $h(t)$ doesn't represent a probability, it can assume values bigger than $1$.
+Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0$ otherwise.
 
-  Is there a way to rewrite $h(t)$ in a different way?
-  $$
-  h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t|X>t)}{\Delta t}\\
-  h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t,X>t)}{P(X>t)\Delta t}\\
-  $$
-  It is easy to see that $(t<X<t+\Delta t)$ is just a subset of $X>t$
+By construction of the partition we must have $\mu_j \in (\ t_{k_j-1},t_{k_j}\ ]\ \ ,\ j=1,\dots,J$ (*remember that $J$ is the total number of spikes we observed*) satisfying $k_1<k_2\dots<k_J$. The remaining $K-J$ intervals have no spikes.
 
-  ```
-  	O---------------------- {     X > t    }
-      |		o-------------- { t < X < t+Δt }
-      |		|	 	
-  ----.-------.----.---------
-  	t		X   t+Δt
-  ```
+<img src="images/PPF.jpg" style="zoom:45%"/>
 
-
+*Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta$ 
 $$
-  h(t) = \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t)}{P(X>t)\Delta t}
+\prod_{k=1}^{K}Pr(t_k|H_{t_k}) = \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{1-n_k}\\
+
+= \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{-n_k}\prod_{k=1}^K\left[1-\lambda(t_k|H_{t_k})\Delta\right]\\
+
+\color{red}\lim_{x\to 0}e^x=1+x\\
+
+= \prod_{k=1}^{K}\left[\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right]^{n_k}\prod_{k=1}^Ke^{-\lambda(t_k|H_{t_k})\Delta}\\
+
+\ \\
+\color{red}e^{\log x}= x\\
+\ \\
+=e^{\log\left[\prod_{k=1}^{K}\left[\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right]^{n_k}\prod_{k=1}^Ke^{-\lambda(t_k|H_{t_k})\Delta}\right]}\\
+\ \\
+=e^{\sum_{k=1}^{K}\log\left[\left(\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right)^{n_k}\right]+\sum_{k=1}^K\log\left[e^{-\lambda(t_k|H_{t_k})\Delta}\right]}
+\ \\
+\ \\
+=e^{\sum_{k=1}^{K}n_k\log\left(\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right)-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\\
+\ \\
+\color{red}\lim_{\Delta\to 0}\log\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}=\log \lambda(t_k|H_{t_k})\Delta\\
+\ \\
+\ \\
+= e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\Delta\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\\
 $$
-  $P(X>t)$ is called the *survival function* and is just $1$ minus the cumulative distribution function (*CDF*):
+The probability density of these $J$ exact spikes in $(\ 0, T\ ]$, given by $p(N_{0:T}) = \lim_{\Delta\to 0}\frac{\prod_{k=1}^{K}Pr(t_k|H_{t_k})}{\prod_{j=1}^J\Delta}$ is then obtained from
 $$
-  P(X>t) = 1-F(t)=1-\int_{t_0}^tp(t)dt
+p(N_{0:T})=\lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\Delta\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}}{\prod_{j=1}^J\Delta}\\
+\ \\
+p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]+\sum_{j=1}^J\log\left(\Delta\right)-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}}{\prod_{j=1}^J\Delta}\\
+\ \\
+p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\cdot e^{\sum_{j=1}^J\log\left(\Delta\right)}}{\prod_{j=1}^J\Delta}\\
+\ \\
+p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\cdot \prod_{j=1}^J\Delta}{\prod_{j=1}^J\Delta}\\
+\ \\
+\text{Finally...}\\
+\ \\
+p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt}\\
 $$
-  The remaining part is the definition of the derivative of the *CDF*, which is just the *probability density function* (*PDF*) at time $t$ 
+which is the *joint probability density of the point process spike train in continuous time*. The logarithm of this quantity is called *log-likelihood* and is the quantity that we will want to *maximize*.
 $$
-  \lim_{\Delta t\to0}\frac{P(t<X<t+\Delta t)}{\Delta t}= \lim_{\Delta t\to0}\frac{P(X<t+\Delta t)-P(X <t)}{\Delta t}=\\
-  \lim_{\Delta t\to0}\frac{F(t+\Delta t)-F(t)}{\Delta t}=p(t)
+\mathcal{L} = \int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt
 $$
-  So, finally we can rewrite the *hazard function* as:
+Note that we could have derived the likelihood for the continuous time point process by a generalization of the continuous time Poisson process, without resorting to representing the neural point process as a conditional Bernoulli process. 
+
+In fact we have that
 $$
-  h(t) = \frac{p(t)}{1-\int_{t_0}^tp(t)dt}
+p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt}\\
+p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)}e^{-\int_{0}^T\lambda(t|H_{t})dt}\\
+p(N_{0:T})= \prod_{j=1}^{J}\lambda(u_j|H_{u_{j}})e^{-\int_{0}^T\lambda(u|H_{u})du}\\
 $$
-
-- ***The Conditional Intensity Function and ISI probability density***
-
-  The key to deriving the likelihood function for a parametric model of a neural spike train is deﬁning the joint probability density. The joint probability density of a neural spike train can be characterized in terms of the conditional intensity function. Therefore, we ﬁrst derive the conditional intensity function for a point process and review some of its properties. 
-
-  Firstly, some definitions: 
-
-  - $(\ 0,T\ ]$ denotes the *observation interval* 
-  - $0<u_1<u_2<\dots<u_{J-1}<u_J\le T$ is a set of $J$ spike time measurements
-  - $N(t)$ is the number of spikes in $(\ 0,t\ ]$
-  - $N_{0:t}$ is the event $\{\ 0<u_1<u_2<\dots<u_j\le t\ \cap N(t) = j\ \}$ where $j\le J$ 
-
-  The function $N_{0:t}$ tracks the location and number of spikes in $(\ 0,t\ ]$ and hence, contains all the information in the sequence of spike times.
-
-  We define the *Condtional Intensity Function* for $t\in (\ 0,T\ ]$ as:
-  $$
-  \lambda(t|H_t)=\lim_{}\frac{Pr(N(t+\Delta)-N(t)=1|H_t)}{\Delta}
-  $$
-  where $H_t$  is the history of the sample path and of any covariates up to time $t$.
-
-  In *survival analysis* the *CIF* is called the *hazard function*, it follows that $\lambda(t|H_t)$ can be defined in terms of inter-event or spike time probability density at time $t$ , $p(t|H_t)$ , as
-  $$
-  \lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_0^tp(u|H_u)du}
-  $$
-  Moreover it is possible to prove that the probability of having a spike in $[\ t,t+\Delta \ ]$ given $H_t$ and that there has been no spike in $(\ 0,t\ )$ is
-  $$
-  Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta
-  $$
-  which is extremely important; this means that, for any time interval $[\ t,t+\Delta \ ]$ , $\lambda(t|H_t)\Delta$  
-
-  deﬁnes *the probability of a spike given the history up to time $t$ .*
-
-  If the spike train is an *inhomogenous Poisson Process* then $\lambda (t|H_t) = \lambda(t)$ becomes the *Poisson rate function*
-
-  This can be derived from the following observations:
-  $$
-  \lambda(t|H_t)=-\frac{d\left[\log(\ 1-\int_0^tp(u|H_u)du\ )\right]}{dt}
-  $$
-  Or, equivalently
-  $$
-  -\int_0^t\lambda(u|H_u)du=\log(\ 1-\int_0^tp(u|H_u)du\ )
-  $$
-  Finally, exponentiating yields
-  $$
-  e^{-\int_0^t\lambda(u|H_u)du} =1-\int_0^tp(u|H_u)du
-  $$
-  and combining the equation above with $\lambda(t|H_t) = \frac{p(t|H_t)}{1-\int_0^tp(u|H_u)du}$ leads to
-  $$
-  p(t|H_t) = \lambda(t|H_t)e^{-\int_0^t\lambda(u|H_u)du}
-  $$
-  In this way we just proved that *given the conditional instensity function the interspike interval probability density is specified and viceversa.* Hence, defining one completely defines the other.
-
-- ***Estimating the Likelihood***
-
-  Now, supposing to have a set of $n$ events, if events are independent, the probability of their union of happening all together, is the product of the probability of having each of the events. If they are not independent, it means that one event is conditional to another event or more than one event. 
-
-  Given a set of $n$ events $E_1,E_2,E_3,\dots,E_n$
-
-  it the events are independent
-
-  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=1}^{n}Pr(E_j)$
-
-  if they are not independent
-
-  $Pr(E_1\cap E_2 \cap E_3\dots\cap E_n)=\prod_{j=2}^{n}Pr(E_j|E_1,\dots E_{j-1})Pr(E_1)$
-
-  which comes from (e.g. for $4$ events) :
-  $$
-  {\displaystyle {\begin{aligned}\mathrm {P} (E_{4}\cap E_{3}\cap E_{2}\cap E_{1})&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\cap E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\cap E_{1})\\&=\mathrm {P} (E_{4}\mid E_{3}\cap E_{2}\cap E_{1})\cdot \mathrm {P} (E_{3}\mid E_{2}\cap E_{1})\cdot \mathrm {P} (E_{2}\mid E_{1})\cdot \mathrm {P} (E_{1})\end{aligned}}}
-  $$
-  Why are we interested in this? Well, spike train is a series of events, so we can define the joint density of a spike train. In our formulation the inter-event intervals are *independent and identically distributed (i.i.d) random variables*.
-
-  -----------------------------------------------------------
-
-  Given the *spike times* $0<u_1,u_2,u_3,\dots,u_k<T$ 
-
-  The joint distribution of the spikes is 
-  $$
-  p(u_1,u_2,u_3,\dots,u_k)=\prod_{j=1}^{k}\lambda(u_j|H_j)e^{-\int_0^T\lambda(u|H_u)du}
-  $$
-  We are going to prove this at the end of this section.
-
-  ------
-
-  The likelihood of a neural spike train, like that of any statistical model, is deﬁned by ﬁnding the joint probability density of the data. We show that the joint probability of any point process is easy to derive from the conditional intensity function. 
-
-  Joint probability density can be written as a product of conditional *Bernoulli* probabilities in terms of the conditional intensity function. At each moment in time we might have or not a spike. This *joint probability* is extremely important! It is the measure that we will use to choose a model in respect to another model.
-
-  *Derivation of the Joint Probability:*
-
-  Let $\{t_k\}_{k=1}^{K}$ be a partition of the observation interval $(\ 0,T\ ]$ , take $\Delta_k=t_k-t_{k-1}$, where $t_0=0$. Assume that the partition is sufficiently fine so that there is at most one spike in any $(\ t_{k-1},t_k \ ]$. For a neural spike train choosing $\Delta_k\le1$ *msec* would suffice. We define $n_k=1$ if there is a spike in $(\ t_{k-1},t_k \ ]$ and $n_k=0$ otherwise.
-
-  By construction of the partition we must have $\mu_j \in (\ t_{k_j-1},t_{k_j}\ ]\ \ ,\ j=1,\dots,J$ (*remember that $J$ is the total number of spikes we observed*) satisfying $k_1<k_2\dots<k_J$. The remaining $K-J$ intervals have no spikes.
-
-  <img src="images/PPF.jpg" style="zoom:45%"/>
-
-  *Remember that* $Pr(u\in[t,t+\Delta]\ |\ u>t,H_t) \sim\lambda(t|H_t)\Delta$ 
-  $$
-  \prod_{k=1}^{K}Pr(t_k|H_{t_k}) = \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{1-n_k}\\
-  
-  = \prod_{k=1}^{K}\left[\lambda(t_k|H_{t_k})\Delta\right]^{n_k}\left[1-\lambda(t_k|H_{t_k})\Delta\right]^{-n_k}\prod_{k=1}^K\left[1-\lambda(t_k|H_{t_k})\Delta\right]\\
-  
-  \color{red}\lim_{x\to 0}e^x=1+x\\
-  
-  = \prod_{k=1}^{K}\left[\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right]^{n_k}\prod_{k=1}^Ke^{-\lambda(t_k|H_{t_k})\Delta}\\
-  
-  \ \\
-  \color{red}e^{\log x}= x\\
-  \ \\
-  =e^{\log\left[\prod_{k=1}^{K}\left[\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right]^{n_k}\prod_{k=1}^Ke^{-\lambda(t_k|H_{t_k})\Delta}\right]}\\
-  \ \\
-  =e^{\sum_{k=1}^{K}\log\left[\left(\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right)^{n_k}\right]+\sum_{k=1}^K\log\left[e^{-\lambda(t_k|H_{t_k})\Delta}\right]}
-  \ \\
-  \ \\
-  =e^{\sum_{k=1}^{K}n_k\log\left(\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}\right)-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\\
-  \ \\
-  \color{red}\lim_{\Delta\to 0}\log\frac{\lambda(t_k|H_{t_k})\Delta}{1-\lambda(t_k|H_{t_k})\Delta}=\log \lambda(t_k|H_{t_k})\Delta\\
-  \ \\
-  \ \\
-  = e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\Delta\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\\
-  $$
-  The probability density of these $J$ exact spikes in $(\ 0, T\ ]$, given by $p(N_{0:T}) = \lim_{\Delta\to 0}\frac{\prod_{k=1}^{K}Pr(t_k|H_{t_k})}{\prod_{j=1}^J\Delta}$ is then obtained from
-  $$
-  p(N_{0:T})=\lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\Delta\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}}{\prod_{j=1}^J\Delta}\\
-  \ \\
-  p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]+\sum_{j=1}^J\log\left(\Delta\right)-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}}{\prod_{j=1}^J\Delta}\\
-  \ \\
-  p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\cdot e^{\sum_{j=1}^J\log\left(\Delta\right)}}{\prod_{j=1}^J\Delta}\\
-  \ \\
-  p(N_{0:T})= \lim_{\Delta\to 0}\frac{e^{\sum_{k=1}^{K}n_k\log\left[\lambda(t_k|H_{t_k})\right]-\sum_{k=1}^K\lambda(t_k|H_{t_k})\Delta}\cdot \prod_{j=1}^J\Delta}{\prod_{j=1}^J\Delta}\\
-  \ \\
-  \text{Finally...}\\
-  \ \\
-  p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt}\\
-  $$
-  which is the *joint probability density of the point process spike train in continuous time*. The logarithm of this quantity is called *log-likelihood* and is the quantity that we will want to *maximize*.
-  $$
-  \mathcal{L} = \int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt
-  $$
-  Note that we could have derived the likelihood for the continuous time point process by a generalization of the continuous time Poisson process, without resorting to representing the neural point process as a conditional Bernoulli process. 
-
-  In fact we have that
-  $$
-  p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)-\int_{0}^T\lambda(t|H_{t})dt}\\
-  p(N_{0:T})= e^{\int_{0}^{T}\log\left[\lambda(t|H_{t})\right]dN(t)}e^{-\int_{0}^T\lambda(t|H_{t})dt}\\
-  p(N_{0:T})= \prod_{j=1}^{J}\lambda(u_j|H_{u_{j}})e^{-\int_{0}^T\lambda(u|H_{u})du}\\
-  $$
 
 - ***How do we maximize the Likelihood?***
 
@@ -418,7 +289,7 @@ $$
 
   A Linear State-Space Model can be summarized as
 
-  $\color{red}\text{Ma qui u(t) è il notro $n_t$ di prima? (0 o 1 a seconda del fatto che il neurone abbia sparato o meno)}$
+  $\color{red}{\text{Ma qui u(t) è il notro $n_t$ di prima? (0 o 1 a seconda del fatto che il neurone abbia sparato o meno)}}$
   $$
   \begin{cases}
   \frac{dx(t)}{dt}=Ax(t)+\underset{\ \ \ \ \text{Input}}{B\underbrace{u(t)}}\ \ \ \ \text{State evolution}\\  \\
@@ -517,8 +388,6 @@ $$
   -  $(5)$ $k = k+1$
   -  $(6)$ Go to $(2)$
 
-  
+### Why is the Inverse Gaussian a good choice?
 
-  
-
-  
+The inverse Gaussian renewal model is motivated by simple dynamical models of the mechanisms underlying the generation of action potentials. Specifically, if we construct a simple integrate-and-fire model for the neuron, wherein the membrane potential at any point in time is the integrated value of random synaptic inputs from other neurons and a spike is fired once that potential reaches a fixed threshold, then we can compute the inter-spike distribution based on the distribution of the inputs. If the input distribution is taken to be a simple Gaussian white noise process we see that the spiking activity turns out to be an Inverse Gaussian renewal process (Tuckwell, 1988).

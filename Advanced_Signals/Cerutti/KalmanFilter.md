@@ -4,7 +4,7 @@ We have three main blocks:
 
 ($\color{red}{\text{Non dovrebbe essere w(k-1)l'ingresso qui sotto?}}$)
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/kalman1.png)
+![](images/kalman1.png)
 
 - ***Signal Generation Model***
 
@@ -18,7 +18,7 @@ We have three main blocks:
 
 	The signal $\mathbf{y(k)}$ then enters the *Kalman Filter* which can be represented schematically in the following way:
 
-	![](/Users/z051m4/Desktop/University/Cerutti/images/KF6.png)
+	![](images/KF6.png)
 
 	In summary, we have the following equations:
 

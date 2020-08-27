@@ -117,7 +117,7 @@ $$
   y(t) = c_0e(t)+c_1e(t-1)+\dots+c_ie(t-i)+\dots=\sum_{i=0}^{\infty}c_ie(t-i)\\
   e(t)\sim WN(0,\lambda^2)
   $$
-  Assumption to guarantee that $y(t)​$ is well defined:
+  Assumption to guarantee that $y(t)$ is well defined:
   $$
   \sum_{i=0}^{\infty}c_i^2<\infty
   $$
@@ -136,7 +136,7 @@ $$
   \gamma_y(t,t) = \sum_{i=0}^{\infty}c_i^2\lambda^2
   $$
 
-  Hence, if $\sum_{i=0}^{\infty}c_i^2 < \infty​$ , $\gamma(t,t)​$ *is well defined* and
+  Hence, if $\sum_{i=0}^{\infty}c_i^2 < \infty$ , $\gamma(t,t)$ *is well defined* and
   $$
   \gamma_y(t,t) = \gamma_y(0) = \sum_{i=0}^{\infty}c_i^2\lambda^2=(c_0^2+c_1^2+\dots)\cdot\lambda^2
   $$
@@ -158,18 +158,18 @@ $$
   $$
   \gamma_y(t,t-\tau) = \sum_{j=0}^{\infty}c_{j+\tau}c_j\cdot E[e(t-j-\tau)^2] = \sum_{j=0}^{\infty}c_{j+\tau}c_j\cdot\lambda^2
   $$
-   if $\sum_{i=0}^{\infty}c_i^2 < \infty​$ ,  then $\sum_{j=0}^{\infty}c_{j+\tau}c_j​$ converges and  $\gamma(t,t-\tau)​$ *is well defined* and dependes *only* (!) on $\tau​$.
+   if $\sum_{i=0}^{\infty}c_i^2 < \infty$ ,  then $\sum_{j=0}^{\infty}c_{j+\tau}c_j$ converges and  $\gamma(t,t-\tau)$ *is well defined* and dependes *only* (!) on $\tau$.
 
-  In conclusion, if $\sum_{i=0}^{\infty}c_i^2 < \infty​$ , then $MA(\infty)​$ is well defined and is a *s.s.p*. (Stationary *Stochastic* Processes)
+  In conclusion, if $\sum_{i=0}^{\infty}c_i^2 < \infty$ , then $MA(\infty)$ is well defined and is a *s.s.p*. (Stationary *Stochastic* Processes)
 
   *Remember:* a Stochastic Processes is called *Stationary* (wide sense) if:
 
-  - $m(t) = m \ \ \forall{t}​$
+  - $m(t) = m \ \ \forall{t}$
   - $\gamma(t_1,t_2)$ depends on $\tau = t_1-t_2$ *only*.  $\forall{t_1,t_2,t_3,t_4}\ \ \ \ (t_1-t_2=t_3-t_4)$
 
   
 
-  **Let's talk now about $AR​$ processes:**
+  **Let's talk now about $AR$ processes:**
   $$
   y(t)=a_1y(t-1)+a_2y(t-2)+\dots+a_my(t-m)+e(t)\ \ \ \ \ \ \ \ e(t)\sim WN(\mu,\lambda^2)
   $$
@@ -195,7 +195,7 @@ $$
 
   $MA(\infty)$ processes are very general, they almost cover the class of stationary stochastic processes (i.e. apart from few exceptions, all *s.s.p* can be written as $MA(\infty)$ ).
 
-  However, $MA(\infty)​$ are difficult to handle since there are infinite coefficients and, moreover, the computation of the covariance function requires the computation of the sum of an infinite series (hard in general)
+  However, $MA(\infty)$ are difficult to handle since there are infinite coefficients and, moreover, the computation of the covariance function requires the computation of the sum of an infinite series (hard in general)
 
 - ***Si discuta a riguardo della conergenza asintotica (al tendere del numero di dati all'infinito) dei parametri dei modelli identificati mediante il metodo PEM (Prediction Error Minimization) nell'ipotesi che i processi d'ingresso e di uscita siano stazionari e generati da un sistema lineare.***
 
@@ -219,7 +219,7 @@ $$
     \hat{\theta}_N = \underset{\theta}{\mathrm{argmin}}\{J_N(\theta)\}\\
     \text{where } J_N(\theta) = \frac{1}{N}\sum_{i=0}^{N}\varepsilon(t,\theta)^2
     $$
-    Main question: is $\mathcal{M} (\hat{\theta}_N)​$ a good model for the process $y(t)​$ ?
+    Main question: is $\mathcal{M} (\hat{\theta}_N)$ a good model for the process $y(t)$ ?
 
     Very difficult to give an answer when $N$ is finite! Yet, we can give an *asymptotic* answer, for $N\to\infty$, i.e.  $\mathcal{M} (\hat{\theta}_N)$ is a good model provided that $N$ is large enough.
 
@@ -258,7 +258,7 @@ $$
     $$
     <img src="images/PEM.png" style="zoom:60%"/>
 
-    If we go futrher the special problem at hand, $J_N(\theta,\overline{s})​$ should be thought of as a bunch of curves and $\hat{\theta}_N(\overline{s})​$ as a set of points. $\implies\ ​$very complicated to descrie when for finite $N​$ !
+    If we go futrher the special problem at hand, $J_N(\theta,\overline{s})$ should be thought of as a bunch of curves and $\hat{\theta}_N(\overline{s})$ as a set of points. $\implies\ $very complicated to descrie when for finite $N$ !
 
     But as $N\to\infty$ the curves corresponding to different realizations of $J_N(\theta,s)$ *shrinks* to a single (*asymptotic*) curve, and correspondingly, the points of minimum $\hat{\theta}_N(s)$ get closer and closer.
 
@@ -282,7 +282,7 @@ $$
 
     
 
-- ***Se $y(t)=W(z)e(t)\ \ \ e(t)\sim WN(0,1)​$ , dove $W(z)​$ è una funzione di trasferimento razionale con zeri sul bordo del cerchio di raggio unitario nel piano complesso, allora è possibile calcolare il predittore ottimo di $y(t)​$ dal rumore, ma non dai dati.* **
+- ***Se $y(t)=W(z)e(t)\ \ \ e(t)\sim WN(0,1)$ , dove $W(z)$ è una funzione di trasferimento razionale con zeri sul bordo del cerchio di raggio unitario nel piano complesso, allora è possibile calcolare il predittore ottimo di $y(t)$ dal rumore, ma non dai dati.* **
 
   - [x] *True*
   - [ ] *False*
@@ -295,7 +295,7 @@ $$
   $$
   This is always true provided that $W(z)$ is asymptotically stable.
 
-  We can reconstruct $e(t)​$ if and only if:
+  We can reconstruct $e(t)$ if and only if:
 
   - $y(t)$ is a *canonical* representation of the ARMA process $y(t)$
   - $W(z)$ has no zeroes on the unit circle boundary.
@@ -305,7 +305,7 @@ $$
   e(t)=W(z)^{-1}y(t) = \overline{w_0}y(t) + \overline{w_1}y(t-1) + \overline{w_2}y(t-2) +\dots
   $$
 
-- ***Si consideri l'identificazione PEM (cifra di costo : $\frac{1}{N}\sum_{i=1}^{N}(y(i)-\hat{y}(i|i-1))^2​$) di modelli ARX ($\hat{y}(i|i-1) = \theta^T\varphi(i)​$). Dire che cosa si intende per equazioni normali del metodo dei minimi quadrati. Derivare rali equazioni e discutere sull'unicità/non unicità della soluzione.***
+- ***Si consideri l'identificazione PEM (cifra di costo : $\frac{1}{N}\sum_{i=1}^{N}(y(i)-\hat{y}(i|i-1))^2$) di modelli ARX ($\hat{y}(i|i-1) = \theta^T\varphi(i)$). Dire che cosa si intende per equazioni normali del metodo dei minimi quadrati. Derivare rali equazioni e discutere sull'unicità/non unicità della soluzione.***
 
   PEM identification criterion:
   $$
@@ -317,7 +317,7 @@ $$
   $$
   \hat{\theta}_N=\underset{\theta \in \Theta}{\text{argmin}}\ J_N(\theta)=  \underset{\theta \in \Theta}{\text{argmin}}\ \frac{1}{N}\sum_{i=1}^{N}\varepsilon(i,\theta)^2
   $$
-  Underlying idea: if $\mathcal{M}(\hat{\theta}_N) = s​$ i.e. the *true* sysem was perfectly identified, we would have $\varepsilon(t,\hat{\theta}_N) = e(t)​$ and $\lambda^2 = E[\varepsilon(t,\hat{\theta}_N)^2]​$ .
+  Underlying idea: if $\mathcal{M}(\hat{\theta}_N) = s$ i.e. the *true* sysem was perfectly identified, we would have $\varepsilon(t,\hat{\theta}_N) = e(t)$ and $\lambda^2 = E[\varepsilon(t,\hat{\theta}_N)^2]$ .
 
   Generic *ARX* model:
   $$
@@ -420,7 +420,7 @@ $$
 
       <img src="images/H1.PNG" style="zoom:60%"/>
 
-    - $\frac{2}{N}\sum_{t=1}^N\varphi(t)\varphi(t)^T$ is *singular*, i.e. not invertible. $J_N(\theta)$ is parabolic but degenerate, with an *infinite* number of minimum points which are the solutions of the normal equations. In this casem all solutions of the normal equations are equivalent for prediction purposes and the "best" model can be chosen at will among these.
+    - $\frac{2}{N}\sum_{t=1}^N\varphi(t)\varphi(t)^T$ is *singular*, i.e. not invertible. $J_N(\theta)$ is parabolic but degenerate, with an *infinite* number of minimum points which are the solutions of the normal equations. In this case all solutions of the normal equations are equivalent for prediction purposes and the "best" model can be chosen at will among these.
 
       <img src="images/H2.PNG" style="zoom:60%"/>
 
@@ -428,7 +428,7 @@ $$
 
 - ***Dire che cosa si intende per uscita steady-state di un filtro digitale $W(z)$ alimentato da un processo stocastico $v(t)$ e specificare le condizioni affinchè tale uscita steady-state sia un processo stocastico stazionario. Dire invece cosa succede a fronte di una inizializzazione generica del filtro $W(z)$ , spiegando in particolare come l'uscita ottenuta si relaziona con l'uscita steady-state.***
 
-  By *steady-state* solution we mean the solution obtained by taking the initial condition $y(t_0)=0​$ and letting the initial time instant tend to minus infinity ($t_0 \to -\infty​$ ).
+  By *steady-state* solution we mean the solution obtained by taking the initial condition $y(t_0)=0$ and letting the initial time instant tend to minus infinity ($t_0 \to -\infty$ ).
 
   Let us consider a stochastic process $y(t)$ obtained as the steady-state output of a digital filter $F(z)$ fed by a stochastic process $v(t)$ as input. 
 
@@ -449,7 +449,7 @@ $$
 
   - *Theorem:*
 
-    There is just one stationary output which corresponds to the steady-state solution. However, if $F(z)​$ is asymptotically stable, then all possible outputs obtained for different initialization of the digital filter $F(z)​$ *tends asymptotically* (as $t\to\infty​$) to the steady-state solution.
+    There is just one stationary output which corresponds to the steady-state solution. However, if $F(z)$ is asymptotically stable, then all possible outputs obtained for different initialization of the digital filter $F(z)$ *tends asymptotically* (as $t\to\infty$) to the steady-state solution.
 
   
 
@@ -459,7 +459,7 @@ $$
 $$
   y(t) = \underset{\text{deterministic part of the process}}{\underbrace{\frac{B(z)}{A(z)}{u(t-d)}}}+\underset{\text{stochastic part of the process}}{\underbrace{\frac{C(z)}{A(z)}{e(t)}}}\ \ \ \ \ \ \ e(t)\sim WN(0,\lambda^2)
 $$
-  $u(t-d)​$ is a measurable signal and $d​$ is a time-delay.
+  $u(t-d)$ is a measurable signal and $d$ is a time-delay.
 
   $\frac{C(z)}{A(z)}$ is a *canonical representation*.
 
@@ -512,7 +512,7 @@ $$
     \Gamma_y(\omega)=\Gamma_y(-\omega)\ \ \forall{\omega}\in\mathcal{R}
     $$
 
-  - $\Gamma_y(\omega)$ è una funzione periodica di periodo $2\pi​$ 
+  - $\Gamma_y(\omega)$ è una funzione periodica di periodo $2\pi$ 
     $$
     \Gamma_y(\omega)=\Gamma_y(\omega+k\cdot2\pi)\ \ \forall{\omega}\in\mathcal{R},\ \ \forall{k}\in\mathcal{Z}
     $$
@@ -529,9 +529,9 @@ $$
   $$
   \hat{x}(t+1|t)=(F-\overline{K}H)\hat{x}(t|t-1)+\overline{K}y(t)
   $$
-  dove $(F-\overline{K}H)​$ prende il nome di *matrice dinamica del filtro di Kalman*
+  dove $(F-\overline{K}H)$ prende il nome di *matrice dinamica del filtro di Kalman*
 
-  Il predittore di Kalman *di regime* è asintoticamente stabile se e solo se tutti gli autovalori di $(F-\overline{K}H)​$ sono *strettamente* interni al cerchio di raggio unitario. 
+  Il predittore di Kalman *di regime* è asintoticamente stabile se e solo se tutti gli autovalori di $(F-\overline{K}H)$ sono *strettamente* interni al cerchio di raggio unitario. 
 
   Questo significa che il filtro di Kalman può essere asitoticamente stabile anche se il sistema non lo è ! ( $(F-\overline{K}H) \neq F$ )
 

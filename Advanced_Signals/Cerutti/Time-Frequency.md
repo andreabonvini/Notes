@@ -38,7 +38,7 @@ STFT_{x,w}(t,f) = \int_{-\infty}^{\infty}x(\tau)w^{*}(\tau-t)e^{-j2\pi f\tau}d\t
 $$
 At each time instant $t$, we get a spectral decomposition obtained by applying the *FT* to the portion of signal $x(\tau)$ viewed through the window $w^{*}(\tau-t)$ centered at the time $t$. This $w(\tau)$ is a function of limited duration, such as to select the signal belonging to an analysis interval centered around the time $t$ and deleting parts outside the window.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/STFT1.png)
+![](images/STFT1.png)
 
 The *STFT* is, therefore, made up of those spectral components relative to a portion of the signal around the time instant $t$.
 
@@ -70,13 +70,13 @@ $$
 STFT_{x,w}(t,f) = \int_{-\infty}^{\infty}\left[ x(\tau)e^{-j2\pi ft}\right]w(\tau-t)d\tau
 $$
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/STFT_I1.png)
+![](images/STFT_I1.png)
 
 Otherwise, the *STFT* can be considered as a ***Band-Pass Filter***. Filtering the signal $x(t)$ around the frequency $f$, obtained by convolution with the function $w(-t)e^{j2\pi ft}$, followed by a shift in frequency by $-f$ .
 $$
 STFT_{x,w}(t,f) = e^{-j2\pi tf}\int_{-\infty}^{\infty} x(\tau)\left[w(\tau-t)e^{-j2\pi f(\tau-t)}\right]d\tau
 $$
-![](/Users/z051m4/Desktop/University/Cerutti/images/STFT_I2.png)
+![](images/STFT_I2.png)
 
 *Derivation*:
 $$
@@ -94,7 +94,7 @@ $$
 
 This expression reinforces the interpretation of the *STFT* as a *filter bank*. Indeed, the product $X(v)W^{*}(v-f)$ represents the transform of the output of a filter with a frequency response given by $W^{*}(v-f)$, which is a band-pass filter centered at frequency $f$ , obtained by shifting the frequency of the response of the low-pass filter $W(v)$.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/STFT2.PNG)
+![](images/STFT2.PNG)
 
 The continuous *STFT* is extremely redundant. The discrete version of STFT can be obtained by discretizing the time-frequency plane with a grid of equally spaced points $(nT,k/NT)$ where $1/T$ is the sampling frequency, $N$ is the number of samples, and $n$ and $k$  are integers.
 
@@ -142,13 +142,13 @@ The problem here is that cutting the signal corresponds to a convolution between
 
 	Differently from STFT, *we use longer windows to investigate lower frequencies and shorter windows to investigate higher frequencies*!
 
-	<img src="/Users/z051m4/Desktop/University/Cerutti/images/wttri.png" style="zoom:23%" />
+	<img src="images/wttri.png" style="zoom:23%" />
 
 	Look here for example how the *Morlet Wavelet* changes with different values of $a$ 
 
 	($a$ is the scaling factor $s$ referred above )
 
-	<img src="/Users/z051m4/Desktop/University/Cerutti/images/wvaaa.png" style="zoom:23%" />
+	<img src="images/wvaaa.png" style="zoom:23%" />
 
 	(Note that better resolution in time results in worse resolution in frequency and viceversa as always!)
 
@@ -187,7 +187,7 @@ Given a signal $s$ of length $N$, the $FWT$ consists of $log_{2}N$ stages at mos
 
 More precisely, the first step is:
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/mallat1.PNG)
+![](images/mallat1.PNG)
 
 
 
@@ -218,7 +218,7 @@ The wavelet decomposition of the signal $s$ analyzed at level $j$ has the follow
 
 This structure contains, for $j = 3$, the terminal nodes of the following tree:
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/mallat2.png)
+![](images/mallat2.png)
 
 To go into further detail: *Mallat* suggests to decompose the signal utilizing two families of wavelet functions:
 
@@ -244,15 +244,15 @@ $g$ is a *high-pass* filter, $L$ is the number of samples. Starting from $j = 1$
 
 In the image below we can see an example of the two functions $g[n]$ and $h[n]$.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/mallat3.PNG)
+![](images/mallat3.PNG)
 
 The *Mallat algorithm* can be seen as a bank of filters:
 
-<img src="/Users/z051m4/Desktop/University/Cerutti/images/dwt_bf.png" style="zoom:43%" />
+<img src="images/dwt_bf.png" style="zoom:43%" />
 
 ### Example of application of DWT in biomedical signals
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/DWT1.PNG)
+![](images/DWT1.PNG)
 
 Four-Level DWT of the EEG trace at the top of the figure using the matched Mayer spindle wavelet. The four detail functions on the right correspond to the frequency bands associated with the *beta* (16-32 Hz), *alpha* (8-16 Hz), *theta* (4-8 Hz) and *high delta* (2-4 Hz) regimes. The A4 low resolution signals on the left corresponds to the frequency band associated with the *low delta* regime (0-2 Hz). Each of the remaining three low resolution signals on the left illustrate the effect of successively adding each detail function into the next lower low resolution signal to reconstruct the ERP at the top left of the figure. Good frequency selectivity by the matched Meyer spindle wavelet in the *alpha* band is evident in the figure.
 
@@ -262,11 +262,11 @@ Traditionally, the techniques used for signal processing are realized in either 
 
 One solution is to adopt Short-Time-Fourier-Transform (STFT) that get frequency components of local time intervals of *fixed duration*. But if you want to analyze signals that contain *non-periodic and fast transients features* (i.e. high frequency content for short duration), you have to use *Wavelet Transform* (WT).
 
-<img src="/Users/z051m4/Desktop/University/Cerutti/images/STFT_windows.png" style="zoom:23%" /><img src="/Users/z051m4/Desktop/University/Cerutti/images/WT_windows.png" style="zoom:25%" />
+<img src="images/STFT_windows.png" style="zoom:23%" /><img src="images/WT_windows.png" style="zoom:25%" />
 
 Unlike the FT or the STFT, the WT analyzes a signal at *different frequencies with different resolutions*. It can provide ***good time resolution and relatively poor frequency resolution at high frequencies while good frequency resolution and relatively poor time resolution at low frequencies***. Wavelet transform shows excellent advantages for the analysis of ***transient signals***.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/STFT4.PNG)
+![](images/STFT4.PNG)
 
 # Quadratic TF representation & Wigner-Ville distribution
 
@@ -334,11 +334,11 @@ $$
 
 and the *WV* is a line in the $t-f$ plane, concentrated at any instant around the instantaneous frequency of the signal. From a practical point of view, this property shows that the representation is able to correctly localize (jointly in *time* and *frequency*) a sinusoidal component whose properties are varying with time.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/WV1.PNG)
+![](images/WV1.PNG)
 
 Even if the *WV* representation is attractive for representing single-component, nonstationary signals, *it becomes of poor utility when multicomponent signals are considered*. In these cases, the distribution may assume negative values (and this is in contrast with the interpretation of energetic distribution) and interference terms (or cross terms) appear. The cross terms disturb the interpretation of the $TFR $ as they are redundant information that may mask the true characteristics of the signal.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/WV2.PNG)
+![](images/WV2.PNG)
 
 In the case of an N-component signal the representation will be characterized by N signal terms and 
 $$
@@ -348,13 +348,13 @@ interference terms. The latter grows quadratically in respect to the number of c
 
 An example is shown in the figure below where two signal terms are centered in $(t_1,f_1)$ and $(t_2,f_2)$ It is possible to observe that interference terms are located around the central point $[\;t_{12} = \frac{t_1+t_2}{2} \:,\:f_{12} = \frac{f_1+f_2}{2}\;]$ and their amplitude oscillates in time with a period of $\frac{1}{|f_1-f_2|}$ and in frequency with a period of  $\frac{1}{|t_1-t_2|}$. Therefore, the oscillation frequency grows with the distance between signal terms and the direction of oscillation is perpendicular to the line connecting the signal points $(t_1,f_1)$and  $(t_2,f_2)$. 
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/WV3.png)
+![](images/WV3.png)
 
 It is worth noting that the interference terms may be located in time intervals where no signal is present, for example between $t_1$ and $t_2$ in the figure above, showing signal contributions in an area where no activity is expected (like a mirage in the desert).
 
 For the sake of curiosity, in the figure below we notice that IT may appear also in the case of a single component, interferences are located in the concavity of the distribution and are related to the interaction between past and future signal frequencies. 
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/WV4.PNG)
+![](images/WV4.PNG)
 
 These effects make the *WV* hardly readable, especially when a wideband noise is superimposed, and many authors have labeled the *WV* as a *"noisy"* representation (Cohen, 1989). 
 
@@ -374,9 +374,9 @@ Every $TFR$ of this class can be interpreted as a filtered version of $W_{xx} $.
 
 A few examples of $TFRs$ obtained using different *kernels* are shown in the next figure:
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/CC1.PNG)
+![](images/CC1.PNG)
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/CC2.PNG)
+![](images/CC2.PNG)
 
 It is worth noting that the lines corresponding to the *chirps* are larger than in the figure shown in the previous question; thus, the *kernels* reduce time-frequency localization.
 
@@ -410,11 +410,11 @@ where $\phi(\theta,\tau)$ is the two-dimensional Fourier transform of $\Psi$ .
 
 From this equation the effect of the *kernel* can be immediately appreciated; it weights the points of the $\theta - \tau$ plane. Therefore, in order to perform an efficient reduction of cross terms, the function $\phi(\theta,\tau)$ should have higher values close to the origin than far from it. Thus $\phi(\theta,\tau)$ should be the transfer function of a two-dimensional low-pass filter, to get an idea just look at the grey zones in figures $(c)\space,\space (d) \space,\space (e)\space$ and $\space (f)$ below.
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/CC4.PNG)
+![](images/CC4.PNG)
 
 $(a)$ represents the $TFR$ of the signal and $(b)$ represents its projection in the $\theta - \tau$ plane, . signal terms are the two lines passing from the origin; the others are the IT (*interference terms*).
 
-![](/Users/z051m4/Desktop/University/Cerutti/images/CC5.PNG)
+![](images/CC5.PNG)
 
 Here different *kernels* are superimposed on the $AF$:
 
